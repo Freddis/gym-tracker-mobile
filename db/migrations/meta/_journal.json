@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1742726614650,
+      "tag": "0000_sparkling_silverclaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1742734930326,
+      "tag": "0001_exercise_seed",
+      "breakpoints": true
+    }
+  ]
+}

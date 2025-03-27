@@ -1,0 +1,2 @@
+INSERT INTO exercises (name, description, createdAt, updatedAt) VALUES ('Bench press', null, 1000, null);
+INSERT INTO exercises (name, description, createdAt, updatedAt) VALUES ('Bicep Curls', null, 1100, null);
