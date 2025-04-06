@@ -7,3 +7,12 @@ export const exercises = sqliteTable('exercises', {
   createdAt: integer().notNull(),
   updatedAt: integer(),
 });
+
+
+export const users = sqliteTable('users', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  name: text().notNull(),
+  email: text().notNull(),
+  jwt: text().notNull().notNull(),
+  updatedAt: integer({ mode: 'timestamp'}),
+});

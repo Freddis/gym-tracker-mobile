@@ -74,9 +74,9 @@ export default function ExcercisePage() {
 
   return (
       <ThemedView style={styles.titleContainer}>
-          <Stack.Screen options={{ title: "Exercise Library", headerShown: true }} />
-          {/* <ThemedText type="title" style={{paddingLeft: 20, marginTop: 70}}>Exercise Library</ThemedText> */}
-          <Link href={'/(tabs)/exercises/addExercise'} style={{ marginTop: 70}} asChild>
+          <Stack.Screen options={{ title: "Exercise Library", headerShown: false }} />
+          <ThemedText type="title" style={{paddingLeft: 20, marginTop: 70}}>Exercise Library</ThemedText>
+          <Link href={'./addExercise'} style={{ marginTop: 70}} asChild>
               <Button title="Add Exercise"></Button>
           </Link>
           <SectionList 
