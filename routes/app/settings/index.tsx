@@ -1,4 +1,4 @@
-import { ScrollView, Button } from 'react-native';
+import { ScrollView, Button, FlatList } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Link, useRouter } from 'expo-router';

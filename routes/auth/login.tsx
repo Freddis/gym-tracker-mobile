@@ -4,25 +4,33 @@ import {ThemedView} from "@/components/ThemedView";
 import {Link, Stack, useRouter} from "expo-router";
 import {useContext, useState} from 'react';
 import {ThemedTextInput} from '@/components/ThemedInput';
-import {postAuthLogin} from '@/openapi-client';
+import {postAuthLogin, PostAuthLoginError} from '@/openapi-client';
 import {AuthContext} from '@/components/AuthProvider/AuthContext';
+import {useResponseErrors} from '@/hooks/useResponseErrors';
+import {openApiRequest} from '@/utils/openApiRequest';
 
 export default function LoginPage() {
-  const [login,setLogin] = useState('')
+  const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
   const auth = useContext(AuthContext);
   const router = useRouter();
+  const [errorMessage,setErrors] = useResponseErrors()
+
   const performLogin = async () => {
-    const result = await postAuthLogin({
+    const result = await openApiRequest(postAuthLogin,{
       body: {
-        email: login,
-        password,
+        email,
+        password
       }
     })
     if(result.error){
-      const err = result.error;
-      console.log(err)
-      alert("Something went wrong:")
+      const err: PostAuthLoginError = result.error;
+      if(err.error.code === 'validationFailed'){
+        setErrors(err.error.fieldErrors ?? [])
+      }
+      else {
+        alert("Something went wrong:")
+      }
       return;
     }
     auth.login(result.data)
@@ -34,9 +42,15 @@ export default function LoginPage() {
       <ThemedText style={{paddingTop: 70, textAlign: "center"}}> Gym Tracker</ThemedText>
       <ThemedView style={{padding: 20}}>
         <ThemedText>Email</ThemedText>
-        <ThemedTextInput autoCapitalize='none' onChangeText={setLogin}  value={login} placeholder="your@email.com"/>
+        <ThemedTextInput autoCapitalize='none' onChangeText={setEmail}  value={email} placeholder="your@email.com"/>
+        {errorMessage('email') && (
+          <ThemedText style={{color: 'red'}}>{errorMessage('email')}</ThemedText>
+        )}
         <ThemedText>Password</ThemedText>
         <ThemedTextInput secureTextEntry autoCapitalize='none' onChangeText={setPassword}  value={password}  placeholder="******" />
+        {errorMessage('password') && (
+          <ThemedText style={{color: 'red'}}>{errorMessage('password')}</ThemedText>
+        )}
         <Button onPress={performLogin} title='Sign In'/>
         <Link href={'./register'} push  asChild>
           <Button title="Sign Up"></Button>

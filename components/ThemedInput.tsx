@@ -6,16 +6,17 @@ export type ThemedTextInputProps = TextInputProps & {
   darkColor?: string;
 };
 
-export function ThemedTextInput({children, ...rest}: ThemedTextInputProps) {
+export function ThemedTextInput({children,style, ...rest}: ThemedTextInputProps) {
   const backgroundColor = useThemeColor({}, 'backgroundSecondary');
   const color = useThemeColor({}, 'text');
-  const style: StyleProp<TextStyle> = {
+  const newStyle: StyleProp<TextStyle> = {
     ...styles.default,
     backgroundColor,
     color,
+    ...(typeof style === 'object' ? style : {})
   };
   return (
-    <TextInput {...rest} style={style}>{children}</TextInput>
+    <TextInput {...rest} style={newStyle}>{children}</TextInput>
   );
 }
 
@@ -24,6 +25,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     height: 40,
-    marginBottom: 20,
   },
 });
