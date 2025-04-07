@@ -18,10 +18,10 @@ export default function AddWorkoutScreen() {
       alert("Invalid name");
       return;
     }
-    await db.insert(schema.exercises).values({
-      name: name.trim(),
-      createdAt: 1000,
-    })
+    // await db.insert(schema.exercises).values({
+    //   name: name.trim(),
+    //   createdAt: 1000,
+    // })
     navigation.goBack()
   }
 

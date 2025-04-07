@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
 
-export default function HomeLayout() {
+export default function ExercisesLayout() {
   return <Stack screenOptions={{ headerShown: false }} />;
 }

@@ -13,9 +13,9 @@ import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../db/migrations/migrations.js'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '@/components/AuthProvider/AuthProvider';
+import {useDrizzle} from '@/utils/drizzle';
 
-const expoDb = SQLite.openDatabaseSync('db.db');
-const db = drizzle(expoDb)
+
 const queryClient = new QueryClient();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,6 +30,7 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+  const [db] = useDrizzle()
   useMigrations(db, migrations);
   // const { success, error } = useMigrations(db, migrations);
   // if (error) {

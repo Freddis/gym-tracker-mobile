@@ -22,6 +22,20 @@
       "when": 1743846231250,
       "tag": "0002_users",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1744054876986,
+      "tag": "0003_exercise_changes",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1744056324970,
+      "tag": "0004_exercise_external_id",
+      "breakpoints": true
     }
   ]
 }
