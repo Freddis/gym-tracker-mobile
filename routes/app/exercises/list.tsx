@@ -87,8 +87,8 @@ export default function ExcercisePage() {
               </ThemedView>
             )}
             renderItem={ctx => (
-              <ThemedView style={{flexDirection: 'row'}}>
-                <Image style={{width:70, height: 70, paddingLeft: 0, objectFit: 'contain'}} 
+              <ThemedView style={{flexDirection: 'row', marginTop: 10}}>
+                <Image style={{width:70, height: 70, borderRadius: 100, borderWidth: 3, borderColor: 'white', paddingLeft: 0, objectFit: 'fill'}} 
                 src={'http://images.skyhealth.com/fb_app_images/fitness_img_v5.0/'+ctx.item.name.replaceAll(' ', '+')+'-a.jpg'} />
                 <ThemedText style={{fontSize: 18, padding: 15}}>{ctx.item.name}</ThemedText>
               </ThemedView>

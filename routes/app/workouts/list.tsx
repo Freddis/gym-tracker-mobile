@@ -1,11 +1,12 @@
-import { StyleSheet, ScrollView, Button, FlatList } from 'react-native';
+import { StyleSheet, Button, FlatList } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
 import {useQuery} from '@tanstack/react-query';
 import {getWorkoutsOptions} from '@/openapi-client/@tanstack/react-query.gen';
+import {WorkoutBlock} from '@/components/WorkoutBlock/WorkoutBlock';
 
-export default function TabTwoScreen() {
+export default function WorkoutList() {
   const query = useQuery(getWorkoutsOptions())
   if(query.isLoading){
     return  (
@@ -18,25 +19,23 @@ export default function TabTwoScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView style={{paddingTop: 70}}>
-          <ThemedText type="title">Workouts & Plans</ThemedText>
-          <Link href={'./addWorkout'} asChild>
-            <Button title='Add Workout'></Button>
-          </Link>
-          <FlatList  data={workouts} renderItem={(item) => (
-            <ThemedView style={{marginBottom: 10}}>
-              <ThemedText>{item.item.createdAt.toISOString()}</ThemedText>
-            </ThemedView>
-          )} ></FlatList>
-      </ScrollView>
+      <ThemedText type="title" style={{padding: 20}}>Workouts & Plans</ThemedText>
+      <Link href={'./addWorkout'} asChild>
+        <Button title='New Workout'></Button>
+      </Link>
+      <FlatList data={workouts} style={styles.list} renderItem={(x) => <WorkoutBlock workout={x.item}/>} ></FlatList>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 70,
     flexDirection: 'column',
-    padding: 20,
     gap: 8,
+    paddingBottom: 205,
   },
+  list: {
+    padding: 20,
+  }
 });

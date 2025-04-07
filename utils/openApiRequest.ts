@@ -11,7 +11,7 @@ export const openApiRequest = async <TResult,TParam extends object>(req: (opts: 
     logger.debug(`Response ${res.status}:`,res.error);
   }
   if(res.status === 200){
-    logger.debug('res: 200:',res)
+    logger.debug('res: 200:',res.data)
   }
   return res
 }
