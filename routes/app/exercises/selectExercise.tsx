@@ -2,15 +2,11 @@ import {StyleSheet, SectionList, View, FlatList} from 'react-native';
 import {ThemedText} from '@/components/ThemedText';
 import {ThemedView} from '@/components/ThemedView';
 import {useNavigation} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import React from 'react';
-import {Link, Stack} from 'expo-router';
+import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useDrizzle} from '@/utils/drizzle';
-import {openApiRequest} from '@/utils/openApiRequest';
-import {getExercises} from '@/openapi-client';
 import {AppExercise} from '@/types/models/AppExercise';
-import {NewModel} from '@/types/NewModel';
-import {eq} from 'drizzle-orm';
 import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {ThemedTextInput} from '@/components/ThemedInput';
 import {ExerciseBlock} from '@/components/ExerciseBlock/ExerciseBlock';
@@ -18,51 +14,14 @@ import {ExerciseBlock} from '@/components/ExerciseBlock/ExerciseBlock';
 
 export default function ExcercisePage() {
   const navigation = useNavigation();
+  const use = useLocalSearchParams()
   navigation.addListener('focus', () => {
     setfocusedCounter(focusedCounter + 1);
   });
+  const router = useRouter()
   const [searchName, setSearchName] = useState<string>('')
   const [focusedCounter, setfocusedCounter] = useState(0);
   const [db,schema] = useDrizzle();
-  useEffect(() => {
-    // syncExercises()
-  },[])
-  const syncExercises = async () => {
-    const response = await openApiRequest(getExercises,{});
-    if(response.error){
-      return;
-    }
-    for(const exercise of response.data.items) {
-      const newRow: NewModel<AppExercise> = {
-        params: exercise.params,
-        name: exercise.name,
-        description: exercise.description,
-        difficulty: exercise.difficulty,
-        equipmentId: exercise.equipmentId,
-        images: exercise.images,
-        userId: exercise.userId,
-        copiedFromId: exercise.copiedFromId,
-        parentExerciseId: exercise.parentExerciseId,
-        createdAt: new Date(),
-        updatedAt: null,
-        externalId: exercise.id
-      }
-      const existing = await db.query.exercises.findFirst({
-        where: (t,op) => op.eq(t.externalId,exercise.id)
-      })
-      console.log(`Updating ${newRow.externalId}`)
-      if(existing){
-        await db.update(schema.exercises).set(newRow).where(
-          eq(schema.exercises.externalId,exercise.id)
-        )
-        continue;
-      }
-      await db.insert(schema.exercises).values({
-        ...newRow,
-        updatedAt: new Date(),
-      })
-    }
-  }
   const search = searchName.trim().length >= 3 ? searchName.trim() :  null;
   const query = db.select().from(schema.exercises)
   const exerciseResponse = useLiveQuery(query, [focusedCounter]);
@@ -117,9 +76,19 @@ export default function ExcercisePage() {
     data: val[1],
   }))
 
+  const select = (exercise: AppExercise) => {
+    console.log(`Select ${exercise.id}`)
+    router.dismissTo({
+      pathname: '/app/exercises/addExercise',
+      params: {
+        exerciseId: exercise.id
+      }
+    })
+  }
+
   return (
       <ThemedView style={styles.titleContainer}>
-          <Stack.Screen options={{ title: "Exercise Library", headerShown: false }} />
+          <Stack.Screen options={{ title: "Exercise Library", headerShown: true }} />
           <View style={{padding: 10}}>
             <ThemedText>Search:</ThemedText>
             <ThemedTextInput onChangeText={setSearchName} value={searchName} />
@@ -130,11 +99,8 @@ export default function ExcercisePage() {
             <>
             <View style={{padding: 10, paddingTop: 10, display: 'flex', flexDirection: 'row',alignItems: 'center' }}>
               <ThemedText  style={{}}>Personal Library</ThemedText>
-              <Link href={'./addExercise'} style={{marginLeft: 10 }} asChild>
-                  <ThemedText type='link'>Add Exercise</ThemedText>
-              </Link>
             </View>
-            <FlatList keyExtractor={x => x.id.toString()} data={personalExercises} renderItem={ctx => <ExerciseBlock item={ctx.item} />} />
+            <FlatList keyExtractor={x => x.id.toString()} data={personalExercises} renderItem={ctx => <ExerciseBlock onPress={select} item={ctx.item} />} />
             <ThemedText style={{padding: 10, paddingTop: 20}}>Built-in Library</ThemedText>
             </>
           }
@@ -145,7 +111,7 @@ export default function ExcercisePage() {
                 <ThemedText style={{fontWeight: 'bold'}}>{ctx.section.title.toUpperCase()}</ThemedText>
               </ThemedView>
             )}
-            renderItem={ctx => <ExerciseBlock item={ctx.item}/>}>
+            renderItem={ctx => <ExerciseBlock onPress={select} item={ctx.item}/>}>
           </SectionList>
           </View>
       </ThemedView>
@@ -156,7 +122,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: 70,
     flex: 1,
   },
 });
