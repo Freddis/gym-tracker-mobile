@@ -6,7 +6,8 @@ const expo = openDatabaseSync('db.db');
 const db = drizzle(expo,{
   schema,
 });
-
-export const useDrizzle = (): [ExpoSQLiteDatabase<typeof schema>,typeof schema] => {
+export type DrizzleDb = ExpoSQLiteDatabase<typeof schema> 
+export type DrizzleSchema = typeof schema
+export const useDrizzle = (): [DrizzleDb,DrizzleSchema] => {
   return [db,schema] as const
 }

@@ -6,9 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import * as SQLite from 'expo-sqlite';
 import { SQLiteProvider } from 'expo-sqlite';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../db/migrations/migrations.js'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';

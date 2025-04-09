@@ -19,7 +19,6 @@ export default function LoginPage() {
   const [errorMessage,setErrors] = useResponseErrors()
   useEffect(() => {
     AsyncStorage.getItem(ASYNC_STORAGE_KEY).then((result) => {
-      console.log('result',result)
       if(result){
         setEmail(result)
       }
@@ -42,7 +41,6 @@ export default function LoginPage() {
       }
       return;
     }
-    console.log(ASYNC_STORAGE_KEY,email)
     AsyncStorage.setItem(ASYNC_STORAGE_KEY,email);
     auth.login(result.data)
     router.navigate('/');
@@ -50,7 +48,7 @@ export default function LoginPage() {
   return (
     <ThemedView style={{flex: 1 }}>
       <Stack.Screen options={{ title: "Login", headerShown: false }} />
-      <ThemedText style={{paddingTop: 70, textAlign: "center"}}> Gym Tracker</ThemedText>
+      <ThemedText style={{paddingTop: 70, textAlign: "center"}}>Gym Tracker</ThemedText>
       <ThemedView style={{padding: 20}}>
         <ThemedText>Email</ThemedText>
         <ThemedTextInput keyboardType='email-address' textContentType='emailAddress' autoCapitalize='none' onChangeText={setEmail}  value={email} placeholder="your@email.com"/>

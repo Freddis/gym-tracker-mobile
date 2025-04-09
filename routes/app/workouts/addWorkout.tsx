@@ -2,14 +2,9 @@ import { StyleSheet, Button, ScrollView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Stack, useNavigation } from 'expo-router';
-import { openDatabaseSync } from 'expo-sqlite';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { schema } from '@/db/schema';
 import { useState } from 'react';
 import { ThemedTextInput } from '@/components/ThemedInput';
 
-const expo = openDatabaseSync("db.db");
-const db = drizzle(expo);
 export default function AddWorkoutScreen() {
   const navigation = useNavigation();
   const [name,setName] = useState('');

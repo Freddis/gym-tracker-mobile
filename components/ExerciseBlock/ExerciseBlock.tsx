@@ -17,7 +17,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
     objectFit: 'cover'
   }
   const item = props.item
-  const toggle = () => {
+  const onPress = () => {
     if(!item.variations){
       if(props.onPress){
         props.onPress(item)
@@ -30,7 +30,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
 
   return (
     <ThemedView type={colorType} style={{ paddingHorizontal: props.nested ? 10 : 0, paddingVertical: 0}}>
-      <Pressable onPress={toggle}>
+      <Pressable onPress={onPress}>
         <View style={{flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10}}>
           <Image style={imgStyle} src={item.images[0]} />
           <ThemedText style={{fontSize: 14, padding: 15}}>{item.name}</ThemedText>

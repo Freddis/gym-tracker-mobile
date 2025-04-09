@@ -5,21 +5,18 @@ import { Link } from 'expo-router';
 import {useQuery} from '@tanstack/react-query';
 import {getWorkoutsOptions} from '@/openapi-client/@tanstack/react-query.gen';
 import {WorkoutBlock} from '@/components/WorkoutBlock/WorkoutBlock';
+import {LoadingBlock} from '@/components/LoadingBlock/LoadingBlock';
 
 export default function WorkoutList() {
   const query = useQuery(getWorkoutsOptions())
   if(query.isLoading){
-    return  (
-    <ThemedView style={styles.container}>
-      <ThemedText style={{paddingTop: 70}}>Loading..</ThemedText>
-    </ThemedView>
-    )
+    return  <LoadingBlock />
   }
   const workouts = query.data?.items
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={{padding: 20}}>Workouts & Plans</ThemedText>
+      <ThemedText type="title" style={{padding: 10}}>Workouts & Plans</ThemedText>
       <Link href={'./addWorkout'} asChild>
         <Button title='New Workout'></Button>
       </Link>
@@ -33,9 +30,9 @@ const styles = StyleSheet.create({
     paddingTop: 70,
     flexDirection: 'column',
     gap: 8,
-    paddingBottom: 205,
+    flex:1
   },
   list: {
-    padding: 20,
+    padding: 10,
   }
 });

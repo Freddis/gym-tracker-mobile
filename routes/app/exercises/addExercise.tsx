@@ -1,4 +1,4 @@
-import { StyleSheet, Button, ScrollView, Image } from 'react-native';
+import { StyleSheet, Button, Image } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
@@ -20,7 +20,7 @@ export default function AddExerciseScreen() {
   const placeHolderImage = require('@/assets/images/react-logo.png');
   const [baseExercise, setBaseExercise] = useState<AppExercise| null>(null)
   const router = useRouter();
-  const [name,setName] = useState('');
+  const [name, setName] = useState('');
   const exerciseId = params.exerciseId;
   useEffect(() => {
     const validated = ZodHelper.validators.numberOrStringNumber.safeParse(exerciseId);
@@ -38,6 +38,7 @@ export default function AddExerciseScreen() {
       setImage(item.images[0] ?? null)
       setDescription(item.description ?? description)
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[exerciseId])
   const user = auth.user;
   if(!user){
@@ -77,19 +78,19 @@ export default function AddExerciseScreen() {
   }
 
   return (
-    <ScrollView>
+    <ThemedView style={{flex:1}}>
       <Stack.Screen options={{ title: "Add Exercise", headerShown: true }} />
       <ThemedView style={styles.titleContainer}>
-        <Button onPress={copy} title='Copy from Built-in Library' />
+        <Button onPress={copy} title='Copy From Existing' />
         <ThemedText>Name</ThemedText>
-        <ThemedTextInput onChangeText={e => setName(e)} value={name} style={styles.input}> </ThemedTextInput>
+        <ThemedTextInput onChangeText={setName} value={name} style={styles.input}/>
         <ThemedText>Description</ThemedText>
-        <ThemedTextInput onChangeText={e => setDescription(e)} value={description} style={styles.input}> </ThemedTextInput>
+        <ThemedTextInput onChangeText={setDescription} value={description} style={styles.input} />
         <ThemedText>Image</ThemedText>
         <Image source={placeHolderImage} src={image ?? undefined} style={{width: 50, height: 50}}></Image>
         <Button onPress={addExercise} title='Add'/>
       </ThemedView>
-    </ScrollView>
+    </ThemedView>
   );
 }
 
@@ -100,11 +101,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   input: {
-    color: '#ffffff',
-    backgroundColor: '#282828',
-    borderRadius: 5,
-    padding: 5,
-    height: 40,
     marginBottom: 20
   }
 });
