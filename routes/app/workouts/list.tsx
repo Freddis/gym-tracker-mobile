@@ -1,18 +1,36 @@
 import { StyleSheet, Button, FlatList } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Link } from 'expo-router';
-import {useQuery} from '@tanstack/react-query';
-import {getWorkoutsOptions} from '@/openapi-client/@tanstack/react-query.gen';
+import { Link, useNavigation } from 'expo-router';
 import {WorkoutBlock} from '@/components/WorkoutBlock/WorkoutBlock';
 import {LoadingBlock} from '@/components/LoadingBlock/LoadingBlock';
+import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
+import {useDrizzle} from '@/utils/drizzle';
+import {useState} from 'react';
 
 export default function WorkoutList() {
-  const query = useQuery(getWorkoutsOptions())
-  if(query.isLoading){
+  const navigation = useNavigation();
+    navigation.addListener('focus', () => {
+      setfocusedCounter(focusedCounter + 1);
+    });  
+  const [focusedCounter, setfocusedCounter] = useState(0);
+  const [db] = useDrizzle()
+  const sqlQuery = db.query.workouts.findMany({
+    with: {
+      sets: {
+        with: {
+          exercise: true
+        }
+      }
+    },
+    orderBy: (t,op) => op.desc(t.start),
+    limit: 100,
+  })  
+  const query = useLiveQuery(sqlQuery,[focusedCounter])
+  if(!query.data){
     return  <LoadingBlock />
   }
-  const workouts = query.data?.items
+  const workouts = query.data
 
   return (
     <ThemedView style={styles.container}>

@@ -37,16 +37,13 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
       responseType: 'json',
-      baseURL: 'http://192.168.0.45:3000/api/v1',
+      baseURL: 'http://192.168.0.96:3000/api/v1',
       headers: {
         Authorization: authHeader,
       },
     };
   };
   client.setConfig(getClientConfig(user));
-  client.setConfig({
-    responseType: 'json',
-  });
   const logout = () => {
     setUser(null);
     deleteItemAsync(userKey);
@@ -58,6 +55,6 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   };
 
   return (
-    <AuthContext.Provider value={{user, login, logout}}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{user, ready: doneLoading, login, logout}}>{props.children}</AuthContext.Provider>
   );
 };

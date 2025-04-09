@@ -1,9 +1,30 @@
-import { StyleSheet, Button, ScrollView } from 'react-native';
+import { StyleSheet, Button, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Stack, useNavigation } from 'expo-router';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ThemedTextInput } from '@/components/ThemedInput';
+
+export const TimerBlock: FC = () => {
+  const [started] = useState(new Date());
+  const [now, setNow] = useState(new Date())
+  useEffect(() => {
+    setTimeout(() => {
+      setNow(new Date())
+    },1000)
+  })
+  const diff = Math.floor(now.getTime() - started.getTime());
+  const hourMs = 1000*60*60;
+  const minuteMs = 1000*60;
+  const secondMs = 1000;
+  const hours = Math.floor(diff/hourMs);
+  const minutes = Math.floor((diff - hours*hourMs)/minuteMs);
+  const seconds = Math.floor((diff - hours*hourMs - minutes*minuteMs)/secondMs)
+  const hoursStr = String(hours).padStart(2,'0');
+  const minutesStr = String(minutes).padStart(2,'0');
+  const secondsStr = String(seconds).padStart(2,'0');
+  return <ThemedText>{hoursStr}:{minutesStr}:{secondsStr}</ThemedText>
+}
 
 export default function AddWorkoutScreen() {
   const navigation = useNavigation();
@@ -20,16 +41,19 @@ export default function AddWorkoutScreen() {
     navigation.goBack()
   }
 
-  return (
-    <ScrollView>
+  return (   
+    <ThemedView style={styles.titleContainer}>
       <Stack.Screen options={{ title: "Add Workout", headerShown: true }} />
-      <ThemedView style={styles.titleContainer}>
-        {/* <ThemedText type="title">Add Exercise</ThemedText> */}
-        <ThemedText>Name</ThemedText>
-      <ThemedTextInput onChangeText={e => setName(e)} style={styles.input}> </ThemedTextInput>
-      <Button onPress={addExercise} title='Add'/>
-      </ThemedView>
-    </ScrollView>
+      {/* <ThemedText type="title">Add Exercise</ThemedText> */}
+      <ThemedText>New Workout</ThemedText>
+      <TimerBlock />
+      <ThemedText>Name</ThemedText>
+      <ThemedTextInput onChangeText={e => setName(e)} />
+      <Button onPress={addExercise} title='Add Exercise'/>
+      <View style={{marginTop: 20}}>
+        <Button onPress={addExercise} title='Finish Workout'/>
+      </View>
+    </ThemedView>
   );
 }
 
@@ -38,13 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 20,
     gap: 8,
-  },
-  input: {
-    color: '#ffffff',
-    backgroundColor: '#282828',
-    borderRadius: 5,
-    padding: 5,
-    height: 40,
-    marginBottom: 20
+    flex: 1,
+    flexGrow: 1,
   }
 });

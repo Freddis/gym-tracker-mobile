@@ -8,17 +8,17 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import migrations from '../db/migrations/migrations.js'
+import migrations from '../db/migrations/migrations'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '@/components/AuthProvider/AuthProvider';
 import {useDrizzle} from '@/utils/drizzle';
-
 
 const queryClient = new QueryClient();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const [db] = useDrizzle();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -28,20 +28,21 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
-  const [db] = useDrizzle()
+  
   useMigrations(db, migrations);
-  // const { success, error } = useMigrations(db, migrations);
+  const { success, error } = useMigrations(db, migrations);
+  // todo: figure out how to make it not throw errors in dev mode
   // if (error) {
   //   return (
   //     <View>
-  //       <Text>Migration error: {error.message}</Text>
+  //       <ThemedText>Migration error: {error.message}</ThemedText>
   //     </View>
   //   );
   // }
   // if (!success) {
   //   return (
   //     <View>
-  //       <Text>Migration is in progress...</Text>
+  //       <ThemedText>Migration is in progress...</ThemedText>
   //     </View>
   //   );
   // }

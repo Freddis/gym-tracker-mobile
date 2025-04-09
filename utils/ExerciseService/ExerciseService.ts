@@ -74,10 +74,10 @@ export class ExerciseService {
     return items;
   }
 
-  async syncExercises(db: DrizzleDb): Promise<void> {
+  async syncWithServer(db: DrizzleDb): Promise<boolean> {
     const response = await openApiRequest(getExercises,{});
     if(response.error){
-      return;
+      return false;
     }
     for(const exercise of response.data.items) {
       const newRow: NewModel<AppExercise> = {
@@ -99,15 +99,16 @@ export class ExerciseService {
       })
       // console.log(`Updating ${newRow.externalId}`)
       if(existing){
-        await db.update(schema.exercises).set(newRow).where(
+        await db.update(schema.exercises).set({
+          ...newRow,
+          updatedAt: new Date(),
+        }).where(
           eq(schema.exercises.externalId,exercise.id)
         )
         continue;
       }
-      await db.insert(schema.exercises).values({
-        ...newRow,
-        updatedAt: new Date(),
-      })
+      await db.insert(schema.exercises).values(newRow)
     }
+    return true;
   }
 }

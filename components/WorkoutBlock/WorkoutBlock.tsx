@@ -3,21 +3,12 @@ import {FC} from "react";
 import {StyleProp, ImageStyle, ViewStyle, View, Image} from "react-native";
 import {ThemedText} from "../ThemedText";
 import {ThemedView} from "../ThemedView";
-import {ExerciseWithSets} from "./types/ExerciseWithSets";
+import {useWorkoutService} from "@/utils/WorkoutService/useWorkoutService";
 
 export const WorkoutBlock: FC<{workout: Workout}> = (props) => {
+  const [workoutService] = useWorkoutService();
   const workout = props.workout;
-  const convertSets = (workout: Workout) : ExerciseWithSets[] => {
-    const map = new Map<number, ExerciseWithSets>();
-    for (const set of workout.sets) {
-      const exercise: ExerciseWithSets = map.get(set.exercise.id) ?? {exercise: set.exercise, sets: []};
-      exercise.sets.push(set);
-      map.set(exercise.exercise.id, exercise);
-    }
-    const exercises = Array.from(map.values());
-    return exercises;
-  };
-  const exercises = convertSets(workout);
+  const exercises = workoutService.convertSets(workout);
   const imgStyle: StyleProp<ImageStyle> = {
     width: 50, 
     height: 50,
@@ -33,7 +24,7 @@ export const WorkoutBlock: FC<{workout: Workout}> = (props) => {
   return (
     <ThemedView style={{marginBottom: 20, display: 'flex', padding: 10, borderRadius: 5}} type='backgroundSecondary'>
       <View style={{ flexDirection: 'row-reverse'}}>
-        <ThemedText style={{fontSize: 13}}>{workout.createdAt.toLocaleString('en-GB',{weekday:'long'})} {workout.createdAt.toLocaleDateString()}</ThemedText>
+        <ThemedText style={{fontSize: 13}}>{workout.start.toLocaleString('en-GB',{weekday:'long'})} {workout.start.toLocaleDateString()}</ThemedText>
       </View>
       <View style={{marginBottom: 10}}>
         <ThemedText>Calories: {workout.calories}</ThemedText>

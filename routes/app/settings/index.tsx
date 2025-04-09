@@ -2,20 +2,40 @@ import { ScrollView, Button, Switch, View, useColorScheme, Appearance } from 're
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useRouter } from 'expo-router';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {AuthContext} from '@/components/AuthProvider/AuthContext';
+import {useSyncService} from '@/utils/SyncService/useSyncService';
+import {useDrizzle} from '@/utils/drizzle';
+import {SyncState} from '@/utils/SyncService/SyncService';
 
 export default function TabTwoScreen() {
   const auth = useContext(AuthContext)
   const theme = useColorScheme()
   const router = useRouter();
-
+  const [syncState, setSyncState] = useState<SyncState |  null>(null);
+  const [syncService] = useSyncService();
+  const [db] = useDrizzle();
+  
   const performSignOut = () => {
     auth.logout();
     router.navigate('/');
   }
   const toggleTheme = () => {
     Appearance.setColorScheme(theme === 'dark' ? 'light' : 'dark')
+  }
+  const syncWithServer = async () => {
+    syncService.syncWithServer(db,(data) => {
+      console.log("New state",data)
+      setSyncState({...data})
+    })
+  }
+
+  if(syncState && !syncState.done){
+    return (
+    <ThemedView style={{flex: 1,paddingTop: 100, paddingLeft: 20, paddingRight: 20}}>
+        <ThemedText style={{textAlign: 'center'}}>Processing {syncState.itemsDone+1}/{syncState.itemsNumber}: {syncState.currentStageName}</ThemedText>
+    </ThemedView>
+    )
   }
   return (
     <ThemedView style={{flex: 1}}>
@@ -38,6 +58,9 @@ export default function TabTwoScreen() {
             <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
               <Switch value={theme === 'dark'} onTouchStart={toggleTheme} />
             </View>
+          </View>
+          <View>
+            <Button onPress={syncWithServer} title='Sync Data With Server'/>
           </View>
           <View style={{marginTop: 20}}>
             <Button onPress={performSignOut} title='Sign Out' />

@@ -1,12 +1,5 @@
-import { integer,  sqliteTable,  text} from 'drizzle-orm/sqlite-core';
-
-// export const exercises = sqliteTable('exercises', {
-//   id: integer().primaryKey({autoIncrement: true}).notNull(),
-//   name: text(),
-//   description: text(),
-//   createdAt: integer().notNull(),
-//   updatedAt: integer(),
-// });
+import {relations} from 'drizzle-orm';
+import { integer,  real,  sqliteTable,  text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
   id: integer().primaryKey().notNull(),
@@ -23,39 +16,41 @@ export const exercises = sqliteTable('exercises', {
   createdAt: integer({ mode: 'timestamp'}).notNull(),
   updatedAt: integer({ mode: 'timestamp'}),
 });
-// export const workouts = sqliteTable('workouts', {
-//   id: integer().primaryKey({autoIncrement: true}).notNull(),
-//   externalId: integer(),
-//   typeId: integer(),
-//   userId: integer(),
-//   calories: real().notNull(),
-//   start: integer({mode: 'timestamp'}).notNull(),
-//   end: integer({mode: 'timestamp'}).notNull(),
-//   createdAt: integer({mode: 'timestamp'}).notNull(),
-//   updatedAt: integer({mode: 'timestamp'}),
-// });
+export const workouts = sqliteTable('workouts', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer(),
+  typeId: integer(),
+  userId: integer(),
+  calories: real().notNull(),
+  start: integer({mode: 'timestamp'}).notNull(),
+  end: integer({mode: 'timestamp'}).notNull(),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+});
 
-// export const workoutExercises = sqliteTable('workout_exercises', {
-//   id: integer().primaryKey().notNull(),
-//   externalId: integer(),
-//   workoutId: integer().notNull(),
-//   exerciseId: integer().notNull(),
-//   createdAt: integer({ mode: 'timestamp'}).notNull(),
-//   updatedAt: integer({ mode: 'timestamp'}),
-// });
+export const workoutExercises = sqliteTable('workout_exercises', {
+  id: integer().primaryKey().notNull(),
+  externalId: integer(),
+  workoutId: integer().notNull(),
+  exerciseId: integer().notNull(),
+  userId: integer().notNull(),
+  createdAt: integer({ mode: 'timestamp'}).notNull(),
+  updatedAt: integer({ mode: 'timestamp'}),
+});
 
-// export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
-//   id: integer().primaryKey().notNull(),
-//   externalId: integer(),
-//   exerciseId: integer().notNull(),
-//   workoutId: integer().notNull(),
-//   start: integer({ mode: 'timestamp'}).notNull(),
-//   end: integer({ mode: 'timestamp'}).notNull(),
-//   weight: real(),
-//   reps: integer(),
-//   createdAt: integer({ mode: 'timestamp'}).notNull(),
-//   updatedAt: integer({ mode: 'timestamp'}),
-// });
+export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
+  id: integer().primaryKey().notNull(),
+  externalId: integer(),
+  exerciseId: integer().notNull(),
+  userId: integer().notNull(),
+  workoutId: integer().notNull(),
+  start: integer({ mode: 'timestamp'}).notNull(),
+  end: integer({ mode: 'timestamp'}).notNull(),
+  weight: real(),
+  reps: integer(),
+  createdAt: integer({ mode: 'timestamp'}).notNull(),
+  updatedAt: integer({ mode: 'timestamp'}),
+});
 
 export const users = sqliteTable('users', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
@@ -64,3 +59,13 @@ export const users = sqliteTable('users', {
   jwt: text().notNull().notNull(),
   updatedAt: integer({ mode: 'timestamp'}),
 });
+
+export const workoutRelations = relations(workouts, (relations) => ({
+  user: relations.one(users),
+  sets: relations.many(workoutExerciseSets),
+}));
+
+export const workoutExerciseSetRelations = relations(workoutExerciseSets, (relations) => ({
+  workout: relations.one(workouts, {fields: [workoutExerciseSets.workoutId], references: [workouts.id]}),
+  exercise: relations.one(exercises, {fields: [workoutExerciseSets.exerciseId], references: [exercises.id]}),
+}));

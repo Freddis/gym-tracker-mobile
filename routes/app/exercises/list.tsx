@@ -2,7 +2,7 @@ import {StyleSheet, SectionList, View, FlatList} from 'react-native';
 import {ThemedText} from '@/components/ThemedText';
 import {ThemedView} from '@/components/ThemedView';
 import {useNavigation} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import React from 'react';
 import {Link, Stack} from 'expo-router';
 import {useDrizzle} from '@/utils/drizzle';
@@ -21,10 +21,6 @@ export default function ExcercisePage() {
   const [focusedCounter, setfocusedCounter] = useState(0);
   const [db,schema] = useDrizzle();
   const [exerciseService] = useExerciseService()
-  useEffect(() => {
-    exerciseService.syncExercises(db)
-  },[])
-
   const search = searchName.trim().length >= 3 ? searchName.trim() :  null;
   const query = db.select().from(schema.exercises)
   const exerciseResponse = useLiveQuery(query, [focusedCounter]);
