@@ -30,8 +30,9 @@ export default function RootLayout() {
   }, [loaded]);
   
   useMigrations(db, migrations);
-  const { success, error } = useMigrations(db, migrations);
   // todo: figure out how to make it not throw errors in dev mode
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { success, error } = useMigrations(db, migrations);
   // if (error) {
   //   return (
   //     <View>

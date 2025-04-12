@@ -24,7 +24,8 @@ export class WorkoutService {
         start: workout.start,
         end: workout.end,
         createdAt: new Date(),
-        updatedAt: null
+        updatedAt: null,
+        syncedAt: null
       }
       const workoutId = await this.saveWorkoutToDb(db,workout.id,newWorkoutRow);
       await db.delete(schema.workoutExercises).where(eq(schema.workoutExercises.id,workoutId))
@@ -45,7 +46,7 @@ export class WorkoutService {
           workoutId: workoutId,
           exerciseId: exercise.id,
         }
-        await db.insert(schema.workoutExercises).values(newExerciseRow);
+        const exerciseRow = await db.insert(schema.workoutExercises).values(newExerciseRow);
         for(const set of row.sets){
           const newSetRow: NewModel<AppWorkoutExerciseSet> = {
             externalId: set.id,
@@ -57,7 +58,9 @@ export class WorkoutService {
             workoutId: workoutId,
             exerciseId: exercise.id,
             weight: set.weight,
+            finished: true, // todo: change that
             reps: set.reps,
+            workoutExerciseId: exerciseRow.lastInsertRowId,
           }
           await db.insert(schema.workoutExerciseSets).values(newSetRow);
         }

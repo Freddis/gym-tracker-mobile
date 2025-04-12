@@ -1,59 +1,153 @@
 import { StyleSheet, Button, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Stack, useNavigation } from 'expo-router';
-import { FC, useEffect, useState } from 'react';
-import { ThemedTextInput } from '@/components/ThemedInput';
-
-export const TimerBlock: FC = () => {
-  const [started] = useState(new Date());
-  const [now, setNow] = useState(new Date())
-  useEffect(() => {
-    setTimeout(() => {
-      setNow(new Date())
-    },1000)
-  })
-  const diff = Math.floor(now.getTime() - started.getTime());
-  const hourMs = 1000*60*60;
-  const minuteMs = 1000*60;
-  const secondMs = 1000;
-  const hours = Math.floor(diff/hourMs);
-  const minutes = Math.floor((diff - hours*hourMs)/minuteMs);
-  const seconds = Math.floor((diff - hours*hourMs - minutes*minuteMs)/secondMs)
-  const hoursStr = String(hours).padStart(2,'0');
-  const minutesStr = String(minutes).padStart(2,'0');
-  const secondsStr = String(seconds).padStart(2,'0');
-  return <ThemedText>{hoursStr}:{minutesStr}:{secondsStr}</ThemedText>
-}
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import {useDrizzle} from '@/utils/drizzle';
+import {AppWorkout} from '@/types/models/AppWorkout';
+import {NewModel} from '@/types/NewModel';
+import {LoadingBlock} from '@/components/LoadingBlock/LoadingBlock';
+import {useAuth} from '@/components/AuthProvider/useAuth';
+import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
+import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
+import {eq} from 'drizzle-orm';
+import {AppWorkoutExercise, CompleteAppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
+import {TimerBlock} from '@/components/TimerBlock/TimerBlock';
+import {EditableWorkoutExerciseBlock} from '@/components/EditableWorkoutExerciseBlock/EditableWorkoutExerciseBlock';
+import {ThemedScrollView} from '@/components/ThemedScrollView';
 
 export default function AddWorkoutScreen() {
-  const navigation = useNavigation();
-  const [name,setName] = useState('');
-  const addExercise = async () => {
-    if(name.trim() === ''){
-      alert("Invalid name");
-      return;
+  const [refreshCounter, setRefreshCounter] = useState(0)
+  const auth = useAuth();
+  const user = auth.user;
+  if(!user){
+    throw new Error("No user")
+  }
+  const params = useLocalSearchParams()
+  const router = useRouter()
+  const [db,schema] = useDrizzle()
+  useEffect(() => {
+    if(params.workoutId){
+      return
     }
-    // await db.insert(schema.exercises).values({
-    //   name: name.trim(),
-    //   createdAt: 1000,
-    // })
-    navigation.goBack()
+    const newWorkout: NewModel<AppWorkout> = {
+      externalId: null,
+      typeId: null,
+      userId: null,
+      calories: 0,
+      start: new Date(),
+      end: null,
+      createdAt: new Date(),
+      updatedAt: null,
+      syncedAt: null
+    }
+    db.insert(schema.workouts)
+      .values(newWorkout)
+      .then( workout => {
+        router.setParams({
+          workoutId: workout.lastInsertRowId
+        })
+      })    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[params.workoutId]);
+  const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.workoutId)
+  const workoutId = validated.success ? validated.data : 0
+  const query = db.query.workouts.findFirst({
+    where: (t,op) => op.eq(t.id,workoutId),
+    with: {
+      exercises: {
+        with: {
+          exercise: true,
+          sets: true,
+        }
+      }, 
+      sets: {
+        with: {
+          exercise: true
+        }
+      },
+    },
+  })
+  const queryResult = useLiveQuery(query,[workoutId,params.exerciseId,refreshCounter])
+  const workout = queryResult.data
+  useEffect(()=> {
+    const validatedExerciseId = ZodHelper.validators.numberOrStringNumber.safeParse(params.exerciseId)
+    if(!workout || !validatedExerciseId.success){
+      return
+    }
+    const workoutExercise: NewModel<AppWorkoutExercise> = {
+      workoutId: workout.id,
+      externalId: null,
+      userId: user.id,
+      createdAt: new Date(),
+      updatedAt: null,
+      exerciseId: validatedExerciseId.data,
+    }
+    db.insert(schema.workoutExercises).values(workoutExercise).then(() => {
+      router.setParams({
+        ...params,
+        exerciseId: undefined,
+      })
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[params.exerciseId,workout])
+
+  if(!workout){
+    return <LoadingBlock />
   }
 
+  const addExercise = async () => {
+    router.push({
+      pathname: './selectExercise',
+      params,
+    })
+  }
+  const deleteWorkout = async () => {
+    await db.delete(schema.workouts).where(
+      eq(schema.workouts.id,workout.id)
+    )
+    router.back()
+  }
+  const deleteExercise = async (exercise: CompleteAppWorkoutExercise) => {
+    await db.delete(schema.workoutExerciseSets).where(
+      eq(schema.workoutExerciseSets.workoutExerciseId,exercise.id)
+    )
+    await db.delete(schema.workoutExercises).where(
+      eq(schema.workoutExercises.id,exercise.id)
+    ) 
+    setRefreshCounter(refreshCounter + 1)
+  }
+  const finishWorkout  = async () => {
+    await db.update(schema.workouts).set({
+      end: new Date(),
+    }).where(
+      eq(schema.workouts.id,workout.id)
+    )
+    router.back()
+  }
+  const workoutFinished = workout.end !== null;
   return (   
-    <ThemedView style={styles.titleContainer}>
-      <Stack.Screen options={{ title: "Add Workout", headerShown: true }} />
-      {/* <ThemedText type="title">Add Exercise</ThemedText> */}
-      <ThemedText>New Workout</ThemedText>
-      <TimerBlock />
-      <ThemedText>Name</ThemedText>
-      <ThemedTextInput onChangeText={e => setName(e)} />
-      <Button onPress={addExercise} title='Add Exercise'/>
-      <View style={{marginTop: 20}}>
-        <Button onPress={addExercise} title='Finish Workout'/>
-      </View>
-    </ThemedView>
+    <ThemedScrollView>
+      <ThemedView style={styles.titleContainer}>
+        <Stack.Screen options={{ title: `Workout ${workout.id}`, headerShown: true }} />
+        <View style={{flexDirection: 'row'}}>
+          <ThemedText>Time: </ThemedText>
+          <TimerBlock start={workout.start} end={workout.end ?? undefined}/>
+        </View>
+        {workout.exercises.map( x => <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.exercise.id} exercise={x} />)}
+        <Button onPress={addExercise} title='Add Exercise'/>
+        {!workoutFinished && (
+          <View style={{marginTop: 20}}>
+          <Button onPress={finishWorkout} title='Finish Workout'/>
+        </View>
+        )}
+        {workoutFinished && (
+          <View style={{marginTop: 20}}>
+          <Button color={'red'} onPress={deleteWorkout} title='Delete Workout'/>
+        </View>
+        )}
+      </ThemedView>
+    </ThemedScrollView>
   );
 }
 
@@ -61,6 +155,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'column',
     padding: 20,
+    marginBottom: 80,
     gap: 8,
     flex: 1,
     flexGrow: 1,

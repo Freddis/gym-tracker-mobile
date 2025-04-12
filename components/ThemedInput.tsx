@@ -1,17 +1,18 @@
 import {StyleSheet, TextInputProps, TextInput, TextStyle, StyleProp} from 'react-native';
 import {useThemeColor} from '@/hooks/useThemeColor';
+import {ColorType} from './ThemedView';
 
 export type ThemedTextInputProps = TextInputProps & {
-  lightColor?: string;
-  darkColor?: string;
+  type?: ColorType
 };
 
-export function ThemedTextInput({children,style, ...rest}: ThemedTextInputProps) {
-  const backgroundColor = useThemeColor({}, 'backgroundSecondary');
+export function ThemedTextInput({children,style, type, ...rest}: ThemedTextInputProps) {
+  const backgroundColor = useThemeColor({}, type ?? 'backgroundSecondary');
   const color = useThemeColor({}, 'text');
   const newStyle: StyleProp<TextStyle> = {
     ...styles.default,
     backgroundColor,
+    borderColor: backgroundColor,
     color,
     ...(typeof style === 'object' ? style : {})
   };

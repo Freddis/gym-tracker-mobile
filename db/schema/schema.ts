@@ -23,9 +23,10 @@ export const workouts = sqliteTable('workouts', {
   userId: integer(),
   calories: real().notNull(),
   start: integer({mode: 'timestamp'}).notNull(),
-  end: integer({mode: 'timestamp'}).notNull(),
+  end: integer({mode: 'timestamp'}),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
+  syncedAt: integer({mode: 'timestamp'}),
 });
 
 export const workoutExercises = sqliteTable('workout_exercises', {
@@ -42,10 +43,12 @@ export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
   id: integer().primaryKey().notNull(),
   externalId: integer(),
   exerciseId: integer().notNull(),
+  workoutExerciseId: integer().notNull(),
   userId: integer().notNull(),
   workoutId: integer().notNull(),
-  start: integer({ mode: 'timestamp'}).notNull(),
-  end: integer({ mode: 'timestamp'}).notNull(),
+  start: integer({ mode: 'timestamp'}),
+  end: integer({ mode: 'timestamp'}),
+  finished: integer({mode:'boolean'}).notNull(),
   weight: real(),
   reps: integer(),
   createdAt: integer({ mode: 'timestamp'}).notNull(),
@@ -60,12 +63,3 @@ export const users = sqliteTable('users', {
   updatedAt: integer({ mode: 'timestamp'}),
 });
 
-export const workoutRelations = relations(workouts, (relations) => ({
-  user: relations.one(users),
-  sets: relations.many(workoutExerciseSets),
-}));
-
-export const workoutExerciseSetRelations = relations(workoutExerciseSets, (relations) => ({
-  workout: relations.one(workouts, {fields: [workoutExerciseSets.workoutId], references: [workouts.id]}),
-  exercise: relations.one(exercises, {fields: [workoutExerciseSets.exerciseId], references: [exercises.id]}),
-}));

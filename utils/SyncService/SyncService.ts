@@ -1,11 +1,12 @@
-import {getItemAsync} from "expo-secure-store";
 import {DrizzleDb} from "../drizzle";
 import {ExerciseService} from "../ExerciseService/ExerciseService";
 import {Logger} from "../Logger/Logger";
 import {WorkoutService} from "../WorkoutService/WorkoutService";
-import {AuthUser, authUserValidator} from "@/components/AuthProvider/types/AuthUser";
-import {client} from '@/openapi-client/client.gen';
 
+export interface SyncStage {
+  name: string,
+  action: (db: DrizzleDb) => Promise<boolean>  
+}
 export interface SyncState {
   currentStageName: string,
   itemsDone: number,
@@ -14,12 +15,12 @@ export interface SyncState {
 }
 export class SyncService {
   protected workoutService: WorkoutService;
-  protected exerciseSercice: ExerciseService;
+  protected exerciseService: ExerciseService;
   protected logger: Logger;
 
   constructor(workouts: WorkoutService, exercises: ExerciseService){
     this.workoutService = workouts;
-    this.exerciseSercice = exercises;
+    this.exerciseService = exercises;
     this.logger = new Logger(this.constructor.name);
   }
 
@@ -39,74 +40,50 @@ export class SyncService {
     }
   }
 
-  async getUser(): Promise<AuthUser | null> {
-    const user = await getItemAsync('user')
-    if (user === null) {
-      return null;
-    }
-    let parsedUser: unknown = {};
-    try {
-      parsedUser = JSON.parse(user);
-    } catch {
-      /* empty */
-    }
-    const result = authUserValidator.safeParse(parsedUser);
-    if(!result.success){
-      return null
-    }
-    return result.data
-      
-  }
   protected async sync(db: DrizzleDb,callback: (x: SyncState) => void): Promise<boolean> {
-    const state: SyncState = {
-      currentStageName: "Workouts",
-      itemsDone: 0,
-      itemsNumber: 2,
-      done: false,
+
+    const stages = this.getStages()
+    const itemsNumber = stages.length;
+    let itemsDone = 0;
+    for(const stage of stages){
+      const state: SyncState = {
+        currentStageName: stage.name,
+        itemsDone: itemsDone++,
+        itemsNumber,
+        done: false,
+      }
+      callback(state)
+      const success = await stage.action(db)
+      if(!success){
+        this.logger.info(`Couldn't sync ${stage.name}`);
+        callback({
+          ...state,
+          done: true,
+        })
+        return false;
+      }
     }
-    callback(state)
-    // todo: fix this part across this service and AuthProvider
-    const user = await this.getUser();
-    if(!user){
-      callback({
-        ...state,
-        done: true,
-      })
-      return false;
-    }
-    const config =  {
-      responseType: 'json',
-      baseURL: 'http://192.168.0.96:3000/api/v1',
-      headers: {
-        Authorization: 'Bearer ' + user.jwt,
-      },
-    } as const;
-   client.setConfig(config);
-    const workoutsSynced = await this.workoutService.syncWithServer(db)
-    if(!workoutsSynced){
-      this.logger.info("Couldn't sync workouts");
-      callback({
-        ...state,
-        done: true,
-      })
-      return false;
-    }
-    state.itemsDone += 1
-    state.currentStageName = 'Exercises';
-    callback(state);
-    const exercisesSynced = await this.exerciseSercice.syncWithServer(db);
-    if(!exercisesSynced){
-      this.logger.info("Couldn't sync exercises");
-      callback({
-        ...state,
-        done: true,
-      })
-      return false;
-    }
-    state.itemsDone += 1
     this.logger.debug("Syncing successfully completed")
-    state.done = true;
-    callback(state)
+    callback({
+      currentStageName: 'Finished',
+      itemsDone: itemsNumber,
+      itemsNumber,
+      done: true
+    })
     return true;
+  }
+
+  protected getStages(): SyncStage[] {
+    const result: SyncStage[] = [
+      {
+        name: 'Exercises',
+        action: this.exerciseService.syncWithServer.bind(this.exerciseService),
+      },
+      {
+        name: 'Workouts',
+        action: this.workoutService.syncWithServer.bind(this.workoutService),
+      }
+    ];
+    return result;
   }
 }
