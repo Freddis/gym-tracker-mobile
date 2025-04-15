@@ -12,7 +12,10 @@
     "ios": {
       "supportsTablet": true,
       "jsEngine": "jsc",
-      "bundleIdentifier": "com.anonymous.gymtracker"
+      "bundleIdentifier": "com.anonymous.gymtracker",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -62,6 +65,16 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false,
+        "root": "./routes"
+      },
+      "eas": {
+        "projectId": "4a2d84db-74ba-4b5e-981f-6e07fac3387d"
+      }
+    },
+    "owner": "freddis"
   }
 }

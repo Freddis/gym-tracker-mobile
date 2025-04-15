@@ -6,9 +6,11 @@ import {schema} from "@/db/schema";
 import {NewModel} from "@/types/NewModel";
 import {eq} from "drizzle-orm";
 import {DrizzleDb} from "../drizzle";
+import {Logger} from "../Logger/Logger";
 
 
 export class ExerciseService {
+  protected logger: Logger = new Logger(ExerciseService.name)
 
   processExerciseList(
     exercises: AppExercise[], 
@@ -74,6 +76,15 @@ export class ExerciseService {
     return items;
   }
 
+  async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+    try {
+      await db.delete(schema.exercises)
+    } catch(e: unknown){
+      this.logger.error('Error during wiping local data',e)
+      return false
+    }
+    return true;
+  }
   async syncWithServer(db: DrizzleDb): Promise<boolean> {
     const response = await openApiRequest(getExercises,{});
     if(response.error){

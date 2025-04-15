@@ -1,4 +1,4 @@
-import { ScrollView, Button, Switch, View, useColorScheme, Appearance } from 'react-native';
+import { ScrollView, Button, Switch, View, useColorScheme, Appearance, Alert } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useRouter } from 'expo-router';
@@ -6,13 +6,13 @@ import {useContext, useState} from 'react';
 import {AuthContext} from '@/components/AuthProvider/AuthContext';
 import {useSyncService} from '@/utils/SyncService/useSyncService';
 import {useDrizzle} from '@/utils/drizzle';
-import {SyncState} from '@/utils/SyncService/SyncService';
+import {Progress} from '@/utils/SyncService/types/Progress';
 
 export default function TabTwoScreen() {
   const auth = useContext(AuthContext)
   const theme = useColorScheme()
   const router = useRouter();
-  const [syncState, setSyncState] = useState<SyncState |  null>(null);
+  const [syncState, setSyncState] = useState<Progress |  null>(null);
   const [syncService] = useSyncService();
   const [db] = useDrizzle();
   
@@ -24,10 +24,29 @@ export default function TabTwoScreen() {
     Appearance.setColorScheme(theme === 'dark' ? 'light' : 'dark')
   }
   const syncWithServer = async () => {
-    syncService.syncWithServer(db,(data) => {
-      console.log("New state",data)
+    Alert.alert(
+      'Sync With Server',
+      'Want to wipe local data before sync?',
+      [
+        {
+          text: 'No',
+          onPress: () => performSync(false)
+        },
+        {
+          text: 'Yes',
+          onPress: () => performSync(true)
+        }
+      ]
+    )
+  }
+
+  const performSync = async (wipe = false) => {
+    const method = wipe ? syncService.wipeThenSync.bind(syncService) : syncService.syncWithServer.bind(syncService);
+    const result = await method(db,(data) => {
       setSyncState({...data})
     })
+    const title = result.error ? 'Error' : 'Done';
+    Alert.alert(title,result.message)
   }
 
   if(syncState && !syncState.done){

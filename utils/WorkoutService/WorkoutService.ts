@@ -1,21 +1,37 @@
-import {getWorkouts, Workout} from "@/openapi-client";
+import {getWorkouts} from "@/openapi-client";
 import {DrizzleDb} from "../drizzle";
 import {openApiRequest} from "../openApiRequest";
 import {schema} from "@/db/schema";
 import {NewModel} from "@/types/NewModel";
 import {eq} from "drizzle-orm";
 import {AppWorkout} from "@/types/models/AppWorkout";
-import {ExerciseWithSets} from "@/components/WorkoutBlock/types/ExerciseWithSets";
 import {AppWorkoutExercise} from "@/types/models/AppWorkoutExercise";
 import {AppWorkoutExerciseSet} from "@/types/models/AppWorkoutExerciseSet";
+import {Logger} from "../Logger/Logger";
 
 export class WorkoutService {
+  protected logger: Logger = new Logger(WorkoutService.name)
+
+  async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+    try {
+      await db.delete(schema.workoutExerciseSets)
+      await db.delete(schema.workoutExercises)
+      await db.delete(schema.workouts)
+    } catch(e: unknown){
+      this.logger.error('Error during wiping local data',e)
+      return false
+    }
+    return true;
+  }
+
   async syncWithServer(db: DrizzleDb): Promise<boolean> {
     const response = await openApiRequest(getWorkouts,{});
+    
     if(response.error){
       return false;
     }
     for(const workout of response.data.items) {
+      this.logger.debug('Processing workout: ',{workout, type: typeof workout.start })
       const newWorkoutRow: NewModel<AppWorkout> = {
         externalId: workout.id,
         typeId: workout.typeId,
@@ -30,8 +46,7 @@ export class WorkoutService {
       const workoutId = await this.saveWorkoutToDb(db,workout.id,newWorkoutRow);
       await db.delete(schema.workoutExercises).where(eq(schema.workoutExercises.id,workoutId))
       await db.delete(schema.workoutExerciseSets).where(eq(schema.workoutExerciseSets.id,workoutId))
-      const exercises = this.convertSets(workout);
-      for(const row of exercises){
+      for(const row of workout.exercises){
         const exercise = await db.query.exercises.findFirst({
           where: (t,op) => op.eq(t.externalId,row.exercise.id)
         })
@@ -39,8 +54,8 @@ export class WorkoutService {
           throw new Error(`Library exercise '${row.exercise.id}' not found`)
         }
         const newExerciseRow: NewModel<AppWorkoutExercise> = {
-          externalId: null,
-          userId: workout.userId ?? 0,
+          externalId: row.id,
+          userId: workout.userId,
           createdAt: new Date(),
           updatedAt: null,
           workoutId: workoutId,
@@ -50,7 +65,7 @@ export class WorkoutService {
         for(const set of row.sets){
           const newSetRow: NewModel<AppWorkoutExerciseSet> = {
             externalId: set.id,
-            userId: workout.userId ?? 0,
+            userId: workout.userId,
             start: set.start,
             end: set.end,
             createdAt: new Date(),
@@ -63,22 +78,13 @@ export class WorkoutService {
             workoutExerciseId: exerciseRow.lastInsertRowId,
           }
           await db.insert(schema.workoutExerciseSets).values(newSetRow);
+          this.logger.info('done')
         }
       }
     }
     return true;
   }
-  convertSets(workout: Workout) : ExerciseWithSets[]  {
-    const map = new Map<number, ExerciseWithSets>();
-    for (const set of workout.sets) {
-      const exercise: ExerciseWithSets = map.get(set.exercise.id) ?? {exercise: set.exercise, sets: []};
-      exercise.sets.push(set);
-      map.set(exercise.exercise.id, exercise);
-    }
-    const exercises = Array.from(map.values());
-    return exercises;
-  };
-
+ 
   protected async saveWorkoutToDb(db: DrizzleDb, externalId: number, workout: NewModel<AppWorkout>): Promise<number> {
     const existing = await db.query.workouts.findFirst({
       where: (t,op) => op.eq(t.externalId,externalId)

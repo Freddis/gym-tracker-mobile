@@ -12,7 +12,6 @@
     "resolveJsonModule": true,
     "noUncheckedIndexedAccess": true,
     "noErrorTruncation": true,
-
     "paths": {
       "@/*": [
         "./*"

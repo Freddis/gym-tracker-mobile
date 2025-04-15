@@ -2,17 +2,8 @@ import {DrizzleDb} from "../drizzle";
 import {ExerciseService} from "../ExerciseService/ExerciseService";
 import {Logger} from "../Logger/Logger";
 import {WorkoutService} from "../WorkoutService/WorkoutService";
-
-export interface SyncStage {
-  name: string,
-  action: (db: DrizzleDb) => Promise<boolean>  
-}
-export interface SyncState {
-  currentStageName: string,
-  itemsDone: number,
-  itemsNumber: number
-  done: boolean
-}
+import {Progress} from "./types/Progress";
+import {Stage} from "./types/Stage";
 export class SyncService {
   protected workoutService: WorkoutService;
   protected exerciseService: ExerciseService;
@@ -24,66 +15,98 @@ export class SyncService {
     this.logger = new Logger(this.constructor.name);
   }
 
-  async syncWithServer(db: DrizzleDb, callback: (x: SyncState) => void = () => {}): Promise<boolean>{
-    try {
-      const result = await this.sync(db,callback)
-      return result;
-    } catch(e: unknown){
-      this.logger.error('Error during syncing',e);
-      callback({
-        currentStageName: 'ERROR',
-        itemsNumber: 2,
-        itemsDone: 0,
-        done: true,
-      })
-      return false;
-    }
+  async wipeThenSync(db: DrizzleDb, callback: (x: Progress) => void = () => {}): Promise<Progress> {
+    const combined = [...this.getWipeStages(),...this.getSyncStages()]
+    return this.runActions(db,combined,callback,'Successfully synced with server')
   }
 
-  protected async sync(db: DrizzleDb,callback: (x: SyncState) => void): Promise<boolean> {
+  async syncWithServer(db: DrizzleDb, callback: (x: Progress) => void = () => {}): Promise<Progress>{
+    return this.runActions(db,this.getSyncStages(),callback,'Successfully synced with server')
+  }
 
-    const stages = this.getStages()
+  async wipeLocalData(db: DrizzleDb,callback: (x: Progress) => void): Promise<Progress> {
+    return this.runActions(db,this.getWipeStages(),callback,'Successfully wiped data')
+  }
+
+  protected async runActions(db: DrizzleDb, stages: Stage[], callback: (x: Progress) => void, finalMessage = 'Done'): Promise<Progress> {
     const itemsNumber = stages.length;
     let itemsDone = 0;
     for(const stage of stages){
-      const state: SyncState = {
+      const state: Progress = {
         currentStageName: stage.name,
         itemsDone: itemsDone++,
         itemsNumber,
+        message: 'In Progress',
+        error: false,
         done: false,
       }
-      callback(state)
-      const success = await stage.action(db)
-      if(!success){
-        this.logger.info(`Couldn't sync ${stage.name}`);
-        callback({
+      try {
+        callback(state)
+        const success = await stage.action(db)
+        if(!success){
+          const newState: Progress = {
+            ...state,
+            message: stage.errorMsg,
+            error: true,
+            done: true,
+          }
+          this.logger.info(newState.message);
+          callback(newState)
+          return newState;
+        }
+      } catch(e: unknown){
+        const errState: Progress = {
           ...state,
+          message: 'Unknown Error',
+          error: true,
           done: true,
-        })
-        return false;
+        }
+        this.logger.error('Error during syncing',{e,state: errState});
+        callback(errState)
+        return errState;
       }
-    }
-    this.logger.debug("Syncing successfully completed")
-    callback({
-      currentStageName: 'Finished',
+    }    
+    const final: Progress = {
+      currentStageName: stages[stages.length-1]?.name ?? 'Done',
       itemsDone: itemsNumber,
       itemsNumber,
+      error: false,
+      message: finalMessage,
       done: true
-    })
-    return true;
+    }
+    callback(final)
+    return final;
   }
 
-  protected getStages(): SyncStage[] {
-    const result: SyncStage[] = [
+  protected getSyncStages(): Stage[] {
+    const stages: Stage[] = [
       {
         name: 'Exercises',
+        errorMsg: "Couldn't sync exercises",
         action: this.exerciseService.syncWithServer.bind(this.exerciseService),
       },
       {
         name: 'Workouts',
         action: this.workoutService.syncWithServer.bind(this.workoutService),
+        errorMsg: "Couldn't sync workouts",
       }
     ];
-    return result;
+    return stages
+  }
+
+  protected getWipeStages(): Stage[] {
+    const stages: Stage[] = [
+      {
+        name: 'Workouts',
+        action: this.workoutService.wipeLocalData.bind(this.workoutService),
+        errorMsg: "Couldn't delete workouts",
+      },
+      {
+        name: 'Exercises',
+        errorMsg: "Couldn't delete exercises",
+        action: this.exerciseService.wipeLocalData.bind(this.exerciseService),
+      },
+    ];
+    return stages
   }
 }

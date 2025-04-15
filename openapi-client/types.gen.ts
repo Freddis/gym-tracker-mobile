@@ -17,27 +17,63 @@ export type Exercise = {
 
 export type Workout = {
   id: number;
+  externalId: string | null;
   typeId: number | null;
-  userId: number | null;
+  userId: number;
   calories: number;
   start: Date;
-  end: Date;
+  end: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
-  sets: ExerciseSet[];
+  exercises: WorkoutExerciseDecorated[];
 };
 
-export type ExerciseSet = {
+export type WorkoutExerciseDecorated = {
+  id: number;
+  workoutId: number;
+  userId: number;
+  exerciseId: number;
+  createdAt: Date;
+  updatedAt: Date | null;
+  exercise: Exercise;
+  sets: WorkoutExerciseSet[];
+};
+
+export type WorkoutExerciseSet = {
   id: number;
   exerciseId: number;
   workoutId: number;
-  start: Date;
-  end: Date;
+  userId: number;
+  workoutExerciseId: number;
+  start: Date | null;
+  end: Date | null;
   weight: number | null;
   reps: number | null;
   createdAt: Date;
   updatedAt: Date | null;
-  exercise: Exercise;
+};
+
+export type WorkoutUpdateDto = {
+  externalId: string | null;
+  typeId: number | null;
+  calories: number;
+  start: Date;
+  end: Date | null;
+  exercises: WorkoutExerciseUpdateDto[];
+};
+
+export type WorkoutExerciseUpdateDto = {
+  id?: number;
+  exerciseId: number;
+  sets: WorkoutExerciseSetUpdateDto[];
+};
+
+export type WorkoutExerciseSetUpdateDto = {
+  id?: number;
+  start: Date | null;
+  end: Date | null;
+  weight: number | null;
+  reps: number | null;
 };
 
 export type PostAuthRegisterData = {
@@ -1672,18 +1708,7 @@ export type GetWorkoutsByIdResponse =
   GetWorkoutsByIdResponses[keyof GetWorkoutsByIdResponses];
 
 export type PatchWorkoutsByIdData = {
-  body?: {
-    start: Date;
-    end: Date;
-    calories: number;
-    sets: {
-      exerciseId: number;
-      end: Date;
-      weight: number | null;
-      reps: number | null;
-      start: Date;
-    }[];
-  };
+  body?: WorkoutUpdateDto;
   path: {
     id: number;
   };
@@ -1986,7 +2011,7 @@ export type GetEntriesResponses = {
             timestamp: number;
             subtype: "workout";
             activeDuration?: number;
-            duration: number;
+            duration?: number;
             calories?: number;
             TotalExercisesInWorkout?: number;
             end: number;
