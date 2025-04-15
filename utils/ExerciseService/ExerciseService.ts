@@ -4,9 +4,9 @@ import {getExercises} from "@/openapi-client";
 import {openApiRequest} from "../openApiRequest";
 import {schema} from "@/db/schema";
 import {NewModel} from "@/types/NewModel";
-import {eq} from "drizzle-orm";
-import {DrizzleDb} from "../drizzle";
+import {conflictUpdateSetAllColumns, DrizzleDb} from "../drizzle";
 import {Logger} from "../Logger/Logger";
+import {processInBatches} from "../processInbatches";
 
 
 export class ExerciseService {
@@ -90,6 +90,8 @@ export class ExerciseService {
     if(response.error){
       return false;
     }
+    const newRows: NewModel<AppExercise>[] = Array(response.data.items.length)
+    let i = 0;
     for(const exercise of response.data.items) {
       const newRow: NewModel<AppExercise> = {
         params: exercise.params,
@@ -105,21 +107,15 @@ export class ExerciseService {
         updatedAt: null,
         externalId: exercise.id
       }
-      const existing = await db.query.exercises.findFirst({
-        where: (t,op) => op.eq(t.externalId,exercise.id)
-      })
-      // console.log(`Updating ${newRow.externalId}`)
-      if(existing){
-        await db.update(schema.exercises).set({
-          ...newRow,
-          updatedAt: new Date(),
-        }).where(
-          eq(schema.exercises.externalId,exercise.id)
-        )
-        continue;
-      }
-      await db.insert(schema.exercises).values(newRow)
+      newRows[i++] = newRow
     }
+    await processInBatches(newRows,200, async (rows) => {
+      await db.insert(schema.exercises).values(rows).onConflictDoUpdate({
+        target: schema.exercises.externalId,
+        set: conflictUpdateSetAllColumns(schema.exercises)
+      })
+      return true;
+    })
     return true;
   }
 }

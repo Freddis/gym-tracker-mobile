@@ -2,7 +2,7 @@ import { integer,  real,  sqliteTable,  text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
   id: integer().primaryKey().notNull(),
-  externalId: integer(),
+  externalId: integer().unique(),
   name: text().notNull(),
   description: text(),
   difficulty: integer(),
@@ -17,7 +17,7 @@ export const exercises = sqliteTable('exercises', {
 });
 export const workouts = sqliteTable('workouts', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
-  externalId: integer(),
+  externalId: integer().unique(),
   typeId: integer(),
   userId: integer(),
   calories: real().notNull(),
@@ -30,7 +30,7 @@ export const workouts = sqliteTable('workouts', {
 
 export const workoutExercises = sqliteTable('workout_exercises', {
   id: integer().primaryKey().notNull(),
-  externalId: integer(),
+  externalId: integer().unique(),
   workoutId: integer().notNull(),
   exerciseId: integer().notNull(),
   userId: integer().notNull(),
@@ -40,7 +40,7 @@ export const workoutExercises = sqliteTable('workout_exercises', {
 
 export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
   id: integer().primaryKey().notNull(),
-  externalId: integer(),
+  externalId: integer().unique(),
   exerciseId: integer().notNull(),
   workoutExerciseId: integer().notNull(),
   userId: integer().notNull(),

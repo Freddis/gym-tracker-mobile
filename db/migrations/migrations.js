@@ -8,6 +8,7 @@ import m0003 from './0003_exercise_changes.sql';
 import m0004 from './0004_exercise_external_id.sql';
 import m0005 from './0005_workouts.sql';
 import m0006 from './0006_workout_changes.sql';
+import m0007 from './0007_external_id_constraints.sql';
 
   export default {
     journal,
@@ -18,7 +19,8 @@ m0002,
 m0003,
 m0004,
 m0005,
-m0006
+m0006,
+m0007
     }
   }
   
