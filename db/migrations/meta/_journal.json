@@ -64,6 +64,13 @@
       "when": 1744797860089,
       "tag": "0008_workout_user_id",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1744805408640,
+      "tag": "0009_foregin_keys",
+      "breakpoints": true
     }
   ]
 }

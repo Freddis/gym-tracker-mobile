@@ -109,12 +109,14 @@ export class ExerciseService {
       }
       newRows[i++] = newRow
     }
-    await processInBatches(newRows,200, async (rows) => {
-      await db.insert(schema.exercises).values(rows).onConflictDoUpdate({
-        target: schema.exercises.externalId,
-        set: conflictUpdateSetAllColumns(schema.exercises)
+    await db.transaction( async db => {
+      await processInBatches(newRows,200, async (rows) => {
+        await db.insert(schema.exercises).values(rows).onConflictDoUpdate({
+          target: schema.exercises.externalId,
+          set: conflictUpdateSetAllColumns(schema.exercises)
+        })
+        return [];
       })
-      return [];
     })
     return true;
   }

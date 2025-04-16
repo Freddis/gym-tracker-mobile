@@ -77,8 +77,6 @@ export class WorkoutService {
         }
     }
   }
-  const savedWorkouts = await this.saveWorkouts(db,workouts);
-  const workoutMap = savedWorkouts.reduce((acc,cur)=> acc.set(cur.externalId ?? 0,cur), new Map<number,AppWorkout>());
   const libraryExercises = await db.query.exercises.findMany({
     columns: {
       id: true,
@@ -86,45 +84,49 @@ export class WorkoutService {
     },
     where: (t, op) => op.inArray(t.externalId,externalExerciseIds)
   })
-  const libraryExerciseMap = libraryExercises.reduce((acc,cur) => acc.set(cur.externalId ?? 0,cur.id), new Map<number,number>())
-  const finalizedExercises = exercises.map( exercise => {
-      const localExerciseId = libraryExerciseMap.get(exercise.exerciseId)
+  await db.transaction(async db => {
+    const savedWorkouts = await this.saveWorkouts(db,workouts);
+    const workoutMap = savedWorkouts.reduce((acc,cur)=> acc.set(cur.externalId ?? 0,cur), new Map<number,AppWorkout>());
+    const libraryExerciseMap = libraryExercises.reduce((acc,cur) => acc.set(cur.externalId ?? 0,cur.id), new Map<number,number>())
+    const finalizedExercises = exercises.map( exercise => {
+        const localExerciseId = libraryExerciseMap.get(exercise.exerciseId)
+        if(!localExerciseId){
+          throw new Error("Exercise not found")
+        }
+          const savedWorkout = workoutMap.get(exercise.workoutId);
+          if(!savedWorkout){
+            throw new Error(`Workout ${exercise.workoutId} not found for exercise ${exercise.externalId}`)
+          }
+      return {
+        ...exercise,
+        workoutId: savedWorkout.id,
+        exerciseId: localExerciseId,
+      }
+    })
+    const savedWorkoutExercises =  await this.saveExercises(db,finalizedExercises);
+    const workoutExerciseMap = savedWorkoutExercises.reduce((acc,cur)=> acc.set(cur.externalId ?? 0,cur), new Map<number,AppWorkoutExercise>());
+    const finalizedExerciseSets = sets.map(set => {
+      const localExerciseId = libraryExerciseMap.get(set.exerciseId)
       if(!localExerciseId){
         throw new Error("Exercise not found")
       }
-        const savedWorkout = workoutMap.get(exercise.workoutId);
-        if(!savedWorkout){
-          throw new Error(`Workout ${exercise.workoutId} not found for exercise ${exercise.externalId}`)
-        }
-    return {
-      ...exercise,
-      workoutId: savedWorkout.id,
-      exerciseId: localExerciseId,
-    }
+      const savedWorkout = workoutMap.get(set.workoutId);
+      if(!savedWorkout){
+        throw new Error(`Workout ${set.workoutId} not found for exercise ${set.externalId}`)
+      }
+      const savedWorkoutExercise = workoutExerciseMap.get(set.workoutExerciseId);
+      if(!savedWorkoutExercise){
+        throw new Error(`Workout exercise ${set.workoutId} not found for set: ${set.workoutExerciseId}`)
+      }
+      return {
+        ...set,
+        workoutId: savedWorkout.id,
+        exerciseId: localExerciseId,
+        workoutExerciseId: savedWorkoutExercise.id,
+      }
+    })
+    await this.saveSets(db,finalizedExerciseSets)
   })
-  const savedWorkoutExercises =  await this.saveExercises(db,finalizedExercises);
-  const workoutExerciseMap = savedWorkoutExercises.reduce((acc,cur)=> acc.set(cur.externalId ?? 0,cur), new Map<number,AppWorkoutExercise>());
-  const finalizedExerciseSets = sets.map(set => {
-    const localExerciseId = libraryExerciseMap.get(set.exerciseId)
-    if(!localExerciseId){
-      throw new Error("Exercise not found")
-    }
-    const savedWorkout = workoutMap.get(set.workoutId);
-    if(!savedWorkout){
-      throw new Error(`Workout ${set.workoutId} not found for exercise ${set.externalId}`)
-    }
-    const savedWorkoutExercise = workoutExerciseMap.get(set.workoutExerciseId);
-    if(!savedWorkoutExercise){
-      throw new Error(`Workout exercise ${set.workoutId} not found for set: ${set.workoutExerciseId}`)
-    }
-    return {
-      ...set,
-      workoutId: savedWorkout.id,
-      exerciseId: localExerciseId,
-      workoutExerciseId: savedWorkoutExercise.id,
-    }
-  })
-  await this.saveSets(db,finalizedExerciseSets)
     return true;
   }
   protected async saveWorkouts(db: DrizzleDb, workouts: NewModel<AppWorkout>[]): Promise<AppWorkout[]> {

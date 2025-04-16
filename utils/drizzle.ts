@@ -5,7 +5,8 @@ import {QueryLogger} from "./QueryLogger/QueryLogger";
 import {SQLiteTable, SQLiteUpdateSetSource} from "drizzle-orm/sqlite-core";
 import {getTableColumns, sql, SQL} from "drizzle-orm";
 
-const expo = openDatabaseSync('db.db');
+const expo = openDatabaseSync('db.db',{});
+expo.execSync('PRAGMA foregin_keys = 1');
 const db = drizzle(expo,{
   schema: {...schema, ...relations},
   logger: new QueryLogger(false,true,'mysql'),
