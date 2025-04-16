@@ -114,7 +114,7 @@ export class ExerciseService {
         target: schema.exercises.externalId,
         set: conflictUpdateSetAllColumns(schema.exercises)
       })
-      return true;
+      return [];
     })
     return true;
   }

@@ -1,15 +1,14 @@
 
-export const processInBatches = async <T>(arr: T[], batchSize: number, callback: (arr:T[]) => Promise<boolean>): Promise<boolean> => {
+export const processInBatches = async <T,X>(arr: T[], batchSize: number, callback: (arr:T[]) => Promise<X[]>): Promise<X[]> => {
   let currentIndex = 0;
   let rows: T[] = []
+  const result: X[] = []
   do {
     const from = (currentIndex++)*batchSize;
     const to = from + batchSize;
     rows = arr.slice(from,to)
-    const result = await callback(rows)
-    if(!result){
-      return false;
-    }
+    const res = await callback(rows)
+    result.push(...res)
   } while(rows.length >= batchSize)
-  return true;
+  return result;
 }

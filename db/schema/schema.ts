@@ -19,7 +19,7 @@ export const workouts = sqliteTable('workouts', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
   externalId: integer().unique(),
   typeId: integer(),
-  userId: integer(),
+  userId: integer().notNull(),
   calories: real().notNull(),
   start: integer({mode: 'timestamp'}).notNull(),
   end: integer({mode: 'timestamp'}),
