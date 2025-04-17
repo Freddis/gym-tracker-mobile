@@ -71,6 +71,13 @@
       "when": 1744805408640,
       "tag": "0009_foregin_keys",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1744884763293,
+      "tag": "0010_sync_related_fields_on_syncable_entities",
+      "breakpoints": true
     }
   ]
 }

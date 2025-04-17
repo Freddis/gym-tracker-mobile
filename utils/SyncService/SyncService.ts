@@ -15,20 +15,20 @@ export class SyncService {
     this.logger = new Logger(this.constructor.name);
   }
 
-  async wipeThenSync(db: DrizzleDb, callback: (x: Progress) => void = () => {}): Promise<Progress> {
+  async wipeThenSync(db: DrizzleDb, userId: number,callback: (x: Progress) => void = () => {}): Promise<Progress> {
     const combined = [...this.getWipeStages(),...this.getSyncStages()]
-    return this.runActions(db,combined,callback,'Successfully synced with server')
+    return this.runActions(db,userId,combined,callback,'Successfully synced with server')
   }
 
-  async syncWithServer(db: DrizzleDb, callback: (x: Progress) => void = () => {}): Promise<Progress>{
-    return this.runActions(db,this.getSyncStages(),callback,'Successfully synced with server')
+  async syncWithServer(db: DrizzleDb,userId: number, callback: (x: Progress) => void = () => {}): Promise<Progress>{
+    return this.runActions(db,userId,this.getSyncStages(),callback,'Successfully synced with server')
   }
 
-  async wipeLocalData(db: DrizzleDb,callback: (x: Progress) => void): Promise<Progress> {
-    return this.runActions(db,this.getWipeStages(),callback,'Successfully wiped data')
+  async wipeLocalData(db: DrizzleDb,userId: number,callback: (x: Progress) => void): Promise<Progress> {
+    return this.runActions(db,userId,this.getWipeStages(),callback,'Successfully wiped data')
   }
 
-  protected async runActions(db: DrizzleDb, stages: Stage[], callback: (x: Progress) => void, finalMessage = 'Done'): Promise<Progress> {
+  protected async runActions(db: DrizzleDb, userId: number,stages: Stage[], callback: (x: Progress) => void, finalMessage = 'Done'): Promise<Progress> {
     const itemsNumber = stages.length;
     let itemsDone = 0;
     for(const stage of stages){
@@ -42,7 +42,7 @@ export class SyncService {
       }
       try {
         callback(state)
-        const success = await stage.action(db)
+        const success = await stage.action(db,userId)
         if(!success){
           const newState: Progress = {
             ...state,
@@ -81,14 +81,24 @@ export class SyncService {
   protected getSyncStages(): Stage[] {
     const stages: Stage[] = [
       {
-        name: 'Exercises',
-        errorMsg: "Couldn't sync exercises",
-        action: this.exerciseService.syncWithServer.bind(this.exerciseService),
+        name: 'Pulling Exercises',
+        errorMsg: "Couldn't pull exercises",
+        action: this.exerciseService.pullFromServer.bind(this.exerciseService),
       },
       {
-        name: 'Workouts',
-        action: this.workoutService.syncWithServer.bind(this.workoutService),
-        errorMsg: "Couldn't sync workouts",
+        name: 'Pulling Workouts',
+        action: this.workoutService.pullFromServer.bind(this.workoutService),
+        errorMsg: "Couldn't pull workouts",
+      },
+      {
+        name: 'Pushing Exercises',
+        action: this.exerciseService.pushToServer.bind(this.exerciseService),
+        errorMsg: "Couldn't push exercises",
+      },
+      {
+        name: 'Pushing Workouts',
+        action: this.workoutService.pushToServer.bind(this.workoutService),
+        errorMsg: "Couldn't push workouts",
       }
     ];
     return stages
@@ -97,12 +107,12 @@ export class SyncService {
   protected getWipeStages(): Stage[] {
     const stages: Stage[] = [
       {
-        name: 'Workouts',
+        name: 'Wiping Workouts',
         action: this.workoutService.wipeLocalData.bind(this.workoutService),
         errorMsg: "Couldn't delete workouts",
       },
       {
-        name: 'Exercises',
+        name: 'Wiping Exercises',
         errorMsg: "Couldn't delete exercises",
         action: this.exerciseService.wipeLocalData.bind(this.exerciseService),
       },

@@ -3,6 +3,9 @@ export const processInBatches = async <T,X>(arr: T[], batchSize: number, callbac
   let currentIndex = 0;
   let rows: T[] = []
   const result: X[] = []
+  if(arr.length === 0){
+    return result
+  }
   do {
     const from = (currentIndex++)*batchSize;
     const to = from + batchSize;

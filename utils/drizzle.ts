@@ -6,11 +6,11 @@ import {SQLiteTable, SQLiteUpdateSetSource} from "drizzle-orm/sqlite-core";
 import {getTableColumns, sql, SQL} from "drizzle-orm";
 
 const expo = openDatabaseSync('db.db',{});
-expo.execSync('PRAGMA foregin_keys = 1');
 const db = drizzle(expo,{
   schema: {...schema, ...relations},
   logger: new QueryLogger(false,true,'mysql'),
 });
+db.run('PRAGMA foreign_keys = ON;')
 console.log(expo.databasePath)
 export type DrizzleSchema = typeof schema 
 export type DrizzleRelations = typeof relations
@@ -26,7 +26,9 @@ export const conflictUpdateSetAllColumns = <TTable extends SQLiteTable>(
   const columns = getTableColumns(table)
   const record: Record<string,SQL> = {}
   for(const [columnName, columnInfo] of Object.entries(columns)) {
-    record[columnName] = sql.raw(`excluded.${columnInfo.name}`)
+    if(columnName !== 'id'){
+      record[columnName] = sql.raw(`excluded.${columnInfo.name}`)
+    }
   }
   return record as SQLiteUpdateSetSource<TTable>
 }

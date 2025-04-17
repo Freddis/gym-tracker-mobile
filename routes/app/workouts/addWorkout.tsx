@@ -33,13 +33,14 @@ export default function AddWorkoutScreen() {
     const newWorkout: NewModel<AppWorkout> = {
       externalId: null,
       typeId: null,
-      userId: null,
+      userId: user.id,
       calories: 0,
       start: new Date(),
       end: null,
       createdAt: new Date(),
       updatedAt: null,
-      syncedAt: null
+      lastPulledAt: null,
+      lastPushedAt: null
     }
     db.insert(schema.workouts)
       .values(newWorkout)

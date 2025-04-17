@@ -14,6 +14,8 @@ export const exercises = sqliteTable('exercises', {
   parentExerciseId: integer(),
   createdAt: integer({ mode: 'timestamp'}).notNull(),
   updatedAt: integer({ mode: 'timestamp'}),
+  lastPulledAt: integer({mode: 'timestamp'}),
+  lastPushedAt: integer({mode: 'timestamp'}),
 });
 export const workouts = sqliteTable('workouts', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
@@ -25,7 +27,8 @@ export const workouts = sqliteTable('workouts', {
   end: integer({mode: 'timestamp'}),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
-  syncedAt: integer({mode: 'timestamp'}),
+  lastPulledAt: integer({mode: 'timestamp'}),
+  lastPushedAt: integer({mode: 'timestamp'}),
 });
 
 export const workoutExercises = sqliteTable('workout_exercises', {

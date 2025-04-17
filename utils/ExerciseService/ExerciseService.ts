@@ -1,6 +1,6 @@
 import {AppExercise} from "@/types/models/AppExercise";
 import {NestedAppExercise} from "./types/NestedAppExercise";
-import {getExercises} from "@/openapi-client";
+import {ExerciseUpsertDto, getExercises, putExercises} from "@/openapi-client";
 import {openApiRequest} from "../openApiRequest";
 import {schema} from "@/db/schema";
 import {NewModel} from "@/types/NewModel";
@@ -85,10 +85,62 @@ export class ExerciseService {
     }
     return true;
   }
-  async syncWithServer(db: DrizzleDb): Promise<boolean> {
-    const response = await openApiRequest(getExercises,{});
+  async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
+    const lastUpdate = await this.getLatestPushSyncDate(db);
+    const exercises = await db.query.exercises.findMany({
+      where: (t,op) => op.and(
+        op.eq(t.userId,userId),
+        lastUpdate ? op.or(
+          op.gt(t.updatedAt,lastUpdate),
+          op.gt(t.createdAt,lastUpdate),
+        ) : undefined
+      )
+    });
+    if(exercises.length === 0){
+      return true;
+    }
+    const rows: ExerciseUpsertDto[] = exercises.map( exercise => ({
+      ...exercise,
+      id: exercise.externalId ?? null,
+    }))
+    const response = await openApiRequest(putExercises,{
+      body: {
+        items: rows
+      }
+    });
+    if(response.error){
+      this.logger.error(null,response.error);
+      throw new Error("Error during uploading");
+    }
+    const upsertedEntities = response.data.items
+    for(const [i,exercise] of exercises.entries()){
+      if(!upsertedEntities[i]){
+        throw new Error("Matching upserted entity not found")
+      }
+      exercise.externalId = upsertedEntities[i].id
+      exercise.lastPushedAt = new Date();
+    }
+    await db.insert(schema.exercises).values(exercises).onConflictDoUpdate(
+      {
+        target: schema.exercises.id,
+        set: conflictUpdateSetAllColumns(schema.exercises)
+      }
+    )
+    return true;
+  }
+
+  async pullFromServer(db: DrizzleDb): Promise<boolean> {
+    const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
+    const response = await openApiRequest(getExercises,{
+      query: {
+        updatedAfter: lastUpdateFromServer ?? undefined
+      }
+    });
     if(response.error){
       return false;
+    }
+    if(response.data.items.length === 0){
+      return true;
     }
     const newRows: NewModel<AppExercise>[] = Array(response.data.items.length)
     let i = 0;
@@ -103,9 +155,11 @@ export class ExerciseService {
         userId: exercise.userId,
         copiedFromId: exercise.copiedFromId,
         parentExerciseId: exercise.parentExerciseId,
-        createdAt: new Date(),
-        updatedAt: null,
-        externalId: exercise.id
+        createdAt: exercise.createdAt,
+        updatedAt: exercise.updatedAt,
+        externalId: exercise.id,
+        lastPulledAt: new Date(),
+        lastPushedAt: new Date(),
       }
       newRows[i++] = newRow
     }
@@ -119,5 +173,30 @@ export class ExerciseService {
       })
     })
     return true;
+  }
+  protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
+    const row = await db.query.exercises.findFirst({
+      columns: {
+        lastPulledAt: true,
+      },
+      orderBy: (t,op) => [op.desc(t.lastPulledAt)]
+    })
+    if(!row){
+      return null;
+    }
+    return row.lastPulledAt
+  }
+
+  protected async getLatestPushSyncDate(db: DrizzleDb): Promise<Date | null> {
+    const row = await db.query.exercises.findFirst({
+      columns: {
+        lastPushedAt: true,
+      },
+      orderBy: (t,op) => [op.desc(t.lastPushedAt)]
+    })
+    if(!row){
+      return null;
+    }
+    return row.lastPushedAt
   }
 }

@@ -62,7 +62,9 @@ export default function AddExerciseScreen() {
       copiedFromId: baseExercise?.id ?? null,
       parentExerciseId: null,
       createdAt: new Date(),
-      updatedAt: null
+      updatedAt: null,
+      lastPulledAt: null,
+      lastPushedAt: null
     }
     await db.insert(schema.exercises).values(newValue)
     navigation.goBack()

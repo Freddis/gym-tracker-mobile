@@ -60,6 +60,11 @@ export const EditableWorkoutExerciseSetBlock: FC<{index: number, set: AppWorkout
     }).where(
       eq(schema.workoutExerciseSets.id,set.id)
     )
+    await db.update(schema.workouts).set({
+      updatedAt: new Date(),
+    }).where(
+      eq(schema.workouts.id,set.workoutId)
+    )
     console.log("here")
     setWeightError(false)
     setRepsError(false)

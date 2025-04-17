@@ -41,8 +41,12 @@ export default function TabTwoScreen() {
   }
 
   const performSync = async (wipe = false) => {
+    const userId = auth.user?.id;
+    if(!userId){
+      throw new Error("User has to be logged in");
+    }
     const method = wipe ? syncService.wipeThenSync.bind(syncService) : syncService.syncWithServer.bind(syncService);
-    const result = await method(db,(data) => {
+    const result = await method(db,userId,(data) => {
       setSyncState({...data})
     })
     const title = result.error ? 'Error' : 'Done';
