@@ -37,7 +37,7 @@ export default function WorkoutList() {
       op.isNull(t.deletedAt)
     ),
     orderBy: (t,op) => op.desc(t.start),
-    limit: 100,
+    limit: 50,
   })  
   const query = useLiveQuery(sqlQuery,[focusedCounter])
   if(!query.data){

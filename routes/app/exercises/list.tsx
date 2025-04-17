@@ -60,8 +60,6 @@ export default function ExcercisePage() {
             <ThemedText style={{padding: 10, paddingTop: 20}}>Built-in Library</ThemedText>
             </View>
           }
-            initialNumToRender={500}
-            maxToRenderPerBatch={100}
             sections={items}
             keyExtractor={item => item.id.toString()}
             renderSectionHeader={ ctx =>(
