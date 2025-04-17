@@ -4,16 +4,16 @@ import {TimerBlockProps} from "./types/TimerBlockProps";
 
 export const TimerBlock: FC<TimerBlockProps> = (props) => {
   const [started] = useState(props.start ?? new Date());
-  const [now, setNow] = useState(new Date())
+  const [end, setEnd] = useState(props.end ?? new Date())
   useEffect(() => {
     if(props.end){
       return
     }
     setTimeout(() => {
-      setNow(new Date())
+      setEnd(new Date())
     },1000)
   })
-  const diff = Math.floor(now.getTime() - started.getTime());
+  const diff = Math.floor(end.getTime() - started.getTime());
   const hourMs = 1000*60*60;
   const minuteMs = 1000*60;
   const secondMs = 1000;
