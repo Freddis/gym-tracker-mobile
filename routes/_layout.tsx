@@ -13,6 +13,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '@/components/AuthProvider/AuthProvider';
 import {useDrizzle} from '@/utils/drizzle';
 
+// console.log = () => null // uncomment for prod / preview
 const queryClient = new QueryClient();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
