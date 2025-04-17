@@ -10,7 +10,7 @@ import {FC, useState} from "react";
 import {Button, Pressable, StyleProp, TextStyle, View} from "react-native";
 
 export const EditableWorkoutExerciseSetBlock: FC<{index: number, set: AppWorkoutExerciseSet, onDelete: (set: AppWorkoutExerciseSet)=> void}> = (props) => {
-  const set = props.set
+  const set = props.set;
   const [db,schema] = useDrizzle();
   const [weight,setWeight] = useState(set.weight?.toString() ?? '')
   const [weightError, setWeightError] = useState(false);
@@ -83,9 +83,9 @@ export const EditableWorkoutExerciseSetBlock: FC<{index: number, set: AppWorkout
     <View style={{flexDirection: 'row', backgroundColor: '', gap: 10, marginBottom: 5, alignItems: 'center', alignContent: 'space-evenly'}}>
       {/* <ThemedText style={{fontSize: 13}}>{props.index+1}: {set.weight} x {set.reps}</ThemedText> */}
       <ThemedText style={{fontSize: 13}}>{props.index+1}:</ThemedText>
-      <ThemedTextInput type="background"   style={weightStyle} onChangeText={updateWeight} value={weight.toString()} />
+      <ThemedTextInput returnKeyType="done" keyboardType="numeric" selectTextOnFocus type="background" style={weightStyle} onChangeText={updateWeight} value={weight.toString()} />
       <ThemedText style={{fontSize: 13}}>x</ThemedText>
-      <ThemedTextInput type="background" style={repsStyle}  onChangeText={updateReps} value={reps.toString()} />
+      <ThemedTextInput returnKeyType="done" keyboardType="numeric" selectTextOnFocus type="background" style={repsStyle}  onChangeText={updateReps} value={reps.toString()} />
       <Pressable onPress={toggleCheckmark}>
         <ThemedIcon  color={iconColor} size={40} name={checkMarkIcon} />
       </Pressable>

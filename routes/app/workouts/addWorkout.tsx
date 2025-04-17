@@ -1,4 +1,4 @@
-import { StyleSheet, Button, View } from 'react-native';
+import { StyleSheet, Button, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
@@ -134,27 +134,29 @@ export default function AddWorkoutScreen() {
   }
   const workoutFinished = workout.end !== null;
   return (   
-    <ThemedScrollView>
-      <ThemedView style={styles.titleContainer}>
-        <Stack.Screen options={{ title: `Workout ${workout.id}`, headerShown: true }} />
-        <View style={{flexDirection: 'row'}}>
-          <ThemedText>Time: </ThemedText>
-          <TimerBlock start={workout.start} end={workout.end ?? undefined}/>
-        </View>
-        {workout.exercises.map( x => <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.exercise.id} exercise={x} />)}
-        <Button onPress={addExercise} title='Add Exercise'/>
-        {!workoutFinished && (
-          <View style={{marginTop: 20}}>
-          <Button onPress={finishWorkout} title='Finish Workout'/>
-        </View>
-        )}
-        {workoutFinished && (
-          <View style={{marginTop: 20}}>
-          <Button color={'red'} onPress={deleteWorkout} title='Delete Workout'/>
-        </View>
-        )}
-      </ThemedView>
-    </ThemedScrollView>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ThemedScrollView>
+        <ThemedView style={styles.titleContainer}>
+          <Stack.Screen options={{ title: `Workout ${workout.id}`, headerShown: true }} />
+          <View style={{flexDirection: 'row'}}>
+            <ThemedText>Time: </ThemedText>
+            <TimerBlock start={workout.start} end={workout.end ?? undefined}/>
+          </View>
+          {workout.exercises.map( x => <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.exercise.id} exercise={x} />)}
+          <Button onPress={addExercise} title='Add Exercise'/>
+          {!workoutFinished && (
+            <View style={{marginTop: 20}}>
+            <Button onPress={finishWorkout} title='Finish Workout'/>
+          </View>
+          )}
+          {workoutFinished && (
+            <View style={{marginTop: 20}}>
+            <Button color={'red'} onPress={deleteWorkout} title='Delete Workout'/>
+          </View>
+          )}
+        </ThemedView>
+      </ThemedScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
