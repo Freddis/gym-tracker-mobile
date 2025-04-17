@@ -1,4 +1,4 @@
-import { integer,  real,  sqliteTable,  text} from 'drizzle-orm/sqlite-core';
+import {integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
   id: integer().primaryKey().notNull(),
@@ -12,8 +12,8 @@ export const exercises = sqliteTable('exercises', {
   userId: integer(),
   copiedFromId: integer(),
   parentExerciseId: integer(),
-  createdAt: integer({ mode: 'timestamp'}).notNull(),
-  updatedAt: integer({ mode: 'timestamp'}),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
   deletedAt: integer({mode: 'timestamp'}),
   lastPulledAt: integer({mode: 'timestamp'}),
   lastPushedAt: integer({mode: 'timestamp'}),
@@ -39,8 +39,8 @@ export const workoutExercises = sqliteTable('workout_exercises', {
   workoutId: integer().notNull().references(() => workouts.id),
   exerciseId: integer().notNull().references(() => exercises.id),
   userId: integer().notNull(),
-  createdAt: integer({ mode: 'timestamp'}).notNull(),
-  updatedAt: integer({ mode: 'timestamp'}),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
 });
 
 export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
@@ -50,13 +50,13 @@ export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
   workoutExerciseId: integer().notNull().references(() => workoutExercises.id),
   userId: integer().notNull(),
   workoutId: integer().notNull().references(() => workouts.id),
-  start: integer({ mode: 'timestamp'}),
-  end: integer({ mode: 'timestamp'}),
-  finished: integer({mode:'boolean'}).notNull(),
+  start: integer({mode: 'timestamp'}),
+  end: integer({mode: 'timestamp'}),
+  finished: integer({mode: 'boolean'}).notNull(),
   weight: real(),
   reps: integer(),
-  createdAt: integer({ mode: 'timestamp'}).notNull(),
-  updatedAt: integer({ mode: 'timestamp'}),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
 });
 
 export const users = sqliteTable('users', {
@@ -64,6 +64,6 @@ export const users = sqliteTable('users', {
   name: text().notNull(),
   email: text().notNull(),
   jwt: text().notNull().notNull(),
-  updatedAt: integer({ mode: 'timestamp'}),
+  updatedAt: integer({mode: 'timestamp'}),
 });
 

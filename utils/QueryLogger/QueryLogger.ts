@@ -62,14 +62,14 @@ export class QueryLogger implements Logger {
       'returning',
       'delete',
       'pragma',
-    ]
-    const keywordRegex = new RegExp(`(${keywords.join('|')})([^a-zA-Z0-9])`,'g');
+    ];
+    const keywordRegex = new RegExp(`(${keywords.join('|')})([^a-zA-Z0-9])`, 'g');
     const color = useColors ? '\x1b[36m' : '';
     const reset = useColors ? '\x1b[0m' : '';
     sql = sql.toLowerCase().replace(/ +(?= )/g, '') // removing spaces
              .replace(/\n/g, '') // line brakes
             //  .replace(/"/g, '`')
-             .replaceAll(keywordRegex,`\n${color}$1${reset}$2`);
+             .replaceAll(keywordRegex, `\n${color}$1${reset}$2`);
     // easier identification of specific queries if params are still displayed beneath.
     const paramString = `${color}sql params:${reset} [${parameters?.map((x) => {
       if (x === null) {

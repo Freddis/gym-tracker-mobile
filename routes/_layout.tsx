@@ -1,14 +1,14 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Slot } from 'expo-router';
+import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
+import {useFonts} from 'expo-font';
+import {Slot} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
+import {StatusBar} from 'expo-status-bar';
+import React, {useEffect} from 'react';
 import 'react-native-reanimated';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { SQLiteProvider } from 'expo-sqlite';
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import migrations from '../db/migrations/migrations'
+import {useColorScheme} from '@/hooks/useColorScheme';
+import {SQLiteProvider} from 'expo-sqlite';
+import {useMigrations} from 'drizzle-orm/expo-sqlite/migrator';
+import migrations from '../db/migrations/migrations';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '@/components/AuthProvider/AuthProvider';
 import {useDrizzle} from '@/utils/drizzle';
@@ -29,11 +29,11 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
-  
+
   useMigrations(db, migrations);
   // todo: figure out how to make it not throw errors in dev mode
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { success, error } = useMigrations(db, migrations);
+  const {success, error} = useMigrations(db, migrations);
   // if (error) {
   //   return (
   //     <View>

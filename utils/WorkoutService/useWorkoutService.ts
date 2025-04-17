@@ -1,7 +1,7 @@
-import {WorkoutService} from "./WorkoutService"
+import {WorkoutService} from './WorkoutService';
 
 const service = new WorkoutService();
 
 export const useWorkoutService = (): [WorkoutService] => {
-  return [service]
-}
+  return [service];
+};

@@ -1,4 +1,4 @@
-import {CompleteAppWorkoutExercise} from "@/types/models/AppWorkoutExercise";
+import {CompleteAppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 
 export interface EditableWorkoutExerciseBlockProps {
   exercise: CompleteAppWorkoutExercise

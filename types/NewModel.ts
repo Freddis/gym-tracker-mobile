@@ -1,1 +1,1 @@
-export type NewModel<T> = Omit<T,'id'>
+export type NewModel<T> = Omit<T, 'id'>

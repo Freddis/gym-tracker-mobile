@@ -1,5 +1,5 @@
-import {relations} from "drizzle-orm";
-import {exercises, users, workoutExercises, workoutExerciseSets, workouts} from "./schema";
+import {relations} from 'drizzle-orm';
+import {exercises, users, workoutExercises, workoutExerciseSets, workouts} from './schema';
 
 export const workoutRelations = relations(workouts, (relations) => ({
   user: relations.one(users),
@@ -16,5 +16,8 @@ export const workoutExerciseRelations = relations(workoutExercises, (relations) 
 export const workoutExerciseSetRelations = relations(workoutExerciseSets, (relations) => ({
   workout: relations.one(workouts, {fields: [workoutExerciseSets.workoutId], references: [workouts.id]}),
   exercise: relations.one(exercises, {fields: [workoutExerciseSets.exerciseId], references: [exercises.id]}),
-  workoutExercise: relations.one(workoutExercises, {fields: [workoutExerciseSets.workoutExerciseId], references: [workoutExercises.id]})
+  workoutExercise: relations.one(
+    workoutExercises,
+    {fields: [workoutExerciseSets.workoutExerciseId], references: [workoutExercises.id]}
+  ),
 }));

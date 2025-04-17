@@ -1,9 +1,9 @@
-import { StyleSheet, Button, Image } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
-import { useContext, useEffect, useState } from 'react';
-import { ThemedTextInput } from '@/components/ThemedInput';
+import {StyleSheet, Button, Image} from 'react-native';
+import {ThemedText} from '@/components/ThemedText';
+import {ThemedView} from '@/components/ThemedView';
+import {Stack, useLocalSearchParams, useNavigation, useRouter} from 'expo-router';
+import {useContext, useEffect, useState} from 'react';
+import {ThemedTextInput} from '@/components/ThemedInput';
 import {AppExercise} from '@/types/models/AppExercise';
 import {useDrizzle} from '@/utils/drizzle';
 import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
@@ -13,41 +13,41 @@ import {AuthContext} from '@/components/AuthProvider/AuthContext';
 export default function AddExerciseScreen() {
   const navigation = useNavigation();
   const auth = useContext(AuthContext);
-  const params = useLocalSearchParams()
-  const [db,schema] = useDrizzle()
-  const [description,setDescription] = useState('')
-  const [image,setImage] = useState<string | null>(null)
+  const params = useLocalSearchParams();
+  const [db, schema] = useDrizzle();
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState<string | null>(null);
   const placeHolderImage = require('@/assets/images/react-logo.png');
-  const [baseExercise, setBaseExercise] = useState<AppExercise| null>(null)
+  const [baseExercise, setBaseExercise] = useState<AppExercise| null>(null);
   const router = useRouter();
   const [name, setName] = useState('');
   const exerciseId = params.exerciseId;
   useEffect(() => {
     const validated = ZodHelper.validators.numberOrStringNumber.safeParse(exerciseId);
-    if(!validated.success){
+    if (!validated.success) {
       return;
     }
     db.query.exercises.findFirst({
-      where: (t,op) => op.eq(t.id,validated.data)
-    }).then( item => {
-      if(!item){
+      where: (t, op) => op.eq(t.id, validated.data),
+    }).then((item) => {
+      if (!item) {
         return;
       }
-      setBaseExercise(item)
-      setName(item.name)
-      setImage(item.images[0] ?? null)
-      setDescription(item.description ?? description)
-    })
+      setBaseExercise(item);
+      setName(item.name);
+      setImage(item.images[0] ?? null);
+      setDescription(item.description ?? description);
+    });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[exerciseId])
+  }, [exerciseId]);
   const user = auth.user;
-  if(!user){
+  if (!user) {
     return null;
   }
-  
+
   const addExercise = async () => {
-    if(name.trim() === ''){
-      alert("Invalid name");
+    if (name.trim() === '') {
+      alert('Invalid name');
       return;
     }
     const newValue: NewModel<AppExercise> = {
@@ -65,33 +65,33 @@ export default function AddExerciseScreen() {
       updatedAt: null,
       lastPulledAt: null,
       lastPushedAt: null,
-      deletedAt: null
-    }
-    await db.insert(schema.exercises).values(newValue)
-    navigation.goBack()
-  }
+      deletedAt: null,
+    };
+    await db.insert(schema.exercises).values(newValue);
+    navigation.goBack();
+  };
 
   const copy = () => {
     router.push({
       pathname: '/app/exercises/selectExercise',
       params: {
-        value: 1
-      }
-    })
-  }
+        value: 1,
+      },
+    });
+  };
 
   return (
-    <ThemedView style={{flex:1}}>
-      <Stack.Screen options={{ title: "Add Exercise", headerShown: true }} />
+    <ThemedView style={{flex: 1}}>
+      <Stack.Screen options={{title: 'Add Exercise', headerShown: true}} />
       <ThemedView style={styles.titleContainer}>
-        <Button onPress={copy} title='Copy From Existing' />
+        <Button onPress={copy} title="Copy From Existing" />
         <ThemedText>Name</ThemedText>
         <ThemedTextInput onChangeText={setName} value={name} style={styles.input}/>
         <ThemedText>Description</ThemedText>
         <ThemedTextInput onChangeText={setDescription} value={description} style={styles.input} />
         <ThemedText>Image</ThemedText>
         <Image source={placeHolderImage} src={image ?? undefined} style={{width: 50, height: 50}}></Image>
-        <Button onPress={addExercise} title='Add'/>
+        <Button onPress={addExercise} title="Add"/>
       </ThemedView>
     </ThemedView>
   );
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   input: {
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 });

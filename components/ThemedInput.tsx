@@ -6,7 +6,7 @@ export type ThemedTextInputProps = TextInputProps & {
   type?: ColorType
 };
 
-export function ThemedTextInput({children,style, type, ...rest}: ThemedTextInputProps) {
+export function ThemedTextInput({children, style, type, ...rest}: ThemedTextInputProps) {
   const backgroundColor = useThemeColor({}, type ?? 'backgroundSecondary');
   const color = useThemeColor({}, 'text');
   const newStyle: StyleProp<TextStyle> = {
@@ -14,7 +14,7 @@ export function ThemedTextInput({children,style, type, ...rest}: ThemedTextInput
     backgroundColor,
     borderColor: backgroundColor,
     color,
-    ...(typeof style === 'object' ? style : {})
+    ...(typeof style === 'object' ? style : {}),
   };
   return (
     <TextInput {...rest} style={newStyle}>{children}</TextInput>

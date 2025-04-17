@@ -1,4 +1,4 @@
-import {Exercise, WorkoutExerciseSet} from "@/openapi-client"
+import {Exercise, WorkoutExerciseSet} from '@/openapi-client';
 
 export type ExerciseWithSets = {
   exercise: Exercise,

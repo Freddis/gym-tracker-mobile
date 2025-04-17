@@ -4,14 +4,14 @@ import {AuthContext} from '@/components/AuthProvider/AuthContext';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext);
   useFocusEffect(() => {
-    if(!auth.user){
+    if (!auth.user) {
       router.replace('/auth/login');
-      return
+      return;
     }
-    router.replace('/app/workouts/list')
+    router.replace('/app/workouts/list');
   });
-  
-  return null
+
+  return null;
 }

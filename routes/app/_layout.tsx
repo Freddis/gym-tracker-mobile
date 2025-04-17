@@ -1,11 +1,11 @@
-import {  Tabs } from 'expo-router';
+import {Tabs} from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import {Platform} from 'react-native';
+import {HapticTab} from '@/components/HapticTab';
+import {IconSymbol} from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/types/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {Colors} from '@/types/Colors';
+import {useColorScheme} from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -29,21 +29,21 @@ export default function TabLayout() {
         name="workouts"
         options={{
           title: 'Workouts',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="calendar" color={color} />,
+          tabBarIcon: ({color}) => <IconSymbol size={28} name="calendar" color={color} />,
         }}
       />
       <Tabs.Screen
         name="exercises"
         options={{
           title: 'Execises',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="dumbbell.fill" color={color} />,
+          tabBarIcon: ({color}) => <IconSymbol size={28} name="dumbbell.fill" color={color} />,
         }}
       />
        <Tabs.Screen
         name="settings/index"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
+          tabBarIcon: ({color}) => <IconSymbol size={28} name="gear" color={color} />,
         }}
       />
     </Tabs>

@@ -1,13 +1,13 @@
-import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import {PropsWithChildren, useState} from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/types/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {ThemedText} from '@/components/ThemedText';
+import {ThemedView} from '@/components/ThemedView';
+import {IconSymbol} from '@/components/ui/IconSymbol';
+import {Colors} from '@/types/Colors';
+import {useColorScheme} from '@/hooks/useColorScheme';
 
-export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
+export function Collapsible({children, title}: PropsWithChildren & { title: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';
 
@@ -22,7 +22,7 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
           size={18}
           weight="medium"
           color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
-          style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
+          style={{transform: [{rotate: isOpen ? '90deg' : '0deg'}]}}
         />
 
         <ThemedText type="defaultSemiBold">{title}</ThemedText>

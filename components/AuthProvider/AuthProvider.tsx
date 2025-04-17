@@ -7,15 +7,15 @@ import {deleteItemAsync, getItemAsync, setItemAsync} from 'expo-secure-store';
 
 export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
   const userKey = 'user';
-  const [doneLoading, setDoneLoading] = useState(false)
+  const [doneLoading, setDoneLoading] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   useEffect(() => {
-    loadUser()
+    loadUser();
   }, []);
-  
-  const loadUser = async() => {
-    const user = await getItemAsync(userKey)
-    setDoneLoading(true)
+
+  const loadUser = async () => {
+    const user = await getItemAsync(userKey);
+    setDoneLoading(true);
     if (user === null) {
       return;
     }
@@ -27,10 +27,10 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     }
     const result = authUserValidator.safeParse(parsedUser);
     if (result.success) {
-      setUser(result.data)
+      setUser(result.data);
     }
-  }
-  if(!doneLoading){
+  };
+  if (!doneLoading) {
     return null;
   }
   const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
@@ -51,7 +51,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   };
   const login = (user: AuthUser) => {
     setUser(user);
-    setItemAsync(userKey,JSON.stringify(user));
+    setItemAsync(userKey, JSON.stringify(user));
   };
 
   return (

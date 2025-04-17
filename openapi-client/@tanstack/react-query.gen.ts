@@ -18,13 +18,13 @@ import {
   patchWorkoutsById,
   getEntries,
   getEntriesTypes,
-} from "../sdk.gen";
+} from '../sdk.gen';
 import {
   queryOptions,
   type UseMutationOptions,
   infiniteQueryOptions,
   type InfiniteData,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 import type {
   PostAuthRegisterData,
   PostAuthRegisterError,
@@ -64,12 +64,12 @@ import type {
   GetEntriesError,
   GetEntriesResponse,
   GetEntriesTypesData,
-} from "../types.gen";
-import type { AxiosError } from "axios";
-import { client as _heyApiClient } from "../client.gen";
+} from '../types.gen';
+import type {AxiosError} from 'axios';
+import {client as _heyApiClient} from '../client.gen';
 
 export type QueryKey<TOptions extends Options> = [
-  Pick<TOptions, "baseURL" | "body" | "headers" | "path" | "query"> & {
+  Pick<TOptions, 'baseURL' | 'body' | 'headers' | 'path' | 'query'> & {
     _id: string;
     _infinite?: boolean;
   }
@@ -104,14 +104,14 @@ const createQueryKey = <TOptions extends Options>(
 
 export const postAuthRegisterQueryKey = (
   options?: Options<PostAuthRegisterData>
-) => createQueryKey("postAuthRegister", options);
+) => createQueryKey('postAuthRegister', options);
 
 export const postAuthRegisterOptions = (
   options?: Options<PostAuthRegisterData>
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRegister({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await postAuthRegister({
         ...options,
         ...queryKey[0],
         signal,
@@ -136,7 +136,7 @@ export const postAuthRegisterMutation = (
     Options<PostAuthRegisterData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRegister({
+      const {data} = await postAuthRegister({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -148,12 +148,12 @@ export const postAuthRegisterMutation = (
 };
 
 export const postAuthLoginQueryKey = (options?: Options<PostAuthLoginData>) =>
-  createQueryKey("postAuthLogin", options);
+  createQueryKey('postAuthLogin', options);
 
 export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthLogin({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await postAuthLogin({
         ...options,
         ...queryKey[0],
         signal,
@@ -178,7 +178,7 @@ export const postAuthLoginMutation = (
     Options<PostAuthLoginData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthLogin({
+      const {data} = await postAuthLogin({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -190,12 +190,12 @@ export const postAuthLoginMutation = (
 };
 
 export const getExercisesQueryKey = (options?: Options<GetExercisesData>) =>
-  createQueryKey("getExercises", options);
+  createQueryKey('getExercises', options);
 
 export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getExercises({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getExercises({
         ...options,
         ...queryKey[0],
         signal,
@@ -208,12 +208,12 @@ export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
 };
 
 export const postExercisesQueryKey = (options?: Options<PostExercisesData>) =>
-  createQueryKey("postExercises", options);
+  createQueryKey('postExercises', options);
 
 export const postExercisesOptions = (options?: Options<PostExercisesData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postExercises({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await postExercises({
         ...options,
         ...queryKey[0],
         signal,
@@ -238,7 +238,7 @@ export const postExercisesMutation = (
     Options<PostExercisesData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postExercises({
+      const {data} = await postExercises({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -262,7 +262,7 @@ export const putExercisesMutation = (
     Options<PutExercisesData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await putExercises({
+      const {data} = await putExercises({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -286,7 +286,7 @@ export const deleteExercisesByIdMutation = (
     Options<DeleteExercisesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteExercisesById({
+      const {data} = await deleteExercisesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -299,14 +299,14 @@ export const deleteExercisesByIdMutation = (
 
 export const getExercisesByIdQueryKey = (
   options: Options<GetExercisesByIdData>
-) => createQueryKey("getExercisesById", options);
+) => createQueryKey('getExercisesById', options);
 
 export const getExercisesByIdOptions = (
   options: Options<GetExercisesByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getExercisesById({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getExercisesById({
         ...options,
         ...queryKey[0],
         signal,
@@ -331,7 +331,7 @@ export const patchExercisesByIdMutation = (
     Options<PatchExercisesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchExercisesById({
+      const {data} = await patchExercisesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -343,12 +343,12 @@ export const patchExercisesByIdMutation = (
 };
 
 export const getWorkoutsQueryKey = (options?: Options<GetWorkoutsData>) =>
-  createQueryKey("getWorkouts", options);
+  createQueryKey('getWorkouts', options);
 
 export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getWorkouts({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getWorkouts({
         ...options,
         ...queryKey[0],
         signal,
@@ -361,12 +361,12 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
 };
 
 export const postWorkoutsQueryKey = (options?: Options<PostWorkoutsData>) =>
-  createQueryKey("postWorkouts", options);
+  createQueryKey('postWorkouts', options);
 
 export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postWorkouts({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await postWorkouts({
         ...options,
         ...queryKey[0],
         signal,
@@ -391,7 +391,7 @@ export const postWorkoutsMutation = (
     Options<PostWorkoutsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postWorkouts({
+      const {data} = await postWorkouts({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -415,7 +415,7 @@ export const putWorkoutsMutation = (
     Options<PutWorkoutsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await putWorkouts({
+      const {data} = await putWorkouts({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -439,7 +439,7 @@ export const deleteWorkoutsByIdMutation = (
     Options<DeleteWorkoutsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteWorkoutsById({
+      const {data} = await deleteWorkoutsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -452,14 +452,14 @@ export const deleteWorkoutsByIdMutation = (
 
 export const getWorkoutsByIdQueryKey = (
   options: Options<GetWorkoutsByIdData>
-) => createQueryKey("getWorkoutsById", options);
+) => createQueryKey('getWorkoutsById', options);
 
 export const getWorkoutsByIdOptions = (
   options: Options<GetWorkoutsByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getWorkoutsById({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getWorkoutsById({
         ...options,
         ...queryKey[0],
         signal,
@@ -484,7 +484,7 @@ export const patchWorkoutsByIdMutation = (
     Options<PatchWorkoutsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchWorkoutsById({
+      const {data} = await patchWorkoutsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -496,12 +496,12 @@ export const patchWorkoutsByIdMutation = (
 };
 
 export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
-  createQueryKey("getEntries", options);
+  createQueryKey('getEntries', options);
 
 export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getEntries({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getEntries({
         ...options,
         ...queryKey[0],
         signal,
@@ -514,7 +514,7 @@ export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
 };
 
 const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">
+  K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>
 >(
   queryKey: QueryKey<Options>,
   page: K
@@ -550,7 +550,7 @@ const createInfiniteParams = <
 export const getEntriesInfiniteQueryKey = (
   options?: Options<GetEntriesData>
 ): QueryKey<Options<GetEntriesData>> =>
-  createQueryKey("getEntries", options, true);
+  createQueryKey('getEntries', options, true);
 
 export const getEntriesInfiniteOptions = (
   options?: Options<GetEntriesData>
@@ -563,26 +563,26 @@ export const getEntriesInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetEntriesData>>[0],
-        "body" | "headers" | "path" | "query"
+        'body' | 'headers' | 'path' | 'query'
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({ pageParam, queryKey, signal }) => {
+      queryFn: async ({pageParam, queryKey, signal}) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetEntriesData>>[0],
-          "body" | "headers" | "path" | "query"
+          'body' | 'headers' | 'path' | 'query'
         > =
-          typeof pageParam === "object"
+          typeof pageParam === 'object'
             ? pageParam
             : {
-                query: {
-                  page: pageParam,
-                },
-              };
+              query: {
+                page: pageParam,
+              },
+            };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getEntries({
+        const {data} = await getEntries({
           ...options,
           ...params,
           signal,
@@ -597,14 +597,14 @@ export const getEntriesInfiniteOptions = (
 
 export const getEntriesTypesQueryKey = (
   options?: Options<GetEntriesTypesData>
-) => createQueryKey("getEntriesTypes", options);
+) => createQueryKey('getEntriesTypes', options);
 
 export const getEntriesTypesOptions = (
   options?: Options<GetEntriesTypesData>
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getEntriesTypes({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getEntriesTypes({
         ...options,
         ...queryKey[0],
         signal,

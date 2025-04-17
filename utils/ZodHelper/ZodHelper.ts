@@ -32,7 +32,7 @@ export class ZodHelper {
       z.string()
                 .refine((input) => {
                   try {
-                    if(input.trim() === ''){
+                    if (input.trim() === '') {
                       return false;
                     }
                     if (input === '-0') {
