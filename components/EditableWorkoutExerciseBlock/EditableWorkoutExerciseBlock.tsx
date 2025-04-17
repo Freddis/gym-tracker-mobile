@@ -12,7 +12,6 @@ import {eq} from "drizzle-orm";
 export const  EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps> = (props) => {
   const exercise = props.exercise.exercise;
   const [sets, setSets] = useState(props.exercise.sets);
-  console.log(props.exercise)
   const [db,schema] = useDrizzle();
   const imgStyle: StyleProp<ImageStyle> = {
     width: 30, 

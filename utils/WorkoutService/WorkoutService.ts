@@ -32,8 +32,15 @@ export class WorkoutService {
        exercises: {
         with: {
           exercise: true,
-          sets: true
-        }
+          sets: {
+            orderBy: (t,op) => [
+              op.asc(t.createdAt)
+            ]
+          }
+        },
+        orderBy: (t,op) => [
+          op.asc(t.createdAt)
+        ]
        }
       },
       where: (t,op) => op.and(
@@ -42,7 +49,11 @@ export class WorkoutService {
           op.gt(t.updatedAt,lastUpdate),
           op.gt(t.createdAt,lastUpdate),
         ) : undefined
-      )
+      ),
+      orderBy: (t,op) => [
+        op.desc(t.updatedAt),
+        op.desc(t.createdAt),
+      ]
     });
     if(workouts.length === 0) {
       return true;

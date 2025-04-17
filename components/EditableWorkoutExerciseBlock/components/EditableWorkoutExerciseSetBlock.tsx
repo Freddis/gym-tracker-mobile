@@ -41,14 +41,12 @@ export const EditableWorkoutExerciseSetBlock: FC<{index: number, set: AppWorkout
     const validatedWeight = ZodHelper.validators.numberOrStringNumber.safeParse(weight)
     const validatedReps = ZodHelper.validators.numberOrStringNumber.safeParse(reps)
     if(!finished){
-      console.log(finished)
       if(!validatedReps.success || !validatedWeight.success){
         setWeightError(!validatedWeight.success)
         setRepsError(!validatedReps.success)
         return;
       }
     }
-    console.log("Updating")
     set.weight = validatedWeight.data ?? null
     set.reps = validatedReps.data ?? null
     set.finished = true;
@@ -65,7 +63,6 @@ export const EditableWorkoutExerciseSetBlock: FC<{index: number, set: AppWorkout
     }).where(
       eq(schema.workouts.id,set.workoutId)
     )
-    console.log("here")
     setWeightError(false)
     setRepsError(false)
     setFinished(!finished)

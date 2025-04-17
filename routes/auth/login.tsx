@@ -25,7 +25,6 @@ export default function LoginPage() {
     })
   },[])
   const performLogin = async () => {
-    console.log("sending")
     const result = await openApiRequest(postAuthLogin,{
       body: {
         email,

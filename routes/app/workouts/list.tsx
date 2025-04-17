@@ -19,13 +19,20 @@ export default function WorkoutList() {
   const [db] = useDrizzle()
   const sqlQuery = db.query.workouts.findMany({
     with: {
-     exercises: {
-      with: {
-        exercise: true,
-        sets: true
+      exercises: {
+       with: {
+         exercise: true,
+         sets: {
+           orderBy: (t,op) => [
+             op.asc(t.createdAt)
+           ]
+         }
+       },
+       orderBy: (t,op) => [
+         op.asc(t.createdAt)
+       ]
       }
-     }
-    },
+     },
     where: (t,op) => op.and(
       op.isNull(t.deletedAt)
     ),

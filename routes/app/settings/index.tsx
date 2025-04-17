@@ -10,9 +10,13 @@ import {Progress} from '@/utils/SyncService/types/Progress';
 
 export default function TabTwoScreen() {
   const auth = useContext(AuthContext)
+  const userId = auth.user?.id;
+  if(!userId){
+    throw new Error("User has to be logged in");
+  }
   const theme = useColorScheme()
   const router = useRouter();
-  const [syncState, setSyncState] = useState<Progress |  null>(null);
+  const [progresState, setProgressState] = useState<Progress |  null>(null);
   const [syncService] = useSyncService();
   const [db] = useDrizzle();
   
@@ -24,39 +28,31 @@ export default function TabTwoScreen() {
     Appearance.setColorScheme(theme === 'dark' ? 'light' : 'dark')
   }
   const syncWithServer = async () => {
-    Alert.alert(
-      'Sync With Server',
-      'Want to wipe local data before sync?',
+    const result = await  syncService.syncWithServer(db,userId,(data) =>setProgressState({...data}))
+    const title = result.error ? 'Error' : 'Done';
+    Alert.alert(title,result.message)
+  }
+  const wipeLocalData = async() => {
+     Alert.alert(
+      'Warning',
+      'Are you sure you want to delete local data?',
       [
         {
           text: 'No',
-          onPress: () => performSync(false)
+          onPress: () => {}
         },
         {
           text: 'Yes',
-          onPress: () => performSync(true)
+          onPress: () => syncService.wipeLocalData(db,userId, data => setProgressState({...data}))
         }
       ]
     )
   }
 
-  const performSync = async (wipe = false) => {
-    const userId = auth.user?.id;
-    if(!userId){
-      throw new Error("User has to be logged in");
-    }
-    const method = wipe ? syncService.wipeThenSync.bind(syncService) : syncService.syncWithServer.bind(syncService);
-    const result = await method(db,userId,(data) => {
-      setSyncState({...data})
-    })
-    const title = result.error ? 'Error' : 'Done';
-    Alert.alert(title,result.message)
-  }
-
-  if(syncState && !syncState.done){
+  if(progresState && !progresState.done){
     return (
     <ThemedView style={{flex: 1,paddingTop: 100, paddingLeft: 20, paddingRight: 20}}>
-        <ThemedText style={{textAlign: 'center'}}>Processing {syncState.itemsDone+1}/{syncState.itemsNumber}: {syncState.currentStageName}</ThemedText>
+        <ThemedText style={{textAlign: 'center'}}>Processing {progresState.itemsDone+1}/{progresState.itemsNumber}: {progresState.currentStageName}</ThemedText>
     </ThemedView>
     )
   }
@@ -84,6 +80,9 @@ export default function TabTwoScreen() {
           </View>
           <View>
             <Button onPress={syncWithServer} title='Sync Data With Server'/>
+          </View>
+          <View style={{marginTop: 20}}>
+            <Button onPress={wipeLocalData} title='Wipe Local Data' />
           </View>
           <View style={{marginTop: 20}}>
             <Button onPress={performSignOut} title='Sign Out' />
