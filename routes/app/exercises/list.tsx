@@ -19,10 +19,14 @@ export default function ExcercisePage() {
   });
   const [searchName, setSearchName] = useState<string>('')
   const [focusedCounter, setfocusedCounter] = useState(0);
-  const [db,schema] = useDrizzle();
+  const [db] = useDrizzle();
   const [exerciseService] = useExerciseService()
   const search = searchName.trim().length >= 3 ? searchName.trim() :  null;
-  const query = db.select().from(schema.exercises)
+  const query = db.query.exercises.findMany({
+    where: (t,op) => op.and(
+      op.isNull(t.deletedAt)
+    )
+  })
   const exerciseResponse = useLiveQuery(query, [focusedCounter]);
   if(exerciseResponse.error || exerciseResponse.data.length <= 0){
     return  <LoadingBlock >

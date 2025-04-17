@@ -157,6 +157,7 @@ export class ExerciseService {
         parentExerciseId: exercise.parentExerciseId,
         createdAt: exercise.createdAt,
         updatedAt: exercise.updatedAt,
+        deletedAt: exercise.deletedAt,
         externalId: exercise.id,
         lastPulledAt: new Date(),
         lastPushedAt: new Date(),

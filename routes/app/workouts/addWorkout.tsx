@@ -40,7 +40,8 @@ export default function AddWorkoutScreen() {
       createdAt: new Date(),
       updatedAt: null,
       lastPulledAt: null,
-      lastPushedAt: null
+      lastPushedAt: null,
+      deletedAt: null
     }
     db.insert(schema.workouts)
       .values(newWorkout)
@@ -104,7 +105,12 @@ export default function AddWorkoutScreen() {
     })
   }
   const deleteWorkout = async () => {
-    await db.delete(schema.workouts).where(
+    const now =  new Date();
+    await db.update(schema.workouts).set({
+      deletedAt: now,
+      updatedAt: now,
+    })
+    .where(
       eq(schema.workouts.id,workout.id)
     )
     router.back()

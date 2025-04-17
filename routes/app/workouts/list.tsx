@@ -26,6 +26,9 @@ export default function WorkoutList() {
       }
      }
     },
+    where: (t,op) => op.and(
+      op.isNull(t.deletedAt)
+    ),
     orderBy: (t,op) => op.desc(t.start),
     limit: 100,
   })  

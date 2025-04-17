@@ -58,6 +58,7 @@ export class WorkoutService {
         exercises: [],
         createdAt: workout.createdAt,
         updatedAt: workout.updatedAt,
+        deletedAt: workout.deletedAt,
       }
       for(const exercise of workout.exercises){
         const  exerciseDto: WorkoutUpsertDto['exercises'][0] = {
@@ -137,6 +138,7 @@ export class WorkoutService {
         updatedAt: workout.updatedAt,
         lastPulledAt: new Date(),
         lastPushedAt: new Date(),
+        deletedAt: workout.deletedAt,
       }
       workouts.push(newWorkoutRow);
       for(const row of workout.exercises){

@@ -12,6 +12,7 @@ import m0007 from './0007_external_id_constraints.sql';
 import m0008 from './0008_workout_user_id.sql';
 import m0009 from './0009_foregin_keys.sql';
 import m0010 from './0010_sync_related_fields_on_syncable_entities.sql';
+import m0011 from './0011_synced_entities_deletion.sql';
 
   export default {
     journal,
@@ -26,7 +27,8 @@ m0006,
 m0007,
 m0008,
 m0009,
-m0010
+m0010,
+m0011
     }
   }
   

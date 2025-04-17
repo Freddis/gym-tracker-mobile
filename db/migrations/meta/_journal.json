@@ -78,6 +78,13 @@
       "when": 1744884763293,
       "tag": "0010_sync_related_fields_on_syncable_entities",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1744885974772,
+      "tag": "0011_synced_entities_deletion",
+      "breakpoints": true
     }
   ]
 }
