@@ -1,6 +1,6 @@
 import {useFocusEffect, useRouter} from 'expo-router';
 import {useContext} from 'react';
-import {AuthContext} from '@/components/AuthProvider/AuthContext';
+import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 
 export default function HomeScreen() {
   const router = useRouter();

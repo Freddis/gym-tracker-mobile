@@ -10,7 +10,7 @@ import {SQLiteProvider} from 'expo-sqlite';
 import {useMigrations} from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../db/migrations/migrations';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {AuthProvider} from '@/components/AuthProvider/AuthProvider';
+import {AuthProvider} from '@/components/providers/AuthProvider/AuthProvider';
 import {useDrizzle} from '@/utils/drizzle';
 
 // console.log = () => null // uncomment for prod / preview

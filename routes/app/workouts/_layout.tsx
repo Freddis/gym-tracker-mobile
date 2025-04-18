@@ -1,10 +1,10 @@
-import {AppErrorBoundary} from '@/components/AppErrorBoundary/AppErrorBoundary';
+import {AppErrorBoundaryScreen} from '@/components/screens/common/AppErrorBoundaryScreen/AppErrorBoundaryScreen';
 import {Stack} from 'expo-router';
 
 export default function WorkoutsLayout() {
   return (
-    <AppErrorBoundary>
+    <AppErrorBoundaryScreen>
       <Stack screenOptions={{headerShown: false}} />
-    </AppErrorBoundary>
+    </AppErrorBoundaryScreen>
   );
 }
