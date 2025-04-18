@@ -73,11 +73,9 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
   };
   const updateWeight = (value: string) => {
     setWeight(value);
-    setFinished(false);
   };
   const updateReps = (value: string) => {
     setReps(value);
-    setFinished(false);
   };
   const viewStyle: StyleProp<ViewStyle> = {
     flexDirection: 'row',

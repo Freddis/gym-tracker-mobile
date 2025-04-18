@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {StyleProp, ImageStyle, ViewStyle, View, Image, Button} from 'react-native';
 import {ThemedText} from '../ThemedText';
 import {ThemedView} from '../ThemedView';
@@ -8,11 +8,42 @@ import {NewModel} from '@/types/NewModel';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {EditableWorkoutExerciseSetBlock} from './components/EditableWorkoutExerciseSetBlock';
 import {eq} from 'drizzle-orm';
+import {useAuth} from '../AuthProvider/useAuth';
 
 export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps> = (props) => {
-  const exercise = props.exercise.exercise;
-  const [sets, setSets] = useState(props.exercise.sets);
+  const workoutExercise = props.exercise;
+  const exercise = workoutExercise.exercise;
+  const auth = useAuth();
+  const [sets, setSets] = useState(workoutExercise.sets);
   const [db, schema] = useDrizzle();
+  const [prevSets, setPrevSets] = useState<AppWorkoutExerciseSet[]>([]);
+  useEffect(() => {
+    loadSets();
+  }, []);
+  const loadSets = async () => {
+    const prevSet = await db.query.workoutExerciseSets.findFirst({
+      where: (t, op) => op.and(
+        op.eq(t.exerciseId, exercise.id),
+        op.eq(t.userId, auth.user?.id ?? 0),
+        op.not(
+          op.eq(t.workoutExerciseId, workoutExercise.id),
+        ),
+      ),
+      orderBy: (t, op) => op.desc(t.createdAt),
+    });
+    if (!prevSet) {
+      return;
+    }
+    const prevSets = await db.query.workoutExerciseSets.findMany({
+      where: (t, op) => op.and(
+        op.eq(t.exerciseId, exercise.id),
+        op.eq(t.userId, auth.user?.id ?? 0),
+        op.eq(t.workoutExerciseId, prevSet.workoutExerciseId)
+      ),
+      orderBy: (t, op) => op.asc(t.createdAt),
+    });
+    setPrevSets(prevSets);
+  };
   const imgStyle: StyleProp<ImageStyle> = {
     width: 30,
     height: 30,
@@ -28,9 +59,8 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
     flexDirection: 'row',
   };
   const addSet = async () => {
-    const lastSet = sets[sets.length - 1];
-    const reps = lastSet?.reps ?? 0;
-    const weight = lastSet?.weight ?? 0;
+    const reps = [prevSets[sets.length]?.reps, sets[sets.length - 1]?.reps].find((x) => !!x) ?? 0;
+    const weight = [prevSets[sets.length]?.weight, sets[sets.length - 1]?.weight].find((x) => !!x) ?? 0;
     const newSet: NewModel<AppWorkoutExerciseSet> = {
       externalId: null,
       workoutId: props.exercise.workoutId,
@@ -69,7 +99,9 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
             <Button color={'red'} onPress={() => props.onDelete(props.exercise)} title="Delete"/>
           </View>
         </View>
-        {sets.map((set, i) => <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.id} set={set} index={i} />)}
+        {sets.map((set, i) => (
+          <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.id} set={set} index={i} />
+        ))}
         <View>
           <Button onPress={addSet} title="Add Set"/>
         </View>
