@@ -8,7 +8,7 @@ import {AppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {Logger} from '../Logger/Logger';
-import {processInBatches} from '../processInbatches';
+import {processInBatches} from '../processInBatches';
 
 export class WorkoutService {
   protected logger: Logger = new Logger(WorkoutService.name);

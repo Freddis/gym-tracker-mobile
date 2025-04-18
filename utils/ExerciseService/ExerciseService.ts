@@ -6,7 +6,7 @@ import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
-import {processInBatches} from '../processInbatches';
+import {processInBatches} from '../processInBatches';
 
 
 export class ExerciseService {

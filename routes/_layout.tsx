@@ -5,13 +5,13 @@ import * as SplashScreen from 'expo-splash-screen';
 import {StatusBar} from 'expo-status-bar';
 import React, {useEffect} from 'react';
 import 'react-native-reanimated';
-import {useColorScheme} from '@/hooks/useColorScheme';
 import {SQLiteProvider} from 'expo-sqlite';
 import {useMigrations} from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../db/migrations/migrations';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '@/components/providers/AuthProvider/AuthProvider';
 import {useDrizzle} from '@/utils/drizzle';
+import {useColorScheme} from 'react-native';
 
 // console.log = () => null // uncomment for prod / preview
 const queryClient = new QueryClient();
