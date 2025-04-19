@@ -26,7 +26,10 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      // you have to enjoy the logo
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 1000);
     }
   }, [loaded]);
 
