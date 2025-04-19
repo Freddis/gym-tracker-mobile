@@ -86,6 +86,13 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
     await db.delete(schema.workoutExerciseSets).where(
       eq(schema.workoutExerciseSets.id, set.id)
     );
+    const now = new Date();
+    await db.update(schema.workouts).set({
+      updatedAt: now,
+    })
+    .where(
+      eq(schema.workouts.id, set.workoutId)
+    );
     const newsets = sets.filter((x) => x.id !== set.id);
     setSets(newsets);
   };

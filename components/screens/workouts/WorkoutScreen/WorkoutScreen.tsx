@@ -122,11 +122,20 @@ export const WorkoutScreen: FC = () => {
     await db.delete(schema.workoutExercises).where(
       eq(schema.workoutExercises.id, exercise.id)
     );
+    const now = new Date();
+    await db.update(schema.workouts).set({
+      updatedAt: now,
+    })
+    .where(
+      eq(schema.workouts.id, workout.id)
+    );
     setRefreshCounter(refreshCounter + 1);
   };
   const finishWorkout = async () => {
+    const now = new Date();
     await db.update(schema.workouts).set({
-      end: new Date(),
+      end: now,
+      updatedAt: now,
     }).where(
       eq(schema.workouts.id, workout.id)
     );

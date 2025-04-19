@@ -17,7 +17,7 @@ export const CreateExerciseScreen: FC = () => {
   const [db, schema] = useDrizzle();
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<string | null>(null);
-  const placeHolderImage = require('@/assets/images/react-logo.png');
+  const placeHolderImage = require('@/assets/images/icon.png');
   const [baseExercise, setBaseExercise] = useState<AppExercise| null>(null);
   const router = useRouter();
   const [name, setName] = useState('');
