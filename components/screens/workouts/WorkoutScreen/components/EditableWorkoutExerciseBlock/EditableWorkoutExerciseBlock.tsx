@@ -19,6 +19,7 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
   const [prevSets, setPrevSets] = useState<AppWorkoutExerciseSet[]>([]);
   useEffect(() => {
     loadSets();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const loadSets = async () => {
     const prevSet = await db.query.workoutExerciseSets.findFirst({
