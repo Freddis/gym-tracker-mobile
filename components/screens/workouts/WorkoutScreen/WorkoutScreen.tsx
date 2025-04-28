@@ -1,8 +1,8 @@
-import {StyleSheet, Button, View, KeyboardAvoidingView, Platform} from 'react-native';
+import {StyleSheet, Button, View, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
-import {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {useDrizzle} from '@/utils/drizzle';
 import {AppWorkout} from '@/types/models/AppWorkout';
 import {NewModel} from '@/types/NewModel';
@@ -18,6 +18,7 @@ import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExercise
 
 export const WorkoutScreen: FC = () => {
   const [refreshCounter, setRefreshCounter] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
   const auth = useAuth();
   const user = auth.user;
   if (!user) {
@@ -141,18 +142,55 @@ export const WorkoutScreen: FC = () => {
     );
     router.back();
   };
+  const copyWorkout = async () => {
+    const now = new Date();
+    const newWorkout: NewModel<AppWorkout> = {
+      externalId: null,
+      createdAt: now,
+      updatedAt: null,
+      deletedAt: null,
+      lastPulledAt: null,
+      lastPushedAt: null,
+      start: now,
+      end: null,
+      userId: workout.userId,
+      typeId: workout.typeId,
+      calories: 0,
+    };
+    const newWorkoutId = await db.transaction(async (db) => {
+      const insertedRow = await db.insert(schema.workouts)
+        .values(newWorkout);
+      const newWorkoutId = insertedRow.lastInsertRowId;
+      for (const exercise of workout.exercises) {
+        const newExercise: NewModel<AppWorkoutExercise> = {
+          externalId: null,
+          userId: exercise.userId,
+          createdAt: exercise.createdAt,
+          updatedAt: null,
+          workoutId: newWorkoutId,
+          exerciseId: exercise.exerciseId,
+        };
+        await db.insert(schema.workoutExercises).values(newExercise);
+      }
+      return newWorkoutId;
+    });
+    scrollViewRef.current?.scrollTo(0, 0);
+    router.setParams({
+      workoutId: newWorkoutId,
+    });
+  };
   const workoutFinished = workout.end !== null;
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ThemedScrollView>
+      <ThemedScrollView ref={scrollViewRef}>
         <ThemedView style={styles.titleContainer}>
           <Stack.Screen options={{title: `Workout ${workout.id}`, headerShown: true}} />
           <View style={{flexDirection: 'row'}}>
             <ThemedText>Time: </ThemedText>
-            <TimerBlock start={workout.start} end={workout.end ?? undefined}/>
+            <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
           </View>
           {workout.exercises.map((x) => (
-            <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.exercise.id} exercise={x} />
+            <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.id} exercise={x} />
           ))}
           <Button onPress={addExercise} title="Add Exercise"/>
           {!workoutFinished && (
@@ -161,9 +199,14 @@ export const WorkoutScreen: FC = () => {
           </View>
           )}
           {workoutFinished && (
-            <View style={{marginTop: 20}}>
-            <Button color={'red'} onPress={deleteWorkout} title="Delete Workout"/>
-          </View>
+            <View>
+              <View style={{marginTop: 20}}>
+                <Button color={'red'} onPress={deleteWorkout} title="Delete Workout"/>
+              </View>
+              <View style={{marginTop: 20}}>
+              <Button onPress={copyWorkout} title="Copy Workout"/>
+              </View>
+           </View>
           )}
         </ThemedView>
       </ThemedScrollView>
