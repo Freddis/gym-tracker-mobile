@@ -44,8 +44,8 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
       {opened && item.variations && (
         <ThemedView type={'backgroundDeepest'} style={{paddingLeft: 10, paddingTop: 10}}>
           {item.variations.map((variation) => (
-                <ExerciseBlock key={variation.id} nested={true} item={variation} />
-              ))}
+            <ExerciseBlock onPress={props.onPress} key={variation.id} nested={true} item={variation} />
+          ))}
         </ThemedView>
       )}
     </ThemedView>
