@@ -37,4 +37,23 @@ describe(WorkoutService.name, () => {
     const anyWorkout = await db.query.workouts.findFirst();
     expect(anyWorkout).toBe(undefined);
   });
+
+  describe('Set data operations', () => {
+    test('Converts comma correctly', async () => {
+      // prepare
+      const service = new WorkoutService();
+      // check
+      expect(service.transformSetWeight('12.2')).toBe(12.2);
+      expect(service.transformSetWeight('12,2')).toBe(12.2);
+    });
+
+    test('Returns 0 on invalid input', async () => {
+      // prepare
+      const service = new WorkoutService();
+      // check
+      expect(service.transformSetWeight('')).toBe(0);
+    });
+
+  });
+
 });

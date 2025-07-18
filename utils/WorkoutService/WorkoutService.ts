@@ -4,7 +4,7 @@ import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
 import {eq, inArray} from 'drizzle-orm';
-import {AppWorkout} from '@/types/models/AppWorkout';
+import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {Logger} from '../Logger/Logger';
@@ -23,6 +23,16 @@ export class WorkoutService {
       return false;
     }
     return true;
+  }
+
+  transformSetWeight(val: string): number {
+    const conventional = val.replaceAll(',', '.');
+    const number = Number.parseFloat(conventional);
+    return isNaN(number) ? 0 : number;
+  }
+
+  async pushWorkout(db: DrizzleDb, workout: CompleteAppWorkout): Promise<boolean> {
+    return this.pushWorkouts(db, [workout]);
   }
 
   async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
@@ -55,6 +65,10 @@ export class WorkoutService {
         op.desc(t.createdAt),
       ],
     });
+    return this.pushWorkouts(db, workouts);
+  }
+  protected async pushWorkouts(db: DrizzleDb, workouts: CompleteAppWorkout[]): Promise<boolean> {
+
     if (workouts.length === 0) {
       return true;
     }

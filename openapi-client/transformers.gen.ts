@@ -7,7 +7,9 @@ import type {
   GetWorkoutsResponse,
   PutWorkoutsResponse,
   GetWorkoutsByIdResponse,
-  GetEntriesResponse,
+  PutWorkoutsByIdResponse,
+  PostWeightResponse,
+  GetArgusCheckinResponse,
 } from './types.gen';
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -126,9 +128,44 @@ export const getWorkoutsByIdResponseTransformer = async (
   return data;
 };
 
-export const getEntriesResponseTransformer = async (
+export const putWorkoutsByIdResponseTransformer = async (
   data: any
-): Promise<GetEntriesResponse> => {
+): Promise<PutWorkoutsByIdResponse> => {
+  data.item.start = new Date(data.item.start);
+  if (data.item.end) {
+    data.item.end = new Date(data.item.end);
+  }
+  data.item.createdAt = new Date(data.item.createdAt);
+  if (data.item.updatedAt) {
+    data.item.updatedAt = new Date(data.item.updatedAt);
+  }
+  if (data.item.deletedAt) {
+    data.item.deletedAt = new Date(data.item.deletedAt);
+  }
+  return data;
+};
+
+const weightSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const postWeightResponseTransformer = async (
+  data: any
+): Promise<PostWeightResponse> => {
+  data = weightSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getArgusCheckinResponseTransformer = async (
+  data: any
+): Promise<GetArgusCheckinResponse> => {
   data.items = data.items.map((item: any) => {
     item.createdAt = new Date(item.createdAt);
     if (item.updatedAt) {

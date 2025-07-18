@@ -4,6 +4,7 @@ import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
+import {WorkoutSyncButton} from '../../../WorkoutScreen/components/WorkoutSyncButton/WorkoutSyncButton';
 
 export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWorkout)=> void}> = (props) => {
   const workout = props.workout;
@@ -34,8 +35,11 @@ export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWor
           <ThemedText>{workout.start.toLocaleString('en-GB', {weekday: 'long'})} {workout.start.toLocaleDateString()}</ThemedText>
         </View>
         </View>
-        <View style={{marginBottom: 10}}>
+        <View style={{marginBottom: 10, flexDirection: 'row'}}>
           <ThemedText>Calories: {workout.calories}</ThemedText>
+          <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
+            <WorkoutSyncButton workout={workout} readonly/>
+          </View>
         </View>
         <View>
           {exercises.map((item, i) => (

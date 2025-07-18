@@ -48,12 +48,18 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdResponse,
   PatchWorkoutsByIdError,
-  GetEntriesData,
-  GetEntriesResponse,
-  GetEntriesError,
-  GetEntriesTypesData,
-  GetEntriesTypesResponse,
-  GetEntriesTypesError,
+  PutWorkoutsByIdData,
+  PutWorkoutsByIdResponse,
+  PutWorkoutsByIdError,
+  PostWeightData,
+  PostWeightResponse,
+  PostWeightError,
+  GetArgusCheckinData,
+  GetArgusCheckinResponse,
+  GetArgusCheckinError,
+  GetArgusCheckinTypesData,
+  GetArgusCheckinTypesResponse,
+  GetArgusCheckinTypesError,
 } from './types.gen';
 import {client as _heyApiClient} from './client.gen';
 import {
@@ -63,7 +69,9 @@ import {
   getWorkoutsResponseTransformer,
   putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
-  getEntriesResponseTransformer,
+  putWorkoutsByIdResponseTransformer,
+  postWeightResponseTransformer,
+  getArgusCheckinResponseTransformer,
 } from './transformers.gen';
 
 export type Options<
@@ -141,7 +149,7 @@ export const getExercises = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: getExercisesResponseTransformer,
-    url: '/exercises/',
+    url: '/exercises',
     ...options,
   });
 };
@@ -163,7 +171,7 @@ export const postExercises = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
-    url: '/exercises/',
+    url: '/exercises',
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -190,7 +198,7 @@ export const putExercises = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: putExercisesResponseTransformer,
-    url: '/exercises/',
+    url: '/exercises',
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -218,6 +226,10 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
     ],
     url: '/exercises/{id}',
     ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
   });
 };
 
@@ -288,7 +300,7 @@ export const getWorkouts = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: getWorkoutsResponseTransformer,
-    url: '/workouts/',
+    url: '/workouts',
     ...options,
   });
 };
@@ -310,7 +322,7 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
-    url: '/workouts/',
+    url: '/workouts',
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -337,7 +349,7 @@ export const putWorkouts = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: putWorkoutsResponseTransformer,
-    url: '/workouts/',
+    url: '/workouts',
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -365,6 +377,10 @@ export const deleteWorkoutsById = <ThrowOnError extends boolean = false>(
     ],
     url: '/workouts/{id}',
     ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
   });
 };
 
@@ -418,31 +434,14 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Returns data on all entries from Argus
+ * Updates or inserts workout for user
  */
-export const getEntries = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesData, ThrowOnError>
+export const putWorkoutsById = <ThrowOnError extends boolean = false>(
+  options?: Options<PutWorkoutsByIdData, ThrowOnError>
 ) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetEntriesResponse,
-    GetEntriesError,
-    ThrowOnError
-  >({
-    responseTransformer: getEntriesResponseTransformer,
-    url: '/entries/',
-    ...options,
-  });
-};
-
-/**
- * Returns possible entry types for Argus
- */
-export const getEntriesTypes = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesTypesData, ThrowOnError>
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetEntriesTypesResponse,
-    GetEntriesTypesError,
+  return (options?.client ?? _heyApiClient).put<
+    PutWorkoutsByIdResponse,
+    PutWorkoutsByIdError,
     ThrowOnError
   >({
     security: [
@@ -451,7 +450,78 @@ export const getEntriesTypes = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
-    url: '/entries/types',
+    responseTransformer: putWorkoutsByIdResponseTransformer,
+    url: '/workouts/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Adds new weight entry for the user
+ */
+export const postWeight = <ThrowOnError extends boolean = false>(
+  options?: Options<PostWeightData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostWeightResponse,
+    PostWeightError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: postWeightResponseTransformer,
+    url: '/weight',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on all checkins from Argus
+ */
+export const getArgusCheckin = <ThrowOnError extends boolean = false>(
+  options?: Options<GetArgusCheckinData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetArgusCheckinResponse,
+    GetArgusCheckinError,
+    ThrowOnError
+  >({
+    responseTransformer: getArgusCheckinResponseTransformer,
+    url: '/argus/checkin',
+    ...options,
+  });
+};
+
+/**
+ * Returns possible checkin types for Argus
+ */
+export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<GetArgusCheckinTypesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetArgusCheckinTypesResponse,
+    GetArgusCheckinTypesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    url: '/argus/checkin/types',
     ...options,
   });
 };

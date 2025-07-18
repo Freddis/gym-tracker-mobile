@@ -16,8 +16,10 @@ import {
   deleteWorkoutsById,
   getWorkoutsById,
   patchWorkoutsById,
-  getEntries,
-  getEntriesTypes,
+  putWorkoutsById,
+  postWeight,
+  getArgusCheckin,
+  getArgusCheckinTypes,
 } from '../sdk.gen';
 import {
   queryOptions,
@@ -47,6 +49,8 @@ import type {
   PatchExercisesByIdError,
   PatchExercisesByIdResponse,
   GetWorkoutsData,
+  GetWorkoutsError,
+  GetWorkoutsResponse,
   PostWorkoutsData,
   PostWorkoutsError,
   PostWorkoutsResponse,
@@ -60,10 +64,16 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdError,
   PatchWorkoutsByIdResponse,
-  GetEntriesData,
-  GetEntriesError,
-  GetEntriesResponse,
-  GetEntriesTypesData,
+  PutWorkoutsByIdData,
+  PutWorkoutsByIdError,
+  PutWorkoutsByIdResponse,
+  PostWeightData,
+  PostWeightError,
+  PostWeightResponse,
+  GetArgusCheckinData,
+  GetArgusCheckinError,
+  GetArgusCheckinResponse,
+  GetArgusCheckinTypesData,
 } from '../types.gen';
 import type {AxiosError} from 'axios';
 import {client as _heyApiClient} from '../client.gen';
@@ -360,6 +370,88 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   });
 };
 
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>
+>(
+  queryKey: QueryKey<Options>,
+  page: K
+) => {
+  const params = queryKey[0];
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const getWorkoutsInfiniteQueryKey = (
+  options?: Options<GetWorkoutsData>
+): QueryKey<Options<GetWorkoutsData>> =>
+  createQueryKey('getWorkouts', options, true);
+
+export const getWorkoutsInfiniteOptions = (
+  options?: Options<GetWorkoutsData>
+) => {
+  return infiniteQueryOptions<
+    GetWorkoutsResponse,
+    AxiosError<GetWorkoutsError>,
+    InfiniteData<GetWorkoutsResponse>,
+    QueryKey<Options<GetWorkoutsData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetWorkoutsData>>[0],
+        'body' | 'headers' | 'path' | 'query'
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({pageParam, queryKey, signal}) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetWorkoutsData>>[0],
+          'body' | 'headers' | 'path' | 'query'
+        > =
+          typeof pageParam === 'object'
+            ? pageParam
+            : {
+              query: {
+                page: pageParam,
+              },
+            };
+        const params = createInfiniteParams(queryKey, page);
+        const {data} = await getWorkouts({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getWorkoutsInfiniteQueryKey(options),
+    }
+  );
+};
+
 export const postWorkoutsQueryKey = (options?: Options<PostWorkoutsData>) =>
   createQueryKey('postWorkouts', options);
 
@@ -495,13 +587,37 @@ export const patchWorkoutsByIdMutation = (
   return mutationOptions;
 };
 
-export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
-  createQueryKey('getEntries', options);
+export const putWorkoutsByIdMutation = (
+  options?: Partial<Options<PutWorkoutsByIdData>>
+): UseMutationOptions<
+  PutWorkoutsByIdResponse,
+  AxiosError<PutWorkoutsByIdError>,
+  Options<PutWorkoutsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PutWorkoutsByIdResponse,
+    AxiosError<PutWorkoutsByIdError>,
+    Options<PutWorkoutsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const {data} = await putWorkoutsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
-export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
+export const postWeightQueryKey = (options?: Options<PostWeightData>) =>
+  createQueryKey('postWeight', options);
+
+export const postWeightOptions = (options?: Options<PostWeightData>) => {
   return queryOptions({
     queryFn: async ({queryKey, signal}) => {
-      const {data} = await getEntries({
+      const {data} = await postWeight({
         ...options,
         ...queryKey[0],
         signal,
@@ -509,60 +625,71 @@ export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
       });
       return data;
     },
-    queryKey: getEntriesQueryKey(options),
+    queryKey: postWeightQueryKey(options),
   });
 };
 
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>
->(
-  queryKey: QueryKey<Options>,
-  page: K
-) => {
-  const params = queryKey[0];
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
+export const postWeightMutation = (
+  options?: Partial<Options<PostWeightData>>
+): UseMutationOptions<
+  PostWeightResponse,
+  AxiosError<PostWeightError>,
+  Options<PostWeightData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostWeightResponse,
+    AxiosError<PostWeightError>,
+    Options<PostWeightData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const {data} = await postWeight({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
-export const getEntriesInfiniteQueryKey = (
-  options?: Options<GetEntriesData>
-): QueryKey<Options<GetEntriesData>> =>
-  createQueryKey('getEntries', options, true);
+export const getArgusCheckinQueryKey = (
+  options?: Options<GetArgusCheckinData>
+) => createQueryKey('getArgusCheckin', options);
 
-export const getEntriesInfiniteOptions = (
-  options?: Options<GetEntriesData>
+export const getArgusCheckinOptions = (
+  options?: Options<GetArgusCheckinData>
+) => {
+  return queryOptions({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getArgusCheckin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getArgusCheckinQueryKey(options),
+  });
+};
+
+export const getArgusCheckinInfiniteQueryKey = (
+  options?: Options<GetArgusCheckinData>
+): QueryKey<Options<GetArgusCheckinData>> =>
+  createQueryKey('getArgusCheckin', options, true);
+
+export const getArgusCheckinInfiniteOptions = (
+  options?: Options<GetArgusCheckinData>
 ) => {
   return infiniteQueryOptions<
-    GetEntriesResponse,
-    AxiosError<GetEntriesError>,
-    InfiniteData<GetEntriesResponse>,
-    QueryKey<Options<GetEntriesData>>,
+    GetArgusCheckinResponse,
+    AxiosError<GetArgusCheckinError>,
+    InfiniteData<GetArgusCheckinResponse>,
+    QueryKey<Options<GetArgusCheckinData>>,
     | number
     | Pick<
-        QueryKey<Options<GetEntriesData>>[0],
+        QueryKey<Options<GetArgusCheckinData>>[0],
         'body' | 'headers' | 'path' | 'query'
       >
   >(
@@ -571,7 +698,7 @@ export const getEntriesInfiniteOptions = (
       queryFn: async ({pageParam, queryKey, signal}) => {
         // @ts-ignore
         const page: Pick<
-          QueryKey<Options<GetEntriesData>>[0],
+          QueryKey<Options<GetArgusCheckinData>>[0],
           'body' | 'headers' | 'path' | 'query'
         > =
           typeof pageParam === 'object'
@@ -582,7 +709,7 @@ export const getEntriesInfiniteOptions = (
               },
             };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getEntries({
+        const {data} = await getArgusCheckin({
           ...options,
           ...params,
           signal,
@@ -590,21 +717,21 @@ export const getEntriesInfiniteOptions = (
         });
         return data;
       },
-      queryKey: getEntriesInfiniteQueryKey(options),
+      queryKey: getArgusCheckinInfiniteQueryKey(options),
     }
   );
 };
 
-export const getEntriesTypesQueryKey = (
-  options?: Options<GetEntriesTypesData>
-) => createQueryKey('getEntriesTypes', options);
+export const getArgusCheckinTypesQueryKey = (
+  options?: Options<GetArgusCheckinTypesData>
+) => createQueryKey('getArgusCheckinTypes', options);
 
-export const getEntriesTypesOptions = (
-  options?: Options<GetEntriesTypesData>
+export const getArgusCheckinTypesOptions = (
+  options?: Options<GetArgusCheckinTypesData>
 ) => {
   return queryOptions({
     queryFn: async ({queryKey, signal}) => {
-      const {data} = await getEntriesTypes({
+      const {data} = await getArgusCheckinTypes({
         ...options,
         ...queryKey[0],
         signal,
@@ -612,6 +739,6 @@ export const getEntriesTypesOptions = (
       });
       return data;
     },
-    queryKey: getEntriesTypesQueryKey(options),
+    queryKey: getArgusCheckinTypesQueryKey(options),
   });
 };

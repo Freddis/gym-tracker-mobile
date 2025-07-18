@@ -4,7 +4,7 @@ import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {FC, useEffect, useRef, useState} from 'react';
 import {useDrizzle} from '@/utils/drizzle';
-import {AppWorkout} from '@/types/models/AppWorkout';
+import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {NewModel} from '@/types/NewModel';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
@@ -15,6 +15,7 @@ import {AppWorkoutExercise, CompleteAppWorkoutExercise} from '@/types/models/App
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExerciseBlock/EditableWorkoutExerciseBlock';
+import {WorkoutSyncButton} from './components/WorkoutSyncButton/WorkoutSyncButton';
 
 export const WorkoutScreen: FC = () => {
   const [refreshCounter, setRefreshCounter] = useState(0);
@@ -78,26 +79,34 @@ export const WorkoutScreen: FC = () => {
     if (!workout || !validatedExerciseId.success) {
       return;
     }
-    const workoutExercise: NewModel<AppWorkoutExercise> = {
-      workoutId: workout.id,
-      externalId: null,
-      userId: user.id,
-      createdAt: new Date(),
-      updatedAt: null,
-      exerciseId: validatedExerciseId.data,
-    };
-    db.insert(schema.workoutExercises).values(workoutExercise).then(() => {
-      router.setParams({
-        ...params,
-        exerciseId: undefined,
-      });
-    });
+    addExerciseToWorkout(workout, validatedExerciseId.data);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.exerciseId, workout]);
 
   if (!workout) {
     return <LoadingBlock />;
   }
+  const addExerciseToWorkout = async (workout: CompleteAppWorkout, exerciseId: number) => {
+    const workoutExercise: NewModel<AppWorkoutExercise> = {
+      workoutId: workout.id,
+      externalId: null,
+      userId: user.id,
+      createdAt: new Date(),
+      updatedAt: null,
+      exerciseId,
+    };
+    await db.insert(schema.workoutExercises).values(workoutExercise).then(() => {
+      router.setParams({
+        ...params,
+        exerciseId: undefined,
+      });
+    });
+    await db.update(schema.workouts).set({
+      updatedAt: new Date(),
+    }).where(eq(schema.workouts.id, workout.id));
+    console.log('Updating counter');
+    setRefreshCounter(refreshCounter + 1);
+  };
 
   const addExercise = async () => {
     router.push({
@@ -130,6 +139,7 @@ export const WorkoutScreen: FC = () => {
     .where(
       eq(schema.workouts.id, workout.id)
     );
+    console.log('refresh');
     setRefreshCounter(refreshCounter + 1);
   };
   const finishWorkout = async () => {
@@ -188,6 +198,9 @@ export const WorkoutScreen: FC = () => {
           <View style={{flexDirection: 'row'}}>
             <ThemedText>Time: </ThemedText>
             <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
+            <View style={{flexDirection: 'row-reverse', flexGrow: 1}}>
+              <WorkoutSyncButton workout={workout} />
+            </View>
           </View>
           {workout.exercises.map((x) => (
             <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.id} exercise={x} />

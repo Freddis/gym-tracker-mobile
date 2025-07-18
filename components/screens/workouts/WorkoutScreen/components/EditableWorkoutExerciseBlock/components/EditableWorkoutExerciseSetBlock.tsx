@@ -96,6 +96,7 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
       <ThemedTextInput
         returnKeyType="done"
         keyboardType="numeric"
+        inputMode="decimal"
         selectTextOnFocus type="background"
         style={repsStyle}
         onChangeText={updateReps}
