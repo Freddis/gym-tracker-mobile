@@ -1,3 +1,4 @@
+import {Equipment} from '@/openapi-client';
 import {integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
@@ -6,7 +7,7 @@ export const exercises = sqliteTable('exercises', {
   name: text().notNull(),
   description: text(),
   difficulty: integer(),
-  equipmentId: integer().notNull(),
+  equipment: text().$type<Equipment>(),
   images: text({mode: 'json'}).notNull().$type<string[]>(),
   params: text({mode: 'json'}).notNull().$type<number[]>(),
   userId: integer(),

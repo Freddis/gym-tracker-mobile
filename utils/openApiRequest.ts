@@ -1,3 +1,4 @@
+import {client} from '@/openapi-client/client.gen';
 import {Logger} from './Logger/Logger';
 
 const logger = new Logger('OpenApi');
@@ -6,7 +7,10 @@ Logger.useJsonStringify = true;
 export const openApiRequest = async <TResult, TParam extends object>(
   req: (opts: TParam) => Promise<TResult>, opts: TParam)
   : Promise<TResult> => {
-  logger.debug('Request: ', opts);
+  logger.debug('Request: ', {
+    ...client.getConfig(),
+    ...opts,
+  });
   const result = await req(opts);
   const res = result as any;
   if (res.error) {

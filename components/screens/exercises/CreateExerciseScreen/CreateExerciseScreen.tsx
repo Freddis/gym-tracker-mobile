@@ -55,7 +55,7 @@ export const CreateExerciseScreen: FC = () => {
       name: name,
       description: description,
       difficulty: baseExercise?.difficulty ?? null,
-      equipmentId: 0,
+      equipment: null,
       images: baseExercise?.images ?? [],
       params: baseExercise?.params ?? [],
       userId: user.id,

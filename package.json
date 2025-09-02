@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "check": "tsc --noEmit && npm run lint:fix",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
@@ -12,7 +13,9 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "lint:fix": "npx eslint  . --fix",
-    "openapi:ts": "openapi-ts"
+    "openapi:ts": "openapi-ts",
+    "db:generate": "drizzle-kit generate",
+    "db:drop": "drizzle-kit drop"
   },
   "jest": {
     "preset": "jest-expo",

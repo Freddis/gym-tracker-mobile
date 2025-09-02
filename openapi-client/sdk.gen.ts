@@ -21,6 +21,9 @@ import type {
   PutExercisesData,
   PutExercisesResponse,
   PutExercisesError,
+  GetExercisesBuiltInData,
+  GetExercisesBuiltInResponse,
+  GetExercisesBuiltInError,
   DeleteExercisesByIdData,
   DeleteExercisesByIdResponse,
   DeleteExercisesByIdError,
@@ -48,30 +51,94 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdResponse,
   PatchWorkoutsByIdError,
-  PutWorkoutsByIdData,
-  PutWorkoutsByIdResponse,
-  PutWorkoutsByIdError,
+  GetWorkoutPlansData,
+  GetWorkoutPlansResponse,
+  GetWorkoutPlansError,
+  PostWorkoutPlansData,
+  PostWorkoutPlansResponse,
+  PostWorkoutPlansError,
+  DeleteWorkoutPlansByIdData,
+  DeleteWorkoutPlansByIdResponse,
+  DeleteWorkoutPlansByIdError,
+  GetWorkoutPlansByIdData,
+  GetWorkoutPlansByIdResponse,
+  GetWorkoutPlansByIdError,
+  PatchWorkoutPlansByIdData,
+  PatchWorkoutPlansByIdResponse,
+  PatchWorkoutPlansByIdError,
+  GetWorkoutTypesData,
+  GetWorkoutTypesResponse,
+  GetWorkoutTypesError,
+  PostWorkoutTypesData,
+  PostWorkoutTypesResponse,
+  PostWorkoutTypesError,
+  DeleteWorkoutTypesByIdData,
+  DeleteWorkoutTypesByIdResponse,
+  DeleteWorkoutTypesByIdError,
+  GetWorkoutTypesByIdData,
+  GetWorkoutTypesByIdResponse,
+  GetWorkoutTypesByIdError,
+  PatchWorkoutTypesByIdData,
+  PatchWorkoutTypesByIdResponse,
+  PatchWorkoutTypesByIdError,
   PostWeightData,
   PostWeightResponse,
   PostWeightError,
+  GetWeightByIdData,
+  GetWeightByIdResponse,
+  GetWeightByIdError,
+  PatchWeightByIdData,
+  PatchWeightByIdResponse,
+  PatchWeightByIdError,
   GetArgusCheckinData,
   GetArgusCheckinResponse,
   GetArgusCheckinError,
   GetArgusCheckinTypesData,
   GetArgusCheckinTypesResponse,
   GetArgusCheckinTypesError,
+  GetEntriesData,
+  GetEntriesResponse,
+  GetEntriesError,
+  GetEntriesOwnData,
+  GetEntriesOwnResponse,
+  GetEntriesOwnError,
+  GetCrmUsersData,
+  GetCrmUsersResponse,
+  GetCrmUsersError,
+  GetCrmManagersData,
+  GetCrmManagersResponse,
+  GetCrmManagersError,
+  PostCrmAuthLoginData,
+  PostCrmAuthLoginResponse,
+  PostCrmAuthLoginError,
 } from './types.gen';
 import {client as _heyApiClient} from './client.gen';
 import {
   getExercisesResponseTransformer,
+  postExercisesResponseTransformer,
   putExercisesResponseTransformer,
+  getExercisesBuiltInResponseTransformer,
   getExercisesByIdResponseTransformer,
   getWorkoutsResponseTransformer,
+  postWorkoutsResponseTransformer,
   putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
-  putWorkoutsByIdResponseTransformer,
+  patchWorkoutsByIdResponseTransformer,
+  getWorkoutPlansResponseTransformer,
+  postWorkoutPlansResponseTransformer,
+  getWorkoutPlansByIdResponseTransformer,
+  patchWorkoutPlansByIdResponseTransformer,
+  getWorkoutTypesResponseTransformer,
+  postWorkoutTypesResponseTransformer,
+  getWorkoutTypesByIdResponseTransformer,
+  patchWorkoutTypesByIdResponseTransformer,
   postWeightResponseTransformer,
+  getWeightByIdResponseTransformer,
+  patchWeightByIdResponseTransformer,
   getArgusCheckinResponseTransformer,
+  getEntriesResponseTransformer,
+  getEntriesOwnResponseTransformer,
+  getCrmManagersResponseTransformer,
 } from './transformers.gen';
 
 export type Options<
@@ -171,6 +238,7 @@ export const postExercises = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
+    responseTransformer: postExercisesResponseTransformer,
     url: '/exercises',
     ...options,
     headers: {
@@ -208,6 +276,23 @@ export const putExercises = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Returns data on exercises available to the user
+ */
+export const getExercisesBuiltIn = <ThrowOnError extends boolean = false>(
+  options?: Options<GetExercisesBuiltInData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetExercisesBuiltInResponse,
+    GetExercisesBuiltInError,
+    ThrowOnError
+  >({
+    responseTransformer: getExercisesBuiltInResponseTransformer,
+    url: '/exercises/built-in',
+    ...options,
+  });
+};
+
+/**
  * Deletes exercise from users personal library
  */
 export const deleteExercisesById = <ThrowOnError extends boolean = false>(
@@ -234,7 +319,7 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Returns data on an exercise available to the user
+ * Returns data on an library exercise available
  */
 export const getExercisesById = <ThrowOnError extends boolean = false>(
   options: Options<GetExercisesByIdData, ThrowOnError>
@@ -244,12 +329,6 @@ export const getExercisesById = <ThrowOnError extends boolean = false>(
     GetExercisesByIdError,
     ThrowOnError
   >({
-    security: [
-      {
-        name: 'authorization',
-        type: 'apiKey',
-      },
-    ],
     responseTransformer: getExercisesByIdResponseTransformer,
     url: '/exercises/{id}',
     ...options,
@@ -283,7 +362,7 @@ export const patchExercisesById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Returns list of users workouts
+ * Returns list of user workouts
  */
 export const getWorkouts = <ThrowOnError extends boolean = false>(
   options?: Options<GetWorkoutsData, ThrowOnError>
@@ -322,6 +401,7 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
+    responseTransformer: postWorkoutsResponseTransformer,
     url: '/workouts',
     ...options,
     headers: {
@@ -424,6 +504,7 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
+    responseTransformer: patchWorkoutsByIdResponseTransformer,
     url: '/workouts/{id}',
     ...options,
     headers: {
@@ -434,14 +515,14 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Updates or inserts workout for user
+ * Returns list of user workout plans
  */
-export const putWorkoutsById = <ThrowOnError extends boolean = false>(
-  options?: Options<PutWorkoutsByIdData, ThrowOnError>
+export const getWorkoutPlans = <ThrowOnError extends boolean = false>(
+  options?: Options<GetWorkoutPlansData, ThrowOnError>
 ) => {
-  return (options?.client ?? _heyApiClient).put<
-    PutWorkoutsByIdResponse,
-    PutWorkoutsByIdError,
+  return (options?.client ?? _heyApiClient).get<
+    GetWorkoutPlansResponse,
+    GetWorkoutPlansError,
     ThrowOnError
   >({
     security: [
@@ -450,8 +531,233 @@ export const putWorkoutsById = <ThrowOnError extends boolean = false>(
         type: 'apiKey',
       },
     ],
-    responseTransformer: putWorkoutsByIdResponseTransformer,
-    url: '/workouts/{id}',
+    responseTransformer: getWorkoutPlansResponseTransformer,
+    url: '/workout-plans',
+    ...options,
+  });
+};
+
+/**
+ * Adds new workout plan for the user
+ */
+export const postWorkoutPlans = <ThrowOnError extends boolean = false>(
+  options?: Options<PostWorkoutPlansData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostWorkoutPlansResponse,
+    PostWorkoutPlansError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: postWorkoutPlansResponseTransformer,
+    url: '/workout-plans',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Deletes workout plan
+ */
+export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteWorkoutPlansByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteWorkoutPlansByIdResponse,
+    DeleteWorkoutPlansByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    url: '/workout-plans/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on user workout plan
+ */
+export const getWorkoutPlansById = <ThrowOnError extends boolean = false>(
+  options: Options<GetWorkoutPlansByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetWorkoutPlansByIdResponse,
+    GetWorkoutPlansByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: getWorkoutPlansByIdResponseTransformer,
+    url: '/workout-plans/{id}',
+    ...options,
+  });
+};
+
+/**
+ * Updated workout plan for the user
+ */
+export const patchWorkoutPlansById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchWorkoutPlansByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchWorkoutPlansByIdResponse,
+    PatchWorkoutPlansByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: patchWorkoutPlansByIdResponseTransformer,
+    url: '/workout-plans/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<GetWorkoutTypesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetWorkoutTypesResponse,
+    GetWorkoutTypesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: getWorkoutTypesResponseTransformer,
+    url: '/workout-types',
+    ...options,
+  });
+};
+
+/**
+ * Adds new workout type for the user
+ */
+export const postWorkoutTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<PostWorkoutTypesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostWorkoutTypesResponse,
+    PostWorkoutTypesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: postWorkoutTypesResponseTransformer,
+    url: '/workout-types',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Deletes workout type
+ */
+export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteWorkoutTypesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteWorkoutTypesByIdResponse,
+    DeleteWorkoutTypesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    url: '/workout-types/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on user workout type
+ */
+export const getWorkoutTypesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetWorkoutTypesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetWorkoutTypesByIdResponse,
+    GetWorkoutTypesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: getWorkoutTypesByIdResponseTransformer,
+    url: '/workout-types/{id}',
+    ...options,
+  });
+};
+
+/**
+ * Updated workout type for the user
+ */
+export const patchWorkoutTypesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchWorkoutTypesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchWorkoutTypesByIdResponse,
+    PatchWorkoutTypesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: patchWorkoutTypesByIdResponseTransformer,
+    url: '/workout-types/{id}',
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -488,6 +794,56 @@ export const postWeight = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Gets own weight entry for the user
+ */
+export const getWeightById = <ThrowOnError extends boolean = false>(
+  options: Options<GetWeightByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetWeightByIdResponse,
+    GetWeightByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: getWeightByIdResponseTransformer,
+    url: '/weight/{id}',
+    ...options,
+  });
+};
+
+/**
+ * Updates own weight entry for the user
+ */
+export const patchWeightById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchWeightByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchWeightByIdResponse,
+    PatchWeightByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'authorization',
+        type: 'apiKey',
+      },
+    ],
+    responseTransformer: patchWeightByIdResponseTransformer,
+    url: '/weight/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * Returns data on all checkins from Argus
  */
 export const getArgusCheckin = <ThrowOnError extends boolean = false>(
@@ -515,13 +871,100 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
     GetArgusCheckinTypesError,
     ThrowOnError
   >({
+    url: '/argus/checkin/types',
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntriesResponse,
+    GetEntriesError,
+    ThrowOnError
+  >({
+    responseTransformer: getEntriesResponseTransformer,
+    url: '/entries',
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOwn = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesOwnData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntriesOwnResponse,
+    GetEntriesOwnError,
+    ThrowOnError
+  >({
     security: [
       {
         name: 'authorization',
         type: 'apiKey',
       },
     ],
-    url: '/argus/checkin/types',
+    responseTransformer: getEntriesOwnResponseTransformer,
+    url: '/entries/own',
     ...options,
+  });
+};
+
+/**
+ * Returns list of users
+ */
+export const getCrmUsers = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmUsersData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmUsersResponse,
+    GetCrmUsersError,
+    ThrowOnError
+  >({
+    url: '/crm/users',
+    ...options,
+  });
+};
+
+/**
+ * Returns list of managers
+ */
+export const getCrmManagers = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmManagersData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmManagersResponse,
+    GetCrmManagersError,
+    ThrowOnError
+  >({
+    responseTransformer: getCrmManagersResponseTransformer,
+    url: '/crm/managers',
+    ...options,
+  });
+};
+
+/**
+ * Logins a manager into CRM
+ */
+export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<PostCrmAuthLoginData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostCrmAuthLoginResponse,
+    PostCrmAuthLoginError,
+    ThrowOnError
+  >({
+    url: '/crm/auth/login',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
   });
 };

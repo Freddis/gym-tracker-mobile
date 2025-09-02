@@ -219,7 +219,7 @@ export class WorkoutService {
       const finalizedExercises = exercises.map((exercise) => {
         const localExerciseId = libraryExerciseMap.get(exercise.exerciseId);
         if (!localExerciseId) {
-          throw new Error('Exercise not found');
+          throw new Error(`Exercise not found ${exercise.exerciseId}`);
         }
         const savedWorkout = workoutMap.get(exercise.workoutId);
         if (!savedWorkout) {
@@ -239,7 +239,7 @@ export class WorkoutService {
       const finalizedExerciseSets = sets.map((set) => {
         const localExerciseId = libraryExerciseMap.get(set.exerciseId);
         if (!localExerciseId) {
-          throw new Error('Exercise not found');
+          throw new Error(`Exercise for set not found ${set.exerciseId}`);
         }
         const savedWorkout = workoutMap.get(set.workoutId);
         if (!savedWorkout) {

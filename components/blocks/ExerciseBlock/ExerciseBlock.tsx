@@ -33,7 +33,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
       <Pressable onPress={onPress}>
         <View style={{flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10}}>
           <Image style={imgStyle} src={item.images[0]} />
-          <ThemedText style={{fontSize: 14, padding: 15}}>{item.name}</ThemedText>
+          <ThemedText style={{fontSize: 14, padding: 15}}>{item.name}({item.externalId})</ThemedText>
           {item.variations && (
             <View style={{flexGrow: 1, flexDirection: 'row-reverse', paddingRight: 5}}>
               <ThemedIcon size={20} name="chevron.down" />

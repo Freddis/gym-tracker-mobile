@@ -131,38 +131,44 @@ export class ExerciseService {
 
   async pullFromServer(db: DrizzleDb): Promise<boolean> {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
-    const response = await openApiRequest(getExercises, {
-      query: {
-        updatedAfter: lastUpdateFromServer ?? undefined,
-      },
-    });
-    if (response.error) {
-      return false;
-    }
-    if (response.data.items.length === 0) {
-      return true;
-    }
-    const newRows: NewModel<AppExercise>[] = Array(response.data.items.length);
-    let i = 0;
-    for (const exercise of response.data.items) {
-      const newRow: NewModel<AppExercise> = {
-        params: exercise.params,
-        name: exercise.name,
-        description: exercise.description,
-        difficulty: exercise.difficulty,
-        equipmentId: exercise.equipmentId,
-        images: exercise.images,
-        userId: exercise.userId,
-        copiedFromId: exercise.copiedFromId,
-        parentExerciseId: exercise.parentExerciseId,
-        createdAt: exercise.createdAt,
-        updatedAt: exercise.updatedAt,
-        deletedAt: exercise.deletedAt,
-        externalId: exercise.id,
-        lastPulledAt: new Date(),
-        lastPushedAt: new Date(),
-      };
-      newRows[i++] = newRow;
+    const newRows: NewModel<AppExercise>[] = [];
+    let page = 1;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const response = await getExercises({
+        query: {
+          updatedAfter: lastUpdateFromServer ?? undefined,
+          includeBuiltIn: true,
+          page: page++,
+        },
+      });
+      if (response.error) {
+        return false;
+      }
+
+      for (const exercise of response.data.items) {
+        const row: NewModel<AppExercise> = {
+          params: exercise.params,
+          name: exercise.name,
+          description: exercise.description,
+          difficulty: exercise.difficulty,
+          equipment: exercise.equipment,
+          images: exercise.images,
+          userId: exercise.userId,
+          copiedFromId: exercise.copiedFromId,
+          parentExerciseId: exercise.parentExerciseId,
+          createdAt: exercise.createdAt,
+          updatedAt: exercise.updatedAt,
+          deletedAt: exercise.deletedAt,
+          externalId: exercise.id,
+          lastPulledAt: new Date(),
+          lastPushedAt: new Date(),
+        };
+        newRows.push(row);
+      }
+      if (response.data.items.length < response.data.info.pageSize) {
+        break;
+      }
     }
     await db.transaction(async (db) => {
       await processInBatches(newRows, 200, async (rows) => {

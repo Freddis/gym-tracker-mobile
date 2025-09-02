@@ -85,6 +85,13 @@
       "when": 1744885974772,
       "tag": "0011_synced_entities_deletion",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1756803492138,
+      "tag": "0012_exercise_equipment",
+      "breakpoints": true
     }
   ]
 }
