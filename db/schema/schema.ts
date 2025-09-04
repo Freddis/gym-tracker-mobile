@@ -22,7 +22,7 @@ export const exercises = sqliteTable('exercises', {
 export const workouts = sqliteTable('workouts', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
   externalId: integer().unique(),
-  typeId: integer(),
+  typeId: integer().references(() => workoutTypes.id),
   userId: integer().notNull(),
   calories: real().notNull(),
   start: integer({mode: 'timestamp'}).notNull(),
@@ -68,3 +68,40 @@ export const users = sqliteTable('users', {
   updatedAt: integer({mode: 'timestamp'}),
 });
 
+export const workoutTypes = sqliteTable('workout_type', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer().unique(),
+  userId: integer().notNull(),
+  planIndex: integer(),
+  planId: integer(),
+  name: text(),
+  description: text(),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+  deletedAt: integer({mode: 'timestamp'}),
+  lastPulledAt: integer({mode: 'timestamp'}),
+  lastPushedAt: integer({mode: 'timestamp'}),
+});
+
+export const workoutTypeExercises = sqliteTable('workout_type_exercise', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  userId: integer().notNull(),
+  index: integer().notNull(),
+  workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
+  exerciseId: integer().notNull().references(() => exercises.id, {onDelete: 'restrict'}),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+  deletedAt: integer({mode: 'timestamp'}),
+});
+
+export const workoutTypeExerciseSets = sqliteTable('workout_type_exercise_sets', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  reps: integer(),
+  exerciseId: integer().notNull().references(() => exercises.id, {onDelete: 'cascade'}),
+  workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
+  userId: integer().notNull(),
+  workoutTypeExerciseId: integer().notNull().references(() => workoutTypeExercises.id, {onDelete: 'cascade'}),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+  deletedAt: integer({mode: 'timestamp'}),
+});

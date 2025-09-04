@@ -56,6 +56,9 @@ export const WorkoutListScreen: FC = () => {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{title: 'Workout List', headerShown: false}} />
       <ThemedText type="title" style={{padding: 10}}>Workouts & Plans</ThemedText>
+      <Link href={'./workoutTypeList'} asChild>
+        <Button title="Workout Types"></Button>
+      </Link>
       <Link href={'./editWorkout'} asChild>
         <Button title="New Workout"></Button>
       </Link>

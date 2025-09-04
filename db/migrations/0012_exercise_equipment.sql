@@ -18,7 +18,9 @@ CREATE TABLE `__new_exercises` (
 	`lastPushedAt` integer
 );
 --> statement-breakpoint
-INSERT INTO `__new_exercises`("id", "externalId", "name", "description", "difficulty", "equipment", "images", "params", "userId", "copiedFromId", "parentExerciseId", "createdAt", "updatedAt", "deletedAt", "lastPulledAt", "lastPushedAt") SELECT "id", "externalId", "name", "description", "difficulty", "equipment", "images", "params", "userId", "copiedFromId", "parentExerciseId", "createdAt", "updatedAt", "deletedAt", "lastPulledAt", "lastPushedAt" FROM `exercises`;--> statement-breakpoint
+
+--INSERT INTO `__new_exercises`("id", "externalId", "name", "description", "difficulty", "equipment", "images", "params", "userId", "copiedFromId", "parentExerciseId", "createdAt", "updatedAt", "deletedAt", "lastPulledAt", "lastPushedAt") SELECT "id", "externalId", "name", "description", "difficulty", "equipment", "images", "params", "userId", "copiedFromId", "parentExerciseId", "createdAt", "updatedAt", "deletedAt", "lastPulledAt", "lastPushedAt" FROM `exercises`
+
 DROP TABLE `exercises`;--> statement-breakpoint
 ALTER TABLE `__new_exercises` RENAME TO `exercises`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;--> statement-breakpoint

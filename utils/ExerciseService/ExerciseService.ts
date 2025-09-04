@@ -4,12 +4,22 @@ import {ExerciseUpsertDto, getExercises, putExercises} from '@/openapi-client';
 import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
-import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
+import {conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {processInBatches} from '../processInBatches';
 
 
 export class ExerciseService {
+
+  async findByExternalId(id: number): Promise<AppExercise> {
+    const res = await db.query.exercises.findFirst({
+      where: (t, op) => op.eq(t.externalId, id),
+    });
+    if (!res) {
+      throw new Error('Exercise not found');
+    }
+    return res;
+  }
   protected logger: Logger = new Logger(ExerciseService.name);
 
   processExerciseList(

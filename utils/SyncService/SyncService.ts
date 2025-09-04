@@ -2,16 +2,19 @@ import {DrizzleDb} from '../drizzle';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {Logger} from '../Logger/Logger';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
+import {WorkoutTypeService} from '../WorkoutTypeService/WorkoutTypeService';
 import {Progress} from './types/Progress';
 import {Stage} from './types/Stage';
 export class SyncService {
   protected workoutService: WorkoutService;
   protected exerciseService: ExerciseService;
   protected logger: Logger;
+  protected workoutTypeService: WorkoutTypeService;
 
-  constructor(workouts: WorkoutService, exercises: ExerciseService) {
+  constructor(workouts: WorkoutService, exercises: ExerciseService, workoutTypes: WorkoutTypeService) {
     this.workoutService = workouts;
     this.exerciseService = exercises;
+    this.workoutTypeService = workoutTypes;
     this.logger = new Logger(this.constructor.name);
   }
 
@@ -90,6 +93,11 @@ export class SyncService {
         name: 'Pulling Exercises',
         errorMsg: "Couldn't pull exercises",
         action: this.exerciseService.pullFromServer.bind(this.exerciseService),
+      },
+      {
+        name: 'Pulling Workout Types',
+        errorMsg: "Couldn't pull workoutTypes",
+        action: this.workoutTypeService.pullFromServer.bind(this.workoutTypeService),
       },
       {
         name: 'Pulling Workouts',

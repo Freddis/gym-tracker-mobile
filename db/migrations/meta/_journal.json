@@ -92,6 +92,13 @@
       "when": 1756803492138,
       "tag": "0012_exercise_equipment",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1756978307379,
+      "tag": "0013_workout_types",
+      "breakpoints": true
     }
   ]
 }

@@ -6,7 +6,7 @@ import {SQLiteTable, SQLiteUpdateSetSource} from 'drizzle-orm/sqlite-core';
 import {getTableColumns, sql, SQL} from 'drizzle-orm';
 
 const expo = openDatabaseSync('db.db', {});
-const db = drizzle(expo, {
+export const db = drizzle(expo, {
   schema: {...schema, ...relations},
   logger: new QueryLogger(false, true, 'mysql'),
 });
