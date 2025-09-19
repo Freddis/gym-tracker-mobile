@@ -1,6 +1,7 @@
-import {DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {Logger} from '../Logger/Logger';
+import {transactionAsync} from '../runTransaction';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {WorkoutTypeService} from '../WorkoutTypeService/WorkoutTypeService';
 import {Progress} from './types/Progress';
@@ -40,6 +41,7 @@ export class SyncService {
   ): Promise<Progress> {
     const itemsNumber = stages.length;
     let itemsDone = 0;
+
     for (const stage of stages) {
       const state: Progress = {
         currentStageName: stage.name,
@@ -51,7 +53,8 @@ export class SyncService {
       };
       try {
         callback(state);
-        const success = await stage.action(db, userId);
+        const db = await asyncDrizzle();
+        const success = await transactionAsync(db, async (trx) => stage.action(trx, userId));
         if (!success) {
           const newState: Progress = {
             ...state,
@@ -74,6 +77,7 @@ export class SyncService {
         callback(errState);
         return errState;
       }
+
     }
     const final: Progress = {
       currentStageName: stages[stages.length - 1]?.name ?? 'Done',
@@ -85,6 +89,7 @@ export class SyncService {
     };
     callback(final);
     return final;
+
   }
 
   protected getSyncStages(): Stage[] {
@@ -120,6 +125,11 @@ export class SyncService {
 
   protected getWipeStages(): Stage[] {
     const stages: Stage[] = [
+      {
+        name: 'Wiping Workout Types',
+        action: this.workoutTypeService.wipeLocalData.bind(this.workoutTypeService),
+        errorMsg: "Couldn't delete workout types",
+      },
       {
         name: 'Wiping Workouts',
         action: this.workoutService.wipeLocalData.bind(this.workoutService),

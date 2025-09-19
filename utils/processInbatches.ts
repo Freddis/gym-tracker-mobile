@@ -10,6 +10,9 @@ export const processInBatches = async <T, X>(arr: T[], batchSize: number, callba
     const from = (currentIndex++) * batchSize;
     const to = from + batchSize;
     rows = arr.slice(from, to);
+    if (rows.length === 0) {
+      break;
+    }
     const res = await callback(rows);
     result.push(...res);
   } while (rows.length >= batchSize);

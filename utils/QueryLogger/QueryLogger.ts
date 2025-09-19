@@ -4,6 +4,7 @@ export class QueryLogger implements Logger {
   protected isProductionLike: boolean;
   protected useColors: boolean;
   protected dbType: 'mysql' | 'postgres';
+  protected prevLog?: string;
 
   constructor(isProductionLike = false, useColors = true, dbType: 'mysql' | 'postgres' = 'postgres') {
     this.isProductionLike = isProductionLike;
@@ -16,7 +17,6 @@ export class QueryLogger implements Logger {
     if (this.isProductionLike) {
       return;
     }
-
     const useColors = this.useColors;
     let sql = query;
     parameters?.forEach((value, index) => {
@@ -62,6 +62,8 @@ export class QueryLogger implements Logger {
       'returning',
       'delete',
       'pragma',
+      'begin',
+      'commit',
     ];
     const keywordRegex = new RegExp(`(${keywords.join('|')})([^a-zA-Z0-9])`, 'g');
     const color = useColors ? '\x1b[36m' : '';
@@ -86,6 +88,13 @@ export class QueryLogger implements Logger {
       }
       return x;
     }).join(',')}]`;
+
+    if (this.prevLog === sql && sql.includes(`${color}limit${reset} 1`)) {
+      console.log('\nRemoved findFirst() log duplication (drizzle bug)');
+      return;
+    }
+    this.prevLog = sql;
+
     console.log(`\n${paramString}${sql}`);
   }
 }

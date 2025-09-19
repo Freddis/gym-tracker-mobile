@@ -37,6 +37,14 @@ import {
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
+  getCrmTranslationsById,
+  patchCrmTranslationsById,
+  getCrmTranslations,
+  getCrmExercisesById,
+  patchCrmExercisesById,
+  getCrmExercises,
+  getCrmImages,
+  deleteCrmImagesById,
 } from '../sdk.gen';
 import {
   queryOptions,
@@ -138,6 +146,26 @@ import type {
   PostCrmAuthLoginData,
   PostCrmAuthLoginError,
   PostCrmAuthLoginResponse,
+  GetCrmTranslationsByIdData,
+  PatchCrmTranslationsByIdData,
+  PatchCrmTranslationsByIdError,
+  PatchCrmTranslationsByIdResponse,
+  GetCrmTranslationsData,
+  GetCrmTranslationsError,
+  GetCrmTranslationsResponse,
+  GetCrmExercisesByIdData,
+  PatchCrmExercisesByIdData,
+  PatchCrmExercisesByIdError,
+  PatchCrmExercisesByIdResponse,
+  GetCrmExercisesData,
+  GetCrmExercisesError,
+  GetCrmExercisesResponse,
+  GetCrmImagesData,
+  GetCrmImagesError,
+  GetCrmImagesResponse,
+  DeleteCrmImagesByIdData,
+  DeleteCrmImagesByIdError,
+  DeleteCrmImagesByIdResponse,
 } from '../types.gen';
 import type {AxiosError} from 'axios';
 import {client as _heyApiClient} from '../client.gen';
@@ -1657,6 +1685,324 @@ export const postCrmAuthLoginMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const {data} = await postCrmAuthLogin({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCrmTranslationsByIdQueryKey = (
+  options: Options<GetCrmTranslationsByIdData>
+) => createQueryKey('getCrmTranslationsById', options);
+
+export const getCrmTranslationsByIdOptions = (
+  options: Options<GetCrmTranslationsByIdData>
+) => {
+  return queryOptions({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getCrmTranslationsById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmTranslationsByIdQueryKey(options),
+  });
+};
+
+export const patchCrmTranslationsByIdMutation = (
+  options?: Partial<Options<PatchCrmTranslationsByIdData>>
+): UseMutationOptions<
+  PatchCrmTranslationsByIdResponse,
+  AxiosError<PatchCrmTranslationsByIdError>,
+  Options<PatchCrmTranslationsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchCrmTranslationsByIdResponse,
+    AxiosError<PatchCrmTranslationsByIdError>,
+    Options<PatchCrmTranslationsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const {data} = await patchCrmTranslationsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCrmTranslationsQueryKey = (
+  options?: Options<GetCrmTranslationsData>
+) => createQueryKey('getCrmTranslations', options);
+
+export const getCrmTranslationsOptions = (
+  options?: Options<GetCrmTranslationsData>
+) => {
+  return queryOptions({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getCrmTranslations({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmTranslationsQueryKey(options),
+  });
+};
+
+export const getCrmTranslationsInfiniteQueryKey = (
+  options?: Options<GetCrmTranslationsData>
+): QueryKey<Options<GetCrmTranslationsData>> =>
+  createQueryKey('getCrmTranslations', options, true);
+
+export const getCrmTranslationsInfiniteOptions = (
+  options?: Options<GetCrmTranslationsData>
+) => {
+  return infiniteQueryOptions<
+    GetCrmTranslationsResponse,
+    AxiosError<GetCrmTranslationsError>,
+    InfiniteData<GetCrmTranslationsResponse>,
+    QueryKey<Options<GetCrmTranslationsData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmTranslationsData>>[0],
+        'body' | 'headers' | 'path' | 'query'
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({pageParam, queryKey, signal}) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmTranslationsData>>[0],
+          'body' | 'headers' | 'path' | 'query'
+        > =
+          typeof pageParam === 'object'
+            ? pageParam
+            : {
+              query: {
+                page: pageParam,
+              },
+            };
+        const params = createInfiniteParams(queryKey, page);
+        const {data} = await getCrmTranslations({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmTranslationsInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const getCrmExercisesByIdQueryKey = (
+  options: Options<GetCrmExercisesByIdData>
+) => createQueryKey('getCrmExercisesById', options);
+
+export const getCrmExercisesByIdOptions = (
+  options: Options<GetCrmExercisesByIdData>
+) => {
+  return queryOptions({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getCrmExercisesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmExercisesByIdQueryKey(options),
+  });
+};
+
+export const patchCrmExercisesByIdMutation = (
+  options?: Partial<Options<PatchCrmExercisesByIdData>>
+): UseMutationOptions<
+  PatchCrmExercisesByIdResponse,
+  AxiosError<PatchCrmExercisesByIdError>,
+  Options<PatchCrmExercisesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchCrmExercisesByIdResponse,
+    AxiosError<PatchCrmExercisesByIdError>,
+    Options<PatchCrmExercisesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const {data} = await patchCrmExercisesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCrmExercisesQueryKey = (
+  options?: Options<GetCrmExercisesData>
+) => createQueryKey('getCrmExercises', options);
+
+export const getCrmExercisesOptions = (
+  options?: Options<GetCrmExercisesData>
+) => {
+  return queryOptions({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getCrmExercises({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmExercisesQueryKey(options),
+  });
+};
+
+export const getCrmExercisesInfiniteQueryKey = (
+  options?: Options<GetCrmExercisesData>
+): QueryKey<Options<GetCrmExercisesData>> =>
+  createQueryKey('getCrmExercises', options, true);
+
+export const getCrmExercisesInfiniteOptions = (
+  options?: Options<GetCrmExercisesData>
+) => {
+  return infiniteQueryOptions<
+    GetCrmExercisesResponse,
+    AxiosError<GetCrmExercisesError>,
+    InfiniteData<GetCrmExercisesResponse>,
+    QueryKey<Options<GetCrmExercisesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmExercisesData>>[0],
+        'body' | 'headers' | 'path' | 'query'
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({pageParam, queryKey, signal}) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmExercisesData>>[0],
+          'body' | 'headers' | 'path' | 'query'
+        > =
+          typeof pageParam === 'object'
+            ? pageParam
+            : {
+              query: {
+                page: pageParam,
+              },
+            };
+        const params = createInfiniteParams(queryKey, page);
+        const {data} = await getCrmExercises({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmExercisesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const getCrmImagesQueryKey = (options?: Options<GetCrmImagesData>) =>
+  createQueryKey('getCrmImages', options);
+
+export const getCrmImagesOptions = (options?: Options<GetCrmImagesData>) => {
+  return queryOptions({
+    queryFn: async ({queryKey, signal}) => {
+      const {data} = await getCrmImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmImagesQueryKey(options),
+  });
+};
+
+export const getCrmImagesInfiniteQueryKey = (
+  options?: Options<GetCrmImagesData>
+): QueryKey<Options<GetCrmImagesData>> =>
+  createQueryKey('getCrmImages', options, true);
+
+export const getCrmImagesInfiniteOptions = (
+  options?: Options<GetCrmImagesData>
+) => {
+  return infiniteQueryOptions<
+    GetCrmImagesResponse,
+    AxiosError<GetCrmImagesError>,
+    InfiniteData<GetCrmImagesResponse>,
+    QueryKey<Options<GetCrmImagesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmImagesData>>[0],
+        'body' | 'headers' | 'path' | 'query'
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({pageParam, queryKey, signal}) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmImagesData>>[0],
+          'body' | 'headers' | 'path' | 'query'
+        > =
+          typeof pageParam === 'object'
+            ? pageParam
+            : {
+              query: {
+                page: pageParam,
+              },
+            };
+        const params = createInfiniteParams(queryKey, page);
+        const {data} = await getCrmImages({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmImagesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const deleteCrmImagesByIdMutation = (
+  options?: Partial<Options<DeleteCrmImagesByIdData>>
+): UseMutationOptions<
+  DeleteCrmImagesByIdResponse,
+  AxiosError<DeleteCrmImagesByIdError>,
+  Options<DeleteCrmImagesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteCrmImagesByIdResponse,
+    AxiosError<DeleteCrmImagesByIdError>,
+    Options<DeleteCrmImagesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const {data} = await deleteCrmImagesById({
         ...options,
         ...localOptions,
         throwOnError: true,

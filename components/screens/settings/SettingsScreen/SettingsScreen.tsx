@@ -27,12 +27,17 @@ export const SettingsScreen: FC = () => {
   const toggleTheme = () => {
     Appearance.setColorScheme(theme === 'dark' ? 'light' : 'dark');
   };
-  const syncWithServer = async () => {
+  const syncWithServerButtonPress = async () => {
     const result = await syncService.syncWithServer(db, userId, (data) => setProgressState({...data}));
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
   };
   const wipeLocalData = async () => {
+    const result = await syncService.wipeLocalData(db, userId, (data) => setProgressState({...data}));
+    const title = result.error ? 'Error' : 'Done';
+    Alert.alert(title, result.message);
+  };
+  const wipeLocalDataButtonPress = async () => {
     Alert.alert(
       'Warning',
       'Are you sure you want to delete local data?',
@@ -43,7 +48,7 @@ export const SettingsScreen: FC = () => {
         },
         {
           text: 'Yes',
-          onPress: () => syncService.wipeLocalData(db, userId, (data) => setProgressState({...data})),
+          onPress: () => wipeLocalData(),
         },
       ]
     );
@@ -80,10 +85,10 @@ export const SettingsScreen: FC = () => {
             </View>
           </View>
           <View>
-            <Button onPress={syncWithServer} title="Sync Data With Server"/>
+            <Button onPress={syncWithServerButtonPress} title="Sync Data With Server"/>
           </View>
           <View style={{marginTop: 20}}>
-            <Button onPress={wipeLocalData} title="Wipe Local Data" />
+            <Button onPress={wipeLocalDataButtonPress} title="Wipe Local Data" />
           </View>
           <View style={{marginTop: 20}}>
             <Button onPress={performSignOut} title="Sign Out" />

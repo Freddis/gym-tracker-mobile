@@ -1,6 +1,5 @@
-import {getWorkouts, putWorkouts, WorkoutUpsertDto} from '@/openapi-client';
+import {getWorkouts, putWorkouts, Workout, WorkoutUpsertDto} from '@/openapi-client';
 import {DrizzleDb, conflictUpdateSetAllColumns} from '../drizzle';
-import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
 import {eq, inArray} from 'drizzle-orm';
@@ -133,25 +132,12 @@ export class WorkoutService {
     );
     return true;
   }
-
-  async pullFromServer(db: DrizzleDb): Promise<boolean> {
-    const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
-    const response = await openApiRequest(getWorkouts, {
-      query: {
-        updatedAfter: lastUpdateFromServer ?? undefined,
-      },
-    });
-    if (response.error) {
-      return false;
-    }
-    if (response.data.items.length === 0) {
-      return true;
-    }
+  protected async processedPulledItem(db: DrizzleDb, items: Workout[]): Promise<void> {
     const workouts: NewModel<AppWorkout>[] = [];
     const exercises: NewModel<AppWorkoutExercise>[] = [];
     const sets: NewModel<AppWorkoutExerciseSet>[] = [];
     const externalExerciseIds: number[] = [];
-    for (const workout of response.data.items) {
+    for (const workout of items) {
       const newWorkoutRow: NewModel<AppWorkout> = {
         externalId: workout.id,
         typeId: workout.typeId,
@@ -169,27 +155,27 @@ export class WorkoutService {
       for (const row of workout.exercises) {
         externalExerciseIds.push(row.exercise.id);
         exercises.push({
-          externalId: row.id,
+          externalId: 0,
           userId: workout.userId,
-          createdAt: row.createdAt,
-          updatedAt: row.updatedAt,
-          workoutId: row.workoutId,
-          exerciseId: row.exerciseId,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          workoutId: workout.id,
+          exerciseId: row.exercise.id,
         });
         for (const set of row.sets) {
           const newSetRow: NewModel<AppWorkoutExerciseSet> = {
-            externalId: set.id,
+            externalId: 0,
             userId: workout.userId,
             start: set.start,
             end: set.end,
-            createdAt: set.createdAt,
-            updatedAt: set.updatedAt,
-            workoutId: set.workoutId,
-            exerciseId: set.exerciseId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            workoutId: workout.id,
+            exerciseId: row.exercise.id,
             weight: set.weight,
             finished: true, // todo: change that
             reps: set.reps,
-            workoutExerciseId: set.workoutExerciseId,
+            workoutExerciseId: 0, // will be overriden
           };
           sets.push(newSetRow);
         }
@@ -202,63 +188,87 @@ export class WorkoutService {
       },
       where: (t, op) => op.inArray(t.externalId, externalExerciseIds),
     });
-    await db.transaction(async (db) => {
-      const savedWorkouts = await this.saveWorkouts(db, workouts);
-      const workoutIds = savedWorkouts.map((x) => x.id);
-      await db.delete(schema.workoutExerciseSets).where(
+    // await db.transaction(async (db) => {
+    const savedWorkouts = await this.saveWorkouts(db, workouts);
+    const workoutIds = savedWorkouts.map((x) => x.id);
+    await db.delete(schema.workoutExerciseSets).where(
       inArray(schema.workoutExerciseSets.workoutId, workoutIds)
     );
-      await db.delete(schema.workoutExercises).where(
+    await db.delete(schema.workoutExercises).where(
       inArray(schema.workoutExercises.workoutId, workoutIds)
     );
-      const workoutMap = savedWorkouts.reduce((acc, cur) => acc.set(cur.externalId ?? 0, cur), new Map<number, AppWorkout>());
-      const libraryExerciseMap = libraryExercises.reduce(
+    const workoutMap = savedWorkouts.reduce((acc, cur) => acc.set(cur.externalId ?? 0, cur), new Map<number, AppWorkout>());
+    const libraryExerciseMap = libraryExercises.reduce(
         (acc, cur) => acc.set(cur.externalId ?? 0, cur.id),
         new Map<number, number>()
       );
-      const finalizedExercises = exercises.map((exercise) => {
-        const localExerciseId = libraryExerciseMap.get(exercise.exerciseId);
-        if (!localExerciseId) {
-          throw new Error(`Exercise not found ${exercise.exerciseId}`);
-        }
-        const savedWorkout = workoutMap.get(exercise.workoutId);
-        if (!savedWorkout) {
-          throw new Error(`Workout ${exercise.workoutId} not found for exercise ${exercise.externalId}`);
-        }
-        return {
-          ...exercise,
-          workoutId: savedWorkout.id,
-          exerciseId: localExerciseId,
-        };
-      });
-      const savedWorkoutExercises = await this.saveExercises(db, finalizedExercises);
-      const workoutExerciseMap = savedWorkoutExercises.reduce(
+    const finalizedExercises = exercises.map((exercise) => {
+      const localExerciseId = libraryExerciseMap.get(exercise.exerciseId);
+      if (!localExerciseId) {
+        throw new Error(`Exercise not found ${exercise.exerciseId}`);
+      }
+      const savedWorkout = workoutMap.get(exercise.workoutId);
+      if (!savedWorkout) {
+        throw new Error(`Workout ${exercise.workoutId} not found for exercise ${exercise.externalId}`);
+      }
+      return {
+        ...exercise,
+        workoutId: savedWorkout.id,
+        exerciseId: localExerciseId,
+      };
+    });
+    const savedWorkoutExercises = await this.saveExercises(db, finalizedExercises);
+    const workoutExerciseMap = savedWorkoutExercises.reduce(
         (acc, cur) => acc.set(cur.externalId ?? 0, cur),
          new Map<number, AppWorkoutExercise>()
       );
-      const finalizedExerciseSets = sets.map((set) => {
-        const localExerciseId = libraryExerciseMap.get(set.exerciseId);
-        if (!localExerciseId) {
-          throw new Error(`Exercise for set not found ${set.exerciseId}`);
-        }
-        const savedWorkout = workoutMap.get(set.workoutId);
-        if (!savedWorkout) {
-          throw new Error(`Workout ${set.workoutId} not found for exercise ${set.externalId}`);
-        }
-        const savedWorkoutExercise = workoutExerciseMap.get(set.workoutExerciseId);
-        if (!savedWorkoutExercise) {
-          throw new Error(`Workout exercise ${set.workoutId} not found for set: ${set.workoutExerciseId}`);
-        }
-        return {
-          ...set,
-          workoutId: savedWorkout.id,
-          exerciseId: localExerciseId,
-          workoutExerciseId: savedWorkoutExercise.id,
-        };
-      });
-      await this.saveSets(db, finalizedExerciseSets);
+    const finalizedExerciseSets = sets.map((set) => {
+      const localExerciseId = libraryExerciseMap.get(set.exerciseId);
+      if (!localExerciseId) {
+        throw new Error(`Exercise for set not found ${set.exerciseId}`);
+      }
+      const savedWorkout = workoutMap.get(set.workoutId);
+      if (!savedWorkout) {
+        throw new Error(`Workout ${set.workoutId} not found for exercise ${set.externalId}`);
+      }
+      const savedWorkoutExercise = workoutExerciseMap.get(set.workoutExerciseId);
+      if (!savedWorkoutExercise) {
+        throw new Error(`Workout exercise ${set.workoutId} not found for set: ${set.workoutExerciseId}`);
+      }
+      return {
+        ...set,
+        workoutId: savedWorkout.id,
+        exerciseId: localExerciseId,
+        workoutExerciseId: savedWorkoutExercise.id,
+      };
     });
-    return true;
+    await this.saveSets(db, finalizedExerciseSets);
+
+    // });
+  }
+
+  async pullFromServer(db: DrizzleDb): Promise<boolean> {
+    const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
+    // const result = await db.transaction(async (db) => {
+    let page = 1;
+          // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const response = await getWorkouts({
+        query: {
+          updatedAfter: lastUpdateFromServer ?? undefined,
+          page: page++,
+        },
+      });
+      if (response.error) {
+        return false;
+      }
+      await this.processedPulledItem(db, response.data.items);
+      if (response.data.items.length < response.data.info.pageSize) {
+        return true;
+      }
+    }
+    // });
+    // return result;
   }
 
   protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
@@ -288,6 +298,7 @@ export class WorkoutService {
   }
 
   protected async saveWorkouts(db: DrizzleDb, workouts: NewModel<AppWorkout>[]): Promise<AppWorkout[]> {
+
     const result = await processInBatches(workouts, 200, async (rows) => {
       const res = await db.insert(schema.workouts).values(rows).onConflictDoUpdate({
         target: schema.workouts.externalId,

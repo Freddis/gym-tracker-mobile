@@ -26,6 +26,12 @@ import type {
   GetEntriesResponse,
   GetEntriesOwnResponse,
   GetCrmManagersResponse,
+  GetCrmTranslationsByIdResponse,
+  PatchCrmTranslationsByIdResponse,
+  GetCrmTranslationsResponse,
+  GetCrmExercisesByIdResponse,
+  GetCrmExercisesResponse,
+  GetCrmImagesResponse,
 } from './types.gen';
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -97,18 +103,10 @@ const workoutExerciseSetSchemaResponseTransformer = (data: any) => {
   if (data.end) {
     data.end = new Date(data.end);
   }
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
   return data;
 };
 
 const workoutExerciseSchemaResponseTransformer = (data: any) => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
   data.exercise = exerciseSchemaResponseTransformer(data.exercise);
   data.sets = data.sets.map((item: any) => {
     return workoutExerciseSetSchemaResponseTransformer(item);
@@ -352,6 +350,76 @@ export const getCrmManagersResponseTransformer = async (
 ): Promise<GetCrmManagersResponse> => {
   data.items = data.items.map((item: any) => {
     return managerSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const translationSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const getCrmTranslationsByIdResponseTransformer = async (
+  data: any
+): Promise<GetCrmTranslationsByIdResponse> => {
+  data = translationSchemaResponseTransformer(data);
+  return data;
+};
+
+export const patchCrmTranslationsByIdResponseTransformer = async (
+  data: any
+): Promise<PatchCrmTranslationsByIdResponse> => {
+  data = translationSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getCrmTranslationsResponseTransformer = async (
+  data: any
+): Promise<GetCrmTranslationsResponse> => {
+  data.items = data.items.map((item: any) => {
+    return translationSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getCrmExercisesByIdResponseTransformer = async (
+  data: any
+): Promise<GetCrmExercisesByIdResponse> => {
+  data = exerciseSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getCrmExercisesResponseTransformer = async (
+  data: any
+): Promise<GetCrmExercisesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return exerciseSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const managedImageSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const getCrmImagesResponseTransformer = async (
+  data: any
+): Promise<GetCrmImagesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return managedImageSchemaResponseTransformer(item);
   });
   return data;
 };

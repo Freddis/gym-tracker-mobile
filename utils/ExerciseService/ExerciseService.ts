@@ -4,9 +4,10 @@ import {ExerciseUpsertDto, getExercises, putExercises} from '@/openapi-client';
 import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
-import {conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
+import {AsyncDrizzleDb, conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {processInBatches} from '../processInBatches';
+import {transactionAsync} from '../runTransaction';
 
 
 export class ExerciseService {
@@ -111,6 +112,10 @@ export class ExerciseService {
     }
     const rows: ExerciseUpsertDto[] = exercises.map((exercise) => ({
       ...exercise,
+      muscles: {
+        primary: [],
+        secondary: [],
+      },
       id: exercise.externalId ?? null,
     }));
     const response = await openApiRequest(putExercises, {
@@ -139,57 +144,60 @@ export class ExerciseService {
     return true;
   }
 
-  async pullFromServer(db: DrizzleDb): Promise<boolean> {
+  async pullFromServer(db: AsyncDrizzleDb): Promise<boolean> {
+    console.log('Pull');
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
-    const newRows: NewModel<AppExercise>[] = [];
-    let page = 1;
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const response = await getExercises({
-        query: {
-          updatedAfter: lastUpdateFromServer ?? undefined,
-          includeBuiltIn: true,
-          page: page++,
-        },
-      });
-      if (response.error) {
-        return false;
-      }
 
-      for (const exercise of response.data.items) {
-        const row: NewModel<AppExercise> = {
-          params: exercise.params,
-          name: exercise.name,
-          description: exercise.description,
-          difficulty: exercise.difficulty,
-          equipment: exercise.equipment,
-          images: exercise.images,
-          userId: exercise.userId,
-          copiedFromId: exercise.copiedFromId,
-          parentExerciseId: exercise.parentExerciseId,
-          createdAt: exercise.createdAt,
-          updatedAt: exercise.updatedAt,
-          deletedAt: exercise.deletedAt,
-          externalId: exercise.id,
-          lastPulledAt: new Date(),
-          lastPushedAt: new Date(),
-        };
-        newRows.push(row);
-      }
-      if (response.data.items.length < response.data.info.pageSize) {
-        break;
-      }
-    }
-    await db.transaction(async (db) => {
-      await processInBatches(newRows, 200, async (rows) => {
-        await db.insert(schema.exercises).values(rows).onConflictDoUpdate({
+    let page = 1;
+    const res = await transactionAsync(db, async (trx) => {
+    // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const response = await getExercises({
+          query: {
+            updatedAfter: lastUpdateFromServer ?? undefined,
+            includeBuiltIn: true,
+            page: page++,
+          },
+        });
+        if (response.error) {
+          return false;
+        }
+        const newRows: NewModel<AppExercise>[] = [];
+        for (const exercise of response.data.items) {
+          const row: NewModel<AppExercise> = {
+            params: exercise.params,
+            name: exercise.name,
+            description: exercise.description,
+            difficulty: exercise.difficulty,
+            equipment: exercise.equipment,
+            images: exercise.images,
+            userId: exercise.userId,
+            copiedFromId: exercise.copiedFromId,
+            parentExerciseId: exercise.parentExerciseId,
+            createdAt: exercise.createdAt,
+            updatedAt: exercise.updatedAt,
+            deletedAt: exercise.deletedAt,
+            externalId: exercise.id,
+            lastPulledAt: new Date(),
+            lastPushedAt: new Date(),
+          };
+          newRows.push(row);
+        }
+        if (newRows.length === 0) {
+          break;
+        }
+        await db.insert(schema.exercises).values(newRows).onConflictDoUpdate({
           target: schema.exercises.externalId,
           set: conflictUpdateSetAllColumns(schema.exercises),
         });
-        return [];
-      });
+
+        if (response.data.items.length < response.data.info.pageSize) {
+          break;
+        }
+      }
+      return true;
     });
-    return true;
+    return res;
   }
   protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
     const row = await db.query.exercises.findFirst({

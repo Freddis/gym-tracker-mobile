@@ -1,14 +1,17 @@
 import {getWorkoutTypes, WorkoutType} from '@/openapi-client';
-import {db, DrizzleDb} from '../drizzle';
+import {asyncDrizzle, AsyncDrizzleDb, db, DrizzleDb} from '../drizzle';
 import {WorkoutTypeRow} from './types/WorkoutTypeRow';
 import {NewModel} from '@/types/NewModel';
 import {WorkoutTypeExerciseSetRow} from './types/WorkoutTypeExerciseSetRow';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {WorkoutTypeExerciseRow} from './types/WorkoutTypeExerciseRow';
 import {AppWorkoutType} from './types/AppWorkoutType';
+import {Logger} from '../Logger/Logger';
+import {transactionAsync} from '../runTransaction';
 
 export class WorkoutTypeService {
   protected exerciseService: ExerciseService;
+  protected logger: Logger = new Logger(WorkoutTypeService.name);
 
   constructor(exerciseService: ExerciseService) {
     this.exerciseService = exerciseService;
@@ -24,7 +27,17 @@ export class WorkoutTypeService {
     }));
     return result;
   }
-
+  async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+    try {
+      await db.delete(db._.fullSchema.workoutTypeExerciseSets);
+      await db.delete(db._.fullSchema.workoutTypeExercises);
+      await db.delete(db._.fullSchema.workoutTypes);
+    } catch (e: unknown) {
+      this.logger.error('Error during wiping local data', e);
+      return false;
+    }
+    return true;
+  }
   protected async processedPulledItem(db: DrizzleDb, items: WorkoutType[]): Promise<void> {
     const sets: NewModel<WorkoutTypeExerciseSetRow>[] = [];
     for (const remoteWorkoutType of items) {
@@ -43,10 +56,9 @@ export class WorkoutTypeService {
       };
 
       const ret = await db.insert(db._.fullSchema.workoutTypes).values(newWorkoutRow).returning();
-      console.log('HEEERE');
       const insertedWorkoutType = ret[0];
       if (!insertedWorkoutType) {
-        throw new Error('Unable to insert workout');
+        throw new Error('Unable to insert workout type');
       }
       for (const remoteExercise of remoteWorkoutType.exercises) {
         const localExercise = await this.exerciseService.findByExternalId(remoteExercise.exercise.id);
@@ -62,7 +74,7 @@ export class WorkoutTypeService {
         const inserted = await db.insert(db._.fullSchema.workoutTypeExercises).values(newExerciseRow).returning();
         const insertedExercise = inserted[0];
         if (!insertedExercise) {
-          throw new Error('Unable to insert workout');
+          throw new Error('Unable to insert workout type exercise');
         }
         for (const remoteSet of remoteExercise.sets) {
           const newSetRow: NewModel<WorkoutTypeExerciseSetRow> = {
@@ -82,9 +94,9 @@ export class WorkoutTypeService {
     }
   }
 
-  async pullFromServer(db: DrizzleDb): Promise<boolean> {
+  async pullFromServer(db: AsyncDrizzleDb): Promise<boolean> {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
-    const result = await db.transaction(async (db) => {
+    const result = await transactionAsync(db, async (db) => {
       let page = 1;
       // eslint-disable-next-line no-constant-condition
       while (true) {
@@ -108,7 +120,7 @@ export class WorkoutTypeService {
   }
 
   async getLatestPullSyncDate(db: DrizzleDb) {
-    const row = await db.query.workouts.findFirst({
+    const row = await db.query.workoutTypes.findFirst({
       columns: {
         lastPulledAt: true,
       },
