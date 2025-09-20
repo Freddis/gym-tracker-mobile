@@ -1,5 +1,5 @@
 import {getWorkoutTypes, WorkoutType} from '@/openapi-client';
-import {asyncDrizzle, AsyncDrizzleDb, db, DrizzleDb} from '../drizzle';
+import {AsyncDrizzleDb, db, DrizzleDb} from '../drizzle';
 import {WorkoutTypeRow} from './types/WorkoutTypeRow';
 import {NewModel} from '@/types/NewModel';
 import {WorkoutTypeExerciseSetRow} from './types/WorkoutTypeExerciseSetRow';

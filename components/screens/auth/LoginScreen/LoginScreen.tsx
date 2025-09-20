@@ -1,4 +1,4 @@
-import {Button} from 'react-native';
+import {Button, View} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Link, Stack, useRouter} from 'expo-router';
@@ -9,6 +9,9 @@ import {useResponseErrors} from '@/hooks/useResponseErrors';
 import {openApiRequest} from '@/utils/openApiRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
+import {AppLogo} from '@/components/elements/AppLogo/AppLogo';
+import {useThemeColor} from '@/hooks/useThemeColor';
+import {ThemedButton} from '@/components/blocks/ThemedButton/ThemedButton';
 
 export const LoginScreen: FC = () => {
   const ASYNC_STORAGE_KEY = 'auth_login';
@@ -16,6 +19,7 @@ export const LoginScreen: FC = () => {
   const [password, setPassword] = useState('');
   const auth = useContext(AuthContext);
   const router = useRouter();
+  const backgroundColor = useThemeColor({}, 'background');
   const [errorMessage, setErrors] = useResponseErrors();
   useEffect(() => {
     AsyncStorage.getItem(ASYNC_STORAGE_KEY).then((result) => {
@@ -47,11 +51,11 @@ export const LoginScreen: FC = () => {
     router.navigate('/');
   };
   return (
-    <ThemedView style={{flex: 1}}>
+    <ThemedView style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor, height: '100%'}}>
       <Stack.Screen options={{title: 'Login', headerShown: false}} />
-      <ThemedText style={{paddingTop: 70, textAlign: 'center'}}>Gym Tracker</ThemedText>
-      <ThemedView style={{padding: 20}}>
-        <ThemedText>Email</ThemedText>
+      <AppLogo />
+      <ThemedView style={{paddingHorizontal: 50, marginTop: 50}}>
+        <ThemedText style={{marginBottom: 5}}>Email:</ThemedText>
         <ThemedTextInput
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -60,10 +64,8 @@ export const LoginScreen: FC = () => {
           value={email}
           placeholder="your@email.com"
         />
-        {errorMessage('email') && (
-          <ThemedText style={{color: 'red'}}>{errorMessage('email')}</ThemedText>
-        )}
-        <ThemedText>Password</ThemedText>
+        <ThemedText style={{color: 'red', opacity: errorMessage('email') ? 100 : 0}}>{errorMessage('email')}</ThemedText>
+        <ThemedText style={{marginBottom: 5, marginTop: 20}}>Password:</ThemedText>
         <ThemedTextInput
           textContentType="password"
           secureTextEntry
@@ -72,13 +74,19 @@ export const LoginScreen: FC = () => {
           value={password}
           placeholder="******"
         />
-        {errorMessage('password') && (
-          <ThemedText style={{color: 'red'}}>{errorMessage('password')}</ThemedText>
-        )}
-        <Button onPress={performLogin} title="Sign In"/>
-        <Link href={'./register'} push asChild>
-          <Button title="Sign Up"></Button>
-        </Link>
+        <ThemedText style={{color: 'red', opacity: errorMessage('password') ? 100 : 0}}>{errorMessage('password')}</ThemedText>
+        <View>
+          <Button title="I forgot my password" color={'red'}/>
+        </View>
+        <View style={{marginTop: 40}}>
+          <ThemedButton onPress={performLogin}>Sign In</ThemedButton>
+        </View>
+        <View style={{marginTop: 80, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+        <ThemedText>New to Discipline?</ThemedText>
+         <Link href={'./register'} push asChild >
+          <Button title="Sign Up" color={'red'}/>
+          </Link>
+        </View>
       </ThemedView>
     </ThemedView>
   );

@@ -9,10 +9,32 @@
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
-export const Colors = {
+export interface Theme {
+    accent: string,
+    text: string,
+    background: string,
+    surface: string,
+    surfaceText: string
+    cavity: string
+    cavityText: string,
+    backgroundSecondary: string
+    backgroundDeepest: string
+    tint: string,
+    icon: string
+    tabIconDefault: string
+    tabIconSelected: string
+}
+
+export const Colors: Record<'light' | 'dark', Theme> = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: '#222222',
+    background: '#f8f8f8',
+    surface: '#ffffff',
+    surfaceText: '#444444',
+    cavity: '#e5e5e5',
+    cavityText: '#000000',
+    accent: '#e7000b',
+
     backgroundSecondary: '#ddd',
     backgroundDeepest: '#ededed',
     tint: tintColorLight,
@@ -23,11 +45,16 @@ export const Colors = {
   dark: {
     text: '#ECEDEE',
     background: '#151718',
+    cavity: 'e5e5e5',
     backgroundSecondary: '#282828',
     backgroundDeepest: '#131313',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
+    surface: '',
+    surfaceText: '',
+    cavityText: '',
+    accent: '',
   },
 };

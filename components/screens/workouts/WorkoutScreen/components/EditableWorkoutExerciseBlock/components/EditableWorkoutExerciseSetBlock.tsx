@@ -87,7 +87,6 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
         returnKeyType="done"
         keyboardType="numeric"
         selectTextOnFocus
-        type="background"
         style={weightStyle}
         onChangeText={updateWeight}
         value={weight.toString()}
@@ -97,7 +96,7 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
         returnKeyType="done"
         keyboardType="numeric"
         inputMode="decimal"
-        selectTextOnFocus type="background"
+        selectTextOnFocus
         style={repsStyle}
         onChangeText={updateReps}
         value={reps.toString()}
