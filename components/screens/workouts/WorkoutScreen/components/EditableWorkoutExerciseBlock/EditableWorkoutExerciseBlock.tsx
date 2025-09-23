@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from 'react';
-import {StyleProp, ImageStyle, ViewStyle, View, Image, Button} from 'react-native';
+import {View} from 'react-native';
 import {EditableWorkoutExerciseBlockProps} from './types/EditableWorkoutExerciseBlockProps';
 import {useDrizzle} from '@/utils/drizzle';
 import {NewModel} from '@/types/NewModel';
@@ -7,8 +7,11 @@ import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {EditableWorkoutExerciseSetBlock} from './components/EditableWorkoutExerciseSetBlock';
 import {eq} from 'drizzle-orm';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
+import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
+import {ThemedImage} from '@/components/blocks/ThemedImage/ThemedImage';
+import {Separator} from '@/components/blocks/Separator/Separator';
+import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 
 export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps> = (props) => {
   const workoutExercise = props.exercise;
@@ -44,20 +47,6 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
       orderBy: (t, op) => op.asc(t.createdAt),
     });
     setPrevSets(prevSets);
-  };
-  const imgStyle: StyleProp<ImageStyle> = {
-    width: 30,
-    height: 30,
-    borderWidth: 3,
-    borderColor: 'white',
-    borderRadius: 50,
-  };
-  const exerciseStyle: StyleProp<ViewStyle> = {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 5,
-    display: 'flex',
-    flexDirection: 'row',
   };
   const addSet = async () => {
     const reps = [prevSets[sets.length]?.reps, sets[sets.length - 1]?.reps].find((x) => !!x) ?? 0;
@@ -98,22 +87,24 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
     setSets(newsets);
   };
   return (
-     <ThemedView style={exerciseStyle} type="backgroundSecondary">
-      <Image src={exercise.images[0]} style={imgStyle} />
-      <View style={{marginLeft: 10, flexGrow: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <ThemedText style={{fontSize: 13}}>{exercise.name}</ThemedText>
-          <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
-            <Button color={'red'} onPress={() => props.onDelete(props.exercise)} title="Delete"/>
-          </View>
-        </View>
-        {sets.map((set, i) => (
-          <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.id} set={set} index={i} />
-        ))}
-        <View>
-          <Button onPress={addSet} title="Add Set"/>
+     <ThemedBlock>
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <ThemedText>{exercise.name}</ThemedText>
+        <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onDelete(props.exercise)}/>
+      </View>
+      <Separator/>
+      <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 10}}>
+        <ThemedImage src={exercise.images[0]}/>
+        <View style={{marginLeft: 10, flexGrow: 1}}>
+          {sets.map((set, i) => (
+            <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.id} set={set} index={i} />
+          ))}
         </View>
       </View>
-    </ThemedView>
+      <Separator/>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <ThemedLink iconName="plus" onPress={addSet}>Add</ThemedLink>
+      </View>
+    </ThemedBlock>
   );
 };

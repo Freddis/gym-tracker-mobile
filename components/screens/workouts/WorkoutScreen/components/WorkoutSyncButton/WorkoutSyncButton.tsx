@@ -1,4 +1,5 @@
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
+import {useAppTheme} from '@/hooks/useAppTheme';
 import {CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {useDrizzle} from '@/utils/drizzle';
 import {useWorkoutService} from '@/utils/WorkoutService/useWorkoutService';
@@ -9,6 +10,8 @@ import {Pressable} from 'react-native';
 export const WorkoutSyncButton = (props: {workout: CompleteAppWorkout, readonly?: boolean}) => {
   const lastSyncDate = props.workout.lastPulledAt ?? props.workout.lastPushedAt;
   const lastUpdate = props.workout.updatedAt;
+  const theme = useAppTheme();
+  const iconSize = 25;
   const considerSynced = (() => {
     if (!lastSyncDate) {
       return false;
@@ -43,14 +46,14 @@ export const WorkoutSyncButton = (props: {workout: CompleteAppWorkout, readonly?
   return (<>
     {!synced && (
       <Pressable onPress={sync} disabled={props.readonly}>
-      {!props.readonly && <IconSymbol name={'icloud.and.arrow.up'} color={''} style={{bottom: -3}} size={30}/>}
-      {props.readonly && <IconSymbol name={'icloud'} color={''} style={{bottom: -3}} size={30}/>}
+      {!props.readonly && <IconSymbol name={'icloud.and.arrow.up'} color={theme.accent} style={{bottom: -3}} size={iconSize}/>}
+      {props.readonly && <IconSymbol name={'icloud'} color={theme.accent} style={{bottom: -3}} size={iconSize}/>}
     </Pressable>
   )}
     {synced && (
       <Pressable onPress={sync} disabled={props.readonly}>
-      {!props.readonly && <IconSymbol name={'arrow.counterclockwise.icloud.fill'} color={''} size={30}/>}
-      {props.readonly && <IconSymbol name={'icloud.fill'} color={''} size={30}/>}
+      {!props.readonly && <IconSymbol name={'arrow.counterclockwise.icloud.fill'} color={theme.accent} size={iconSize}/>}
+      {props.readonly && <IconSymbol name={'icloud.fill'} color={theme.accent} size={iconSize}/>}
     </Pressable>
   )}
     </>

@@ -8,6 +8,7 @@ import {Button, Pressable, StyleProp, TextStyle, View, ViewStyle} from 'react-na
 import {EditableWorkoutExerciseSetBlockProps} from './types/EditableWorkoutExerciseSetBlockProps';
 import {ThemedIcon} from '@/components/blocks/ThemedIcon/ThemedIcon';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
+import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 
 export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlockProps> = (props) => {
   const set = props.set;
@@ -104,7 +105,9 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
       <Pressable onPress={toggleCheckmark}>
         <ThemedIcon color={iconColor} size={40} name={checkMarkIcon} />
       </Pressable>
-      <Button onPress={deleteSet} color="red" title="Delete" />
+      <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
+        <ThemedLink iconName="xmark" iconSize={14} onPress={deleteSet}/>
+      </View>
     </View>
   );
 };

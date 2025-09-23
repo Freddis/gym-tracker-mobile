@@ -16,6 +16,9 @@ import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExerciseBlock/EditableWorkoutExerciseBlock';
 import {WorkoutSyncButton} from './components/WorkoutSyncButton/WorkoutSyncButton';
+import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
+import {Separator} from '@/components/blocks/Separator/Separator';
+import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 
 export const WorkoutScreen: FC = () => {
   const [refreshCounter, setRefreshCounter] = useState(0);
@@ -195,32 +198,35 @@ export const WorkoutScreen: FC = () => {
       <ThemedScrollView ref={scrollViewRef}>
         <ThemedView style={styles.titleContainer}>
           <Stack.Screen options={{title: `Workout ${workout.id}`, headerShown: true}} />
-          <View style={{flexDirection: 'row'}}>
-            <ThemedText>Time: </ThemedText>
-            <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
-            <View style={{flexDirection: 'row-reverse', flexGrow: 1}}>
+           <ThemedBlock>
+            <View style={{flexDirection: 'row'}}>
+              <ThemedText style={{flexGrow: 1}}>Time:</ThemedText>
+              <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
+            </View>
+            <Separator />
+            <View style={{flexDirection: 'row'}}>
+              <ThemedText style={{flexGrow: 1}}>Synced:</ThemedText>
               <WorkoutSyncButton workout={workout} />
             </View>
-          </View>
+            {!!workoutFinished && (
+               <>
+                <Separator />
+                <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
+                  <ThemedLink>Copy</ThemedLink>
+                  <ThemedLink>Delete</ThemedLink>
+                </View>
+              </>
+            )}
+          </ThemedBlock>
           {workout.exercises.map((x) => (
             <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.id} exercise={x} />
           ))}
-          <Button onPress={addExercise} title="Add Exercise"/>
-          {!workoutFinished && (
-            <View style={{marginTop: 20}}>
-            <Button onPress={finishWorkout} title="Finish Workout"/>
+          <View style={{flexDirection: 'column', alignItems: 'center', marginTop: 10, marginBottom: 30}}>
+            <ThemedLink onPress={addExercise}>Add Exercise</ThemedLink>
+            {!workoutFinished && (
+              <ThemedLink onPress={finishWorkout}>Finish Workout</ThemedLink>
+            )}
           </View>
-          )}
-          {workoutFinished && (
-            <View>
-              <View style={{marginTop: 20}}>
-                <Button color={'red'} onPress={deleteWorkout} title="Delete Workout"/>
-              </View>
-              <View style={{marginTop: 20}}>
-              <Button onPress={copyWorkout} title="Copy Workout"/>
-              </View>
-           </View>
-          )}
         </ThemedView>
       </ThemedScrollView>
     </KeyboardAvoidingView>
@@ -230,9 +236,9 @@ export const WorkoutScreen: FC = () => {
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'column',
-    padding: 20,
+    padding: 10,
     marginBottom: 80,
-    gap: 8,
+    gap: 20,
     flex: 1,
     flexGrow: 1,
   },

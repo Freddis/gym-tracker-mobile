@@ -1,21 +1,15 @@
 import {FC, useState} from 'react';
-import {StyleProp, ImageStyle, Pressable, View, Image} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {ThemedText} from '../ThemedText/ThemedText';
-import {ColorType, ThemedView} from '../ThemedView/ThemedView';
 import {ExerciseBlockProps} from './types/ExerciseBlockProps';
 import {ThemedIcon} from '../ThemedIcon/ThemedIcon';
+import {ThemedBlock} from '../ThemedBlock/ThemedBlock';
+import {ThemedImage} from '../ThemedImage/ThemedImage';
+import {useAppTheme} from '@/hooks/useAppTheme';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const [opened, setOpened] = useState(false);
-  const imgStyle: StyleProp<ImageStyle> = {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    borderWidth: 3,
-    borderColor: 'white',
-    paddingLeft: 0,
-    objectFit: 'cover',
-  };
+  const theme = useAppTheme();
   const item = props.item;
   const onPress = () => {
     if (!item.variations) {
@@ -26,28 +20,49 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
     }
     setOpened(!opened);
   };
-  const colorType: ColorType = props.nested ? 'backgroundDeepest' : 'background';
-
   return (
-    <ThemedView type={colorType} style={{paddingHorizontal: props.nested ? 10 : 0, paddingVertical: 0}}>
+    <ThemedBlock style={{borderRadius: props.nested ? 0 : 10}}>
       <Pressable onPress={onPress}>
-        <View style={{flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10}}>
-          <Image style={imgStyle} src={item.images[0]} />
-          <ThemedText style={{fontSize: 14, padding: 15}}>{item.name}({item.externalId})</ThemedText>
-          {item.variations && (
+        <View style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+            <ThemedText style={{color: theme.accent}}>{item.name}</ThemedText>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: 10}}>
+            <ThemedImage src={item.images[0]} />
+            <View>
+              <ThemedText style={{fontWeight: 'bold'}}>
+                <>Equipment: </>
+                <ThemedText style={{fontWeight: 'normal', textTransform: 'capitalize'}}>{item.equipment ?? 'None'}</ThemedText>
+              </ThemedText>
+              <ThemedText style={{fontWeight: 'bold'}}>
+                <>Primary: </>
+                <ThemedText style={{fontWeight: 'normal', textTransform: 'capitalize'}}>Trapezius</ThemedText>
+              </ThemedText>
+            </View>
+          </View>
+        </View>
+      <View>
+        {item.variations && (
             <View style={{flexGrow: 1, flexDirection: 'row-reverse', paddingRight: 5}}>
-              <ThemedIcon size={20} name="chevron.down" />
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+                <ThemedText style={{color: theme.accent}}>Variations</ThemedText>
+                {!opened && <ThemedIcon size={20} color={theme.accent} name="chevron.down" />}
+                {opened && <ThemedIcon size={20} color={theme.accent} name="chevron.up" />}
+              </View>
             </View>
           )}
-        </View>
+      </View>
       </Pressable>
       {opened && item.variations && (
-        <ThemedView type={'backgroundDeepest'} style={{paddingLeft: 10, paddingTop: 10}}>
-          {item.variations.map((variation) => (
-            <ExerciseBlock onPress={props.onPress} key={variation.id} nested={true} item={variation} />
+        <>
+          {item.variations.map((variation, i) => (
+            <View>
+                <View style={{borderBottomColor: theme.surfaceText, opacity: 0.1, marginTop: 5, borderBottomWidth: 1}} />
+                <ExerciseBlock onPress={props.onPress} key={variation.id} nested={true} item={variation} />
+            </View>
           ))}
-        </ThemedView>
+        </>
       )}
-    </ThemedView>
+    </ThemedBlock>
   );
 };

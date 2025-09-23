@@ -1,7 +1,7 @@
-import {Button, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
-import {Link, Stack, useRouter} from 'expo-router';
+import {Stack, useRouter} from 'expo-router';
 import {FC, useContext, useEffect, useState} from 'react';
 import {postAuthLogin, PostAuthLoginError} from '@/openapi-client';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
@@ -9,18 +9,23 @@ import {useResponseErrors} from '@/hooks/useResponseErrors';
 import {openApiRequest} from '@/utils/openApiRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
-import {AppLogo} from '@/components/elements/AppLogo/AppLogo';
+import {AppLogo} from '@/components/blocks/AppLogo/AppLogo';
 import {useThemeColor} from '@/hooks/useThemeColor';
 import {ThemedButton} from '@/components/blocks/ThemedButton/ThemedButton';
+import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
+import {ThemedInputError} from '@/components/blocks/ThemedInputError/ThemedInputError';
+
+const ASYNC_STORAGE_KEY = 'auth_login';
 
 export const LoginScreen: FC = () => {
-  const ASYNC_STORAGE_KEY = 'auth_login';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const auth = useContext(AuthContext);
   const router = useRouter();
   const backgroundColor = useThemeColor({}, 'background');
   const [errorMessage, setErrors] = useResponseErrors();
+
   useEffect(() => {
     AsyncStorage.getItem(ASYNC_STORAGE_KEY).then((result) => {
       if (result) {
@@ -28,21 +33,22 @@ export const LoginScreen: FC = () => {
       }
     });
   }, []);
+
   const performLogin = async () => {
+    setLoading(true);
     const result = await openApiRequest(postAuthLogin, {
-      body: {
-        email,
-        password,
-      },
+      body: {email, password},
     });
+    setLoading(false);
+
     if (result.error) {
       const err: PostAuthLoginError = result.error;
       if (err.error.code === 'ValidationFailed') {
         setErrors(err.error.fieldErrors ?? []);
       } else if (err.error.code === 'ActionError') {
-        alert(err.error.humanReadable);
+        Alert.alert('Login failed', err.error.humanReadable);
       } else {
-        alert('Something went wrong:');
+        Alert.alert('Error', 'Something went wrong.');
       }
       return;
     }
@@ -50,12 +56,13 @@ export const LoginScreen: FC = () => {
     auth.login(result.data);
     router.navigate('/');
   };
+
   return (
-    <ThemedView style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor, height: '100%'}}>
-      <Stack.Screen options={{title: 'Login', headerShown: false}} />
+    <ThemedView style={[styles.container, {backgroundColor}]}>
+      <Stack.Screen options={{title: 'Sign In', headerShown: false}} />
       <AppLogo />
-      <ThemedView style={{paddingHorizontal: 50, marginTop: 50}}>
-        <ThemedText style={{marginBottom: 5}}>Email:</ThemedText>
+      <ThemedView style={styles.form}>
+        <ThemedText style={styles.label}>Email:</ThemedText>
         <ThemedTextInput
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -64,8 +71,8 @@ export const LoginScreen: FC = () => {
           value={email}
           placeholder="your@email.com"
         />
-        <ThemedText style={{color: 'red', opacity: errorMessage('email') ? 100 : 0}}>{errorMessage('email')}</ThemedText>
-        <ThemedText style={{marginBottom: 5, marginTop: 20}}>Password:</ThemedText>
+        <ThemedInputError error={errorMessage('email')} />
+        <ThemedText style={styles.passwordLabel}>Password:</ThemedText>
         <ThemedTextInput
           textContentType="password"
           secureTextEntry
@@ -74,20 +81,53 @@ export const LoginScreen: FC = () => {
           value={password}
           placeholder="******"
         />
-        <ThemedText style={{color: 'red', opacity: errorMessage('password') ? 100 : 0}}>{errorMessage('password')}</ThemedText>
-        <View>
-          <Button title="I forgot my password" color={'red'}/>
+        <ThemedInputError error={errorMessage('password')} />
+        <View style={styles.forgotPassword}>
+          <ThemedLink href={'/auth/passwordRestore'}>I forgot my password</ThemedLink>
         </View>
-        <View style={{marginTop: 40}}>
-          <ThemedButton onPress={performLogin}>Sign In</ThemedButton>
+        <View style={styles.signInButton}>
+          <ThemedButton onPress={performLogin} disabled={loading}>
+            {loading ? 'Signing in…' : 'Sign In'}
+          </ThemedButton>
         </View>
-        <View style={{marginTop: 80, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <ThemedText>New to Discipline?</ThemedText>
-         <Link href={'./register'} push asChild >
-          <Button title="Sign Up" color={'red'}/>
-          </Link>
+
+        <View style={styles.signUpRow}>
+          <ThemedText>New to Discipline? </ThemedText>
+          <ThemedLink href={'/auth/register'}>Sign Up</ThemedLink>
         </View>
       </ThemedView>
     </ThemedView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  form: {
+    paddingHorizontal: 50,
+    marginTop: 50,
+  },
+  label: {
+    marginBottom: 5,
+  },
+  passwordLabel: {
+    marginBottom: 5,
+    marginTop: 20,
+  },
+  forgotPassword: {
+    marginTop: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  signInButton: {
+    marginTop: 40,
+  },
+  signUpRow: {
+    marginTop: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

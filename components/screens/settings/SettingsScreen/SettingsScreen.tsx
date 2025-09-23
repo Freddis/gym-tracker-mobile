@@ -1,4 +1,4 @@
-import {ScrollView, Button, Switch, View, useColorScheme, Appearance, Alert} from 'react-native';
+import {Switch, View, useColorScheme, Appearance, Alert, StyleSheet} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {useRouter} from 'expo-router';
@@ -7,6 +7,40 @@ import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {useSyncService} from '@/utils/SyncService/useSyncService';
 import {useDrizzle} from '@/utils/drizzle';
 import {Progress} from '@/utils/SyncService/types/Progress';
+import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
+import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContainer';
+import {useAppTheme} from '@/hooks/useAppTheme';
+import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
+import {Separator} from '@/components/blocks/Separator/Separator';
+
+const styles = StyleSheet.create({
+  progressContainer: {
+    flex: 1,
+    paddingTop: 100,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  progressText: {
+    textAlign: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 30,
+  },
+  flexGrow: {
+    flexGrow: 1,
+  },
+  switch: {
+    transform: [{scaleX: 0.7}, {scaleY: 0.7}],
+  },
+  linkContainer: {
+    marginTop: 50,
+    gap: 20,
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+});
 
 export const SettingsScreen: FC = () => {
   const auth = useContext(AuthContext);
@@ -14,7 +48,8 @@ export const SettingsScreen: FC = () => {
   if (!userId) {
     throw new Error('User has to be logged in');
   }
-  const theme = useColorScheme();
+  const themeName = useColorScheme();
+  const theme = useAppTheme();
   const router = useRouter();
   const [progresState, setProgressState] = useState<Progress | null>(null);
   const [syncService] = useSyncService();
@@ -25,75 +60,70 @@ export const SettingsScreen: FC = () => {
     router.navigate('/');
   };
   const toggleTheme = () => {
-    Appearance.setColorScheme(theme === 'dark' ? 'light' : 'dark');
+    Appearance.setColorScheme(themeName === 'dark' ? 'light' : 'dark');
   };
   const syncWithServerButtonPress = async () => {
-    const result = await syncService.syncWithServer(db, userId, (data) => setProgressState({...data}));
+    const result = await syncService.syncWithServer(db, userId, (data) =>
+      setProgressState({...data}),
+    );
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
   };
   const wipeLocalData = async () => {
-    const result = await syncService.wipeLocalData(db, userId, (data) => setProgressState({...data}));
+    const result = await syncService.wipeLocalData(db, userId, (data) =>
+      setProgressState({...data}),
+    );
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
   };
   const wipeLocalDataButtonPress = async () => {
-    Alert.alert(
-      'Warning',
-      'Are you sure you want to delete local data?',
-      [
-        {
-          text: 'No',
-          onPress: () => {},
-        },
-        {
-          text: 'Yes',
-          onPress: () => wipeLocalData(),
-        },
-      ]
-    );
+    Alert.alert('Warning', 'Are you sure you want to delete local data?', [
+      {text: 'No', onPress: () => {}},
+      {text: 'Yes', onPress: () => wipeLocalData()},
+    ]);
   };
 
   if (progresState && !progresState.done) {
     const progress = `Processing ${progresState.itemsDone + 1}/${progresState.itemsNumber}: ${progresState.currentStageName}`;
     return (
-    <ThemedView style={{flex: 1, paddingTop: 100, paddingLeft: 20, paddingRight: 20}}>
-        <ThemedText style={{textAlign: 'center'}}>{progress}</ThemedText>
-    </ThemedView>
+      <ThemedView style={styles.progressContainer}>
+        <ThemedText style={styles.progressText}>{progress}</ThemedText>
+      </ThemedView>
     );
   }
+
   return (
-    <ThemedView style={{flex: 1}}>
-      <ScrollView style={{paddingTop: 70, paddingLeft: 20, paddingRight: 20}}>
-          <ThemedText type="title">Settings</ThemedText>
-          <View style={{marginTop: 20, display: 'flex', flexDirection: 'row'}}>
-            <ThemedText style={{marginRight: 10}}>Name:</ThemedText>
-            <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
-              <ThemedText>{auth.user?.name}</ThemedText>
-            </View>
-          </View>
-          <View style={{marginTop: 20, display: 'flex', flexDirection: 'row'}}>
-            <ThemedText style={{marginRight: 10}}>Email:</ThemedText>
-            <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
-              <ThemedText>{auth.user?.email}</ThemedText>
-            </View>
-          </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-            <ThemedText style={{marginRight: 10}}>Dark Mode</ThemedText>
-            <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
-              <Switch value={theme === 'dark'} onTouchStart={toggleTheme} />
-            </View>
-          </View>
-          <View>
-            <Button onPress={syncWithServerButtonPress} title="Sync Data With Server"/>
-          </View>
-          <View style={{marginTop: 20}}>
-            <Button onPress={wipeLocalDataButtonPress} title="Wipe Local Data" />
-          </View>
-          <View style={{marginTop: 20}}>
-            <Button onPress={performSignOut} title="Sign Out" />
-          </View>
-      </ScrollView>
-    </ThemedView>
+    <ScreenContainer>
+      <ThemedBlock>
+        <View style={styles.row}>
+          <ThemedText style={styles.flexGrow}>Name:</ThemedText>
+          <ThemedText>{auth.user?.name}</ThemedText>
+        </View>
+        <Separator />
+        <View style={styles.row}>
+          <ThemedText style={styles.flexGrow}>Email:</ThemedText>
+          <ThemedText>{auth.user?.email}</ThemedText>
+        </View>
+        <Separator />
+        <View style={styles.row}>
+          <ThemedText style={styles.flexGrow}>Dark Mode:</ThemedText>
+          <Switch
+            value={themeName === 'dark'}
+            onTouchStart={toggleTheme}
+            style={styles.switch}
+            trackColor={{true: theme.accent}}
+          />
+        </View>
+        <View style={styles.linkContainer}>
+          <ThemedLink onPress={syncWithServerButtonPress}>
+            Sync Data With Server
+          </ThemedLink>
+          <ThemedLink onPress={wipeLocalDataButtonPress}>
+            Wipe Local Data
+          </ThemedLink>
+          <ThemedLink onPress={performSignOut}>Sign Out</ThemedLink>
+        </View>
+      </ThemedBlock>
+    </ScreenContainer>
   );
 };

@@ -10,6 +10,8 @@ const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export interface Theme {
+    dangerText: string ;
+    danger: string ;
     accent: string,
     text: string,
     background: string,
@@ -34,6 +36,8 @@ export const Colors: Record<'light' | 'dark', Theme> = {
     cavity: '#e5e5e5',
     cavityText: '#000000',
     accent: '#e7000b',
+    danger: '#ffe2e2',
+    dangerText: '#ff6467',
 
     backgroundSecondary: '#ddd',
     backgroundDeepest: '#ededed',
@@ -43,18 +47,21 @@ export const Colors: Record<'light' | 'dark', Theme> = {
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    cavity: 'e5e5e5',
-    backgroundSecondary: '#282828',
-    backgroundDeepest: '#131313',
+    background: '#262626',
+    text: '#f5f5f5',
+    surface: '#171717',
+    surfaceText: '#e5e5e5',
+    cavity: '#171717',
+    cavityText: '#f5f5f5',
+    accent: '#e7000b',
+    danger: '#ffe2e2',
+    dangerText: '#ff6467',
+
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
-    surface: '',
-    surfaceText: '',
-    cavityText: '',
-    accent: '',
+    backgroundSecondary: '#282828',
+    backgroundDeepest: '#000000',
   },
 };

@@ -173,7 +173,7 @@ import {
 
 export type Options<
   TData extends TDataShape = TDataShape,
-  ThrowOnError extends boolean = boolean,
+  ThrowOnError extends boolean = boolean
 > = ClientOptions<TData, ThrowOnError> & {
   /**
    * You can provide a client instance returned by `createClient()` instead of
@@ -192,7 +192,7 @@ export type Options<
  * Registers a user
  */
 export const postAuthRegister = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthRegisterData, ThrowOnError>,
+  options?: Options<PostAuthRegisterData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostAuthRegisterResponse,
@@ -212,7 +212,7 @@ export const postAuthRegister = <ThrowOnError extends boolean = false>(
  * Logins a user
  */
 export const postAuthLogin = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthLoginData, ThrowOnError>,
+  options?: Options<PostAuthLoginData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostAuthLoginResponse,
@@ -232,7 +232,7 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(
  * Returns data on exercises available to the user
  */
 export const getExercises = <ThrowOnError extends boolean = false>(
-  options?: Options<GetExercisesData, ThrowOnError>,
+  options?: Options<GetExercisesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetExercisesResponse,
@@ -255,7 +255,7 @@ export const getExercises = <ThrowOnError extends boolean = false>(
  * Adds new exercise to the user personal library
  */
 export const postExercises = <ThrowOnError extends boolean = false>(
-  options?: Options<PostExercisesData, ThrowOnError>,
+  options?: Options<PostExercisesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostExercisesResponse,
@@ -282,7 +282,7 @@ export const postExercises = <ThrowOnError extends boolean = false>(
  * Updates or inserts exercise in users personal library
  */
 export const putExercises = <ThrowOnError extends boolean = false>(
-  options?: Options<PutExercisesData, ThrowOnError>,
+  options?: Options<PutExercisesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).put<
     PutExercisesResponse,
@@ -309,7 +309,7 @@ export const putExercises = <ThrowOnError extends boolean = false>(
  * Returns data on exercises available to the user
  */
 export const getExercisesBuiltIn = <ThrowOnError extends boolean = false>(
-  options?: Options<GetExercisesBuiltInData, ThrowOnError>,
+  options?: Options<GetExercisesBuiltInData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetExercisesBuiltInResponse,
@@ -326,7 +326,7 @@ export const getExercisesBuiltIn = <ThrowOnError extends boolean = false>(
  * Deletes exercise from users personal library
  */
 export const deleteExercisesById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteExercisesByIdData, ThrowOnError>,
+  options: Options<DeleteExercisesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
     DeleteExercisesByIdResponse,
@@ -352,7 +352,7 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
  * Returns data on an library exercise available
  */
 export const getExercisesById = <ThrowOnError extends boolean = false>(
-  options: Options<GetExercisesByIdData, ThrowOnError>,
+  options: Options<GetExercisesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetExercisesByIdResponse,
@@ -369,7 +369,7 @@ export const getExercisesById = <ThrowOnError extends boolean = false>(
  * Updates exercise in users personal library
  */
 export const patchExercisesById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchExercisesByIdData, ThrowOnError>,
+  options: Options<PatchExercisesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchExercisesByIdResponse,
@@ -395,7 +395,7 @@ export const patchExercisesById = <ThrowOnError extends boolean = false>(
  * Returns list of user workouts
  */
 export const getWorkouts = <ThrowOnError extends boolean = false>(
-  options?: Options<GetWorkoutsData, ThrowOnError>,
+  options?: Options<GetWorkoutsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetWorkoutsResponse,
@@ -418,7 +418,7 @@ export const getWorkouts = <ThrowOnError extends boolean = false>(
  * Adds new workout for the user
  */
 export const postWorkouts = <ThrowOnError extends boolean = false>(
-  options?: Options<PostWorkoutsData, ThrowOnError>,
+  options?: Options<PostWorkoutsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostWorkoutsResponse,
@@ -445,7 +445,7 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
  * Updates or inserts workout for user
  */
 export const putWorkouts = <ThrowOnError extends boolean = false>(
-  options?: Options<PutWorkoutsData, ThrowOnError>,
+  options?: Options<PutWorkoutsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).put<
     PutWorkoutsResponse,
@@ -472,7 +472,7 @@ export const putWorkouts = <ThrowOnError extends boolean = false>(
  * Deletes workout from user
  */
 export const deleteWorkoutsById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteWorkoutsByIdData, ThrowOnError>,
+  options: Options<DeleteWorkoutsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
     DeleteWorkoutsByIdResponse,
@@ -498,7 +498,7 @@ export const deleteWorkoutsById = <ThrowOnError extends boolean = false>(
  * Returns data on user workout
  */
 export const getWorkoutsById = <ThrowOnError extends boolean = false>(
-  options: Options<GetWorkoutsByIdData, ThrowOnError>,
+  options: Options<GetWorkoutsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetWorkoutsByIdResponse,
@@ -521,7 +521,7 @@ export const getWorkoutsById = <ThrowOnError extends boolean = false>(
  * Updates workout of current user
  */
 export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchWorkoutsByIdData, ThrowOnError>,
+  options: Options<PatchWorkoutsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchWorkoutsByIdResponse,
@@ -548,7 +548,7 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
  * Returns list of user workout plans
  */
 export const getWorkoutPlans = <ThrowOnError extends boolean = false>(
-  options?: Options<GetWorkoutPlansData, ThrowOnError>,
+  options?: Options<GetWorkoutPlansData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetWorkoutPlansResponse,
@@ -571,7 +571,7 @@ export const getWorkoutPlans = <ThrowOnError extends boolean = false>(
  * Adds new workout plan for the user
  */
 export const postWorkoutPlans = <ThrowOnError extends boolean = false>(
-  options?: Options<PostWorkoutPlansData, ThrowOnError>,
+  options?: Options<PostWorkoutPlansData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostWorkoutPlansResponse,
@@ -598,7 +598,7 @@ export const postWorkoutPlans = <ThrowOnError extends boolean = false>(
  * Deletes workout plan
  */
 export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteWorkoutPlansByIdData, ThrowOnError>,
+  options: Options<DeleteWorkoutPlansByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
     DeleteWorkoutPlansByIdResponse,
@@ -624,7 +624,7 @@ export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
  * Returns data on user workout plan
  */
 export const getWorkoutPlansById = <ThrowOnError extends boolean = false>(
-  options: Options<GetWorkoutPlansByIdData, ThrowOnError>,
+  options: Options<GetWorkoutPlansByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetWorkoutPlansByIdResponse,
@@ -647,7 +647,7 @@ export const getWorkoutPlansById = <ThrowOnError extends boolean = false>(
  * Updated workout plan for the user
  */
 export const patchWorkoutPlansById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchWorkoutPlansByIdData, ThrowOnError>,
+  options: Options<PatchWorkoutPlansByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchWorkoutPlansByIdResponse,
@@ -674,7 +674,7 @@ export const patchWorkoutPlansById = <ThrowOnError extends boolean = false>(
  * Returns list of user workout plans
  */
 export const getWorkoutTypes = <ThrowOnError extends boolean = false>(
-  options?: Options<GetWorkoutTypesData, ThrowOnError>,
+  options?: Options<GetWorkoutTypesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetWorkoutTypesResponse,
@@ -697,7 +697,7 @@ export const getWorkoutTypes = <ThrowOnError extends boolean = false>(
  * Adds new workout type for the user
  */
 export const postWorkoutTypes = <ThrowOnError extends boolean = false>(
-  options?: Options<PostWorkoutTypesData, ThrowOnError>,
+  options?: Options<PostWorkoutTypesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostWorkoutTypesResponse,
@@ -724,7 +724,7 @@ export const postWorkoutTypes = <ThrowOnError extends boolean = false>(
  * Deletes workout type
  */
 export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteWorkoutTypesByIdData, ThrowOnError>,
+  options: Options<DeleteWorkoutTypesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
     DeleteWorkoutTypesByIdResponse,
@@ -750,7 +750,7 @@ export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
  * Returns data on user workout type
  */
 export const getWorkoutTypesById = <ThrowOnError extends boolean = false>(
-  options: Options<GetWorkoutTypesByIdData, ThrowOnError>,
+  options: Options<GetWorkoutTypesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetWorkoutTypesByIdResponse,
@@ -773,7 +773,7 @@ export const getWorkoutTypesById = <ThrowOnError extends boolean = false>(
  * Updated workout type for the user
  */
 export const patchWorkoutTypesById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchWorkoutTypesByIdData, ThrowOnError>,
+  options: Options<PatchWorkoutTypesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchWorkoutTypesByIdResponse,
@@ -800,7 +800,7 @@ export const patchWorkoutTypesById = <ThrowOnError extends boolean = false>(
  * Adds new weight entry for the user
  */
 export const postWeight = <ThrowOnError extends boolean = false>(
-  options?: Options<PostWeightData, ThrowOnError>,
+  options?: Options<PostWeightData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostWeightResponse,
@@ -827,7 +827,7 @@ export const postWeight = <ThrowOnError extends boolean = false>(
  * Gets own weight entry for the user
  */
 export const getWeightById = <ThrowOnError extends boolean = false>(
-  options: Options<GetWeightByIdData, ThrowOnError>,
+  options: Options<GetWeightByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetWeightByIdResponse,
@@ -850,7 +850,7 @@ export const getWeightById = <ThrowOnError extends boolean = false>(
  * Updates own weight entry for the user
  */
 export const patchWeightById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchWeightByIdData, ThrowOnError>,
+  options: Options<PatchWeightByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchWeightByIdResponse,
@@ -877,7 +877,7 @@ export const patchWeightById = <ThrowOnError extends boolean = false>(
  * Returns data on all checkins from Argus
  */
 export const getArgusCheckin = <ThrowOnError extends boolean = false>(
-  options?: Options<GetArgusCheckinData, ThrowOnError>,
+  options?: Options<GetArgusCheckinData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetArgusCheckinResponse,
@@ -894,7 +894,7 @@ export const getArgusCheckin = <ThrowOnError extends boolean = false>(
  * Returns possible checkin types for Argus
  */
 export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
-  options?: Options<GetArgusCheckinTypesData, ThrowOnError>,
+  options?: Options<GetArgusCheckinTypesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetArgusCheckinTypesResponse,
@@ -910,7 +910,7 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
  * Returns the list of public entries
  */
 export const getEntries = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesData, ThrowOnError>,
+  options?: Options<GetEntriesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetEntriesResponse,
@@ -927,7 +927,7 @@ export const getEntries = <ThrowOnError extends boolean = false>(
  * Returns the list of public entries
  */
 export const getEntriesOwn = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesOwnData, ThrowOnError>,
+  options?: Options<GetEntriesOwnData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetEntriesOwnResponse,
@@ -950,7 +950,7 @@ export const getEntriesOwn = <ThrowOnError extends boolean = false>(
  * Returns list of users
  */
 export const getCrmUsers = <ThrowOnError extends boolean = false>(
-  options?: Options<GetCrmUsersData, ThrowOnError>,
+  options?: Options<GetCrmUsersData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetCrmUsersResponse,
@@ -972,7 +972,7 @@ export const getCrmUsers = <ThrowOnError extends boolean = false>(
  * Returns list of managers
  */
 export const getCrmManagers = <ThrowOnError extends boolean = false>(
-  options?: Options<GetCrmManagersData, ThrowOnError>,
+  options?: Options<GetCrmManagersData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetCrmManagersResponse,
@@ -995,7 +995,7 @@ export const getCrmManagers = <ThrowOnError extends boolean = false>(
  * Logins a manager into CRM
  */
 export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
-  options?: Options<PostCrmAuthLoginData, ThrowOnError>,
+  options?: Options<PostCrmAuthLoginData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
     PostCrmAuthLoginResponse,
@@ -1015,7 +1015,7 @@ export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
  * Returns translation
  */
 export const getCrmTranslationsById = <ThrowOnError extends boolean = false>(
-  options: Options<GetCrmTranslationsByIdData, ThrowOnError>,
+  options: Options<GetCrmTranslationsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetCrmTranslationsByIdResponse,
@@ -1038,7 +1038,7 @@ export const getCrmTranslationsById = <ThrowOnError extends boolean = false>(
  * Updates translation
  */
 export const patchCrmTranslationsById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchCrmTranslationsByIdData, ThrowOnError>,
+  options: Options<PatchCrmTranslationsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchCrmTranslationsByIdResponse,
@@ -1065,7 +1065,7 @@ export const patchCrmTranslationsById = <ThrowOnError extends boolean = false>(
  * Returns list of translations
  */
 export const getCrmTranslations = <ThrowOnError extends boolean = false>(
-  options?: Options<GetCrmTranslationsData, ThrowOnError>,
+  options?: Options<GetCrmTranslationsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetCrmTranslationsResponse,
@@ -1088,7 +1088,7 @@ export const getCrmTranslations = <ThrowOnError extends boolean = false>(
  * Returns data on an exercise
  */
 export const getCrmExercisesById = <ThrowOnError extends boolean = false>(
-  options: Options<GetCrmExercisesByIdData, ThrowOnError>,
+  options: Options<GetCrmExercisesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
     GetCrmExercisesByIdResponse,
@@ -1111,7 +1111,7 @@ export const getCrmExercisesById = <ThrowOnError extends boolean = false>(
  * Updates exercise
  */
 export const patchCrmExercisesById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchCrmExercisesByIdData, ThrowOnError>,
+  options: Options<PatchCrmExercisesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchCrmExercisesByIdResponse,
@@ -1137,7 +1137,7 @@ export const patchCrmExercisesById = <ThrowOnError extends boolean = false>(
  * Returns data on exercises
  */
 export const getCrmExercises = <ThrowOnError extends boolean = false>(
-  options?: Options<GetCrmExercisesData, ThrowOnError>,
+  options?: Options<GetCrmExercisesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetCrmExercisesResponse,
@@ -1160,7 +1160,7 @@ export const getCrmExercises = <ThrowOnError extends boolean = false>(
  * Returns data on images
  */
 export const getCrmImages = <ThrowOnError extends boolean = false>(
-  options?: Options<GetCrmImagesData, ThrowOnError>,
+  options?: Options<GetCrmImagesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetCrmImagesResponse,
@@ -1183,7 +1183,7 @@ export const getCrmImages = <ThrowOnError extends boolean = false>(
  * Deletes image
  */
 export const deleteCrmImagesById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteCrmImagesByIdData, ThrowOnError>,
+  options: Options<DeleteCrmImagesByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
     DeleteCrmImagesByIdResponse,

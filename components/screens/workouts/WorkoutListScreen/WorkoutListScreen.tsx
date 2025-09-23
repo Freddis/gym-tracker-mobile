@@ -1,6 +1,5 @@
-import {StyleSheet, Button, FlatList} from 'react-native';
+import {StyleSheet, View, Pressable, ScrollView} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Link, Stack, useNavigation, useRouter} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
@@ -8,9 +7,14 @@ import {useDrizzle} from '@/utils/drizzle';
 import {FC, useState} from 'react';
 import {AppWorkout} from '@/types/models/AppWorkout';
 import {WorkoutBlock} from './components/WorkoutBlock/WorkoutBlock';
+import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
+import {useAppTheme} from '@/hooks/useAppTheme';
+import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContainer';
+import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 
 export const WorkoutListScreen: FC = () => {
   const navigation = useNavigation();
+  const theme = useAppTheme();
   navigation.addListener('focus', () => {
     setfocusedCounter(focusedCounter + 1);
   });
@@ -37,7 +41,7 @@ export const WorkoutListScreen: FC = () => {
       op.isNull(t.deletedAt)
     ),
     orderBy: (t, op) => op.desc(t.start),
-    limit: 50,
+    limit: 30,
   });
   const query = useLiveQuery(sqlQuery, [focusedCounter]);
   if (!query.data) {
@@ -53,28 +57,29 @@ export const WorkoutListScreen: FC = () => {
     });
   };
   return (
-    <ThemedView style={styles.container}>
+    <ScreenContainer style={{paddingHorizontal: 0, paddingBottom: 100}}>
+      <ScrollView style={{paddingHorizontal: 10}}>
       <Stack.Screen options={{title: 'Workout List', headerShown: false}} />
-      <ThemedText type="title" style={{padding: 10}}>Workouts & Plans</ThemedText>
-      <Link href={'./workoutTypeList'} asChild>
-        <Button title="Workout Types"></Button>
-      </Link>
-      <Link href={'./editWorkout'} asChild>
-        <Button title="New Workout"></Button>
-      </Link>
-      <FlatList data={workouts} style={styles.list} renderItem={(x) => <WorkoutBlock onPress={openWorkout} workout={x.item}/>} />
-    </ThemedView>
+      <ThemedButtonList items={[['Workout Types', '/app/workouts/workoutTypeList']]} />
+      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+        <ThemedText style={{flexGrow: 1}}>Entries:</ThemedText>
+        <Link href={'./editWorkout'} asChild>
+          <Pressable style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+            <ThemedText style={{color: theme.accent}}>Add</ThemedText>
+            <IconSymbol name={'plus'} color={theme.accent} size={20}/>
+          </Pressable>
+        </Link>
+      </View>
+      <View style={{flexDirection: 'column', gap: 10, marginTop: 5}}>
+        {workouts.map((entry) => (
+          <WorkoutBlock key={entry.id} onPress={openWorkout} workout={entry}/>
+        ))}
+      </View>
+     </ScrollView>
+    </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 70,
-    flexDirection: 'column',
-    gap: 8,
-    flex: 1,
-  },
-  list: {
-    padding: 10,
-  },
+
 });
