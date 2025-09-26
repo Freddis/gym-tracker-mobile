@@ -5,6 +5,6 @@ import {View} from 'react-native';
 export const Separator: FC = () => {
   const theme = useAppTheme();
   return (
-    <View style={{borderBottomColor: theme.surfaceText, opacity: 0.1, marginVertical: 10, borderBottomWidth: 1}} />
+    <View style={{borderBottomColor: theme.surfaceText, opacity: 0.1, marginVertical: theme.marginS, borderBottomWidth: 1}} />
   );
 };

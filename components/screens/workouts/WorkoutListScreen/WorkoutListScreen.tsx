@@ -1,4 +1,4 @@
-import {StyleSheet, View, Pressable, ScrollView} from 'react-native';
+import {View, Pressable, ScrollView} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {Link, Stack, useNavigation, useRouter} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
@@ -57,29 +57,26 @@ export const WorkoutListScreen: FC = () => {
     });
   };
   return (
-    <ScreenContainer style={{paddingHorizontal: 0, paddingBottom: 100}}>
-      <ScrollView style={{paddingHorizontal: 10}}>
+    <ScreenContainer style={{paddingHorizontal: 0}}>
       <Stack.Screen options={{title: 'Workout List', headerShown: false}} />
-      <ThemedButtonList items={[['Workout Types', '/app/workouts/workoutTypeList']]} />
-      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-        <ThemedText style={{flexGrow: 1}}>Entries:</ThemedText>
-        <Link href={'./editWorkout'} asChild>
-          <Pressable style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-            <ThemedText style={{color: theme.accent}}>Add</ThemedText>
-            <IconSymbol name={'plus'} color={theme.accent} size={20}/>
-          </Pressable>
-        </Link>
-      </View>
-      <View style={{flexDirection: 'column', gap: 10, marginTop: 5}}>
-        {workouts.map((entry) => (
-          <WorkoutBlock key={entry.id} onPress={openWorkout} workout={entry}/>
-        ))}
-      </View>
+      <ScrollView style={{paddingHorizontal: theme.paddingM}}>
+        <ThemedButtonList items={[['Workout Types', '/app/workouts/workoutTypeList']]} />
+        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <ThemedText style={{flexGrow: 1}}>Entries:</ThemedText>
+          <Link href={'./editWorkout'} asChild>
+            <Pressable style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
+              <ThemedText style={{color: theme.accent}}>Add</ThemedText>
+              <IconSymbol name={'plus'} color={theme.accent} size={20}/>
+            </Pressable>
+          </Link>
+        </View>
+        <View style={{flexDirection: 'column', gap: theme.marginM, marginTop: theme.marginS, marginBottom: 50}}>
+          {workouts.map((entry) => (
+            <WorkoutBlock key={entry.id} onPress={openWorkout} workout={entry}/>
+          ))}
+        </View>
      </ScrollView>
     </ScreenContainer>
   );
 };
 
-const styles = StyleSheet.create({
-
-});

@@ -6,6 +6,7 @@ import {ThemedIcon} from '../ThemedIcon/ThemedIcon';
 import {ThemedBlock} from '../ThemedBlock/ThemedBlock';
 import {ThemedImage} from '../ThemedImage/ThemedImage';
 import {useAppTheme} from '@/hooks/useAppTheme';
+import {Separator} from '../Separator/Separator';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const [opened, setOpened] = useState(false);
@@ -27,7 +28,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
           <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
             <ThemedText style={{color: theme.accent}}>{item.name}</ThemedText>
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: theme.marginM}}>
             <ThemedImage src={item.images[0]} />
             <View>
               <ThemedText style={{fontWeight: 'bold'}}>
@@ -43,8 +44,8 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
         </View>
       <View>
         {item.variations && (
-            <View style={{flexGrow: 1, flexDirection: 'row-reverse', paddingRight: 5}}>
-              <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+            <View style={{flexGrow: 1, flexDirection: 'row-reverse', paddingRight: theme.paddingS}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
                 <ThemedText style={{color: theme.accent}}>Variations</ThemedText>
                 {!opened && <ThemedIcon size={20} color={theme.accent} name="chevron.down" />}
                 {opened && <ThemedIcon size={20} color={theme.accent} name="chevron.up" />}
@@ -57,7 +58,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
         <>
           {item.variations.map((variation, i) => (
             <View>
-                <View style={{borderBottomColor: theme.surfaceText, opacity: 0.1, marginTop: 5, borderBottomWidth: 1}} />
+                <Separator/>
                 <ExerciseBlock onPress={props.onPress} key={variation.id} nested={true} item={variation} />
             </View>
           ))}

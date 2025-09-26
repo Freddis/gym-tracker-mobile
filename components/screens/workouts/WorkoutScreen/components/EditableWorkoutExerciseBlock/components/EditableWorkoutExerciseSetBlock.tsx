@@ -4,14 +4,36 @@ import {useDrizzle} from '@/utils/drizzle';
 import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
 import {eq} from 'drizzle-orm';
 import {FC, useState} from 'react';
-import {Button, Pressable, StyleProp, TextStyle, View, ViewStyle} from 'react-native';
+import {Pressable, View, StyleSheet} from 'react-native';
 import {EditableWorkoutExerciseSetBlockProps} from './types/EditableWorkoutExerciseSetBlockProps';
 import {ThemedIcon} from '@/components/blocks/ThemedIcon/ThemedIcon';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
+import {Theme} from '@/types/Colors';
+import {useAppTheme} from '@/hooks/useAppTheme';
+
+const getStyles = (theme: Theme) => StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    backgroundColor: '',
+    gap: theme.marginS,
+    marginBottom: theme.marginS,
+    alignItems: 'center',
+    alignContent: 'space-evenly',
+  },
+  inputs: {
+    borderColor: 'red',
+    color: 'red',
+    width: 50,
+    textAlign: 'center',
+    height: 30,
+    borderWidth: 2,
+  },
+});
 
 export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlockProps> = (props) => {
   const set = props.set;
+  const theme = useAppTheme();
   const [db, schema] = useDrizzle();
   const [weight, setWeight] = useState(set.weight?.toString() ?? '');
   const [weightError, setWeightError] = useState(false);
@@ -19,24 +41,6 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
   const [repsError, setRepsError] = useState(false);
   const [finished, setFinished] = useState(set.finished);
   const checkMarkIcon: IconSymbolName = finished ? 'checkmark.rectangle' : 'rectangle';
-  const inputStyle: StyleProp<TextStyle> = {
-    width: 50,
-    textAlign: 'center',
-    height: 30,
-    borderWidth: 2,
-  };
-  const errorStyle: StyleProp<TextStyle> = {
-    borderColor: 'red',
-    color: 'red',
-  };
-  const weightStyle = {
-    ...inputStyle,
-    ...(weightError ? errorStyle : {}),
-  };
-  const repsStyle = {
-    ...inputStyle,
-    ...(repsError ? errorStyle : {}),
-  };
   const iconColor = (repsError || weightError) ? 'red' : undefined;
   const toggleCheckmark = async () => {
     const validatedWeight = ZodHelper.validators.numberOrStringNumber.safeParse(weight);
@@ -78,17 +82,15 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
   const updateReps = (value: string) => {
     setReps(value);
   };
-  const viewStyle: StyleProp<ViewStyle> = {
-    flexDirection: 'row',
-    backgroundColor: '', gap: 10, marginBottom: 5, alignItems: 'center', alignContent: 'space-evenly'};
+  const styles = getStyles(theme);
   return (
-    <View style={viewStyle}>
+    <View style={styles.container}>
       <ThemedText style={{fontSize: 13}}>{props.index + 1}:</ThemedText>
       <ThemedTextInput
         returnKeyType="done"
         keyboardType="numeric"
         selectTextOnFocus
-        style={weightStyle}
+        style={styles.inputs}
         onChangeText={updateWeight}
         value={weight.toString()}
       />
@@ -98,7 +100,7 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
         keyboardType="numeric"
         inputMode="decimal"
         selectTextOnFocus
-        style={repsStyle}
+        style={styles.inputs}
         onChangeText={updateReps}
         value={reps.toString()}
       />

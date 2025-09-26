@@ -6,8 +6,8 @@ import {Theme} from '@/types/Colors';
 const styled = (theme: Theme) => StyleSheet.create({
   container: {
     backgroundColor: theme.surface,
-    padding: 10,
-    borderRadius: 5,
+    padding: theme.paddingM,
+    borderRadius: theme.borderRadiusM,
     boxShadow: '0px 4px 4px -2px rgba(0,0,0, 0.1)',
   },
 });

@@ -1,4 +1,4 @@
-import {StyleSheet, Button, View, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
@@ -19,8 +19,12 @@ import {WorkoutSyncButton} from './components/WorkoutSyncButton/WorkoutSyncButto
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
+import {useAppTheme} from '@/hooks/useAppTheme';
+import {Theme} from '@/types/Colors';
 
 export const WorkoutScreen: FC = () => {
+  const theme = useAppTheme();
+  const styles = getStyles(theme);
   const [refreshCounter, setRefreshCounter] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
   const auth = useAuth();
@@ -196,7 +200,7 @@ export const WorkoutScreen: FC = () => {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ThemedScrollView ref={scrollViewRef}>
-        <ThemedView style={styles.titleContainer}>
+        <ThemedView style={styles.container}>
           <Stack.Screen options={{title: `Workout ${workout.id}`, headerShown: true}} />
            <ThemedBlock>
             <View style={{flexDirection: 'row'}}>
@@ -212,8 +216,8 @@ export const WorkoutScreen: FC = () => {
                <>
                 <Separator />
                 <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
-                  <ThemedLink>Copy</ThemedLink>
-                  <ThemedLink>Delete</ThemedLink>
+                  <ThemedLink onPress={copyWorkout}>Copy</ThemedLink>
+                  <ThemedLink onPress={deleteWorkout}>Delete</ThemedLink>
                 </View>
               </>
             )}
@@ -233,12 +237,12 @@ export const WorkoutScreen: FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  titleContainer: {
+const getStyles = (theme: Theme) => StyleSheet.create({
+  container: {
     flexDirection: 'column',
-    padding: 10,
+    padding: theme.paddingM,
     marginBottom: 80,
-    gap: 20,
+    gap: theme.marginL,
     flex: 1,
     flexGrow: 1,
   },

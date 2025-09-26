@@ -9,7 +9,20 @@
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
-export interface Theme {
+interface SharedThemeConfig {
+  marginHorizontal: number,
+  margnVertical: number,
+  marginS: number;
+  paddingS: number;
+  borderRadiusS: number;
+  paddingM: number;
+  borderRadiusM: number;
+  marginM: number;
+  marginL: number;
+
+}
+
+export interface Theme extends SharedThemeConfig {
     dangerText: string ;
     danger: string ;
     accent: string,
@@ -26,6 +39,17 @@ export interface Theme {
     tabIconDefault: string
     tabIconSelected: string
 }
+const shared: SharedThemeConfig = {
+  marginHorizontal: 10,
+  margnVertical: 10,
+  borderRadiusM: 10,
+  marginM: 15,
+  paddingM: 15,
+  marginS: 5,
+  paddingS: 5,
+  borderRadiusS: 5,
+  marginL: 20,
+};
 
 export const Colors: Record<'light' | 'dark', Theme> = {
   light: {
@@ -45,6 +69,7 @@ export const Colors: Record<'light' | 'dark', Theme> = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
+    ...shared,
   },
   dark: {
     background: '#262626',
@@ -63,5 +88,6 @@ export const Colors: Record<'light' | 'dark', Theme> = {
     tabIconSelected: tintColorDark,
     backgroundSecondary: '#282828',
     backgroundDeepest: '#000000',
+    ...shared,
   },
 };

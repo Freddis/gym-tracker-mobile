@@ -1,8 +1,8 @@
 import {StyleSheet, TextInputProps, TextInput} from 'react-native';
-import {ColorType} from '../ThemedView/ThemedView';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
 import {FC} from 'react';
+import {ColorType} from '../../../hooks/useThemeColor';
 
 export type ThemedTextInputProps = TextInputProps & {
   type?: ColorType
@@ -10,8 +10,8 @@ export type ThemedTextInputProps = TextInputProps & {
 
 const getStyles = (theme: Theme) => StyleSheet.create({
   default: {
-    borderRadius: 5,
-    padding: 5,
+    borderRadius: theme.borderRadiusS,
+    padding: theme.paddingS,
     height: 40,
     backgroundColor: theme.cavity,
     borderColor: theme.cavity,

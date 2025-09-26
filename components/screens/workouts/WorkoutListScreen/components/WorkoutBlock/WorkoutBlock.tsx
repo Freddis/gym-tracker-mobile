@@ -1,5 +1,5 @@
 import {FC, Fragment} from 'react';
-import {StyleProp, ImageStyle, ViewStyle, View, Image, Pressable} from 'react-native';
+import {View, Pressable} from 'react-native';
 import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
@@ -25,20 +25,20 @@ export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWor
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
           <ThemedText style={{fontSize: 16, fontWeight: 'bold', color: theme.accent, flexGrow: 1}}>Workout</ThemedText>
           <ThemedText>
             {workout.start.toLocaleDateString()}
           </ThemedText>
 
         </View>
-        <View style={{marginBottom: 10, flexDirection: 'row'}}>
+        <View style={{marginBottom: theme.marginM, flexDirection: 'row'}}>
           <View style={{flexGrow: 1}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <ThemedText>Duration: </ThemedText>
               <TimerBlock start={workout.start} end={workout.end ?? undefined} style={{flexDirection: 'row'}}/>
             </View>
-            <ThemedText>Calories: {workout.calories}</ThemedText>
+            <ThemedText>Calories: {633}</ThemedText>
           </View>
           <View style={{alignItems: 'flex-end'}}>
             <ThemedText>
@@ -50,14 +50,14 @@ export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWor
         <View>
           {exercises.filter((x) => x.sets.length > 0).map((item, i) => (
             <Fragment key={item.id}>
-              {i > 0 && <Separator/>}
+              {<Separator/>}
               <ThemedView style={{flexDirection: 'column'}} type="surface">
-                <ThemedText style={{overflow: 'hidden', fontWeight: '600', marginBottom: 5}}>{item.exercise.name}</ThemedText>
-                <View style={{flexDirection: 'row', alignItems: 'flex-start', marginBottom: 5}}>
-                  <View style={{marginTop: 5, flexGrow: 1}}>
+                <ThemedText style={{fontWeight: '600', marginBottom: theme.marginS}}>{item.exercise.name}</ThemedText>
+                <View style={{flexDirection: 'row', alignItems: 'flex-start', marginBottom: theme.marginS}}>
+                  <View style={{marginTop: theme.marginS, flexGrow: 1}}>
                     <ThemedImage src={item.exercise.images[0]} />
                   </View>
-                  <View style={{marginLeft: 10, overflow: 'hidden'}}>
+                  <View style={{marginLeft: theme.marginM, overflow: 'hidden'}}>
                     {item.sets.filter((x) => x.finished).map((set, i) => (
                       <View key={i}>
                         <ThemedText style={{}}>{i + 1}: {set.weight} kg x {set.reps}</ThemedText>

@@ -6,14 +6,14 @@ import {FC, useContext, useEffect, useState} from 'react';
 import {postAuthLogin, PostAuthLoginError} from '@/openapi-client';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {useResponseErrors} from '@/hooks/useResponseErrors';
-import {openApiRequest} from '@/utils/openApiRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {AppLogo} from '@/components/blocks/AppLogo/AppLogo';
-import {useThemeColor} from '@/hooks/useThemeColor';
 import {ThemedButton} from '@/components/blocks/ThemedButton/ThemedButton';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {ThemedInputError} from '@/components/blocks/ThemedInputError/ThemedInputError';
+import {Theme} from '../../../../types/Colors';
+import {useAppTheme} from '../../../../hooks/useAppTheme';
 
 const ASYNC_STORAGE_KEY = 'auth_login';
 
@@ -23,7 +23,7 @@ export const LoginScreen: FC = () => {
   const [loading, setLoading] = useState(false);
   const auth = useContext(AuthContext);
   const router = useRouter();
-  const backgroundColor = useThemeColor({}, 'background');
+  const theme = useAppTheme();
   const [errorMessage, setErrors] = useResponseErrors();
 
   useEffect(() => {
@@ -36,8 +36,9 @@ export const LoginScreen: FC = () => {
 
   const performLogin = async () => {
     setLoading(true);
-    const result = await openApiRequest(postAuthLogin, {
+    const result = await postAuthLogin({
       body: {email, password},
+      timeout: 10,
     });
     setLoading(false);
 
@@ -57,8 +58,9 @@ export const LoginScreen: FC = () => {
     router.navigate('/');
   };
 
+  const styles = getStyles(theme);
   return (
-    <ThemedView style={[styles.container, {backgroundColor}]}>
+    <ThemedView style={[styles.container]}>
       <Stack.Screen options={{title: 'Sign In', headerShown: false}} />
       <AppLogo />
       <ThemedView style={styles.form}>
@@ -100,20 +102,21 @@ export const LoginScreen: FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: theme.background,
   },
   form: {
     paddingHorizontal: 50,
     marginTop: 50,
   },
   label: {
-    marginBottom: 5,
+    marginBottom: theme.marginS,
   },
   passwordLabel: {
-    marginBottom: 5,
+    marginBottom: theme.marginS,
     marginTop: 20,
   },
   forgotPassword: {

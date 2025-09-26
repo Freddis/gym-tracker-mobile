@@ -6,11 +6,46 @@ import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
 import {AsyncDrizzleDb, conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
-import {processInBatches} from '../processInBatches';
 import {transactionAsync} from '../runTransaction';
 
 
 export class ExerciseService {
+
+  async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<NestedAppExercise[]> {
+    const items = await db.query.exercises.findMany({
+      where: (t, op) => op.and(
+        params.presonal ? op.not(op.isNull(t.userId)) : op.isNull(t.userId),
+        params.search ? op.like(t.name, `%${params.search ?? ''}%`) : undefined,
+        op.isNull(t.deletedAt)
+      ),
+    });
+    console.log(params);
+    let result = items;
+    if (!params.presonal) {
+      result = [];
+      const map = items.reduce(
+        (acc, item) => item.externalId ? acc.set(item.externalId, item) : acc,
+        new Map<number, NestedAppExercise>()
+      );
+
+      for (const item of items) {
+        if (!item.parentExerciseId) {
+          result.push(item);
+          continue;
+        }
+        const value = map.get(item.parentExerciseId);
+        if (!value) {
+          // console.log(`Parent not found for ${item.parentExerciseId}`);
+          continue;
+          // throw new Error('Parent exercise not found');
+        }
+        const variations = value.variations ?? [];
+        variations.push(item);
+        value.variations = variations;
+      }
+    }
+    return result;
+  }
 
   async findByExternalId(id: number): Promise<AppExercise> {
     const res = await db.query.exercises.findFirst({
@@ -112,6 +147,7 @@ export class ExerciseService {
     }
     const rows: ExerciseUpsertDto[] = exercises.map((exercise) => ({
       ...exercise,
+      isArchived: false,
       muscles: {
         primary: [],
         secondary: [],

@@ -2,7 +2,7 @@ import {getWorkouts, putWorkouts, Workout, WorkoutUpsertDto} from '@/openapi-cli
 import {DrizzleDb, conflictUpdateSetAllColumns} from '../drizzle';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
-import {eq, inArray} from 'drizzle-orm';
+import {eq} from 'drizzle-orm';
 import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
@@ -132,79 +132,79 @@ export class WorkoutService {
     );
     return true;
   }
-  
+
   protected async processedPulledItem(db: DrizzleDb, items: Workout[]): Promise<void> {
-  for (const workout of items) {
+    for (const workout of items) {
     // --- save workout first ---
-    const newWorkoutRow: NewModel<AppWorkout> = {
-      externalId: workout.id,
-      typeId: workout.typeId,
-      userId: workout.userId,
-      calories: workout.calories,
-      start: workout.start,
-      end: workout.end,
-      createdAt: workout.createdAt,
-      updatedAt: workout.updatedAt,
-      lastPulledAt: new Date(),
-      lastPushedAt: new Date(),
-      deletedAt: workout.deletedAt,
-    };
-
-    // upsert workout and get local id
-    const savedWorkoutId = await this.saveWorkoutToDb(db, workout.id, newWorkoutRow);
-
-    // clean up existing children before inserting fresh ones
-    await db.delete(schema.workoutExerciseSets).where(eq(schema.workoutExerciseSets.workoutId, savedWorkoutId));
-    await db.delete(schema.workoutExercises).where(eq(schema.workoutExercises.workoutId, savedWorkoutId));
-
-    // we need exercise id mapping from library
-    const externalExerciseIds = workout.exercises.map((e) => e.exercise.id);
-    const libraryExercises = await db.query.exercises.findMany({
-      columns: { id: true, externalId: true },
-      where: (t, op) => op.inArray(t.externalId, externalExerciseIds),
-    });
-    const libraryExerciseMap = new Map(libraryExercises.map((e) => [e.externalId ?? 0, e.id]));
-
-    // --- save exercises + sets one by one ---
-    for (const row of workout.exercises) {
-      const localExerciseId = libraryExerciseMap.get(row.exercise.id);
-      if (!localExerciseId) {
-        throw new Error(`Exercise not found ${row.exercise.id}`);
-      }
-
-      const newExerciseRow: NewModel<AppWorkoutExercise> = {
-        externalId: counter++, // no externalId in API
+      const newWorkoutRow: NewModel<AppWorkout> = {
+        externalId: workout.id,
+        typeId: workout.typeId,
         userId: workout.userId,
-        createdAt:  new Date(),
-        updatedAt:  new Date(),
-        workoutId: savedWorkoutId,
-        exerciseId: localExerciseId,
+        calories: workout.calories,
+        start: workout.start,
+        end: workout.end,
+        createdAt: workout.createdAt,
+        updatedAt: workout.updatedAt,
+        lastPulledAt: new Date(),
+        lastPushedAt: new Date(),
+        deletedAt: workout.deletedAt,
       };
 
-      const savedExerciseId = await this.saveExerciseToDb(db, newExerciseRow);
+    // upsert workout and get local id
+      const savedWorkoutId = await this.saveWorkoutToDb(db, workout.id, newWorkoutRow);
 
-      // save sets
-      for (const set of row.sets) {
-        const newSetRow: NewModel<AppWorkoutExerciseSet> = {
+    // clean up existing children before inserting fresh ones
+      await db.delete(schema.workoutExerciseSets).where(eq(schema.workoutExerciseSets.workoutId, savedWorkoutId));
+      await db.delete(schema.workoutExercises).where(eq(schema.workoutExercises.workoutId, savedWorkoutId));
+
+    // we need exercise id mapping from library
+      const externalExerciseIds = workout.exercises.map((e) => e.exercise.id);
+      const libraryExercises = await db.query.exercises.findMany({
+        columns: {id: true, externalId: true},
+        where: (t, op) => op.inArray(t.externalId, externalExerciseIds),
+      });
+      const libraryExerciseMap = new Map(libraryExercises.map((e) => [e.externalId ?? 0, e.id]));
+
+    // --- save exercises + sets one by one ---
+      for (const row of workout.exercises) {
+        const localExerciseId = libraryExerciseMap.get(row.exercise.id);
+        if (!localExerciseId) {
+          throw new Error(`Exercise not found ${row.exercise.id}`);
+        }
+
+        const newExerciseRow: NewModel<AppWorkoutExercise> = {
           externalId: counter++, // no externalId in API
           userId: workout.userId,
-          start: set.start,
-          end: set.end,
-          createdAt:  new Date(),
-          updatedAt:  new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
           workoutId: savedWorkoutId,
           exerciseId: localExerciseId,
-          finished: true, // todo
-          reps: set.reps,
-          weight: set.weight,
-          workoutExerciseId: savedExerciseId,
         };
 
-        await db.insert(schema.workoutExerciseSets).values(newSetRow);
+        const savedExerciseId = await this.saveExerciseToDb(db, newExerciseRow);
+
+      // save sets
+        for (const set of row.sets) {
+          const newSetRow: NewModel<AppWorkoutExerciseSet> = {
+            externalId: counter++, // no externalId in API
+            userId: workout.userId,
+            start: set.start,
+            end: set.end,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            workoutId: savedWorkoutId,
+            exerciseId: localExerciseId,
+            finished: true, // todo
+            reps: set.reps,
+            weight: set.weight,
+            workoutExerciseId: savedExerciseId,
+          };
+
+          await db.insert(schema.workoutExerciseSets).values(newSetRow);
+        }
       }
     }
   }
-}
 
 
   async pullFromServer(db: DrizzleDb): Promise<boolean> {

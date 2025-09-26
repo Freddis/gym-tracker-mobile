@@ -1,5 +1,5 @@
 import {FC, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import {ThemedView, ThemedViewProps} from '../ThemedView/ThemedView';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedText} from '../ThemedText/ThemedText';
@@ -19,12 +19,12 @@ const styled = (theme: Theme) => StyleSheet.create({
     padding: 2,
     flexDirection: 'row',
     flexShrink: 1,
-    gap: 5,
-    borderRadius: 5,
+    gap: theme.marginS,
+    borderRadius: theme.borderRadiusS,
   },
   item: {
-    paddingHorizontal: 5,
-    borderRadius: 4,
+    paddingHorizontal: theme.paddingS,
+    borderRadius: theme.borderRadiusS - 1,
     fontSize: 15,
     opacity: 0.7,
   },
