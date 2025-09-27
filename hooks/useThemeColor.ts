@@ -6,7 +6,7 @@
 import {Colors} from '@/types/Colors';
 import {useColorScheme} from 'react-native';
 
-export type ColorType = 'background' | 'text' | 'surface' | 'backgroundSecondary'
+export type ColorType = 'background' | 'text' | 'surface' | 'backgroundSecondary' | 'dangerText'
 
 export function useThemeColor(
   props: { light?: string; dark?: string },

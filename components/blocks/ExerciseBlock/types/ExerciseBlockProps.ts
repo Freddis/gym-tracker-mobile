@@ -1,7 +1,7 @@
-import {AppExercise} from '@/types/models/AppExercise';
+import {Exercise} from '../../../../openapi-client';
 
 export interface ExerciseBlockProps {
   nested?: boolean,
-  onPress?: (item: AppExercise) => void
-  item: AppExercise & {variations?: AppExercise[]}
+  onPress?: (item: Exercise) => void
+  item: Exercise
 }

@@ -38,12 +38,13 @@ export const LoginScreen: FC = () => {
     setLoading(true);
     const result = await postAuthLogin({
       body: {email, password},
-      timeout: 10,
+      timeout: 5000,
     });
     setLoading(false);
 
     if (result.error) {
       const err: PostAuthLoginError = result.error;
+      console.log(result);
       if (err.error.code === 'ValidationFailed') {
         setErrors(err.error.fieldErrors ?? []);
       } else if (err.error.code === 'ActionError') {

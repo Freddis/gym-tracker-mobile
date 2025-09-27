@@ -14,6 +14,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        lazy: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -24,7 +25,7 @@ export default function TabLayout() {
           default: {},
         }),
       }}>
-           <Tabs.Screen
+      <Tabs.Screen
         name="workouts"
         options={{
           title: 'Workouts',

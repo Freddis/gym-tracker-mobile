@@ -1,12 +1,12 @@
 import React from 'react';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
-import {AppExercise} from '@/types/models/AppExercise';
 import {SelectExerciseScreen} from '@/components/screens/exercises/SelectExerciseScreen/SelectExerciseScreen';
+import {Exercise} from '../../../openapi-client';
 
 export default function SelectExercise() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const select = (exercise: AppExercise) => {
+  const select = (exercise: Exercise) => {
     router.dismissTo({
       pathname: './editWorkout',
       params: {

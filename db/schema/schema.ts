@@ -1,5 +1,5 @@
-import {Equipment} from '@/openapi-client';
-import {integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
+import {Equipment, Muscle} from '@/openapi-client';
+import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
   id: integer().primaryKey().notNull(),
@@ -19,6 +19,18 @@ export const exercises = sqliteTable('exercises', {
   lastPulledAt: integer({mode: 'timestamp'}),
   lastPushedAt: integer({mode: 'timestamp'}),
 });
+
+export const exerciseMuscle = sqliteTable('muscles', {
+  id: integer().primaryKey().notNull(),
+  exerciseId: integer().notNull(),
+  isPrimary: integer({mode: 'boolean'}).notNull(),
+  muscle: text().notNull().$type<Muscle>(),
+},
+  (table) => [
+    index('muscle_idx').on(table.muscle),
+  ]
+);
+
 export const workouts = sqliteTable('workouts', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
   externalId: integer().unique(),

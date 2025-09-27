@@ -4,7 +4,7 @@ import type {
   Options as ClientOptions,
   TDataShape,
   Client,
-} from '@hey-api/client-axios';
+} from "@hey-api/client-axios";
 import type {
   PostAuthRegisterData,
   PostAuthRegisterResponse,
@@ -135,8 +135,8 @@ import type {
   DeleteCrmImagesByIdData,
   DeleteCrmImagesByIdResponse,
   DeleteCrmImagesByIdError,
-} from './types.gen';
-import {client as _heyApiClient} from './client.gen';
+} from "./types.gen";
+import { client as _heyApiClient } from "./client.gen";
 import {
   getExercisesResponseTransformer,
   postExercisesResponseTransformer,
@@ -169,7 +169,7 @@ import {
   getCrmExercisesByIdResponseTransformer,
   getCrmExercisesResponseTransformer,
   getCrmImagesResponseTransformer,
-} from './transformers.gen';
+} from "./transformers.gen";
 
 export type Options<
   TData extends TDataShape = TDataShape,
@@ -199,10 +199,10 @@ export const postAuthRegister = <ThrowOnError extends boolean = false>(
     PostAuthRegisterError,
     ThrowOnError
   >({
-    url: '/auth/register',
+    url: "/auth/register",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -219,10 +219,10 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(
     PostAuthLoginError,
     ThrowOnError
   >({
-    url: '/auth/login',
+    url: "/auth/login",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -241,12 +241,12 @@ export const getExercises = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getExercisesResponseTransformer,
-    url: '/exercises',
+    url: "/exercises",
     ...options,
   });
 };
@@ -264,15 +264,15 @@ export const postExercises = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: postExercisesResponseTransformer,
-    url: '/exercises',
+    url: "/exercises",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -291,15 +291,15 @@ export const putExercises = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: putExercisesResponseTransformer,
-    url: '/exercises',
+    url: "/exercises",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -317,7 +317,7 @@ export const getExercisesBuiltIn = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseTransformer: getExercisesBuiltInResponseTransformer,
-    url: '/exercises/built-in',
+    url: "/exercises/built-in",
     ...options,
   });
 };
@@ -335,14 +335,14 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/exercises/{id}',
+    url: "/exercises/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -360,7 +360,7 @@ export const getExercisesById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseTransformer: getExercisesByIdResponseTransformer,
-    url: '/exercises/{id}',
+    url: "/exercises/{id}",
     ...options,
   });
 };
@@ -378,14 +378,14 @@ export const patchExercisesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/exercises/{id}',
+    url: "/exercises/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -404,12 +404,12 @@ export const getWorkouts = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWorkoutsResponseTransformer,
-    url: '/workouts',
+    url: "/workouts",
     ...options,
   });
 };
@@ -427,15 +427,15 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: postWorkoutsResponseTransformer,
-    url: '/workouts',
+    url: "/workouts",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -454,15 +454,15 @@ export const putWorkouts = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: putWorkoutsResponseTransformer,
-    url: '/workouts',
+    url: "/workouts",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -481,14 +481,14 @@ export const deleteWorkoutsById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/workouts/{id}',
+    url: "/workouts/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -507,12 +507,12 @@ export const getWorkoutsById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWorkoutsByIdResponseTransformer,
-    url: '/workouts/{id}',
+    url: "/workouts/{id}",
     ...options,
   });
 };
@@ -530,15 +530,15 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: patchWorkoutsByIdResponseTransformer,
-    url: '/workouts/{id}',
+    url: "/workouts/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -557,12 +557,12 @@ export const getWorkoutPlans = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWorkoutPlansResponseTransformer,
-    url: '/workout-plans',
+    url: "/workout-plans",
     ...options,
   });
 };
@@ -580,15 +580,15 @@ export const postWorkoutPlans = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: postWorkoutPlansResponseTransformer,
-    url: '/workout-plans',
+    url: "/workout-plans",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -607,14 +607,14 @@ export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/workout-plans/{id}',
+    url: "/workout-plans/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -633,12 +633,12 @@ export const getWorkoutPlansById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWorkoutPlansByIdResponseTransformer,
-    url: '/workout-plans/{id}',
+    url: "/workout-plans/{id}",
     ...options,
   });
 };
@@ -656,15 +656,15 @@ export const patchWorkoutPlansById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: patchWorkoutPlansByIdResponseTransformer,
-    url: '/workout-plans/{id}',
+    url: "/workout-plans/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -683,12 +683,12 @@ export const getWorkoutTypes = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWorkoutTypesResponseTransformer,
-    url: '/workout-types',
+    url: "/workout-types",
     ...options,
   });
 };
@@ -706,15 +706,15 @@ export const postWorkoutTypes = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: postWorkoutTypesResponseTransformer,
-    url: '/workout-types',
+    url: "/workout-types",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -733,14 +733,14 @@ export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/workout-types/{id}',
+    url: "/workout-types/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -759,12 +759,12 @@ export const getWorkoutTypesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWorkoutTypesByIdResponseTransformer,
-    url: '/workout-types/{id}',
+    url: "/workout-types/{id}",
     ...options,
   });
 };
@@ -782,15 +782,15 @@ export const patchWorkoutTypesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: patchWorkoutTypesByIdResponseTransformer,
-    url: '/workout-types/{id}',
+    url: "/workout-types/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -809,15 +809,15 @@ export const postWeight = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: postWeightResponseTransformer,
-    url: '/weight',
+    url: "/weight",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -836,12 +836,12 @@ export const getWeightById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getWeightByIdResponseTransformer,
-    url: '/weight/{id}',
+    url: "/weight/{id}",
     ...options,
   });
 };
@@ -859,15 +859,15 @@ export const patchWeightById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: patchWeightByIdResponseTransformer,
-    url: '/weight/{id}',
+    url: "/weight/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -885,7 +885,7 @@ export const getArgusCheckin = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseTransformer: getArgusCheckinResponseTransformer,
-    url: '/argus/checkin',
+    url: "/argus/checkin",
     ...options,
   });
 };
@@ -901,7 +901,7 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
     GetArgusCheckinTypesError,
     ThrowOnError
   >({
-    url: '/argus/checkin/types',
+    url: "/argus/checkin/types",
     ...options,
   });
 };
@@ -918,7 +918,7 @@ export const getEntries = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseTransformer: getEntriesResponseTransformer,
-    url: '/entries',
+    url: "/entries",
     ...options,
   });
 };
@@ -936,12 +936,12 @@ export const getEntriesOwn = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getEntriesOwnResponseTransformer,
-    url: '/entries/own',
+    url: "/entries/own",
     ...options,
   });
 };
@@ -959,11 +959,11 @@ export const getCrmUsers = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/crm/users',
+    url: "/crm/users",
     ...options,
   });
 };
@@ -981,12 +981,12 @@ export const getCrmManagers = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getCrmManagersResponseTransformer,
-    url: '/crm/managers',
+    url: "/crm/managers",
     ...options,
   });
 };
@@ -1002,10 +1002,10 @@ export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
     PostCrmAuthLoginError,
     ThrowOnError
   >({
-    url: '/crm/auth/login',
+    url: "/crm/auth/login",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -1024,12 +1024,12 @@ export const getCrmTranslationsById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getCrmTranslationsByIdResponseTransformer,
-    url: '/crm/translations/{id}',
+    url: "/crm/translations/{id}",
     ...options,
   });
 };
@@ -1047,15 +1047,15 @@ export const patchCrmTranslationsById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: patchCrmTranslationsByIdResponseTransformer,
-    url: '/crm/translations/{id}',
+    url: "/crm/translations/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -1074,12 +1074,12 @@ export const getCrmTranslations = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getCrmTranslationsResponseTransformer,
-    url: '/crm/translations',
+    url: "/crm/translations",
     ...options,
   });
 };
@@ -1097,12 +1097,12 @@ export const getCrmExercisesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getCrmExercisesByIdResponseTransformer,
-    url: '/crm/exercises/{id}',
+    url: "/crm/exercises/{id}",
     ...options,
   });
 };
@@ -1120,14 +1120,14 @@ export const patchCrmExercisesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/crm/exercises/{id}',
+    url: "/crm/exercises/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -1146,12 +1146,12 @@ export const getCrmExercises = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getCrmExercisesResponseTransformer,
-    url: '/crm/exercises',
+    url: "/crm/exercises",
     ...options,
   });
 };
@@ -1169,12 +1169,12 @@ export const getCrmImages = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
     responseTransformer: getCrmImagesResponseTransformer,
-    url: '/crm/images',
+    url: "/crm/images",
     ...options,
   });
 };
@@ -1192,14 +1192,14 @@ export const deleteCrmImagesById = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        name: 'authorization',
-        type: 'apiKey',
+        name: "authorization",
+        type: "apiKey",
       },
     ],
-    url: '/crm/images/{id}',
+    url: "/crm/images/{id}",
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });

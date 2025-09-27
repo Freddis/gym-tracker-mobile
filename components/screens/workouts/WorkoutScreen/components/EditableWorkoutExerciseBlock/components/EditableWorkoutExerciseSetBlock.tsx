@@ -22,12 +22,15 @@ const getStyles = (theme: Theme) => StyleSheet.create({
     alignContent: 'space-evenly',
   },
   inputs: {
-    borderColor: 'red',
-    color: 'red',
     width: 50,
+    borderColor: theme.surfaceText,
     textAlign: 'center',
     height: 30,
     borderWidth: 2,
+  },
+  errorStyle: {
+    borderColor: theme.dangerText,
+    color: theme.dangerText,
   },
 });
 
@@ -90,7 +93,7 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
         returnKeyType="done"
         keyboardType="numeric"
         selectTextOnFocus
-        style={styles.inputs}
+        style={[styles.inputs, weightError ? styles.errorStyle : {}]}
         onChangeText={updateWeight}
         value={weight.toString()}
       />
@@ -100,7 +103,7 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
         keyboardType="numeric"
         inputMode="decimal"
         selectTextOnFocus
-        style={styles.inputs}
+        style={[styles.inputs, repsError ? styles.errorStyle : {}]}
         onChangeText={updateReps}
         value={reps.toString()}
       />

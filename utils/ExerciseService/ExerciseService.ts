@@ -1,26 +1,31 @@
 import {AppExercise} from '@/types/models/AppExercise';
 import {NestedAppExercise} from './types/NestedAppExercise';
-import {ExerciseUpsertDto, getExercises, putExercises} from '@/openapi-client';
+import {Exercise, ExerciseUpsertDto, getExercises, Muscle, putExercises} from '@/openapi-client';
 import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
 import {AsyncDrizzleDb, conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
-
+import {AppExerciseMuscle} from '../../types/models/AppExerciseMuscle';
+import {eq} from 'drizzle-orm';
 
 export class ExerciseService {
 
-  async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<NestedAppExercise[]> {
+  async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<Exercise[]> {
     const items = await db.query.exercises.findMany({
       where: (t, op) => op.and(
         params.presonal ? op.not(op.isNull(t.userId)) : op.isNull(t.userId),
-        params.search ? op.like(t.name, `%${params.search ?? ''}%`) : undefined,
+        ...((() => {
+          if (!params.search) {
+            return [];
+          }
+          return params.search.trim().split(' ').map((search) => op.like(db._.fullSchema.exercises.name, `%${search}%`));
+        })()),
         op.isNull(t.deletedAt)
       ),
     });
-    console.log(params);
-    let result = items;
+    let result: NestedAppExercise[] = items;
     if (!params.presonal) {
       result = [];
       const map = items.reduce(
@@ -44,7 +49,47 @@ export class ExerciseService {
         value.variations = variations;
       }
     }
-    return result;
+    const exIds = result.flatMap((x) => [x.id, ...(x.variations?.map((x) => x.id) ?? [])]);
+    const muscles = await db.query.exerciseMuscle.findMany({
+      where: (t, op) => op.inArray(t.exerciseId, exIds),
+    });
+
+    const primaryMuscles = new Map<number, Muscle[]>();
+    const secondaryMuscles = new Map<number, Muscle[]>();
+    for (const muscleRow of muscles) {
+      // eslint-disable-next-line max-len
+      if (muscleRow.isPrimary) {
+        const arr = primaryMuscles.get(muscleRow.exerciseId) ?? [];
+        arr.push(muscleRow.muscle);
+        primaryMuscles.set(muscleRow.exerciseId, arr);
+        continue;
+      }
+      const arr = secondaryMuscles.get(muscleRow.exerciseId) ?? [];
+      arr.push(muscleRow.muscle);
+      secondaryMuscles.set(muscleRow.exerciseId, arr);
+    }
+
+    const nested: Exercise[] = [];
+    for (const row of result) {
+      const exercise: Exercise = {
+        ...row,
+        isArchived: false,
+        muscles: {
+          primary: primaryMuscles.get(row.id) ?? [],
+          secondary: secondaryMuscles.get(row.id) ?? [],
+        },
+        variations: (row.variations ?? []).map((x) => ({
+          ...x,
+          isArchived: false,
+          muscles: {
+            primary: primaryMuscles.get(x.id) ?? [],
+            secondary: secondaryMuscles.get(x.id) ?? [],
+          },
+        })),
+      };
+      nested.push(exercise);
+    }
+    return nested;
   }
 
   async findByExternalId(id: number): Promise<AppExercise> {
@@ -198,7 +243,6 @@ export class ExerciseService {
         if (response.error) {
           return false;
         }
-        const newRows: NewModel<AppExercise>[] = [];
         for (const exercise of response.data.items) {
           const row: NewModel<AppExercise> = {
             params: exercise.params,
@@ -217,17 +261,31 @@ export class ExerciseService {
             lastPulledAt: new Date(),
             lastPushedAt: new Date(),
           };
-          newRows.push(row);
+          const inserted = await db.insert(schema.exercises).values(row).onConflictDoUpdate({
+            target: schema.exercises.externalId,
+            set: conflictUpdateSetAllColumns(schema.exercises),
+          }).returning();
+          if (!inserted[0]) {
+            throw new Error("Couldn't get inserted data");
+          }
+          await db.delete(schema.exerciseMuscle).where(
+            eq(schema.exerciseMuscle.exerciseId, inserted[0].id)
+          );
+          const muscleRows: NewModel<AppExerciseMuscle>[] = [];
+          for (const muscle of exercise.muscles.primary) {
+            muscleRows.push({
+              exerciseId: inserted[0].id,
+              isPrimary: true,
+              muscle: muscle,
+            });
+          }
+          if (muscleRows.length === 0) {
+            continue;
+          }
+          await db.insert(schema.exerciseMuscle).values(muscleRows);
         }
-        if (newRows.length === 0) {
-          break;
-        }
-        await db.insert(schema.exercises).values(newRows).onConflictDoUpdate({
-          target: schema.exercises.externalId,
-          set: conflictUpdateSetAllColumns(schema.exercises),
-        });
 
-        if (response.data.items.length < response.data.info.pageSize) {
+        if (response.data.items.length === 0 && response.data.items.length < response.data.info.pageSize) {
           break;
         }
       }

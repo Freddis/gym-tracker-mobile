@@ -45,13 +45,13 @@ import {
   getCrmExercises,
   getCrmImages,
   deleteCrmImagesById,
-} from '../sdk.gen';
+} from "../sdk.gen";
 import {
   queryOptions,
   type UseMutationOptions,
   infiniteQueryOptions,
   type InfiniteData,
-} from '@tanstack/react-query';
+} from "@tanstack/react-query";
 import type {
   PostAuthRegisterData,
   PostAuthRegisterError,
@@ -166,12 +166,12 @@ import type {
   DeleteCrmImagesByIdData,
   DeleteCrmImagesByIdError,
   DeleteCrmImagesByIdResponse,
-} from '../types.gen';
-import type {AxiosError} from 'axios';
-import {client as _heyApiClient} from '../client.gen';
+} from "../types.gen";
+import type { AxiosError } from "axios";
+import { client as _heyApiClient } from "../client.gen";
 
 export type QueryKey<TOptions extends Options> = [
-  Pick<TOptions, 'baseURL' | 'body' | 'headers' | 'path' | 'query'> & {
+  Pick<TOptions, "baseURL" | "body" | "headers" | "path" | "query"> & {
     _id: string;
     _infinite?: boolean;
   }
@@ -206,14 +206,14 @@ const createQueryKey = <TOptions extends Options>(
 
 export const postAuthRegisterQueryKey = (
   options?: Options<PostAuthRegisterData>
-) => createQueryKey('postAuthRegister', options);
+) => createQueryKey("postAuthRegister", options);
 
 export const postAuthRegisterOptions = (
   options?: Options<PostAuthRegisterData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postAuthRegister({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postAuthRegister({
         ...options,
         ...queryKey[0],
         signal,
@@ -238,7 +238,7 @@ export const postAuthRegisterMutation = (
     Options<PostAuthRegisterData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postAuthRegister({
+      const { data } = await postAuthRegister({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -250,12 +250,12 @@ export const postAuthRegisterMutation = (
 };
 
 export const postAuthLoginQueryKey = (options?: Options<PostAuthLoginData>) =>
-  createQueryKey('postAuthLogin', options);
+  createQueryKey("postAuthLogin", options);
 
 export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postAuthLogin({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postAuthLogin({
         ...options,
         ...queryKey[0],
         signal,
@@ -280,7 +280,7 @@ export const postAuthLoginMutation = (
     Options<PostAuthLoginData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postAuthLogin({
+      const { data } = await postAuthLogin({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -292,12 +292,12 @@ export const postAuthLoginMutation = (
 };
 
 export const getExercisesQueryKey = (options?: Options<GetExercisesData>) =>
-  createQueryKey('getExercises', options);
+  createQueryKey("getExercises", options);
 
 export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getExercises({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getExercises({
         ...options,
         ...queryKey[0],
         signal,
@@ -310,7 +310,7 @@ export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
 };
 
 const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">
 >(
   queryKey: QueryKey<Options>,
   page: K
@@ -346,7 +346,7 @@ const createInfiniteParams = <
 export const getExercisesInfiniteQueryKey = (
   options?: Options<GetExercisesData>
 ): QueryKey<Options<GetExercisesData>> =>
-  createQueryKey('getExercises', options, true);
+  createQueryKey("getExercises", options, true);
 
 export const getExercisesInfiniteOptions = (
   options?: Options<GetExercisesData>
@@ -359,26 +359,26 @@ export const getExercisesInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetExercisesData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetExercisesData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getExercises({
+        const { data } = await getExercises({
           ...options,
           ...params,
           signal,
@@ -392,12 +392,12 @@ export const getExercisesInfiniteOptions = (
 };
 
 export const postExercisesQueryKey = (options?: Options<PostExercisesData>) =>
-  createQueryKey('postExercises', options);
+  createQueryKey("postExercises", options);
 
 export const postExercisesOptions = (options?: Options<PostExercisesData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postExercises({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postExercises({
         ...options,
         ...queryKey[0],
         signal,
@@ -422,7 +422,7 @@ export const postExercisesMutation = (
     Options<PostExercisesData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postExercises({
+      const { data } = await postExercises({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -446,7 +446,7 @@ export const putExercisesMutation = (
     Options<PutExercisesData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await putExercises({
+      const { data } = await putExercises({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -459,14 +459,14 @@ export const putExercisesMutation = (
 
 export const getExercisesBuiltInQueryKey = (
   options?: Options<GetExercisesBuiltInData>
-) => createQueryKey('getExercisesBuiltIn', options);
+) => createQueryKey("getExercisesBuiltIn", options);
 
 export const getExercisesBuiltInOptions = (
   options?: Options<GetExercisesBuiltInData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getExercisesBuiltIn({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getExercisesBuiltIn({
         ...options,
         ...queryKey[0],
         signal,
@@ -481,7 +481,7 @@ export const getExercisesBuiltInOptions = (
 export const getExercisesBuiltInInfiniteQueryKey = (
   options?: Options<GetExercisesBuiltInData>
 ): QueryKey<Options<GetExercisesBuiltInData>> =>
-  createQueryKey('getExercisesBuiltIn', options, true);
+  createQueryKey("getExercisesBuiltIn", options, true);
 
 export const getExercisesBuiltInInfiniteOptions = (
   options?: Options<GetExercisesBuiltInData>
@@ -494,26 +494,26 @@ export const getExercisesBuiltInInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetExercisesBuiltInData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetExercisesBuiltInData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getExercisesBuiltIn({
+        const { data } = await getExercisesBuiltIn({
           ...options,
           ...params,
           signal,
@@ -539,7 +539,7 @@ export const deleteExercisesByIdMutation = (
     Options<DeleteExercisesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await deleteExercisesById({
+      const { data } = await deleteExercisesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -552,14 +552,14 @@ export const deleteExercisesByIdMutation = (
 
 export const getExercisesByIdQueryKey = (
   options: Options<GetExercisesByIdData>
-) => createQueryKey('getExercisesById', options);
+) => createQueryKey("getExercisesById", options);
 
 export const getExercisesByIdOptions = (
   options: Options<GetExercisesByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getExercisesById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getExercisesById({
         ...options,
         ...queryKey[0],
         signal,
@@ -584,7 +584,7 @@ export const patchExercisesByIdMutation = (
     Options<PatchExercisesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchExercisesById({
+      const { data } = await patchExercisesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -596,12 +596,12 @@ export const patchExercisesByIdMutation = (
 };
 
 export const getWorkoutsQueryKey = (options?: Options<GetWorkoutsData>) =>
-  createQueryKey('getWorkouts', options);
+  createQueryKey("getWorkouts", options);
 
 export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWorkouts({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkouts({
         ...options,
         ...queryKey[0],
         signal,
@@ -616,7 +616,7 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
 export const getWorkoutsInfiniteQueryKey = (
   options?: Options<GetWorkoutsData>
 ): QueryKey<Options<GetWorkoutsData>> =>
-  createQueryKey('getWorkouts', options, true);
+  createQueryKey("getWorkouts", options, true);
 
 export const getWorkoutsInfiniteOptions = (
   options?: Options<GetWorkoutsData>
@@ -629,26 +629,26 @@ export const getWorkoutsInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetWorkoutsData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetWorkoutsData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getWorkouts({
+        const { data } = await getWorkouts({
           ...options,
           ...params,
           signal,
@@ -662,12 +662,12 @@ export const getWorkoutsInfiniteOptions = (
 };
 
 export const postWorkoutsQueryKey = (options?: Options<PostWorkoutsData>) =>
-  createQueryKey('postWorkouts', options);
+  createQueryKey("postWorkouts", options);
 
 export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postWorkouts({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWorkouts({
         ...options,
         ...queryKey[0],
         signal,
@@ -682,7 +682,7 @@ export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
 export const postWorkoutsInfiniteQueryKey = (
   options?: Options<PostWorkoutsData>
 ): QueryKey<Options<PostWorkoutsData>> =>
-  createQueryKey('postWorkouts', options, true);
+  createQueryKey("postWorkouts", options, true);
 
 export const postWorkoutsInfiniteOptions = (
   options?: Options<PostWorkoutsData>
@@ -695,26 +695,26 @@ export const postWorkoutsInfiniteOptions = (
     | Date
     | Pick<
         QueryKey<Options<PostWorkoutsData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<PostWorkoutsData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              body: {
-                start: pageParam,
-              },
-            };
+                body: {
+                  start: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await postWorkouts({
+        const { data } = await postWorkouts({
           ...options,
           ...params,
           signal,
@@ -740,7 +740,7 @@ export const postWorkoutsMutation = (
     Options<PostWorkoutsData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postWorkouts({
+      const { data } = await postWorkouts({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -764,7 +764,7 @@ export const putWorkoutsMutation = (
     Options<PutWorkoutsData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await putWorkouts({
+      const { data } = await putWorkouts({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -788,7 +788,7 @@ export const deleteWorkoutsByIdMutation = (
     Options<DeleteWorkoutsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await deleteWorkoutsById({
+      const { data } = await deleteWorkoutsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -801,14 +801,14 @@ export const deleteWorkoutsByIdMutation = (
 
 export const getWorkoutsByIdQueryKey = (
   options: Options<GetWorkoutsByIdData>
-) => createQueryKey('getWorkoutsById', options);
+) => createQueryKey("getWorkoutsById", options);
 
 export const getWorkoutsByIdOptions = (
   options: Options<GetWorkoutsByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWorkoutsById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutsById({
         ...options,
         ...queryKey[0],
         signal,
@@ -833,7 +833,7 @@ export const patchWorkoutsByIdMutation = (
     Options<PatchWorkoutsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchWorkoutsById({
+      const { data } = await patchWorkoutsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -846,14 +846,14 @@ export const patchWorkoutsByIdMutation = (
 
 export const getWorkoutPlansQueryKey = (
   options?: Options<GetWorkoutPlansData>
-) => createQueryKey('getWorkoutPlans', options);
+) => createQueryKey("getWorkoutPlans", options);
 
 export const getWorkoutPlansOptions = (
   options?: Options<GetWorkoutPlansData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWorkoutPlans({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutPlans({
         ...options,
         ...queryKey[0],
         signal,
@@ -868,7 +868,7 @@ export const getWorkoutPlansOptions = (
 export const getWorkoutPlansInfiniteQueryKey = (
   options?: Options<GetWorkoutPlansData>
 ): QueryKey<Options<GetWorkoutPlansData>> =>
-  createQueryKey('getWorkoutPlans', options, true);
+  createQueryKey("getWorkoutPlans", options, true);
 
 export const getWorkoutPlansInfiniteOptions = (
   options?: Options<GetWorkoutPlansData>
@@ -881,26 +881,26 @@ export const getWorkoutPlansInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetWorkoutPlansData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetWorkoutPlansData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getWorkoutPlans({
+        const { data } = await getWorkoutPlans({
           ...options,
           ...params,
           signal,
@@ -915,14 +915,14 @@ export const getWorkoutPlansInfiniteOptions = (
 
 export const postWorkoutPlansQueryKey = (
   options?: Options<PostWorkoutPlansData>
-) => createQueryKey('postWorkoutPlans', options);
+) => createQueryKey("postWorkoutPlans", options);
 
 export const postWorkoutPlansOptions = (
   options?: Options<PostWorkoutPlansData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postWorkoutPlans({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWorkoutPlans({
         ...options,
         ...queryKey[0],
         signal,
@@ -947,7 +947,7 @@ export const postWorkoutPlansMutation = (
     Options<PostWorkoutPlansData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postWorkoutPlans({
+      const { data } = await postWorkoutPlans({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -971,7 +971,7 @@ export const deleteWorkoutPlansByIdMutation = (
     Options<DeleteWorkoutPlansByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await deleteWorkoutPlansById({
+      const { data } = await deleteWorkoutPlansById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -984,14 +984,14 @@ export const deleteWorkoutPlansByIdMutation = (
 
 export const getWorkoutPlansByIdQueryKey = (
   options: Options<GetWorkoutPlansByIdData>
-) => createQueryKey('getWorkoutPlansById', options);
+) => createQueryKey("getWorkoutPlansById", options);
 
 export const getWorkoutPlansByIdOptions = (
   options: Options<GetWorkoutPlansByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWorkoutPlansById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutPlansById({
         ...options,
         ...queryKey[0],
         signal,
@@ -1016,7 +1016,7 @@ export const patchWorkoutPlansByIdMutation = (
     Options<PatchWorkoutPlansByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchWorkoutPlansById({
+      const { data } = await patchWorkoutPlansById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1029,14 +1029,14 @@ export const patchWorkoutPlansByIdMutation = (
 
 export const getWorkoutTypesQueryKey = (
   options?: Options<GetWorkoutTypesData>
-) => createQueryKey('getWorkoutTypes', options);
+) => createQueryKey("getWorkoutTypes", options);
 
 export const getWorkoutTypesOptions = (
   options?: Options<GetWorkoutTypesData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWorkoutTypes({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutTypes({
         ...options,
         ...queryKey[0],
         signal,
@@ -1051,7 +1051,7 @@ export const getWorkoutTypesOptions = (
 export const getWorkoutTypesInfiniteQueryKey = (
   options?: Options<GetWorkoutTypesData>
 ): QueryKey<Options<GetWorkoutTypesData>> =>
-  createQueryKey('getWorkoutTypes', options, true);
+  createQueryKey("getWorkoutTypes", options, true);
 
 export const getWorkoutTypesInfiniteOptions = (
   options?: Options<GetWorkoutTypesData>
@@ -1064,26 +1064,26 @@ export const getWorkoutTypesInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetWorkoutTypesData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetWorkoutTypesData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getWorkoutTypes({
+        const { data } = await getWorkoutTypes({
           ...options,
           ...params,
           signal,
@@ -1098,14 +1098,14 @@ export const getWorkoutTypesInfiniteOptions = (
 
 export const postWorkoutTypesQueryKey = (
   options?: Options<PostWorkoutTypesData>
-) => createQueryKey('postWorkoutTypes', options);
+) => createQueryKey("postWorkoutTypes", options);
 
 export const postWorkoutTypesOptions = (
   options?: Options<PostWorkoutTypesData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postWorkoutTypes({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWorkoutTypes({
         ...options,
         ...queryKey[0],
         signal,
@@ -1130,7 +1130,7 @@ export const postWorkoutTypesMutation = (
     Options<PostWorkoutTypesData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postWorkoutTypes({
+      const { data } = await postWorkoutTypes({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1154,7 +1154,7 @@ export const deleteWorkoutTypesByIdMutation = (
     Options<DeleteWorkoutTypesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await deleteWorkoutTypesById({
+      const { data } = await deleteWorkoutTypesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1167,14 +1167,14 @@ export const deleteWorkoutTypesByIdMutation = (
 
 export const getWorkoutTypesByIdQueryKey = (
   options: Options<GetWorkoutTypesByIdData>
-) => createQueryKey('getWorkoutTypesById', options);
+) => createQueryKey("getWorkoutTypesById", options);
 
 export const getWorkoutTypesByIdOptions = (
   options: Options<GetWorkoutTypesByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWorkoutTypesById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutTypesById({
         ...options,
         ...queryKey[0],
         signal,
@@ -1199,7 +1199,7 @@ export const patchWorkoutTypesByIdMutation = (
     Options<PatchWorkoutTypesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchWorkoutTypesById({
+      const { data } = await patchWorkoutTypesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1211,12 +1211,12 @@ export const patchWorkoutTypesByIdMutation = (
 };
 
 export const postWeightQueryKey = (options?: Options<PostWeightData>) =>
-  createQueryKey('postWeight', options);
+  createQueryKey("postWeight", options);
 
 export const postWeightOptions = (options?: Options<PostWeightData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postWeight({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWeight({
         ...options,
         ...queryKey[0],
         signal,
@@ -1241,7 +1241,7 @@ export const postWeightMutation = (
     Options<PostWeightData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postWeight({
+      const { data } = await postWeight({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1253,12 +1253,12 @@ export const postWeightMutation = (
 };
 
 export const getWeightByIdQueryKey = (options: Options<GetWeightByIdData>) =>
-  createQueryKey('getWeightById', options);
+  createQueryKey("getWeightById", options);
 
 export const getWeightByIdOptions = (options: Options<GetWeightByIdData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getWeightById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWeightById({
         ...options,
         ...queryKey[0],
         signal,
@@ -1283,7 +1283,7 @@ export const patchWeightByIdMutation = (
     Options<PatchWeightByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchWeightById({
+      const { data } = await patchWeightById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1296,14 +1296,14 @@ export const patchWeightByIdMutation = (
 
 export const getArgusCheckinQueryKey = (
   options?: Options<GetArgusCheckinData>
-) => createQueryKey('getArgusCheckin', options);
+) => createQueryKey("getArgusCheckin", options);
 
 export const getArgusCheckinOptions = (
   options?: Options<GetArgusCheckinData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getArgusCheckin({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getArgusCheckin({
         ...options,
         ...queryKey[0],
         signal,
@@ -1318,7 +1318,7 @@ export const getArgusCheckinOptions = (
 export const getArgusCheckinInfiniteQueryKey = (
   options?: Options<GetArgusCheckinData>
 ): QueryKey<Options<GetArgusCheckinData>> =>
-  createQueryKey('getArgusCheckin', options, true);
+  createQueryKey("getArgusCheckin", options, true);
 
 export const getArgusCheckinInfiniteOptions = (
   options?: Options<GetArgusCheckinData>
@@ -1331,26 +1331,26 @@ export const getArgusCheckinInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetArgusCheckinData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetArgusCheckinData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getArgusCheckin({
+        const { data } = await getArgusCheckin({
           ...options,
           ...params,
           signal,
@@ -1365,14 +1365,14 @@ export const getArgusCheckinInfiniteOptions = (
 
 export const getArgusCheckinTypesQueryKey = (
   options?: Options<GetArgusCheckinTypesData>
-) => createQueryKey('getArgusCheckinTypes', options);
+) => createQueryKey("getArgusCheckinTypes", options);
 
 export const getArgusCheckinTypesOptions = (
   options?: Options<GetArgusCheckinTypesData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getArgusCheckinTypes({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getArgusCheckinTypes({
         ...options,
         ...queryKey[0],
         signal,
@@ -1385,12 +1385,12 @@ export const getArgusCheckinTypesOptions = (
 };
 
 export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
-  createQueryKey('getEntries', options);
+  createQueryKey("getEntries", options);
 
 export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getEntries({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntries({
         ...options,
         ...queryKey[0],
         signal,
@@ -1405,7 +1405,7 @@ export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
 export const getEntriesInfiniteQueryKey = (
   options?: Options<GetEntriesData>
 ): QueryKey<Options<GetEntriesData>> =>
-  createQueryKey('getEntries', options, true);
+  createQueryKey("getEntries", options, true);
 
 export const getEntriesInfiniteOptions = (
   options?: Options<GetEntriesData>
@@ -1418,26 +1418,26 @@ export const getEntriesInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetEntriesData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetEntriesData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getEntries({
+        const { data } = await getEntries({
           ...options,
           ...params,
           signal,
@@ -1451,12 +1451,12 @@ export const getEntriesInfiniteOptions = (
 };
 
 export const getEntriesOwnQueryKey = (options?: Options<GetEntriesOwnData>) =>
-  createQueryKey('getEntriesOwn', options);
+  createQueryKey("getEntriesOwn", options);
 
 export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getEntriesOwn({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesOwn({
         ...options,
         ...queryKey[0],
         signal,
@@ -1471,7 +1471,7 @@ export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
 export const getEntriesOwnInfiniteQueryKey = (
   options?: Options<GetEntriesOwnData>
 ): QueryKey<Options<GetEntriesOwnData>> =>
-  createQueryKey('getEntriesOwn', options, true);
+  createQueryKey("getEntriesOwn", options, true);
 
 export const getEntriesOwnInfiniteOptions = (
   options?: Options<GetEntriesOwnData>
@@ -1484,26 +1484,26 @@ export const getEntriesOwnInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetEntriesOwnData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetEntriesOwnData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getEntriesOwn({
+        const { data } = await getEntriesOwn({
           ...options,
           ...params,
           signal,
@@ -1517,12 +1517,12 @@ export const getEntriesOwnInfiniteOptions = (
 };
 
 export const getCrmUsersQueryKey = (options?: Options<GetCrmUsersData>) =>
-  createQueryKey('getCrmUsers', options);
+  createQueryKey("getCrmUsers", options);
 
 export const getCrmUsersOptions = (options?: Options<GetCrmUsersData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmUsers({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmUsers({
         ...options,
         ...queryKey[0],
         signal,
@@ -1537,7 +1537,7 @@ export const getCrmUsersOptions = (options?: Options<GetCrmUsersData>) => {
 export const getCrmUsersInfiniteQueryKey = (
   options?: Options<GetCrmUsersData>
 ): QueryKey<Options<GetCrmUsersData>> =>
-  createQueryKey('getCrmUsers', options, true);
+  createQueryKey("getCrmUsers", options, true);
 
 export const getCrmUsersInfiniteOptions = (
   options?: Options<GetCrmUsersData>
@@ -1550,26 +1550,26 @@ export const getCrmUsersInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetCrmUsersData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetCrmUsersData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getCrmUsers({
+        const { data } = await getCrmUsers({
           ...options,
           ...params,
           signal,
@@ -1583,14 +1583,14 @@ export const getCrmUsersInfiniteOptions = (
 };
 
 export const getCrmManagersQueryKey = (options?: Options<GetCrmManagersData>) =>
-  createQueryKey('getCrmManagers', options);
+  createQueryKey("getCrmManagers", options);
 
 export const getCrmManagersOptions = (
   options?: Options<GetCrmManagersData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmManagers({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmManagers({
         ...options,
         ...queryKey[0],
         signal,
@@ -1605,7 +1605,7 @@ export const getCrmManagersOptions = (
 export const getCrmManagersInfiniteQueryKey = (
   options?: Options<GetCrmManagersData>
 ): QueryKey<Options<GetCrmManagersData>> =>
-  createQueryKey('getCrmManagers', options, true);
+  createQueryKey("getCrmManagers", options, true);
 
 export const getCrmManagersInfiniteOptions = (
   options?: Options<GetCrmManagersData>
@@ -1618,26 +1618,26 @@ export const getCrmManagersInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetCrmManagersData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetCrmManagersData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getCrmManagers({
+        const { data } = await getCrmManagers({
           ...options,
           ...params,
           signal,
@@ -1652,14 +1652,14 @@ export const getCrmManagersInfiniteOptions = (
 
 export const postCrmAuthLoginQueryKey = (
   options?: Options<PostCrmAuthLoginData>
-) => createQueryKey('postCrmAuthLogin', options);
+) => createQueryKey("postCrmAuthLogin", options);
 
 export const postCrmAuthLoginOptions = (
   options?: Options<PostCrmAuthLoginData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await postCrmAuthLogin({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postCrmAuthLogin({
         ...options,
         ...queryKey[0],
         signal,
@@ -1684,7 +1684,7 @@ export const postCrmAuthLoginMutation = (
     Options<PostCrmAuthLoginData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await postCrmAuthLogin({
+      const { data } = await postCrmAuthLogin({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1697,14 +1697,14 @@ export const postCrmAuthLoginMutation = (
 
 export const getCrmTranslationsByIdQueryKey = (
   options: Options<GetCrmTranslationsByIdData>
-) => createQueryKey('getCrmTranslationsById', options);
+) => createQueryKey("getCrmTranslationsById", options);
 
 export const getCrmTranslationsByIdOptions = (
   options: Options<GetCrmTranslationsByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmTranslationsById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmTranslationsById({
         ...options,
         ...queryKey[0],
         signal,
@@ -1729,7 +1729,7 @@ export const patchCrmTranslationsByIdMutation = (
     Options<PatchCrmTranslationsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchCrmTranslationsById({
+      const { data } = await patchCrmTranslationsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1742,14 +1742,14 @@ export const patchCrmTranslationsByIdMutation = (
 
 export const getCrmTranslationsQueryKey = (
   options?: Options<GetCrmTranslationsData>
-) => createQueryKey('getCrmTranslations', options);
+) => createQueryKey("getCrmTranslations", options);
 
 export const getCrmTranslationsOptions = (
   options?: Options<GetCrmTranslationsData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmTranslations({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmTranslations({
         ...options,
         ...queryKey[0],
         signal,
@@ -1764,7 +1764,7 @@ export const getCrmTranslationsOptions = (
 export const getCrmTranslationsInfiniteQueryKey = (
   options?: Options<GetCrmTranslationsData>
 ): QueryKey<Options<GetCrmTranslationsData>> =>
-  createQueryKey('getCrmTranslations', options, true);
+  createQueryKey("getCrmTranslations", options, true);
 
 export const getCrmTranslationsInfiniteOptions = (
   options?: Options<GetCrmTranslationsData>
@@ -1777,26 +1777,26 @@ export const getCrmTranslationsInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetCrmTranslationsData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetCrmTranslationsData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getCrmTranslations({
+        const { data } = await getCrmTranslations({
           ...options,
           ...params,
           signal,
@@ -1811,14 +1811,14 @@ export const getCrmTranslationsInfiniteOptions = (
 
 export const getCrmExercisesByIdQueryKey = (
   options: Options<GetCrmExercisesByIdData>
-) => createQueryKey('getCrmExercisesById', options);
+) => createQueryKey("getCrmExercisesById", options);
 
 export const getCrmExercisesByIdOptions = (
   options: Options<GetCrmExercisesByIdData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmExercisesById({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmExercisesById({
         ...options,
         ...queryKey[0],
         signal,
@@ -1843,7 +1843,7 @@ export const patchCrmExercisesByIdMutation = (
     Options<PatchCrmExercisesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await patchCrmExercisesById({
+      const { data } = await patchCrmExercisesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1856,14 +1856,14 @@ export const patchCrmExercisesByIdMutation = (
 
 export const getCrmExercisesQueryKey = (
   options?: Options<GetCrmExercisesData>
-) => createQueryKey('getCrmExercises', options);
+) => createQueryKey("getCrmExercises", options);
 
 export const getCrmExercisesOptions = (
   options?: Options<GetCrmExercisesData>
 ) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmExercises({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmExercises({
         ...options,
         ...queryKey[0],
         signal,
@@ -1878,7 +1878,7 @@ export const getCrmExercisesOptions = (
 export const getCrmExercisesInfiniteQueryKey = (
   options?: Options<GetCrmExercisesData>
 ): QueryKey<Options<GetCrmExercisesData>> =>
-  createQueryKey('getCrmExercises', options, true);
+  createQueryKey("getCrmExercises", options, true);
 
 export const getCrmExercisesInfiniteOptions = (
   options?: Options<GetCrmExercisesData>
@@ -1891,26 +1891,26 @@ export const getCrmExercisesInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetCrmExercisesData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetCrmExercisesData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getCrmExercises({
+        const { data } = await getCrmExercises({
           ...options,
           ...params,
           signal,
@@ -1924,12 +1924,12 @@ export const getCrmExercisesInfiniteOptions = (
 };
 
 export const getCrmImagesQueryKey = (options?: Options<GetCrmImagesData>) =>
-  createQueryKey('getCrmImages', options);
+  createQueryKey("getCrmImages", options);
 
 export const getCrmImagesOptions = (options?: Options<GetCrmImagesData>) => {
   return queryOptions({
-    queryFn: async ({queryKey, signal}) => {
-      const {data} = await getCrmImages({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmImages({
         ...options,
         ...queryKey[0],
         signal,
@@ -1944,7 +1944,7 @@ export const getCrmImagesOptions = (options?: Options<GetCrmImagesData>) => {
 export const getCrmImagesInfiniteQueryKey = (
   options?: Options<GetCrmImagesData>
 ): QueryKey<Options<GetCrmImagesData>> =>
-  createQueryKey('getCrmImages', options, true);
+  createQueryKey("getCrmImages", options, true);
 
 export const getCrmImagesInfiniteOptions = (
   options?: Options<GetCrmImagesData>
@@ -1957,26 +1957,26 @@ export const getCrmImagesInfiniteOptions = (
     | number
     | Pick<
         QueryKey<Options<GetCrmImagesData>>[0],
-        'body' | 'headers' | 'path' | 'query'
+        "body" | "headers" | "path" | "query"
       >
   >(
     // @ts-ignore
     {
-      queryFn: async ({pageParam, queryKey, signal}) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetCrmImagesData>>[0],
-          'body' | 'headers' | 'path' | 'query'
+          "body" | "headers" | "path" | "query"
         > =
-          typeof pageParam === 'object'
+          typeof pageParam === "object"
             ? pageParam
             : {
-              query: {
-                page: pageParam,
-              },
-            };
+                query: {
+                  page: pageParam,
+                },
+              };
         const params = createInfiniteParams(queryKey, page);
-        const {data} = await getCrmImages({
+        const { data } = await getCrmImages({
           ...options,
           ...params,
           signal,
@@ -2002,7 +2002,7 @@ export const deleteCrmImagesByIdMutation = (
     Options<DeleteCrmImagesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const {data} = await deleteCrmImagesById({
+      const { data } = await deleteCrmImagesById({
         ...options,
         ...localOptions,
         throwOnError: true,

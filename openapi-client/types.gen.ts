@@ -33,7 +33,7 @@ export type UnknownErrorResponse = {
     /**
      * Code to handle on the frontend
      */
-    code: 'UnknownError';
+    code: "UnknownError";
   };
 };
 
@@ -64,11 +64,11 @@ export type Exercise = {
   /**
    * List of images for this exercise
    */
-  images: string[];
+  images: Array<string>;
   /**
    * Types of the parameters, such as: weight, reps, duration
    */
-  params: number[];
+  params: Array<number>;
   /**
    * Id of the user excercise belongs to
    */
@@ -104,16 +104,16 @@ export type Exercise = {
     /**
      * List of primary muscles this exercise targets
      */
-    primary: Muscle[];
+    primary: Array<Muscle>;
     /**
      * List of secondary muscles this exercise targets
      */
-    secondary: Muscle[];
+    secondary: Array<Muscle>;
   };
   /**
    * List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.
    */
-  variations: {
+  variations: Array<{
     /**
      * Id of the exercise
      */
@@ -137,11 +137,11 @@ export type Exercise = {
     /**
      * List of images for this exercise
      */
-    images: string[];
+    images: Array<string>;
     /**
      * Types of the parameters, such as: weight, reps, duration
      */
-    params: number[];
+    params: Array<number>;
     /**
      * Id of the user excercise belongs to
      */
@@ -177,159 +177,159 @@ export type Exercise = {
       /**
        * List of primary muscles this exercise targets
        */
-      primary: Muscle[];
+      primary: Array<Muscle>;
       /**
        * List of secondary muscles this exercise targets
        */
-      secondary: Muscle[];
+      secondary: Array<Muscle>;
     };
-  }[];
+  }>;
 };
 
 /**
  * Gym Equipment
  */
 export type Equipment =
-  | 'rowing'
-  | 'swimming'
-  | 'plate loaded'
-  | 'foam roller'
-  | 'pullup bar'
-  | 'stair climber'
-  | 'selectorized'
-  | 'dip bar'
-  | 'preacher'
-  | 'hyperextension'
-  | 'sandbag'
-  | 'elliptical'
-  | 'chair'
-  | 'cable'
-  | 'captains chair'
-  | 'towel'
-  | 'water bottle'
-  | 'stability ball'
-  | 'table'
-  | 'smith'
-  | 'kettlebell'
-  | 'cycling'
-  | 'step aerobics'
-  | 'plate'
-  | 'platform'
-  | 'medicine ball'
-  | 'running'
-  | 'barbell'
-  | 'backpack'
-  | 'ez curl bar'
-  | 'walking'
-  | 'bench'
-  | 'bodyweight'
-  | 'resistance band'
-  | 'dumbbell'
-  | 'jump rope'
-  | 'treadmill'
-  | 'bosu ball';
+  | "rowing"
+  | "swimming"
+  | "plate loaded"
+  | "foam roller"
+  | "pullup bar"
+  | "stair climber"
+  | "selectorized"
+  | "dip bar"
+  | "preacher"
+  | "hyperextension"
+  | "sandbag"
+  | "elliptical"
+  | "chair"
+  | "cable"
+  | "captains chair"
+  | "towel"
+  | "water bottle"
+  | "stability ball"
+  | "table"
+  | "smith"
+  | "kettlebell"
+  | "cycling"
+  | "step aerobics"
+  | "plate"
+  | "platform"
+  | "medicine ball"
+  | "running"
+  | "barbell"
+  | "backpack"
+  | "ez curl bar"
+  | "walking"
+  | "bench"
+  | "bodyweight"
+  | "resistance band"
+  | "dumbbell"
+  | "jump rope"
+  | "treadmill"
+  | "bosu ball";
 
 /**
  * Gym Equipment
  */
 export const Equipment = {
-  ROWING: 'rowing',
-  SWIMMING: 'swimming',
-  PLATE_LOADED: 'plate loaded',
-  FOAM_ROLLER: 'foam roller',
-  PULLUP_BAR: 'pullup bar',
-  STAIR_CLIMBER: 'stair climber',
-  SELECTORIZED: 'selectorized',
-  DIP_BAR: 'dip bar',
-  PREACHER: 'preacher',
-  HYPEREXTENSION: 'hyperextension',
-  SANDBAG: 'sandbag',
-  ELLIPTICAL: 'elliptical',
-  CHAIR: 'chair',
-  CABLE: 'cable',
-  CAPTAINS_CHAIR: 'captains chair',
-  TOWEL: 'towel',
-  WATER_BOTTLE: 'water bottle',
-  STABILITY_BALL: 'stability ball',
-  TABLE: 'table',
-  SMITH: 'smith',
-  KETTLEBELL: 'kettlebell',
-  CYCLING: 'cycling',
-  STEP_AEROBICS: 'step aerobics',
-  PLATE: 'plate',
-  PLATFORM: 'platform',
-  MEDICINE_BALL: 'medicine ball',
-  RUNNING: 'running',
-  BARBELL: 'barbell',
-  BACKPACK: 'backpack',
-  EZ_CURL_BAR: 'ez curl bar',
-  WALKING: 'walking',
-  BENCH: 'bench',
-  BODYWEIGHT: 'bodyweight',
-  RESISTANCE_BAND: 'resistance band',
-  DUMBBELL: 'dumbbell',
-  JUMP_ROPE: 'jump rope',
-  TREADMILL: 'treadmill',
-  BOSU_BALL: 'bosu ball',
+  ROWING: "rowing",
+  SWIMMING: "swimming",
+  PLATE_LOADED: "plate loaded",
+  FOAM_ROLLER: "foam roller",
+  PULLUP_BAR: "pullup bar",
+  STAIR_CLIMBER: "stair climber",
+  SELECTORIZED: "selectorized",
+  DIP_BAR: "dip bar",
+  PREACHER: "preacher",
+  HYPEREXTENSION: "hyperextension",
+  SANDBAG: "sandbag",
+  ELLIPTICAL: "elliptical",
+  CHAIR: "chair",
+  CABLE: "cable",
+  CAPTAINS_CHAIR: "captains chair",
+  TOWEL: "towel",
+  WATER_BOTTLE: "water bottle",
+  STABILITY_BALL: "stability ball",
+  TABLE: "table",
+  SMITH: "smith",
+  KETTLEBELL: "kettlebell",
+  CYCLING: "cycling",
+  STEP_AEROBICS: "step aerobics",
+  PLATE: "plate",
+  PLATFORM: "platform",
+  MEDICINE_BALL: "medicine ball",
+  RUNNING: "running",
+  BARBELL: "barbell",
+  BACKPACK: "backpack",
+  EZ_CURL_BAR: "ez curl bar",
+  WALKING: "walking",
+  BENCH: "bench",
+  BODYWEIGHT: "bodyweight",
+  RESISTANCE_BAND: "resistance band",
+  DUMBBELL: "dumbbell",
+  JUMP_ROPE: "jump rope",
+  TREADMILL: "treadmill",
+  BOSU_BALL: "bosu ball",
 } as const;
 
 /**
  * Body Muscle
  */
 export type Muscle =
-  | 'Lower Back'
-  | 'Soleus'
-  | 'Front Deltoids'
-  | 'Lats'
-  | 'Forearms'
-  | 'Pecs'
-  | 'Hamstrings'
-  | 'Wrist Flexors'
-  | 'Biceps'
-  | 'Triceps'
-  | 'Rear Deltoids'
-  | 'Rotator Cuff'
-  | 'Ankle'
-  | 'Abdominals'
-  | 'Glutes'
-  | 'Quadriceps'
-  | 'Obliques'
-  | 'Abductors'
-  | 'Gastrocnemius'
-  | 'Lateral Deltoids'
-  | 'Hip Flexors'
-  | 'Trapezius'
-  | 'Neck'
-  | 'Adductors';
+  | "Lower Back"
+  | "Soleus"
+  | "Front Deltoids"
+  | "Lats"
+  | "Forearms"
+  | "Pecs"
+  | "Hamstrings"
+  | "Wrist Flexors"
+  | "Biceps"
+  | "Triceps"
+  | "Rear Deltoids"
+  | "Rotator Cuff"
+  | "Ankle"
+  | "Abdominals"
+  | "Glutes"
+  | "Quadriceps"
+  | "Obliques"
+  | "Abductors"
+  | "Gastrocnemius"
+  | "Lateral Deltoids"
+  | "Hip Flexors"
+  | "Trapezius"
+  | "Neck"
+  | "Adductors";
 
 /**
  * Body Muscle
  */
 export const Muscle = {
-  LOWER_BACK: 'Lower Back',
-  SOLEUS: 'Soleus',
-  FRONT_DELTOIDS: 'Front Deltoids',
-  LATS: 'Lats',
-  FOREARMS: 'Forearms',
-  PECS: 'Pecs',
-  HAMSTRINGS: 'Hamstrings',
-  WRIST_FLEXORS: 'Wrist Flexors',
-  BICEPS: 'Biceps',
-  TRICEPS: 'Triceps',
-  REAR_DELTOIDS: 'Rear Deltoids',
-  ROTATOR_CUFF: 'Rotator Cuff',
-  ANKLE: 'Ankle',
-  ABDOMINALS: 'Abdominals',
-  GLUTES: 'Glutes',
-  QUADRICEPS: 'Quadriceps',
-  OBLIQUES: 'Obliques',
-  ABDUCTORS: 'Abductors',
-  GASTROCNEMIUS: 'Gastrocnemius',
-  LATERAL_DELTOIDS: 'Lateral Deltoids',
-  HIP_FLEXORS: 'Hip Flexors',
-  TRAPEZIUS: 'Trapezius',
-  NECK: 'Neck',
-  ADDUCTORS: 'Adductors',
+  LOWER_BACK: "Lower Back",
+  SOLEUS: "Soleus",
+  FRONT_DELTOIDS: "Front Deltoids",
+  LATS: "Lats",
+  FOREARMS: "Forearms",
+  PECS: "Pecs",
+  HAMSTRINGS: "Hamstrings",
+  WRIST_FLEXORS: "Wrist Flexors",
+  BICEPS: "Biceps",
+  TRICEPS: "Triceps",
+  REAR_DELTOIDS: "Rear Deltoids",
+  ROTATOR_CUFF: "Rotator Cuff",
+  ANKLE: "Ankle",
+  ABDOMINALS: "Abdominals",
+  GLUTES: "Glutes",
+  QUADRICEPS: "Quadriceps",
+  OBLIQUES: "Obliques",
+  ABDUCTORS: "Abductors",
+  GASTROCNEMIUS: "Gastrocnemius",
+  LATERAL_DELTOIDS: "Lateral Deltoids",
+  HIP_FLEXORS: "Hip Flexors",
+  TRAPEZIUS: "Trapezius",
+  NECK: "Neck",
+  ADDUCTORS: "Adductors",
 } as const;
 
 export type ExerciseUpsertDto = {
@@ -356,11 +356,11 @@ export type ExerciseUpsertDto = {
   /**
    * List of images for this exercise
    */
-  images: string[];
+  images: Array<string>;
   /**
    * Types of the parameters, such as: weight, reps, duration
    */
-  params: number[];
+  params: Array<number>;
   /**
    * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
    */
@@ -388,11 +388,11 @@ export type ExerciseUpsertDto = {
     /**
      * List of primary muscles this exercise targets
      */
-    primary: Muscle[];
+    primary: Array<Muscle>;
     /**
      * List of secondary muscles this exercise targets
      */
-    secondary: Muscle[];
+    secondary: Array<Muscle>;
   };
 };
 
@@ -416,7 +416,7 @@ export type WorkoutUpdateDto = {
   /**
    * List of the performed exercises
    */
-  exercises: {
+  exercises: Array<{
     /**
      * Id of the exercise
      */
@@ -424,8 +424,8 @@ export type WorkoutUpdateDto = {
     /**
      * List of sets performed for this excercise
      */
-    sets: WorkoutExerciseSetUpdateDto[];
-  }[];
+    sets: Array<WorkoutExerciseSetUpdateDto>;
+  }>;
 };
 
 export type WorkoutExerciseSetUpdateDto = {
@@ -490,7 +490,7 @@ export type Workout = {
   /**
    * List of the performed exercises
    */
-  exercises: WorkoutExercise[];
+  exercises: Array<WorkoutExercise>;
 };
 
 /**
@@ -504,7 +504,7 @@ export type WorkoutExercise = {
   /**
    * List of sets performed for this excercise
    */
-  sets: WorkoutExerciseSet[];
+  sets: Array<WorkoutExerciseSet>;
 };
 
 /**
@@ -568,7 +568,7 @@ export type WorkoutUpsertDto = {
   /**
    * List of the performed exercises
    */
-  exercises: {
+  exercises: Array<{
     /**
      * Id of the exercise
      */
@@ -584,7 +584,7 @@ export type WorkoutUpsertDto = {
     /**
      * List of sets performed for this excercise
      */
-    sets: {
+    sets: Array<{
       /**
        * Id of the set
        */
@@ -613,8 +613,8 @@ export type WorkoutUpsertDto = {
        * The date set was last time updated
        */
       updatedAt: Date | null;
-    }[];
-  }[];
+    }>;
+  }>;
 };
 
 /**
@@ -658,7 +658,7 @@ export type WorkoutTypeExerciseUpdateDto = {
   /**
    * Sets
    */
-  sets: WorkoutTypeExerciseSet[];
+  sets: Array<WorkoutTypeExerciseSet>;
   /**
    * Position / ordering inside the workout type
    */
@@ -719,7 +719,7 @@ export type WorkoutType = {
   /**
    * Exercises
    */
-  exercises: WorkoutTypeExercise[];
+  exercises: Array<WorkoutTypeExercise>;
 };
 
 /**
@@ -730,7 +730,7 @@ export type WorkoutTypeExercise = {
   /**
    * Sets
    */
-  sets: WorkoutTypeExerciseSet[];
+  sets: Array<WorkoutTypeExerciseSet>;
   /**
    * Position / ordering inside the workout type
    */
@@ -779,39 +779,39 @@ export type Weight = {
  * Possible types that Argus checkins can have.
  */
 export type ArgusCheckinType =
-  | 'steps'
-  | 'weather'
-  | 'calories'
-  | 'food'
-  | 'activity'
-  | 'weight'
-  | 'consumedcalories'
-  | 'drink'
-  | 'heartrate'
-  | 'status'
-  | 'bodymetrics'
-  | 'workout_log'
-  | 'sleepreport'
-  | 'fitnesstest';
+  | "steps"
+  | "weather"
+  | "calories"
+  | "food"
+  | "activity"
+  | "weight"
+  | "consumedcalories"
+  | "drink"
+  | "heartrate"
+  | "status"
+  | "bodymetrics"
+  | "workout_log"
+  | "sleepreport"
+  | "fitnesstest";
 
 /**
  * Possible types that Argus checkins can have.
  */
 export const ArgusCheckinType = {
-  STEPS: 'steps',
-  WEATHER: 'weather',
-  CALORIES: 'calories',
-  FOOD: 'food',
-  ACTIVITY: 'activity',
-  WEIGHT: 'weight',
-  CONSUMEDCALORIES: 'consumedcalories',
-  DRINK: 'drink',
-  HEARTRATE: 'heartrate',
-  STATUS: 'status',
-  BODYMETRICS: 'bodymetrics',
-  WORKOUT_LOG: 'workout_log',
-  SLEEPREPORT: 'sleepreport',
-  FITNESSTEST: 'fitnesstest',
+  STEPS: "steps",
+  WEATHER: "weather",
+  CALORIES: "calories",
+  FOOD: "food",
+  ACTIVITY: "activity",
+  WEIGHT: "weight",
+  CONSUMEDCALORIES: "consumedcalories",
+  DRINK: "drink",
+  HEARTRATE: "heartrate",
+  STATUS: "status",
+  BODYMETRICS: "bodymetrics",
+  WORKOUT_LOG: "workout_log",
+  SLEEPREPORT: "sleepreport",
+  FITNESSTEST: "fitnesstest",
 } as const;
 
 export type Entry = {
@@ -852,14 +852,14 @@ export type User = {
 /**
  * Entry type
  */
-export type EntryType = 'Workout' | 'Weight';
+export type EntryType = "Workout" | "Weight";
 
 /**
  * Entry type
  */
 export const EntryType = {
-  WORKOUT: 'Workout',
-  WEIGHT: 'Weight',
+  WORKOUT: "Workout",
+  WEIGHT: "Weight",
 } as const;
 
 /**
@@ -919,11 +919,11 @@ export type Translation = {
   /**
    * Type of translation. Usually identifies which object translations describe
    */
-  type: 'ExeciseName' | 'ExeciseDescription';
+  type: "ExeciseName" | "ExeciseDescription";
   /**
    * Language of the translation
    */
-  language: 'en' | 'ru';
+  language: "en" | "ru";
   /**
    * If true, it record was translation via automated translation (google-translate) last time.
    */
@@ -997,7 +997,7 @@ export type PostAuthRegisterData = {
   };
   path?: never;
   query?: never;
-  url: '/auth/register';
+  url: "/auth/register";
 };
 
 export type PostAuthRegisterErrors = {
@@ -1013,8 +1013,8 @@ export type PostAuthRegisterErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1023,7 +1023,7 @@ export type PostAuthRegisterErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1032,9 +1032,9 @@ export type PostAuthRegisterErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1042,16 +1042,16 @@ export type PostAuthRegisterErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1069,7 +1069,7 @@ export type PostAuthRegisterErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -1104,7 +1104,7 @@ export type PostAuthLoginData = {
   };
   path?: never;
   query?: never;
-  url: '/auth/login';
+  url: "/auth/login";
 };
 
 export type PostAuthLoginErrors = {
@@ -1120,8 +1120,8 @@ export type PostAuthLoginErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1130,7 +1130,7 @@ export type PostAuthLoginErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1139,9 +1139,9 @@ export type PostAuthLoginErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1149,16 +1149,16 @@ export type PostAuthLoginErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1176,7 +1176,7 @@ export type PostAuthLoginErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -1213,96 +1213,98 @@ export type GetExercisesData = {
      * Filters excercises by muscles. Exercise must involve all muscles from the list.
      */
     muscle?:
-      | (| 'Lower Back'
-          | 'Soleus'
-          | 'Front Deltoids'
-          | 'Lats'
-          | 'Forearms'
-          | 'Pecs'
-          | 'Hamstrings'
-          | 'Wrist Flexors'
-          | 'Biceps'
-          | 'Triceps'
-          | 'Rear Deltoids'
-          | 'Rotator Cuff'
-          | 'Ankle'
-          | 'Abdominals'
-          | 'Glutes'
-          | 'Quadriceps'
-          | 'Obliques'
-          | 'Abductors'
-          | 'Gastrocnemius'
-          | 'Lateral Deltoids'
-          | 'Hip Flexors'
-          | 'Trapezius'
-          | 'Neck'
-          | 'Adductors')[]
-      | 'Lower Back'
-      | 'Soleus'
-      | 'Front Deltoids'
-      | 'Lats'
-      | 'Forearms'
-      | 'Pecs'
-      | 'Hamstrings'
-      | 'Wrist Flexors'
-      | 'Biceps'
-      | 'Triceps'
-      | 'Rear Deltoids'
-      | 'Rotator Cuff'
-      | 'Ankle'
-      | 'Abdominals'
-      | 'Glutes'
-      | 'Quadriceps'
-      | 'Obliques'
-      | 'Abductors'
-      | 'Gastrocnemius'
-      | 'Lateral Deltoids'
-      | 'Hip Flexors'
-      | 'Trapezius'
-      | 'Neck'
-      | 'Adductors';
+      | Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors";
     /**
      * Filters excercises by equipment
      */
     equipment?:
-      | 'rowing'
-      | 'swimming'
-      | 'plate loaded'
-      | 'foam roller'
-      | 'pullup bar'
-      | 'stair climber'
-      | 'selectorized'
-      | 'dip bar'
-      | 'preacher'
-      | 'hyperextension'
-      | 'sandbag'
-      | 'elliptical'
-      | 'chair'
-      | 'cable'
-      | 'captains chair'
-      | 'towel'
-      | 'water bottle'
-      | 'stability ball'
-      | 'table'
-      | 'smith'
-      | 'kettlebell'
-      | 'cycling'
-      | 'step aerobics'
-      | 'plate'
-      | 'platform'
-      | 'medicine ball'
-      | 'running'
-      | 'barbell'
-      | 'backpack'
-      | 'ez curl bar'
-      | 'walking'
-      | 'bench'
-      | 'bodyweight'
-      | 'resistance band'
-      | 'dumbbell'
-      | 'jump rope'
-      | 'treadmill'
-      | 'bosu ball';
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captains chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball";
     /**
      * Include built-in exercises into the response
      */
@@ -1312,7 +1314,7 @@ export type GetExercisesData = {
      */
     updatedAfter?: Date;
   };
-  url: '/exercises';
+  url: "/exercises";
 };
 
 export type GetExercisesErrors = {
@@ -1328,8 +1330,8 @@ export type GetExercisesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1338,7 +1340,7 @@ export type GetExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1347,9 +1349,9 @@ export type GetExercisesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1357,16 +1359,16 @@ export type GetExercisesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1384,7 +1386,7 @@ export type GetExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -1398,7 +1400,7 @@ export type GetExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -1417,7 +1419,7 @@ export type GetExercisesResponses = {
     /**
      * Page or items
      */
-    items: Exercise[];
+    items: Array<Exercise>;
     /**
      * Pagination details
      */
@@ -1450,7 +1452,7 @@ export type PostExercisesData = {
   };
   path?: never;
   query?: never;
-  url: '/exercises';
+  url: "/exercises";
 };
 
 export type PostExercisesErrors = {
@@ -1466,8 +1468,8 @@ export type PostExercisesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1476,7 +1478,7 @@ export type PostExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1485,9 +1487,9 @@ export type PostExercisesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1495,16 +1497,16 @@ export type PostExercisesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1522,7 +1524,7 @@ export type PostExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -1536,7 +1538,7 @@ export type PostExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -1562,11 +1564,11 @@ export type PutExercisesData = {
     /**
      * List of exercises that contain updated fields
      */
-    items: ExerciseUpsertDto[];
+    items: Array<ExerciseUpsertDto>;
   };
   path?: never;
   query?: never;
-  url: '/exercises';
+  url: "/exercises";
 };
 
 export type PutExercisesErrors = {
@@ -1582,8 +1584,8 @@ export type PutExercisesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1592,7 +1594,7 @@ export type PutExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1601,9 +1603,9 @@ export type PutExercisesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1611,16 +1613,16 @@ export type PutExercisesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1638,7 +1640,7 @@ export type PutExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -1652,7 +1654,7 @@ export type PutExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -1671,7 +1673,7 @@ export type PutExercisesResponses = {
     /**
      * List of updated exercises
      */
-    items: Exercise[];
+    items: Array<Exercise>;
   };
 };
 
@@ -1694,102 +1696,104 @@ export type GetExercisesBuiltInData = {
      * Filters excercises by muscles. Exercise must involve all muscles from the list.
      */
     muscle?:
-      | (| 'Lower Back'
-          | 'Soleus'
-          | 'Front Deltoids'
-          | 'Lats'
-          | 'Forearms'
-          | 'Pecs'
-          | 'Hamstrings'
-          | 'Wrist Flexors'
-          | 'Biceps'
-          | 'Triceps'
-          | 'Rear Deltoids'
-          | 'Rotator Cuff'
-          | 'Ankle'
-          | 'Abdominals'
-          | 'Glutes'
-          | 'Quadriceps'
-          | 'Obliques'
-          | 'Abductors'
-          | 'Gastrocnemius'
-          | 'Lateral Deltoids'
-          | 'Hip Flexors'
-          | 'Trapezius'
-          | 'Neck'
-          | 'Adductors')[]
-      | 'Lower Back'
-      | 'Soleus'
-      | 'Front Deltoids'
-      | 'Lats'
-      | 'Forearms'
-      | 'Pecs'
-      | 'Hamstrings'
-      | 'Wrist Flexors'
-      | 'Biceps'
-      | 'Triceps'
-      | 'Rear Deltoids'
-      | 'Rotator Cuff'
-      | 'Ankle'
-      | 'Abdominals'
-      | 'Glutes'
-      | 'Quadriceps'
-      | 'Obliques'
-      | 'Abductors'
-      | 'Gastrocnemius'
-      | 'Lateral Deltoids'
-      | 'Hip Flexors'
-      | 'Trapezius'
-      | 'Neck'
-      | 'Adductors';
+      | Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors";
     /**
      * Filters excercises by equipment
      */
     equipment?:
-      | 'rowing'
-      | 'swimming'
-      | 'plate loaded'
-      | 'foam roller'
-      | 'pullup bar'
-      | 'stair climber'
-      | 'selectorized'
-      | 'dip bar'
-      | 'preacher'
-      | 'hyperextension'
-      | 'sandbag'
-      | 'elliptical'
-      | 'chair'
-      | 'cable'
-      | 'captains chair'
-      | 'towel'
-      | 'water bottle'
-      | 'stability ball'
-      | 'table'
-      | 'smith'
-      | 'kettlebell'
-      | 'cycling'
-      | 'step aerobics'
-      | 'plate'
-      | 'platform'
-      | 'medicine ball'
-      | 'running'
-      | 'barbell'
-      | 'backpack'
-      | 'ez curl bar'
-      | 'walking'
-      | 'bench'
-      | 'bodyweight'
-      | 'resistance band'
-      | 'dumbbell'
-      | 'jump rope'
-      | 'treadmill'
-      | 'bosu ball';
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captains chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball";
     /**
      * Only return exercises updated after this date. Used for syncing.
      */
     updatedAfter?: Date;
   };
-  url: '/exercises/built-in';
+  url: "/exercises/built-in";
 };
 
 export type GetExercisesBuiltInErrors = {
@@ -1805,8 +1809,8 @@ export type GetExercisesBuiltInErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1815,7 +1819,7 @@ export type GetExercisesBuiltInErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1824,9 +1828,9 @@ export type GetExercisesBuiltInErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1834,16 +1838,16 @@ export type GetExercisesBuiltInErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1861,7 +1865,7 @@ export type GetExercisesBuiltInErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -1881,7 +1885,7 @@ export type GetExercisesBuiltInResponses = {
     /**
      * Page or items
      */
-    items: Exercise[];
+    items: Array<Exercise>;
     /**
      * Pagination details
      */
@@ -1914,7 +1918,7 @@ export type DeleteExercisesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/exercises/{id}';
+  url: "/exercises/{id}";
 };
 
 export type DeleteExercisesByIdErrors = {
@@ -1930,8 +1934,8 @@ export type DeleteExercisesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1940,7 +1944,7 @@ export type DeleteExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1949,9 +1953,9 @@ export type DeleteExercisesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1959,16 +1963,16 @@ export type DeleteExercisesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1986,7 +1990,7 @@ export type DeleteExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2000,7 +2004,7 @@ export type DeleteExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2036,7 +2040,7 @@ export type GetExercisesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/exercises/{id}';
+  url: "/exercises/{id}";
 };
 
 export type GetExercisesByIdErrors = {
@@ -2052,8 +2056,8 @@ export type GetExercisesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2062,7 +2066,7 @@ export type GetExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2071,9 +2075,9 @@ export type GetExercisesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2081,16 +2085,16 @@ export type GetExercisesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2108,7 +2112,7 @@ export type GetExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2148,7 +2152,7 @@ export type PatchExercisesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/exercises/{id}';
+  url: "/exercises/{id}";
 };
 
 export type PatchExercisesByIdErrors = {
@@ -2164,8 +2168,8 @@ export type PatchExercisesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2174,7 +2178,7 @@ export type PatchExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2183,9 +2187,9 @@ export type PatchExercisesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2193,16 +2197,16 @@ export type PatchExercisesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2220,7 +2224,7 @@ export type PatchExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2234,7 +2238,7 @@ export type PatchExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2274,7 +2278,7 @@ export type GetWorkoutsData = {
      */
     page?: number;
   };
-  url: '/workouts';
+  url: "/workouts";
 };
 
 export type GetWorkoutsErrors = {
@@ -2290,8 +2294,8 @@ export type GetWorkoutsErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2300,7 +2304,7 @@ export type GetWorkoutsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2309,9 +2313,9 @@ export type GetWorkoutsErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2319,16 +2323,16 @@ export type GetWorkoutsErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2346,7 +2350,7 @@ export type GetWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2360,7 +2364,7 @@ export type GetWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2379,7 +2383,7 @@ export type GetWorkoutsResponses = {
     /**
      * Page or items
      */
-    items: Workout[];
+    items: Array<Workout>;
     /**
      * Pagination details
      */
@@ -2407,7 +2411,7 @@ export type PostWorkoutsData = {
   body?: WorkoutUpdateDto;
   path?: never;
   query?: never;
-  url: '/workouts';
+  url: "/workouts";
 };
 
 export type PostWorkoutsErrors = {
@@ -2423,8 +2427,8 @@ export type PostWorkoutsErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2433,7 +2437,7 @@ export type PostWorkoutsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2442,9 +2446,9 @@ export type PostWorkoutsErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2452,16 +2456,16 @@ export type PostWorkoutsErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2479,7 +2483,7 @@ export type PostWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2493,7 +2497,7 @@ export type PostWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2519,11 +2523,11 @@ export type PutWorkoutsData = {
     /**
      * List of workouts to update or insert
      */
-    items: WorkoutUpsertDto[];
+    items: Array<WorkoutUpsertDto>;
   };
   path?: never;
   query?: never;
-  url: '/workouts';
+  url: "/workouts";
 };
 
 export type PutWorkoutsErrors = {
@@ -2539,8 +2543,8 @@ export type PutWorkoutsErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2549,7 +2553,7 @@ export type PutWorkoutsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2558,9 +2562,9 @@ export type PutWorkoutsErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2568,16 +2572,16 @@ export type PutWorkoutsErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2595,7 +2599,7 @@ export type PutWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2609,7 +2613,7 @@ export type PutWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2628,7 +2632,7 @@ export type PutWorkoutsResponses = {
     /**
      * List of updated or inserted workouts
      */
-    items: Workout[];
+    items: Array<Workout>;
   };
 };
 
@@ -2644,7 +2648,7 @@ export type DeleteWorkoutsByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workouts/{id}';
+  url: "/workouts/{id}";
 };
 
 export type DeleteWorkoutsByIdErrors = {
@@ -2660,8 +2664,8 @@ export type DeleteWorkoutsByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2670,7 +2674,7 @@ export type DeleteWorkoutsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2679,9 +2683,9 @@ export type DeleteWorkoutsByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2689,16 +2693,16 @@ export type DeleteWorkoutsByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2716,7 +2720,7 @@ export type DeleteWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2730,7 +2734,7 @@ export type DeleteWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2766,7 +2770,7 @@ export type GetWorkoutsByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workouts/{id}';
+  url: "/workouts/{id}";
 };
 
 export type GetWorkoutsByIdErrors = {
@@ -2782,8 +2786,8 @@ export type GetWorkoutsByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2792,7 +2796,7 @@ export type GetWorkoutsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2801,9 +2805,9 @@ export type GetWorkoutsByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2811,16 +2815,16 @@ export type GetWorkoutsByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2838,7 +2842,7 @@ export type GetWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2852,7 +2856,7 @@ export type GetWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -2885,7 +2889,7 @@ export type PatchWorkoutsByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workouts/{id}';
+  url: "/workouts/{id}";
 };
 
 export type PatchWorkoutsByIdErrors = {
@@ -2901,8 +2905,8 @@ export type PatchWorkoutsByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2911,7 +2915,7 @@ export type PatchWorkoutsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2920,9 +2924,9 @@ export type PatchWorkoutsByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2930,16 +2934,16 @@ export type PatchWorkoutsByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2957,7 +2961,7 @@ export type PatchWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -2971,7 +2975,7 @@ export type PatchWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3006,7 +3010,7 @@ export type GetWorkoutPlansData = {
      */
     page?: number;
   };
-  url: '/workout-plans';
+  url: "/workout-plans";
 };
 
 export type GetWorkoutPlansErrors = {
@@ -3022,8 +3026,8 @@ export type GetWorkoutPlansErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3032,7 +3036,7 @@ export type GetWorkoutPlansErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3041,9 +3045,9 @@ export type GetWorkoutPlansErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3051,16 +3055,16 @@ export type GetWorkoutPlansErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3078,7 +3082,7 @@ export type GetWorkoutPlansErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3092,7 +3096,7 @@ export type GetWorkoutPlansErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3112,7 +3116,7 @@ export type GetWorkoutPlansResponses = {
     /**
      * Page or items
      */
-    items: WorkoutPlan[];
+    items: Array<WorkoutPlan>;
     /**
      * Pagination details
      */
@@ -3152,7 +3156,7 @@ export type PostWorkoutPlansData = {
   };
   path?: never;
   query?: never;
-  url: '/workout-plans';
+  url: "/workout-plans";
 };
 
 export type PostWorkoutPlansErrors = {
@@ -3168,8 +3172,8 @@ export type PostWorkoutPlansErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3178,7 +3182,7 @@ export type PostWorkoutPlansErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3187,9 +3191,9 @@ export type PostWorkoutPlansErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3197,16 +3201,16 @@ export type PostWorkoutPlansErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3224,7 +3228,7 @@ export type PostWorkoutPlansErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3238,7 +3242,7 @@ export type PostWorkoutPlansErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3269,7 +3273,7 @@ export type DeleteWorkoutPlansByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workout-plans/{id}';
+  url: "/workout-plans/{id}";
 };
 
 export type DeleteWorkoutPlansByIdErrors = {
@@ -3285,8 +3289,8 @@ export type DeleteWorkoutPlansByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3295,7 +3299,7 @@ export type DeleteWorkoutPlansByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3304,9 +3308,9 @@ export type DeleteWorkoutPlansByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3314,16 +3318,16 @@ export type DeleteWorkoutPlansByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3341,7 +3345,7 @@ export type DeleteWorkoutPlansByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3355,7 +3359,7 @@ export type DeleteWorkoutPlansByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3388,7 +3392,7 @@ export type GetWorkoutPlansByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workout-plans/{id}';
+  url: "/workout-plans/{id}";
 };
 
 export type GetWorkoutPlansByIdErrors = {
@@ -3404,8 +3408,8 @@ export type GetWorkoutPlansByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3414,7 +3418,7 @@ export type GetWorkoutPlansByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3423,9 +3427,9 @@ export type GetWorkoutPlansByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3433,16 +3437,16 @@ export type GetWorkoutPlansByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3460,7 +3464,7 @@ export type GetWorkoutPlansByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3474,7 +3478,7 @@ export type GetWorkoutPlansByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3517,7 +3521,7 @@ export type PatchWorkoutPlansByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workout-plans/{id}';
+  url: "/workout-plans/{id}";
 };
 
 export type PatchWorkoutPlansByIdErrors = {
@@ -3533,8 +3537,8 @@ export type PatchWorkoutPlansByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3543,7 +3547,7 @@ export type PatchWorkoutPlansByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3552,9 +3556,9 @@ export type PatchWorkoutPlansByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3562,16 +3566,16 @@ export type PatchWorkoutPlansByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3589,7 +3593,7 @@ export type PatchWorkoutPlansByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3603,7 +3607,7 @@ export type PatchWorkoutPlansByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3638,7 +3642,7 @@ export type GetWorkoutTypesData = {
      */
     page?: number;
   };
-  url: '/workout-types';
+  url: "/workout-types";
 };
 
 export type GetWorkoutTypesErrors = {
@@ -3654,8 +3658,8 @@ export type GetWorkoutTypesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3664,7 +3668,7 @@ export type GetWorkoutTypesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3673,9 +3677,9 @@ export type GetWorkoutTypesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3683,16 +3687,16 @@ export type GetWorkoutTypesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3710,7 +3714,7 @@ export type GetWorkoutTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3724,7 +3728,7 @@ export type GetWorkoutTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3744,7 +3748,7 @@ export type GetWorkoutTypesResponses = {
     /**
      * Page or items
      */
-    items: WorkoutType[];
+    items: Array<WorkoutType>;
     /**
      * Pagination details
      */
@@ -3792,11 +3796,11 @@ export type PostWorkoutTypesData = {
     /**
      * Exercises
      */
-    exercises: WorkoutTypeExerciseUpdateDto[];
+    exercises: Array<WorkoutTypeExerciseUpdateDto>;
   };
   path?: never;
   query?: never;
-  url: '/workout-types';
+  url: "/workout-types";
 };
 
 export type PostWorkoutTypesErrors = {
@@ -3812,8 +3816,8 @@ export type PostWorkoutTypesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3822,7 +3826,7 @@ export type PostWorkoutTypesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3831,9 +3835,9 @@ export type PostWorkoutTypesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3841,16 +3845,16 @@ export type PostWorkoutTypesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3868,7 +3872,7 @@ export type PostWorkoutTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3882,7 +3886,7 @@ export type PostWorkoutTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -3913,7 +3917,7 @@ export type DeleteWorkoutTypesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workout-types/{id}';
+  url: "/workout-types/{id}";
 };
 
 export type DeleteWorkoutTypesByIdErrors = {
@@ -3929,8 +3933,8 @@ export type DeleteWorkoutTypesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -3939,7 +3943,7 @@ export type DeleteWorkoutTypesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -3948,9 +3952,9 @@ export type DeleteWorkoutTypesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -3958,16 +3962,16 @@ export type DeleteWorkoutTypesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3985,7 +3989,7 @@ export type DeleteWorkoutTypesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -3999,7 +4003,7 @@ export type DeleteWorkoutTypesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4032,7 +4036,7 @@ export type GetWorkoutTypesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workout-types/{id}';
+  url: "/workout-types/{id}";
 };
 
 export type GetWorkoutTypesByIdErrors = {
@@ -4048,8 +4052,8 @@ export type GetWorkoutTypesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -4058,7 +4062,7 @@ export type GetWorkoutTypesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -4067,9 +4071,9 @@ export type GetWorkoutTypesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -4077,16 +4081,16 @@ export type GetWorkoutTypesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4104,7 +4108,7 @@ export type GetWorkoutTypesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -4118,7 +4122,7 @@ export type GetWorkoutTypesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4164,7 +4168,7 @@ export type PatchWorkoutTypesByIdData = {
     /**
      * Exercises
      */
-    exercises: WorkoutTypeExerciseUpdateDto[];
+    exercises: Array<WorkoutTypeExerciseUpdateDto>;
   };
   path: {
     /**
@@ -4173,7 +4177,7 @@ export type PatchWorkoutTypesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/workout-types/{id}';
+  url: "/workout-types/{id}";
 };
 
 export type PatchWorkoutTypesByIdErrors = {
@@ -4189,8 +4193,8 @@ export type PatchWorkoutTypesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -4199,7 +4203,7 @@ export type PatchWorkoutTypesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -4208,9 +4212,9 @@ export type PatchWorkoutTypesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -4218,16 +4222,16 @@ export type PatchWorkoutTypesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4245,7 +4249,7 @@ export type PatchWorkoutTypesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -4259,7 +4263,7 @@ export type PatchWorkoutTypesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4290,7 +4294,7 @@ export type PostWeightData = {
   };
   path?: never;
   query?: never;
-  url: '/weight';
+  url: "/weight";
 };
 
 export type PostWeightErrors = {
@@ -4306,8 +4310,8 @@ export type PostWeightErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -4316,7 +4320,7 @@ export type PostWeightErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -4325,9 +4329,9 @@ export type PostWeightErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -4335,16 +4339,16 @@ export type PostWeightErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4362,7 +4366,7 @@ export type PostWeightErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -4376,7 +4380,7 @@ export type PostWeightErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4405,7 +4409,7 @@ export type GetWeightByIdData = {
     id: number;
   };
   query?: never;
-  url: '/weight/{id}';
+  url: "/weight/{id}";
 };
 
 export type GetWeightByIdErrors = {
@@ -4421,8 +4425,8 @@ export type GetWeightByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -4431,7 +4435,7 @@ export type GetWeightByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -4440,9 +4444,9 @@ export type GetWeightByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -4450,16 +4454,16 @@ export type GetWeightByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4477,7 +4481,7 @@ export type GetWeightByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -4491,7 +4495,7 @@ export type GetWeightByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4526,7 +4530,7 @@ export type PatchWeightByIdData = {
     id: number;
   };
   query?: never;
-  url: '/weight/{id}';
+  url: "/weight/{id}";
 };
 
 export type PatchWeightByIdErrors = {
@@ -4542,8 +4546,8 @@ export type PatchWeightByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -4552,7 +4556,7 @@ export type PatchWeightByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -4561,9 +4565,9 @@ export type PatchWeightByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -4571,16 +4575,16 @@ export type PatchWeightByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4598,7 +4602,7 @@ export type PatchWeightByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -4612,7 +4616,7 @@ export type PatchWeightByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4646,22 +4650,22 @@ export type GetArgusCheckinData = {
      * Filter by type of checkin
      */
     type?:
-      | 'steps'
-      | 'weather'
-      | 'calories'
-      | 'food'
-      | 'activity'
-      | 'weight'
-      | 'consumedcalories'
-      | 'drink'
-      | 'heartrate'
-      | 'status'
-      | 'bodymetrics'
-      | 'workout_log'
-      | 'sleepreport'
-      | 'fitnesstest';
+      | "steps"
+      | "weather"
+      | "calories"
+      | "food"
+      | "activity"
+      | "weight"
+      | "consumedcalories"
+      | "drink"
+      | "heartrate"
+      | "status"
+      | "bodymetrics"
+      | "workout_log"
+      | "sleepreport"
+      | "fitnesstest";
   };
-  url: '/argus/checkin';
+  url: "/argus/checkin";
 };
 
 export type GetArgusCheckinErrors = {
@@ -4677,8 +4681,8 @@ export type GetArgusCheckinErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -4687,7 +4691,7 @@ export type GetArgusCheckinErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -4696,9 +4700,9 @@ export type GetArgusCheckinErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -4706,16 +4710,16 @@ export type GetArgusCheckinErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4733,7 +4737,7 @@ export type GetArgusCheckinErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -4753,10 +4757,11 @@ export type GetArgusCheckinResponses = {
     /**
      * Page or items
      */
-    items: (| {
+    items: Array<
+      | {
           id: number;
           externalId: string;
-          type: 'steps';
+          type: "steps";
           data?: unknown;
           createdAt: Date;
           updatedAt: Date | null;
@@ -4765,31 +4770,31 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'activity';
-          subtype: 'workout';
+          type: "activity";
+          subtype: "workout";
           data: {
             id: number;
-            type: 'activity';
+            type: "activity";
             created: number;
             user_id: number;
             timestamp: number;
-            subtype: 'workout';
+            subtype: "workout";
             activeDuration?: number;
             duration?: number;
             calories?: number;
             TotalExercisesInWorkout?: number;
             end: number;
             start: number;
-            exercises?: {
+            exercises?: Array<{
               exercise_id: string;
               exercise_name: string;
               exercise_type: string;
-              sets: {
+              sets: Array<{
                 draft?: boolean;
                 reps?: number;
                 weight?: number;
-              }[];
-            }[];
+              }>;
+            }>;
           };
           createdAt: Date;
           updatedAt: Date | null;
@@ -4797,11 +4802,11 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'weather';
+          type: "weather";
           subtype: null;
           data: {
             id: number;
-            type: 'weather';
+            type: "weather";
             created: number;
             user_id: number;
             timestamp: number;
@@ -4815,8 +4820,8 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'activity';
-          subtype: 'weightlifting';
+          type: "activity";
+          subtype: "weightlifting";
           data?: unknown;
           createdAt: Date;
           updatedAt: Date | null;
@@ -4824,11 +4829,11 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'weight';
+          type: "weight";
           subtype: null;
           data: {
             id: number;
-            type: 'weight';
+            type: "weight";
             created: number;
             user_id: number;
             timestamp: number;
@@ -4840,8 +4845,8 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'activity';
-          subtype: 'walking';
+          type: "activity";
+          subtype: "walking";
           data?: unknown;
           createdAt: Date;
           updatedAt: Date | null;
@@ -4849,7 +4854,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'calories';
+          type: "calories";
           subtype: null;
           data: {
             calories: number;
@@ -4861,7 +4866,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'consumedcalories';
+          type: "consumedcalories";
           subtype: null;
           data?: unknown;
           createdAt: Date;
@@ -4870,8 +4875,8 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'drink';
-          subtype: 'coffee' | 'water';
+          type: "drink";
+          subtype: "coffee" | "water";
           data?: unknown;
           createdAt: Date;
           updatedAt: Date | null;
@@ -4879,7 +4884,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'workout_log';
+          type: "workout_log";
           subtype: null;
           data?: unknown;
           createdAt: Date;
@@ -4888,7 +4893,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'fitnesstest';
+          type: "fitnesstest";
           subtype: null;
           data?: unknown;
           createdAt: Date;
@@ -4897,7 +4902,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'sleepreport';
+          type: "sleepreport";
           subtype: null;
           data?: unknown;
           createdAt: Date;
@@ -4906,7 +4911,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'bodymetrics';
+          type: "bodymetrics";
           subtype: null;
           data?: unknown;
           createdAt: Date;
@@ -4915,21 +4920,21 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'status';
+          type: "status";
           subtype: null;
           data: {
             note: string;
-            photos?: {
+            photos?: Array<{
               id: string;
               href: string;
-            }[];
+            }>;
             [key: string]:
               | unknown
               | string
-              | {
+              | Array<{
                   id: string;
                   href: string;
-                }[]
+                }>
               | undefined;
           };
           createdAt: Date;
@@ -4938,7 +4943,7 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'heartrate';
+          type: "heartrate";
           subtype: null;
           data?: unknown;
           createdAt: Date;
@@ -4947,12 +4952,13 @@ export type GetArgusCheckinResponses = {
       | {
           id: number;
           externalId: string;
-          type: 'food';
+          type: "food";
           subtype: null;
           data?: unknown;
           createdAt: Date;
           updatedAt: Date | null;
-        })[];
+        }
+    >;
     /**
      * Pagination details
      */
@@ -4980,7 +4986,7 @@ export type GetArgusCheckinTypesData = {
   body?: never;
   path?: never;
   query?: never;
-  url: '/argus/checkin/types';
+  url: "/argus/checkin/types";
 };
 
 export type GetArgusCheckinTypesErrors = {
@@ -4996,8 +5002,8 @@ export type GetArgusCheckinTypesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5006,7 +5012,7 @@ export type GetArgusCheckinTypesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5015,9 +5021,9 @@ export type GetArgusCheckinTypesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5025,16 +5031,16 @@ export type GetArgusCheckinTypesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5052,7 +5058,7 @@ export type GetArgusCheckinTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5072,7 +5078,7 @@ export type GetArgusCheckinTypesResponses = {
     /**
      * Possible types that Argus checkins can have.
      */
-    items: ArgusCheckinType[];
+    items: Array<ArgusCheckinType>;
   };
 };
 
@@ -5090,9 +5096,9 @@ export type GetEntriesData = {
     /**
      * Filters excercises by type.
      */
-    type?: 'Workout' | 'Weight' | ('Workout' | 'Weight')[];
+    type?: "Workout" | "Weight" | Array<"Workout" | "Weight">;
   };
-  url: '/entries';
+  url: "/entries";
 };
 
 export type GetEntriesErrors = {
@@ -5108,8 +5114,8 @@ export type GetEntriesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5118,7 +5124,7 @@ export type GetEntriesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5127,9 +5133,9 @@ export type GetEntriesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5137,16 +5143,16 @@ export type GetEntriesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5164,7 +5170,7 @@ export type GetEntriesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5183,7 +5189,7 @@ export type GetEntriesResponses = {
     /**
      * Page or items
      */
-    items: Entry[];
+    items: Array<Entry>;
     /**
      * Pagination details
      */
@@ -5217,9 +5223,9 @@ export type GetEntriesOwnData = {
     /**
      * Filters excercises by type.
      */
-    type?: 'Workout' | 'Weight' | ('Workout' | 'Weight')[];
+    type?: "Workout" | "Weight" | Array<"Workout" | "Weight">;
   };
-  url: '/entries/own';
+  url: "/entries/own";
 };
 
 export type GetEntriesOwnErrors = {
@@ -5235,8 +5241,8 @@ export type GetEntriesOwnErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5245,7 +5251,7 @@ export type GetEntriesOwnErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5254,9 +5260,9 @@ export type GetEntriesOwnErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5264,16 +5270,16 @@ export type GetEntriesOwnErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5291,7 +5297,7 @@ export type GetEntriesOwnErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -5305,7 +5311,7 @@ export type GetEntriesOwnErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5324,7 +5330,7 @@ export type GetEntriesOwnResponses = {
     /**
      * Page or items
      */
-    items: Entry[];
+    items: Array<Entry>;
     /**
      * Pagination details
      */
@@ -5357,7 +5363,7 @@ export type GetCrmUsersData = {
      */
     page?: number;
   };
-  url: '/crm/users';
+  url: "/crm/users";
 };
 
 export type GetCrmUsersErrors = {
@@ -5373,8 +5379,8 @@ export type GetCrmUsersErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5383,7 +5389,7 @@ export type GetCrmUsersErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5392,9 +5398,9 @@ export type GetCrmUsersErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5402,16 +5408,16 @@ export type GetCrmUsersErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5429,7 +5435,7 @@ export type GetCrmUsersErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -5443,7 +5449,7 @@ export type GetCrmUsersErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5462,7 +5468,7 @@ export type GetCrmUsersResponses = {
     /**
      * Page or items
      */
-    items: User[];
+    items: Array<User>;
     /**
      * Pagination details
      */
@@ -5495,7 +5501,7 @@ export type GetCrmManagersData = {
      */
     page?: number;
   };
-  url: '/crm/managers';
+  url: "/crm/managers";
 };
 
 export type GetCrmManagersErrors = {
@@ -5511,8 +5517,8 @@ export type GetCrmManagersErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5521,7 +5527,7 @@ export type GetCrmManagersErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5530,9 +5536,9 @@ export type GetCrmManagersErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5540,16 +5546,16 @@ export type GetCrmManagersErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5567,7 +5573,7 @@ export type GetCrmManagersErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -5581,7 +5587,7 @@ export type GetCrmManagersErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5601,7 +5607,7 @@ export type GetCrmManagersResponses = {
     /**
      * Page or items
      */
-    items: Manager[];
+    items: Array<Manager>;
     /**
      * Pagination details
      */
@@ -5638,7 +5644,7 @@ export type PostCrmAuthLoginData = {
   };
   path?: never;
   query?: never;
-  url: '/crm/auth/login';
+  url: "/crm/auth/login";
 };
 
 export type PostCrmAuthLoginErrors = {
@@ -5654,8 +5660,8 @@ export type PostCrmAuthLoginErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5664,7 +5670,7 @@ export type PostCrmAuthLoginErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5673,9 +5679,9 @@ export type PostCrmAuthLoginErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5683,16 +5689,16 @@ export type PostCrmAuthLoginErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5710,7 +5716,7 @@ export type PostCrmAuthLoginErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5741,7 +5747,7 @@ export type GetCrmTranslationsByIdData = {
     id: number;
   };
   query?: never;
-  url: '/crm/translations/{id}';
+  url: "/crm/translations/{id}";
 };
 
 export type GetCrmTranslationsByIdErrors = {
@@ -5757,8 +5763,8 @@ export type GetCrmTranslationsByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5767,7 +5773,7 @@ export type GetCrmTranslationsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5776,9 +5782,9 @@ export type GetCrmTranslationsByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5786,16 +5792,16 @@ export type GetCrmTranslationsByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5813,7 +5819,7 @@ export type GetCrmTranslationsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -5827,7 +5833,7 @@ export type GetCrmTranslationsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5863,7 +5869,7 @@ export type PatchCrmTranslationsByIdData = {
     id: number;
   };
   query?: never;
-  url: '/crm/translations/{id}';
+  url: "/crm/translations/{id}";
 };
 
 export type PatchCrmTranslationsByIdErrors = {
@@ -5879,8 +5885,8 @@ export type PatchCrmTranslationsByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -5889,7 +5895,7 @@ export type PatchCrmTranslationsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -5898,9 +5904,9 @@ export type PatchCrmTranslationsByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -5908,16 +5914,16 @@ export type PatchCrmTranslationsByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5935,7 +5941,7 @@ export type PatchCrmTranslationsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -5949,7 +5955,7 @@ export type PatchCrmTranslationsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -5980,7 +5986,7 @@ export type GetCrmTranslationsData = {
      */
     page?: number;
   };
-  url: '/crm/translations';
+  url: "/crm/translations";
 };
 
 export type GetCrmTranslationsErrors = {
@@ -5996,8 +6002,8 @@ export type GetCrmTranslationsErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -6006,7 +6012,7 @@ export type GetCrmTranslationsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -6015,9 +6021,9 @@ export type GetCrmTranslationsErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -6025,16 +6031,16 @@ export type GetCrmTranslationsErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6052,7 +6058,7 @@ export type GetCrmTranslationsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -6066,7 +6072,7 @@ export type GetCrmTranslationsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -6086,7 +6092,7 @@ export type GetCrmTranslationsResponses = {
     /**
      * Page or items
      */
-    items: Translation[];
+    items: Array<Translation>;
     /**
      * Pagination details
      */
@@ -6119,7 +6125,7 @@ export type GetCrmExercisesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/crm/exercises/{id}';
+  url: "/crm/exercises/{id}";
 };
 
 export type GetCrmExercisesByIdErrors = {
@@ -6135,8 +6141,8 @@ export type GetCrmExercisesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -6145,7 +6151,7 @@ export type GetCrmExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -6154,9 +6160,9 @@ export type GetCrmExercisesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -6164,16 +6170,16 @@ export type GetCrmExercisesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6191,7 +6197,7 @@ export type GetCrmExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -6205,7 +6211,7 @@ export type GetCrmExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -6253,7 +6259,7 @@ export type PatchCrmExercisesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/crm/exercises/{id}';
+  url: "/crm/exercises/{id}";
 };
 
 export type PatchCrmExercisesByIdErrors = {
@@ -6269,8 +6275,8 @@ export type PatchCrmExercisesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -6279,7 +6285,7 @@ export type PatchCrmExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -6288,9 +6294,9 @@ export type PatchCrmExercisesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -6298,16 +6304,16 @@ export type PatchCrmExercisesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6325,7 +6331,7 @@ export type PatchCrmExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -6339,7 +6345,7 @@ export type PatchCrmExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -6382,96 +6388,98 @@ export type GetCrmExercisesData = {
      * Filters excercises by muscles. Exercise must involve all muscles from the list.
      */
     muscle?:
-      | (| 'Lower Back'
-          | 'Soleus'
-          | 'Front Deltoids'
-          | 'Lats'
-          | 'Forearms'
-          | 'Pecs'
-          | 'Hamstrings'
-          | 'Wrist Flexors'
-          | 'Biceps'
-          | 'Triceps'
-          | 'Rear Deltoids'
-          | 'Rotator Cuff'
-          | 'Ankle'
-          | 'Abdominals'
-          | 'Glutes'
-          | 'Quadriceps'
-          | 'Obliques'
-          | 'Abductors'
-          | 'Gastrocnemius'
-          | 'Lateral Deltoids'
-          | 'Hip Flexors'
-          | 'Trapezius'
-          | 'Neck'
-          | 'Adductors')[]
-      | 'Lower Back'
-      | 'Soleus'
-      | 'Front Deltoids'
-      | 'Lats'
-      | 'Forearms'
-      | 'Pecs'
-      | 'Hamstrings'
-      | 'Wrist Flexors'
-      | 'Biceps'
-      | 'Triceps'
-      | 'Rear Deltoids'
-      | 'Rotator Cuff'
-      | 'Ankle'
-      | 'Abdominals'
-      | 'Glutes'
-      | 'Quadriceps'
-      | 'Obliques'
-      | 'Abductors'
-      | 'Gastrocnemius'
-      | 'Lateral Deltoids'
-      | 'Hip Flexors'
-      | 'Trapezius'
-      | 'Neck'
-      | 'Adductors';
+      | Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors";
     /**
      * Filters excercises by equipment
      */
     equipment?:
-      | 'rowing'
-      | 'swimming'
-      | 'plate loaded'
-      | 'foam roller'
-      | 'pullup bar'
-      | 'stair climber'
-      | 'selectorized'
-      | 'dip bar'
-      | 'preacher'
-      | 'hyperextension'
-      | 'sandbag'
-      | 'elliptical'
-      | 'chair'
-      | 'cable'
-      | 'captains chair'
-      | 'towel'
-      | 'water bottle'
-      | 'stability ball'
-      | 'table'
-      | 'smith'
-      | 'kettlebell'
-      | 'cycling'
-      | 'step aerobics'
-      | 'plate'
-      | 'platform'
-      | 'medicine ball'
-      | 'running'
-      | 'barbell'
-      | 'backpack'
-      | 'ez curl bar'
-      | 'walking'
-      | 'bench'
-      | 'bodyweight'
-      | 'resistance band'
-      | 'dumbbell'
-      | 'jump rope'
-      | 'treadmill'
-      | 'bosu ball';
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captains chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball";
     /**
      * Include built-in exercises into the response
      */
@@ -6485,7 +6493,7 @@ export type GetCrmExercisesData = {
      */
     userId?: number;
   };
-  url: '/crm/exercises';
+  url: "/crm/exercises";
 };
 
 export type GetCrmExercisesErrors = {
@@ -6501,8 +6509,8 @@ export type GetCrmExercisesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -6511,7 +6519,7 @@ export type GetCrmExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -6520,9 +6528,9 @@ export type GetCrmExercisesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -6530,16 +6538,16 @@ export type GetCrmExercisesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6557,7 +6565,7 @@ export type GetCrmExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -6571,7 +6579,7 @@ export type GetCrmExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -6591,7 +6599,7 @@ export type GetCrmExercisesResponses = {
     /**
      * Page or items
      */
-    items: Exercise[];
+    items: Array<Exercise>;
     /**
      * Pagination details
      */
@@ -6628,7 +6636,7 @@ export type GetCrmImagesData = {
      */
     search?: string;
   };
-  url: '/crm/images';
+  url: "/crm/images";
 };
 
 export type GetCrmImagesErrors = {
@@ -6644,8 +6652,8 @@ export type GetCrmImagesErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -6654,7 +6662,7 @@ export type GetCrmImagesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -6663,9 +6671,9 @@ export type GetCrmImagesErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -6673,16 +6681,16 @@ export type GetCrmImagesErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6700,7 +6708,7 @@ export type GetCrmImagesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -6714,7 +6722,7 @@ export type GetCrmImagesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**
@@ -6733,7 +6741,7 @@ export type GetCrmImagesResponses = {
     /**
      * Page or items
      */
-    items: ManagedImage[];
+    items: Array<ManagedImage>;
     /**
      * Pagination details
      */
@@ -6766,7 +6774,7 @@ export type DeleteCrmImagesByIdData = {
     id: number;
   };
   query?: never;
-  url: '/crm/images/{id}';
+  url: "/crm/images/{id}";
 };
 
 export type DeleteCrmImagesByIdErrors = {
@@ -6782,8 +6790,8 @@ export type DeleteCrmImagesByIdErrors = {
           /**
            * Code to handle on the frontend
            */
-          code: 'ValidationFailed';
-          fieldErrors: {
+          code: "ValidationFailed";
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -6792,7 +6800,7 @@ export type DeleteCrmImagesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors?: {
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -6801,9 +6809,9 @@ export type DeleteCrmImagesByIdErrors = {
                * Error message
                */
               message: string;
-            }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -6811,16 +6819,16 @@ export type DeleteCrmImagesByIdErrors = {
           /**
            * Code to handle on the frontend.
            */
-          code: 'ActionError';
+          code: "ActionError";
           /**
            * Subcategory of error.
            */
           actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip';
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6838,7 +6846,7 @@ export type DeleteCrmImagesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'Unauthorized';
+      code: "Unauthorized";
     };
   };
   /**
@@ -6852,7 +6860,7 @@ export type DeleteCrmImagesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: 'NotFound';
+      code: "NotFound";
     };
   };
   /**

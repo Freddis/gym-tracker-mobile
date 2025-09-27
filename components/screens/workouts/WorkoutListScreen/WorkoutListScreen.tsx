@@ -13,6 +13,7 @@ import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContaine
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 
 export const WorkoutListScreen: FC = () => {
+  console.log('Workouts');
   const navigation = useNavigation();
   const theme = useAppTheme();
   navigation.addListener('focus', () => {

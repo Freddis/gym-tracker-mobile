@@ -94,16 +94,16 @@ export class SyncService {
 
   protected getSyncStages(): Stage[] {
     const stages: Stage[] = [
-      // {
-      //   name: 'Pulling Exercises',
-      //   errorMsg: "Couldn't pull exercises",
-      //   action: this.exerciseService.pullFromServer.bind(this.exerciseService),
-      // },
-      // {
-      //   name: 'Pulling Workout Types',
-      //   errorMsg: "Couldn't pull workoutTypes",
-      //   action: this.workoutTypeService.pullFromServer.bind(this.workoutTypeService),
-      // },
+      {
+        name: 'Pulling Exercises',
+        errorMsg: "Couldn't pull exercises",
+        action: this.exerciseService.pullFromServer.bind(this.exerciseService),
+      },
+      {
+        name: 'Pulling Workout Types',
+        errorMsg: "Couldn't pull workoutTypes",
+        action: this.workoutTypeService.pullFromServer.bind(this.workoutTypeService),
+      },
       {
         name: 'Pulling Workouts',
         action: this.workoutService.pullFromServer.bind(this.workoutService),
@@ -135,11 +135,11 @@ export class SyncService {
         action: this.workoutService.wipeLocalData.bind(this.workoutService),
         errorMsg: "Couldn't delete workouts",
       },
-      // {
-      //   name: 'Wiping Exercises',
-      //   errorMsg: "Couldn't delete exercises",
-      //   action: this.exerciseService.wipeLocalData.bind(this.exerciseService),
-      // },
+      {
+        name: 'Wiping Exercises',
+        errorMsg: "Couldn't delete exercises",
+        action: this.exerciseService.wipeLocalData.bind(this.exerciseService),
+      },
     ];
     return stages;
   }

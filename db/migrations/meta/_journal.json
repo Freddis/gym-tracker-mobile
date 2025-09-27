@@ -99,6 +99,13 @@
       "when": 1756978307379,
       "tag": "0013_workout_types",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "6",
+      "when": 1758908544054,
+      "tag": "0014_exercise_muscles2",
+      "breakpoints": true
     }
   ]
 }

@@ -199,10 +199,10 @@ export const WorkoutScreen: FC = () => {
   const workoutFinished = workout.end !== null;
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ThemedScrollView ref={scrollViewRef}>
+      <ThemedScrollView ref={scrollViewRef} style={{minHeight: '100%'}}>
         <ThemedView style={styles.container}>
           <Stack.Screen options={{title: `Workout ${workout.id}`, headerShown: true}} />
-           <ThemedBlock>
+          <ThemedBlock>
             <View style={{flexDirection: 'row'}}>
               <ThemedText style={{flexGrow: 1}}>Time:</ThemedText>
               <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
@@ -225,7 +225,7 @@ export const WorkoutScreen: FC = () => {
           {workout.exercises.map((x) => (
             <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.id} exercise={x} />
           ))}
-          <View style={{flexDirection: 'column', alignItems: 'center', marginTop: 10, marginBottom: 30}}>
+          <View style={{flexDirection: 'column', alignItems: 'center', marginTop: 10, marginBottom: 30, gap: 50}}>
             <ThemedLink onPress={addExercise}>Add Exercise</ThemedLink>
             {!workoutFinished && (
               <ThemedLink onPress={finishWorkout}>Finish Workout</ThemedLink>

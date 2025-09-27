@@ -29,7 +29,7 @@ export default function RootLayout() {
       // you have to enjoy the logo
       setTimeout(() => {
         SplashScreen.hideAsync();
-      }, 1000);
+      }, 5000);
     }
   }, [loaded]);
 
