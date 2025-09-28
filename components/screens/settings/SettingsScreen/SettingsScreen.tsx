@@ -13,6 +13,7 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useQueryClient} from '@tanstack/react-query';
+import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 
 const styles = StyleSheet.create({
   progressContainer: {
@@ -97,37 +98,39 @@ export const SettingsScreen: FC = () => {
   }
 
   return (
-    <ScreenContainer>
-      <ThemedBlock>
-        <View style={styles.row}>
-          <ThemedText style={styles.flexGrow}>Name:</ThemedText>
-          <ThemedText>{auth.user?.name}</ThemedText>
-        </View>
-        <Separator />
-        <View style={styles.row}>
-          <ThemedText style={styles.flexGrow}>Email:</ThemedText>
-          <ThemedText>{auth.user?.email}</ThemedText>
-        </View>
-        <Separator />
-        <View style={styles.row}>
-          <ThemedText style={styles.flexGrow}>Dark Mode:</ThemedText>
-          <Switch
-            value={themeName === 'dark'}
-            onTouchStart={toggleTheme}
-            style={styles.switch}
-            trackColor={{true: theme.accent}}
-          />
-        </View>
-        <View style={styles.linkContainer}>
-          <ThemedLink onPress={syncWithServerButtonPress}>
-            Sync Data With Server
-          </ThemedLink>
-          <ThemedLink onPress={wipeLocalDataButtonPress}>
-            Wipe Local Data
-          </ThemedLink>
-          <ThemedLink onPress={performSignOut}>Sign Out</ThemedLink>
-        </View>
-      </ThemedBlock>
-    </ScreenContainer>
+    <ThemedScrollView>
+      <ScreenContainer>
+        <ThemedBlock>
+          <View style={styles.row}>
+            <ThemedText style={styles.flexGrow}>Name:</ThemedText>
+            <ThemedText>{auth.user?.name}</ThemedText>
+          </View>
+          <Separator />
+          <View style={styles.row}>
+            <ThemedText style={styles.flexGrow}>Email:</ThemedText>
+            <ThemedText>{auth.user?.email}</ThemedText>
+          </View>
+          <Separator />
+          <View style={styles.row}>
+            <ThemedText style={styles.flexGrow}>Dark Mode:</ThemedText>
+            <Switch
+              value={themeName === 'dark'}
+              onTouchStart={toggleTheme}
+              style={styles.switch}
+              trackColor={{true: theme.accent}}
+            />
+          </View>
+          <View style={styles.linkContainer}>
+            <ThemedLink onPress={syncWithServerButtonPress}>
+              Sync Data With Server
+            </ThemedLink>
+            <ThemedLink onPress={wipeLocalDataButtonPress}>
+              Wipe Local Data
+            </ThemedLink>
+            <ThemedLink onPress={performSignOut}>Sign Out</ThemedLink>
+          </View>
+        </ThemedBlock>
+      </ScreenContainer>
+    </ThemedScrollView>
   );
 };
