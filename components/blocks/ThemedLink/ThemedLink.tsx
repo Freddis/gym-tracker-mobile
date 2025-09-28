@@ -1,5 +1,5 @@
 import {useAppTheme} from '@/hooks/useAppTheme';
-import {useRouter} from 'expo-router';
+import {usePathname, useRouter} from 'expo-router';
 import {FC} from 'react';
 import {GestureResponderEvent, Pressable} from 'react-native';
 import {IconSymbol, IconSymbolProps} from '../IconSymbol/IconSymbol';
@@ -17,7 +17,14 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
   const router = useRouter();
   const {children, iconName, iconSize = 20} = props;
   const href = props.href;
-  let onPress: (event: GestureResponderEvent) => void = href ? () => router.push(href) : () => {};
+  const pathname = usePathname();
+  const hrefHandler = (href: Exclude<ThemedLnkProps['href'], undefined>) => {
+    if (href && pathname !== href) {
+      router.push(href);
+    }
+  };
+
+  let onPress: (event: GestureResponderEvent) => void = href ? () => hrefHandler(href) : () => {};
   if (props.onPress) {
     onPress = props.onPress;
   }
