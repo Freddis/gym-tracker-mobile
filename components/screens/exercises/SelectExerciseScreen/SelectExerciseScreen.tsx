@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {FC} from 'react';
 import {Exercise} from '../../../../openapi-client';
-import {Stack} from 'expo-router';
 import {SelectExercisePresenter} from '../common/SelectExercisePresenter';
 
 const styles = StyleSheet.create({
@@ -19,7 +18,6 @@ export const SelectExerciseScreen: FC<{onSelect: (item: Exercise)=>void}> = (pro
 
   return (
     <ThemedView style={styles.titleContainer}>
-        <Stack.Screen options={{title: 'Add Exercise', headerShown: true}} />
         <SelectExercisePresenter onPress={props.onSelect} />
     </ThemedView>
   );

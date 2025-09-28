@@ -12,6 +12,30 @@ import {eq} from 'drizzle-orm';
 
 export class ExerciseService {
 
+  async getExercise(exerciseId: number): Promise<Exercise> {
+    const row = await db.query.exercises.findFirst({
+      where: (t, op) => op.eq(t.id, exerciseId),
+    });
+    if (!row) {
+      throw new Error('Exercise not found');
+    }
+    const muscleRows = await db.query.exerciseMuscle.findMany({
+      where: (t, op) => op.eq(t.exerciseId, exerciseId),
+      orderBy: (t, op) => op.asc(t.id),
+    });
+    console.log(muscleRows);
+    const result: Exercise = {
+      ...row,
+      isArchived: false,
+      muscles: {
+        primary: muscleRows.filter((x) => x.isPrimary).map((x) => x.muscle),
+        secondary: muscleRows.filter((x) => !x.isPrimary).map((x) => x.muscle),
+      },
+      variations: [],
+    };
+    return result;
+  }
+
   async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<Exercise[]> {
     const items = await db.query.exercises.findMany({
       where: (t, op) => op.and(
@@ -276,6 +300,13 @@ export class ExerciseService {
             muscleRows.push({
               exerciseId: inserted[0].id,
               isPrimary: true,
+              muscle: muscle,
+            });
+          }
+          for (const muscle of exercise.muscles.secondary) {
+            muscleRows.push({
+              exerciseId: inserted[0].id,
+              isPrimary: false,
               muscle: muscle,
             });
           }

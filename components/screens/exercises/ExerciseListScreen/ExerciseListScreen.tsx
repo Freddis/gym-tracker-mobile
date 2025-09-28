@@ -1,9 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
-import {useNavigation} from '@react-navigation/native';
-import {FC, useState} from 'react';
-import {Stack} from 'expo-router';
+import {FC} from 'react';
+import {Stack, useRouter} from 'expo-router';
 import {SelectExercisePresenter} from '../common/SelectExercisePresenter';
+import {Exercise} from '../../../../openapi-client';
 
 const styles = StyleSheet.create({
   titleContainer: {
@@ -16,16 +16,19 @@ const styles = StyleSheet.create({
 });
 
 export const ExerciseListScreen: FC = () => {
-  const navigation = useNavigation();
-  navigation.addListener('focus', () => {
-    setfocusedCounter(focusedCounter + 1);
-  });
-  const [focusedCounter, setfocusedCounter] = useState(0);
-
+  const router = useRouter();
+  const onExercisePress = (exercise:Exercise) => {
+    router.navigate({
+      pathname: '/app/exercises/viewExercise',
+      params: {
+        exerciseId: exercise.id,
+      },
+    });
+  };
   return (
       <ThemedView style={styles.titleContainer}>
           <Stack.Screen options={{title: 'Exercise Library', headerShown: false}} />
-          <SelectExercisePresenter />
+          <SelectExercisePresenter onPress={onExercisePress}/>
       </ThemedView>
   );
 };

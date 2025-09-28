@@ -3,10 +3,9 @@ import {ExerciseBlock} from '../../../blocks/ExerciseBlock/ExerciseBlock';
 import {LoadingBlock} from '../../../blocks/LoadingBlock/LoadingBlock';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {SegmentedControlItem, ThemedSegmentedControl} from '../../../blocks/ThemedSegmentedControl/ThemedSegmentedControl';
-import {FC, useEffect, useMemo, useState} from 'react';
+import {FC, useMemo, useState} from 'react';
 import {ThemedSearchInput} from '../../../blocks/ThemedSearchInput/ThemedSearchInput';
 import {useQuery} from '@tanstack/react-query';
-import {useNavigation} from 'expo-router';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
 import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
 import {Exercise} from '../../../../openapi-client';
@@ -17,17 +16,9 @@ interface SelectExercisePresenterProps {
 
 export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props) => {
   const theme = useAppTheme();
-  const navigation = useNavigation();
   const [searchName, setSearchName] = useState<string|null>(null);
   const [library, setLibrary] = useState<'personal' | 'built-in'>('personal');
-  const [, setFocusedCounter] = useState(0);
   const [exerciseService] = useExerciseService();
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      setFocusedCounter((c) => c + 1);
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const response = useQuery({
     queryFn: () => exerciseService.getPersonalLibrary({

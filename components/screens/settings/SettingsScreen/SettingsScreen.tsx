@@ -12,6 +12,7 @@ import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContaine
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Separator} from '@/components/blocks/Separator/Separator';
+import {useQueryClient} from '@tanstack/react-query';
 
 const styles = StyleSheet.create({
   progressContainer: {
@@ -54,6 +55,7 @@ export const SettingsScreen: FC = () => {
   const [progresState, setProgressState] = useState<Progress | null>(null);
   const [syncService] = useSyncService();
   const [db] = useDrizzle();
+  const queryClient = useQueryClient();
 
   const performSignOut = () => {
     auth.logout();
@@ -68,6 +70,7 @@ export const SettingsScreen: FC = () => {
     );
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
+    queryClient.clear();
   };
   const wipeLocalData = async () => {
     const result = await syncService.wipeLocalData(db, userId, (data) =>
@@ -75,6 +78,7 @@ export const SettingsScreen: FC = () => {
     );
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
+    queryClient.clear();
   };
   const wipeLocalDataButtonPress = async () => {
     Alert.alert('Warning', 'Are you sure you want to delete local data?', [
