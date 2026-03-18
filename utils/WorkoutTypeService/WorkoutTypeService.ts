@@ -89,6 +89,9 @@ export class WorkoutTypeService {
           };
           sets.push(newSetRow);
         }
+        if (sets.length === 0) {
+          continue;
+        }
         await db.insert(db._.fullSchema.workoutTypeExerciseSets).values(sets);
       }
     }

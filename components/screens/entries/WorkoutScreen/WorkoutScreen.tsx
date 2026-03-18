@@ -4,26 +4,27 @@ import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {FC, useEffect, useRef, useState} from 'react';
 import {useDrizzle} from '@/utils/drizzle';
-import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
+import {CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {NewModel} from '@/types/NewModel';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
-import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
 import {eq} from 'drizzle-orm';
 import {AppWorkoutExercise, CompleteAppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExerciseBlock/EditableWorkoutExerciseBlock';
-import {WorkoutSyncButton} from './components/WorkoutSyncButton/WorkoutSyncButton';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
+import {useEntryService} from '../../../../utils/EntryService/useEntryService';
+import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 
 export const WorkoutScreen: FC = () => {
   const theme = useAppTheme();
+  const [entryService] = useEntryService();
   const styles = getStyles(theme);
   const [refreshCounter, setRefreshCounter] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -39,48 +40,35 @@ export const WorkoutScreen: FC = () => {
     if (params.workoutId) {
       return;
     }
-    const newWorkout: NewModel<AppWorkout> = {
-      externalId: null,
-      typeId: null,
-      userId: user.id,
-      calories: 0,
-      start: new Date(),
-      end: null,
-      createdAt: new Date(),
-      updatedAt: null,
-      lastPulledAt: null,
-      lastPushedAt: null,
-      deletedAt: null,
-    };
-    db.insert(schema.workouts)
-      .values(newWorkout)
-      .then((workout) => {
-        router.setParams({
-          workoutId: workout.lastInsertRowId,
-        });
+    entryService.addWorkoutEntry(user.id).then((result) => {
+      router.setParams({
+        workoutId: result.workout.id,
       });
+    });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.workoutId]);
   const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.workoutId);
   const workoutId = validated.success ? validated.data : 0;
-  const query = db.query.workouts.findFirst({
-    where: (t, op) => op.eq(t.id, workoutId),
-    with: {
-      exercises: {
-        with: {
-          exercise: true,
-          sets: true,
-        },
-      },
-      sets: {
-        with: {
-          exercise: true,
-        },
-      },
-    },
-  });
-  const queryResult = useLiveQuery(query, [workoutId, params.exerciseId, refreshCounter]);
-  const workout = queryResult.data;
+
+  const queryResult = entryService.useWorkoutEntry(workoutId, [workoutId, params.exerciseId, refreshCounter]);
+  // const query = db.query.workouts.findFirst({
+  //   where: (t, op) => op.eq(t.id, workoutId),
+  //   with: {
+  //     exercises: {
+  //       with: {
+  //         exercise: true,
+  //         sets: true,
+  //       },
+  //     },
+  //     sets: {
+  //       with: {
+  //         exercise: true,
+  //       },
+  //     },
+  //   },
+  // });
+  // const queryResult = useLiveQuery(query, [workoutId, params.exerciseId, refreshCounter]);
+  const workout = queryResult.data?.workout;
   useEffect(() => {
     const validatedExerciseId = ZodHelper.validators.numberOrStringNumber.safeParse(params.exerciseId);
     if (!workout || !validatedExerciseId.success) {
@@ -90,13 +78,13 @@ export const WorkoutScreen: FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.exerciseId, workout]);
 
-  if (!workout) {
+  if (!queryResult.data || !workout) {
     return <LoadingBlock />;
   }
   const addExerciseToWorkout = async (workout: CompleteAppWorkout, exerciseId: number) => {
     const workoutExercise: NewModel<AppWorkoutExercise> = {
       workoutId: workout.id,
-      externalId: null,
+      // externalId: null,
       userId: user.id,
       createdAt: new Date(),
       updatedAt: null,
@@ -123,12 +111,12 @@ export const WorkoutScreen: FC = () => {
   };
   const deleteWorkout = async () => {
     const now = new Date();
-    await db.update(schema.workouts).set({
+    await db.update(schema.entries).set({
       deletedAt: now,
       updatedAt: now,
     })
     .where(
-      eq(schema.workouts.id, workout.id)
+      eq(schema.entries.workoutId, workout.id)
     );
     router.back();
   };
@@ -160,40 +148,11 @@ export const WorkoutScreen: FC = () => {
     router.back();
   };
   const copyWorkout = async () => {
-    const now = new Date();
-    const newWorkout: NewModel<AppWorkout> = {
-      externalId: null,
-      createdAt: now,
-      updatedAt: null,
-      deletedAt: null,
-      lastPulledAt: null,
-      lastPushedAt: null,
-      start: now,
-      end: null,
-      userId: workout.userId,
-      typeId: workout.typeId,
-      calories: 0,
-    };
-    const newWorkoutId = await db.transaction(async (db) => {
-      const insertedRow = await db.insert(schema.workouts)
-        .values(newWorkout);
-      const newWorkoutId = insertedRow.lastInsertRowId;
-      for (const exercise of workout.exercises) {
-        const newExercise: NewModel<AppWorkoutExercise> = {
-          externalId: null,
-          userId: exercise.userId,
-          createdAt: exercise.createdAt,
-          updatedAt: null,
-          workoutId: newWorkoutId,
-          exerciseId: exercise.exerciseId,
-        };
-        await db.insert(schema.workoutExercises).values(newExercise);
-      }
-      return newWorkoutId;
-    });
+    const workoutEntry = await entryService.copyWorkout(workout);
+
     scrollViewRef.current?.scrollTo(0, 0);
     router.setParams({
-      workoutId: newWorkoutId,
+      workoutId: workoutEntry.workout.id,
     });
   };
   const workoutFinished = workout.end !== null;
@@ -210,7 +169,7 @@ export const WorkoutScreen: FC = () => {
             <Separator />
             <View style={{flexDirection: 'row'}}>
               <ThemedText style={{flexGrow: 1}}>Synced:</ThemedText>
-              <WorkoutSyncButton workout={workout} />
+              <EntrySyncButton entry={queryResult.data} />
             </View>
             {!!workoutFinished && (
                <>

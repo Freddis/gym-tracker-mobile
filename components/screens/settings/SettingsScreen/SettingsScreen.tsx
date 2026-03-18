@@ -47,9 +47,6 @@ const styles = StyleSheet.create({
 export const SettingsScreen: FC = () => {
   const auth = useContext(AuthContext);
   const userId = auth.user?.id;
-  if (!userId) {
-    throw new Error('User has to be logged in');
-  }
   const themeName = useColorScheme();
   const theme = useAppTheme();
   const router = useRouter();
@@ -57,7 +54,9 @@ export const SettingsScreen: FC = () => {
   const [syncService] = useSyncService();
   const [db] = useDrizzle();
   const queryClient = useQueryClient();
-
+  if (!userId) {
+    return null;
+  }
   const performSignOut = () => {
     auth.logout();
     router.navigate('/');

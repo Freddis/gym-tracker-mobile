@@ -12,7 +12,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme === 'light' ? 'light' : 'dark'].tint,
         headerShown: false,
         lazy: false,
         tabBarButton: HapticTab,
@@ -26,9 +26,9 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="workouts"
+        name="entries"
         options={{
-          title: 'Workouts',
+          title: 'Entries',
           tabBarIcon: ({color}) => <IconSymbol size={28} name="calendar" color={color} />,
         }}
       />

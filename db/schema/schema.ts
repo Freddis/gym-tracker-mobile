@@ -1,4 +1,4 @@
-import {Equipment, Muscle} from '@/openapi-client';
+import {EntryType, EntryVisibility, Equipment, Muscle} from '@/openapi-client';
 import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
@@ -48,7 +48,6 @@ export const workouts = sqliteTable('workouts', {
 
 export const workoutExercises = sqliteTable('workout_exercises', {
   id: integer().primaryKey().notNull(),
-  externalId: integer().unique(),
   workoutId: integer().notNull().references(() => workouts.id),
   exerciseId: integer().notNull().references(() => exercises.id),
   userId: integer().notNull(),
@@ -58,7 +57,6 @@ export const workoutExercises = sqliteTable('workout_exercises', {
 
 export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
   id: integer().primaryKey().notNull(),
-  externalId: integer().unique(),
   exerciseId: integer().notNull().references(() => exercises.id),
   workoutExerciseId: integer().notNull().references(() => workoutExercises.id),
   userId: integer().notNull(),
@@ -116,4 +114,30 @@ export const workoutTypeExerciseSets = sqliteTable('workout_type_exercise_sets',
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
   deletedAt: integer({mode: 'timestamp'}),
+});
+
+export const weight = sqliteTable('weight', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer().unique(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  weight: real().notNull(),
+  units: text().notNull(),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+  deletedAt: integer({mode: 'timestamp'}),
+});
+
+export const entries = sqliteTable('entries', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer().unique(),
+  type: text().notNull().$type<EntryType>(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),
+  weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
+  visibility: text().notNull().$type<EntryVisibility>(),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+  deletedAt: integer({mode: 'timestamp'}),
+  lastPulledAt: integer({mode: 'timestamp'}),
+  lastPushedAt: integer({mode: 'timestamp'}),
 });

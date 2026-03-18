@@ -12,6 +12,12 @@ import type {
   PostAuthLoginData,
   PostAuthLoginResponse,
   PostAuthLoginError,
+  PostAuthPasswordResetData,
+  PostAuthPasswordResetResponse,
+  PostAuthPasswordResetError,
+  PostAuthPasswordResetCompleteData,
+  PostAuthPasswordResetCompleteResponse,
+  PostAuthPasswordResetCompleteError,
   GetExercisesData,
   GetExercisesResponse,
   GetExercisesError,
@@ -96,12 +102,21 @@ import type {
   GetArgusCheckinTypesData,
   GetArgusCheckinTypesResponse,
   GetArgusCheckinTypesError,
-  GetEntriesData,
-  GetEntriesResponse,
-  GetEntriesError,
   GetEntriesOwnData,
   GetEntriesOwnResponse,
   GetEntriesOwnError,
+  DeleteEntriesByIdData,
+  DeleteEntriesByIdResponse,
+  DeleteEntriesByIdError,
+  GetEntriesByIdData,
+  GetEntriesByIdResponse,
+  GetEntriesByIdError,
+  GetEntriesData,
+  GetEntriesResponse,
+  GetEntriesError,
+  PutEntriesData,
+  PutEntriesResponse,
+  PutEntriesError,
   GetCrmUsersData,
   GetCrmUsersResponse,
   GetCrmUsersError,
@@ -160,8 +175,10 @@ import {
   getWeightByIdResponseTransformer,
   patchWeightByIdResponseTransformer,
   getArgusCheckinResponseTransformer,
-  getEntriesResponseTransformer,
   getEntriesOwnResponseTransformer,
+  getEntriesByIdResponseTransformer,
+  getEntriesResponseTransformer,
+  putEntriesResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -220,6 +237,48 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/auth/login",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Sends a password reset email for a user
+ */
+export const postAuthPasswordReset = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthPasswordResetData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostAuthPasswordResetResponse,
+    PostAuthPasswordResetError,
+    ThrowOnError
+  >({
+    url: "/auth/password-reset",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Resets the user password and logs the user in
+ */
+export const postAuthPasswordResetComplete = <
+  ThrowOnError extends boolean = false
+>(
+  options?: Options<PostAuthPasswordResetCompleteData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostAuthPasswordResetCompleteResponse,
+    PostAuthPasswordResetCompleteError,
+    ThrowOnError
+  >({
+    url: "/auth/password-reset-complete",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -341,10 +400,6 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/exercises/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
   });
 };
 
@@ -487,10 +542,6 @@ export const deleteWorkoutsById = <ThrowOnError extends boolean = false>(
     ],
     url: "/workouts/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
   });
 };
 
@@ -613,10 +664,6 @@ export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
     ],
     url: "/workout-plans/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
   });
 };
 
@@ -739,10 +786,6 @@ export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/workout-types/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
   });
 };
 
@@ -909,23 +952,6 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
 /**
  * Returns the list of public entries
  */
-export const getEntries = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesData, ThrowOnError>
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetEntriesResponse,
-    GetEntriesError,
-    ThrowOnError
-  >({
-    responseTransformer: getEntriesResponseTransformer,
-    url: "/entries",
-    ...options,
-  });
-};
-
-/**
- * Returns the list of public entries
- */
 export const getEntriesOwn = <ThrowOnError extends boolean = false>(
   options?: Options<GetEntriesOwnData, ThrowOnError>
 ) => {
@@ -943,6 +969,95 @@ export const getEntriesOwn = <ThrowOnError extends boolean = false>(
     responseTransformer: getEntriesOwnResponseTransformer,
     url: "/entries/own",
     ...options,
+  });
+};
+
+/**
+ * Deletes entry for user
+ */
+export const deleteEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteEntriesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteEntriesByIdResponse,
+    DeleteEntriesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/entries/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetEntriesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetEntriesByIdResponse,
+    GetEntriesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getEntriesByIdResponseTransformer,
+    url: "/entries/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntriesResponse,
+    GetEntriesError,
+    ThrowOnError
+  >({
+    responseTransformer: getEntriesResponseTransformer,
+    url: "/entries",
+    ...options,
+  });
+};
+
+/**
+ * Updates or inserts entries for user
+ */
+export const putEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<PutEntriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    PutEntriesResponse,
+    PutEntriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: putEntriesResponseTransformer,
+    url: "/entries",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 
@@ -1198,9 +1313,5 @@ export const deleteCrmImagesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/crm/images/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
   });
 };

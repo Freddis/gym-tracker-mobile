@@ -4,6 +4,8 @@ import {
   type Options,
   postAuthRegister,
   postAuthLogin,
+  postAuthPasswordReset,
+  postAuthPasswordResetComplete,
   getExercises,
   postExercises,
   putExercises,
@@ -32,8 +34,11 @@ import {
   patchWeightById,
   getArgusCheckin,
   getArgusCheckinTypes,
-  getEntries,
   getEntriesOwn,
+  deleteEntriesById,
+  getEntriesById,
+  getEntries,
+  putEntries,
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
@@ -59,6 +64,12 @@ import type {
   PostAuthLoginData,
   PostAuthLoginError,
   PostAuthLoginResponse,
+  PostAuthPasswordResetData,
+  PostAuthPasswordResetError,
+  PostAuthPasswordResetResponse,
+  PostAuthPasswordResetCompleteData,
+  PostAuthPasswordResetCompleteError,
+  PostAuthPasswordResetCompleteResponse,
   GetExercisesData,
   GetExercisesError,
   GetExercisesResponse,
@@ -131,12 +142,19 @@ import type {
   GetArgusCheckinError,
   GetArgusCheckinResponse,
   GetArgusCheckinTypesData,
-  GetEntriesData,
-  GetEntriesError,
-  GetEntriesResponse,
   GetEntriesOwnData,
   GetEntriesOwnError,
   GetEntriesOwnResponse,
+  DeleteEntriesByIdData,
+  DeleteEntriesByIdError,
+  DeleteEntriesByIdResponse,
+  GetEntriesByIdData,
+  GetEntriesData,
+  GetEntriesError,
+  GetEntriesResponse,
+  PutEntriesData,
+  PutEntriesError,
+  PutEntriesResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
@@ -281,6 +299,96 @@ export const postAuthLoginMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postAuthLogin({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postAuthPasswordResetQueryKey = (
+  options?: Options<PostAuthPasswordResetData>
+) => createQueryKey("postAuthPasswordReset", options);
+
+export const postAuthPasswordResetOptions = (
+  options?: Options<PostAuthPasswordResetData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postAuthPasswordReset({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postAuthPasswordResetQueryKey(options),
+  });
+};
+
+export const postAuthPasswordResetMutation = (
+  options?: Partial<Options<PostAuthPasswordResetData>>
+): UseMutationOptions<
+  PostAuthPasswordResetResponse,
+  AxiosError<PostAuthPasswordResetError>,
+  Options<PostAuthPasswordResetData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostAuthPasswordResetResponse,
+    AxiosError<PostAuthPasswordResetError>,
+    Options<PostAuthPasswordResetData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postAuthPasswordReset({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postAuthPasswordResetCompleteQueryKey = (
+  options?: Options<PostAuthPasswordResetCompleteData>
+) => createQueryKey("postAuthPasswordResetComplete", options);
+
+export const postAuthPasswordResetCompleteOptions = (
+  options?: Options<PostAuthPasswordResetCompleteData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postAuthPasswordResetComplete({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postAuthPasswordResetCompleteQueryKey(options),
+  });
+};
+
+export const postAuthPasswordResetCompleteMutation = (
+  options?: Partial<Options<PostAuthPasswordResetCompleteData>>
+): UseMutationOptions<
+  PostAuthPasswordResetCompleteResponse,
+  AxiosError<PostAuthPasswordResetCompleteError>,
+  Options<PostAuthPasswordResetCompleteData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostAuthPasswordResetCompleteResponse,
+    AxiosError<PostAuthPasswordResetCompleteError>,
+    Options<PostAuthPasswordResetCompleteData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postAuthPasswordResetComplete({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1384,6 +1492,114 @@ export const getArgusCheckinTypesOptions = (
   });
 };
 
+export const getEntriesOwnQueryKey = (options?: Options<GetEntriesOwnData>) =>
+  createQueryKey("getEntriesOwn", options);
+
+export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesOwn({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesOwnQueryKey(options),
+  });
+};
+
+export const getEntriesOwnInfiniteQueryKey = (
+  options?: Options<GetEntriesOwnData>
+): QueryKey<Options<GetEntriesOwnData>> =>
+  createQueryKey("getEntriesOwn", options, true);
+
+export const getEntriesOwnInfiniteOptions = (
+  options?: Options<GetEntriesOwnData>
+) => {
+  return infiniteQueryOptions<
+    GetEntriesOwnResponse,
+    AxiosError<GetEntriesOwnError>,
+    InfiniteData<GetEntriesOwnResponse>,
+    QueryKey<Options<GetEntriesOwnData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetEntriesOwnData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetEntriesOwnData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getEntriesOwn({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getEntriesOwnInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const deleteEntriesByIdMutation = (
+  options?: Partial<Options<DeleteEntriesByIdData>>
+): UseMutationOptions<
+  DeleteEntriesByIdResponse,
+  AxiosError<DeleteEntriesByIdError>,
+  Options<DeleteEntriesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteEntriesByIdResponse,
+    AxiosError<DeleteEntriesByIdError>,
+    Options<DeleteEntriesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteEntriesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getEntriesByIdQueryKey = (options: Options<GetEntriesByIdData>) =>
+  createQueryKey("getEntriesById", options);
+
+export const getEntriesByIdOptions = (options: Options<GetEntriesByIdData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesByIdQueryKey(options),
+  });
+};
+
 export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
   createQueryKey("getEntries", options);
 
@@ -1450,70 +1666,28 @@ export const getEntriesInfiniteOptions = (
   );
 };
 
-export const getEntriesOwnQueryKey = (options?: Options<GetEntriesOwnData>) =>
-  createQueryKey("getEntriesOwn", options);
-
-export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getEntriesOwn({
+export const putEntriesMutation = (
+  options?: Partial<Options<PutEntriesData>>
+): UseMutationOptions<
+  PutEntriesResponse,
+  AxiosError<PutEntriesError>,
+  Options<PutEntriesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PutEntriesResponse,
+    AxiosError<PutEntriesError>,
+    Options<PutEntriesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putEntries({
         ...options,
-        ...queryKey[0],
-        signal,
+        ...localOptions,
         throwOnError: true,
       });
       return data;
     },
-    queryKey: getEntriesOwnQueryKey(options),
-  });
-};
-
-export const getEntriesOwnInfiniteQueryKey = (
-  options?: Options<GetEntriesOwnData>
-): QueryKey<Options<GetEntriesOwnData>> =>
-  createQueryKey("getEntriesOwn", options, true);
-
-export const getEntriesOwnInfiniteOptions = (
-  options?: Options<GetEntriesOwnData>
-) => {
-  return infiniteQueryOptions<
-    GetEntriesOwnResponse,
-    AxiosError<GetEntriesOwnError>,
-    InfiniteData<GetEntriesOwnResponse>,
-    QueryKey<Options<GetEntriesOwnData>>,
-    | number
-    | Pick<
-        QueryKey<Options<GetEntriesOwnData>>[0],
-        "body" | "headers" | "path" | "query"
-      >
-  >(
-    // @ts-ignore
-    {
-      queryFn: async ({ pageParam, queryKey, signal }) => {
-        // @ts-ignore
-        const page: Pick<
-          QueryKey<Options<GetEntriesOwnData>>[0],
-          "body" | "headers" | "path" | "query"
-        > =
-          typeof pageParam === "object"
-            ? pageParam
-            : {
-                query: {
-                  page: pageParam,
-                },
-              };
-        const params = createInfiniteParams(queryKey, page);
-        const { data } = await getEntriesOwn({
-          ...options,
-          ...params,
-          signal,
-          throwOnError: true,
-        });
-        return data;
-      },
-      queryKey: getEntriesOwnInfiniteQueryKey(options),
-    }
-  );
+  };
+  return mutationOptions;
 };
 
 export const getCrmUsersQueryKey = (options?: Options<GetCrmUsersData>) =>

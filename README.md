@@ -4,14 +4,15 @@ This is an [Expo](https://expo.dev) react-native project.
 
 ## Get started
 
-1. Install dependencies
+1. Install dependencies && build
 
    ```bash
    npm install
+   npm run build
+   npm run ios
    ```
 
 2. Start the app
-
    ```bash
     npx run ios
    ```

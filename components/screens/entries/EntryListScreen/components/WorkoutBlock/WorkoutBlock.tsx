@@ -1,17 +1,18 @@
 import {FC, Fragment} from 'react';
 import {View, Pressable} from 'react-native';
-import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
+import {AppWorkout} from '@/types/models/AppWorkout';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
-import {WorkoutSyncButton} from '../../../WorkoutScreen/components/WorkoutSyncButton/WorkoutSyncButton';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {ThemedImage} from '@/components/blocks/ThemedImage/ThemedImage';
 import {Separator} from '@/components/blocks/Separator/Separator';
+import {WorkoutAppEntry} from '../../../../../../types/models/AppEntry';
+import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
 
-export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWorkout)=> void}> = (props) => {
-  const workout = props.workout;
+export const WorkoutBlock: FC<{entry: WorkoutAppEntry, onPress?: (x: AppWorkout)=> void}> = (props) => {
+  const workout = props.entry.workout;
   const exercises = workout.exercises;
   const theme = useAppTheme();
   const onPress = () => {
@@ -30,7 +31,6 @@ export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWor
           <ThemedText>
             {workout.start.toLocaleDateString()}
           </ThemedText>
-
         </View>
         <View style={{marginBottom: theme.marginM, flexDirection: 'row'}}>
           <View style={{flexGrow: 1}}>
@@ -44,7 +44,7 @@ export const WorkoutBlock: FC<{workout: CompleteAppWorkout, onPress?: (x: AppWor
             <ThemedText>
             {workout.start.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(workout.start)}
             </ThemedText>
-            <WorkoutSyncButton workout={workout} readonly/>
+            <EntrySyncButton entry={props.entry} readonly/>
           </View>
         </View>
         <View>

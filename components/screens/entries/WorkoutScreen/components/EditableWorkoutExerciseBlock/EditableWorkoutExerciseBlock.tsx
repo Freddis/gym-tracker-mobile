@@ -52,7 +52,7 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
     const reps = [prevSets[sets.length]?.reps, sets[sets.length - 1]?.reps].find((x) => !!x) ?? 0;
     const weight = [prevSets[sets.length]?.weight, sets[sets.length - 1]?.weight].find((x) => !!x) ?? 0;
     const newSet: NewModel<AppWorkoutExerciseSet> = {
-      externalId: null,
+      // externalId: null,
       workoutId: props.exercise.workoutId,
       exerciseId: props.exercise.exerciseId,
       userId: props.exercise.userId,

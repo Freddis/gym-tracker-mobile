@@ -1,6 +1,6 @@
 import {StyleSheet, Image, View} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {Stack, useLocalSearchParams} from 'expo-router';
+import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {FC, Fragment} from 'react';
 import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
 import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
@@ -16,6 +16,7 @@ export const ViewExerciseScreen: FC = () => {
   const params = useLocalSearchParams();
   const placeHolderImage = require('@/assets/images/icon.png');
   const theme = useAppTheme();
+  const router = useRouter();
   const [service] = useExerciseService();
   const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.exerciseId);
   const exerciseId = validated.success ? validated.data : 0;
@@ -33,14 +34,22 @@ export const ViewExerciseScreen: FC = () => {
   const descriptionParts = (exercise.description ?? '')
     .split(/<\d+>/g)
     .filter((x) => x.trim() !== '');
+
   const styles = getStyles(theme);
-  const onEditPress = () => {};
+  const onEditPress = () => {
+    router.navigate({
+      pathname: '/app/exercises/editExercise',
+      params: {
+        exerciseId: exercise.id,
+      },
+    });
+  };
   return (
     <ThemedScrollView style={styles.scroll}>
       <ScreenContainer style={styles.container}>
         <Stack.Screen
           options={{
-            title: `Exercise ${exercise.id}`,
+            title: `${exercise.name}`,
             headerShown: true,
             headerRight: () =>
               exercise.userId && (
@@ -99,7 +108,6 @@ const getStyles = (theme: Theme) =>
     },
     container: {
       paddingTop: theme.paddingM,
-      paddingBottom: 100,
     },
     title: {
       color: theme.accent,
@@ -108,6 +116,8 @@ const getStyles = (theme: Theme) =>
     },
     image: {
       width: '100%',
+      height: 200,
+      backgroundColor: 'blue',
       resizeMode: 'cover',
       borderRadius: 10,
       aspectRatio: 1,

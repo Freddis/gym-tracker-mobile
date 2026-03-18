@@ -1,7 +1,9 @@
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
+import {EntryService} from '../EntryService/EntryService';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
+import {WeightService} from '../WeightService/WeightService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {WorkoutTypeService} from '../WorkoutTypeService/WorkoutTypeService';
 import {Progress} from './types/Progress';
@@ -11,11 +13,20 @@ export class SyncService {
   protected exerciseService: ExerciseService;
   protected logger: Logger;
   protected workoutTypeService: WorkoutTypeService;
-
-  constructor(workouts: WorkoutService, exercises: ExerciseService, workoutTypes: WorkoutTypeService) {
+  protected weightService: WeightService;
+  protected entryService: EntryService;
+  constructor(
+    workouts: WorkoutService,
+    exercises: ExerciseService,
+    workoutTypes: WorkoutTypeService,
+    weightService: WeightService,
+    entryService: EntryService,
+  ) {
     this.workoutService = workouts;
     this.exerciseService = exercises;
     this.workoutTypeService = workoutTypes;
+    this.weightService = weightService;
+    this.entryService = entryService;
     this.logger = new Logger(this.constructor.name);
   }
 
@@ -105,20 +116,21 @@ export class SyncService {
         action: this.workoutTypeService.pullFromServer.bind(this.workoutTypeService),
       },
       {
-        name: 'Pulling Workouts',
-        action: this.workoutService.pullFromServer.bind(this.workoutService),
-        errorMsg: "Couldn't pull workouts",
+        name: 'Pulling Entries',
+        action: this.entryService.pullFromServer.bind(this.entryService),
+        errorMsg: "Couldn't pull entries",
       },
-      // {
-      //   name: 'Pushing Exercises',
-      //   action: this.exerciseService.pushToServer.bind(this.exerciseService),
-      //   errorMsg: "Couldn't push exercises",
-      // },
-      // {
-      //   name: 'Pushing Workouts',
-      //   action: this.workoutService.pushToServer.bind(this.workoutService),
-      //   errorMsg: "Couldn't push workouts",
-      // },
+      {
+        name: 'Pushing Exercises',
+        action: this.exerciseService.pushToServer.bind(this.exerciseService),
+        errorMsg: "Couldn't push exercises",
+      },
+      {
+        name: 'Pushing Entries',
+        action: this.entryService.pushToServer.bind(this.entryService),
+        errorMsg: "Couldn't push entries",
+      },
+
     ];
     return stages;
   }
@@ -126,14 +138,14 @@ export class SyncService {
   protected getWipeStages(): Stage[] {
     const stages: Stage[] = [
       {
+        name: 'Wiping Entries',
+        action: this.entryService.wipeLocalData.bind(this.entryService),
+        errorMsg: "Couldn't delete entries",
+      },
+      {
         name: 'Wiping Workout Types',
         action: this.workoutTypeService.wipeLocalData.bind(this.workoutTypeService),
         errorMsg: "Couldn't delete workout types",
-      },
-      {
-        name: 'Wiping Workouts',
-        action: this.workoutService.wipeLocalData.bind(this.workoutService),
-        errorMsg: "Couldn't delete workouts",
       },
       {
         name: 'Wiping Exercises',

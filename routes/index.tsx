@@ -10,7 +10,7 @@ export default function HomeScreen() {
       router.replace('/auth/login');
       return;
     }
-    router.replace('/app/workouts/list');
+    router.replace('/app/entries/list');
   });
 
   return null;

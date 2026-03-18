@@ -55,7 +55,7 @@ export const LoginScreen: FC = () => {
       return;
     }
     AsyncStorage.setItem(ASYNC_STORAGE_KEY, email);
-    auth.login(result.data);
+    await auth.login(result.data);
     router.navigate('/');
   };
 

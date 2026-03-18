@@ -16,6 +16,8 @@ import m0011 from './0011_synced_entities_deletion.sql';
 import m0012 from './0012_exercise_equipment.sql';
 import m0013 from './0013_workout_types.sql';
 import m0014 from './0014_exercise_muscles2.sql';
+import m0015 from './0015_removing_exessive_external_ids.sql';
+import m0016 from './0016_adding_entries.sql';
 
 export default {
   journal,
@@ -35,5 +37,7 @@ export default {
     m0012,
     m0013,
     m0014,
+    m0015,
+    m0016,
   },
 };

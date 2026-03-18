@@ -7,9 +7,9 @@ import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {Logger} from '../Logger/Logger';
-import {processInBatches} from '../processInBatches';
-let counter = 0;
+
 export class WorkoutService {
+
   protected logger: Logger = new Logger(WorkoutService.name);
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
@@ -30,6 +30,62 @@ export class WorkoutService {
     return isNaN(number) ? 0 : number;
   }
 
+  async copyWorkout(workout: CompleteAppWorkout, db: DrizzleDb): Promise<CompleteAppWorkout> {
+    const now = new Date();
+    const newWorkout: NewModel<AppWorkout> = {
+      externalId: null,
+      createdAt: now,
+      updatedAt: null,
+      deletedAt: null,
+      lastPulledAt: null,
+      lastPushedAt: null,
+      start: now,
+      end: null,
+      userId: workout.userId,
+      typeId: workout.typeId,
+      calories: 0,
+    };
+    const insertedRow = await db.insert(schema.workouts)
+        .values(newWorkout);
+    const newWorkoutId = insertedRow.lastInsertRowId;
+    for (const exercise of workout.exercises) {
+      const newExercise: NewModel<AppWorkoutExercise> = {
+          // externalId: null,
+        userId: exercise.userId,
+        createdAt: exercise.createdAt,
+        updatedAt: null,
+        workoutId: newWorkoutId,
+        exerciseId: exercise.exerciseId,
+      };
+      await db.insert(schema.workoutExercises).values(newExercise).returning();
+    }
+    const result = await this.getWorkout(db, newWorkoutId);
+    if (!result) {
+      throw new Error('Workout not found');
+    }
+    return result;
+  }
+  async getWorkout(db: DrizzleDb, id: number): Promise<CompleteAppWorkout| null> {
+    const workout = await db.query.workouts.findFirst({
+      where: (t, op) => op.eq(t.id, id),
+      with: {
+        exercises: {
+          with: {
+            exercise: true,
+            sets: {
+              orderBy: (t, op) => [
+                op.asc(t.createdAt),
+              ],
+            },
+          },
+          orderBy: (t, op) => [
+            op.asc(t.createdAt),
+          ],
+        },
+      },
+    },);
+    return workout ?? null;
+  }
   async pushWorkout(db: DrizzleDb, workout: CompleteAppWorkout): Promise<boolean> {
     return this.pushWorkouts(db, [workout]);
   }
@@ -133,7 +189,9 @@ export class WorkoutService {
     return true;
   }
 
-  protected async processedPulledItem(db: DrizzleDb, items: Workout[]): Promise<void> {
+  async processedPulledItem(db: DrizzleDb, items: Workout[]): Promise<Map<number, number>> {
+    const map = new Map<number, number>();
+
     for (const workout of items) {
     // --- save workout first ---
       const newWorkoutRow: NewModel<AppWorkout> = {
@@ -152,6 +210,7 @@ export class WorkoutService {
 
     // upsert workout and get local id
       const savedWorkoutId = await this.saveWorkoutToDb(db, workout.id, newWorkoutRow);
+      map.set(workout.id, savedWorkoutId);
 
     // clean up existing children before inserting fresh ones
       await db.delete(schema.workoutExerciseSets).where(eq(schema.workoutExerciseSets.workoutId, savedWorkoutId));
@@ -173,7 +232,7 @@ export class WorkoutService {
         }
 
         const newExerciseRow: NewModel<AppWorkoutExercise> = {
-          externalId: counter++, // no externalId in API
+          // externalId: counter++, // no externalId in API
           userId: workout.userId,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -186,7 +245,7 @@ export class WorkoutService {
       // save sets
         for (const set of row.sets) {
           const newSetRow: NewModel<AppWorkoutExerciseSet> = {
-            externalId: counter++, // no externalId in API
+            // externalId: counter++, // no externalId in API
             userId: workout.userId,
             start: set.start,
             end: set.end,
@@ -204,6 +263,7 @@ export class WorkoutService {
         }
       }
     }
+    return map;
   }
 
 
@@ -257,42 +317,42 @@ export class WorkoutService {
     return row.lastPushedAt;
   }
 
-  protected async saveWorkouts(db: DrizzleDb, workouts: NewModel<AppWorkout>[]): Promise<AppWorkout[]> {
+  // protected async saveWorkouts(db: DrizzleDb, workouts: NewModel<AppWorkout>[]): Promise<AppWorkout[]> {
 
-    const result = await processInBatches(workouts, 200, async (rows) => {
-      const res = await db.insert(schema.workouts).values(rows)
-        // .onConflictDoUpdate({
-        //   target: schema.workouts.externalId,
-        //   set: conflictUpdateSetAllColumns(schema.workouts),
-        // })
-        .returning();
-      return res;
-    });
-    return result;
-  }
-  protected async saveExercises(db: DrizzleDb, exercises: NewModel<AppWorkoutExercise>[]): Promise<AppWorkoutExercise[]> {
-    const result = await processInBatches(exercises, 200, async (rows) => {
-      const res = await db.insert(schema.workoutExercises).values(rows)
-        // .onConflictDoUpdate({
-        //   target: schema.workoutExercises.externalId,
-        //   set: conflictUpdateSetAllColumns(schema.workoutExercises),
-        // })
-        .returning();
-      return res;
-    });
-    return result;
-  }
+  //   const result = await processInBatches(workouts, 200, async (rows) => {
+  //     const res = await db.insert(schema.workouts).values(rows)
+  //       // .onConflictDoUpdate({
+  //       //   target: schema.workouts.externalId,
+  //       //   set: conflictUpdateSetAllColumns(schema.workouts),
+  //       // })
+  //       .returning();
+  //     return res;
+  //   });
+  //   return result;
+  // }
+  // protected async saveExercises(db: DrizzleDb, exercises: NewModel<AppWorkoutExercise>[]): Promise<AppWorkoutExercise[]> {
+  //   const result = await processInBatches(exercises, 200, async (rows) => {
+  //     const res = await db.insert(schema.workoutExercises).values(rows)
+  //       // .onConflictDoUpdate({
+  //       //   target: schema.workoutExercises.externalId,
+  //       //   set: conflictUpdateSetAllColumns(schema.workoutExercises),
+  //       // })
+  //       .returning();
+  //     return res;
+  //   });
+  //   return result;
+  // }
 
-  protected async saveSets(db: DrizzleDb, sets: NewModel<AppWorkoutExerciseSet>[]): Promise<AppWorkoutExerciseSet[]> {
-    const result = await processInBatches(sets, 200, async (rows) => {
-      const res = await db.insert(schema.workoutExerciseSets).values(rows).onConflictDoUpdate({
-        target: schema.workoutExerciseSets.externalId,
-        set: conflictUpdateSetAllColumns(schema.workoutExerciseSets),
-      }).returning();
-      return res;
-    });
-    return result;
-  }
+  // protected async saveSets(db: DrizzleDb, sets: NewModel<AppWorkoutExerciseSet>[]): Promise<AppWorkoutExerciseSet[]> {
+  //   const result = await processInBatches(sets, 200, async (rows) => {
+  //     const res = await db.insert(schema.workoutExerciseSets).values(rows).onConflictDoUpdate({
+  //       target: schema.workoutExerciseSets.externalId,
+  //       set: conflictUpdateSetAllColumns(schema.workoutExerciseSets),
+  //     }).returning();
+  //     return res;
+  //   });
+  //   return result;
+  // }
 
   protected async saveWorkoutToDb(db: DrizzleDb, externalId: number, workout: NewModel<AppWorkout>): Promise<number> {
     const existing = await db.query.workouts.findFirst({
@@ -305,6 +365,7 @@ export class WorkoutService {
       }).where(
         eq(schema.workouts.externalId, externalId)
       );
+      return existing.id;
     }
     const result = await db.insert(schema.workouts).values(workout).returning({
       id: schema.workouts.id,

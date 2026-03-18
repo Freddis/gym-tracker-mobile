@@ -1,15 +1,15 @@
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
-import {CompleteAppWorkout} from '@/types/models/AppWorkout';
-import {useDrizzle} from '@/utils/drizzle';
-import {useWorkoutService} from '@/utils/WorkoutService/useWorkoutService';
 import {useEffect, useState} from 'react';
 import {Pressable} from 'react-native';
+import {AppEntry} from '../../../../../../types/models/AppEntry';
+import {useEntryService} from '../../../../../../utils/EntryService/useEntryService';
 
 
-export const WorkoutSyncButton = (props: {workout: CompleteAppWorkout, readonly?: boolean}) => {
-  const lastSyncDate = props.workout.lastPulledAt ?? props.workout.lastPushedAt;
-  const lastUpdate = props.workout.updatedAt;
+export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) => {
+  // const lastSyncDate = props.workout.lastPulledAt ?? props.workout.lastPushedAt
+  const lastSyncDate = props.entry.lastPushedAt;
+  const lastUpdate = props.entry.updatedAt;
   const theme = useAppTheme();
   const iconSize = 25;
   const considerSynced = (() => {
@@ -30,13 +30,12 @@ export const WorkoutSyncButton = (props: {workout: CompleteAppWorkout, readonly?
     setSynced(considerSynced);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [considerSynced]);
-  const [service] = useWorkoutService();
-  const [db] = useDrizzle();
+  const [service] = useEntryService();
   const sync = async () => {
     if (props.readonly) {
       return;
     }
-    const result = await service.pushWorkout(db, props.workout);
+    const result = await service.pushEntry(props.entry);
     const successMessage = 'Successfully synced';
     const errorMessage = 'Something went wrong';
     const msg = result ? successMessage : errorMessage;
