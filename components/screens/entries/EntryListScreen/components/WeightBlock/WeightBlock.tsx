@@ -5,6 +5,7 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {AppWeight} from '../../../../../../types/models/AppWeight';
 import {WeightAppEntry} from '../../../../../../types/models/AppEntry';
+import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
 
 export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: AppWeight)=> void}> = (props) => {
   const weight = props.entry.weight;
@@ -31,6 +32,7 @@ export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: AppWeight)=> 
             <ThemedText>
             {weight.createdAt.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(weight.createdAt)}
             </ThemedText>
+            <EntrySyncButton entry={props.entry} readonly/>
           </View>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
