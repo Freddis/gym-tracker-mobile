@@ -261,6 +261,7 @@ export class ExerciseService {
           query: {
             updatedAfter: lastUpdateFromServer ?? undefined,
             includeBuiltIn: true,
+            includeDeleted: true,
             page: page++,
           },
         });

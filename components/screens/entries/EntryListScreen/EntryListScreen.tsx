@@ -12,11 +12,10 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 import {WeightBlock} from './components/WeightBlock/WeightBlock';
-import {AppEntry} from '../../../../types/models/AppEntry';
+import {AppEntry, WeightAppEntry} from '../../../../types/models/AppEntry';
 import {EntryType} from '../../../../openapi-client';
 
 export const EntryListScreen: FC = () => {
-  console.log('Workouts');
   const navigation = useNavigation();
   const theme = useAppTheme();
   navigation.addListener('focus', () => {
@@ -60,7 +59,6 @@ export const EntryListScreen: FC = () => {
     return <LoadingBlock />;
   }
   const entries: AppEntry[] = query.data as any;
-  // console.log(entries);
   const openWorkout = (workout: AppWorkout) => {
     router.navigate({
       pathname: './editWorkout',
@@ -69,14 +67,22 @@ export const EntryListScreen: FC = () => {
       },
     });
   };
+  const openWeight = (entry: WeightAppEntry) => {
+    router.navigate({
+      pathname: './editWeight',
+      params: {
+        entryId: entry.id,
+      },
+    });
+  };
   return (
     <ScreenContainer style={{paddingHorizontal: 0}}>
-      <Stack.Screen options={{title: 'Workout List', headerShown: false}} />
+      <Stack.Screen options={{title: '', headerShown: false}} />
       <ScrollView style={{paddingHorizontal: theme.paddingM}}>
         <ThemedButtonList items={[['Workout Types', '/app/entries/workoutTypeList']]} />
         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
           <ThemedText style={{flexGrow: 1}}>Entries:</ThemedText>
-          <Link href={'./editWorkout'} asChild>
+          <Link href={'./addEntry'} asChild>
             <Pressable style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
               <ThemedText style={{color: theme.accent}}>Add</ThemedText>
               <IconSymbol name={'plus'} color={theme.accent} size={20}/>
@@ -87,7 +93,7 @@ export const EntryListScreen: FC = () => {
           {entries.map((entry) => (
             <Fragment key={entry.id}>
             {entry.type === EntryType.WORKOUT && <WorkoutBlock key={entry.id} onPress={openWorkout} entry={entry}/>}
-            {entry.type === EntryType.WEIGHT && <WeightBlock key={entry.id} entry={entry}/>}
+            {entry.type === EntryType.WEIGHT && <WeightBlock key={entry.id} onPress={openWeight} entry={entry}/>}
             </Fragment>
           ))}
         </View>

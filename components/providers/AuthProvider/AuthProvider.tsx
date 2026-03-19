@@ -60,7 +60,6 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
       jwt: user.jwt,
       updatedAt: new Date(),
     };
-    console.log('Inserting user', row);
     await db.insert(schema.users).values(row).onConflictDoUpdate({
       target: schema.users.id,
       set: conflictUpdateSetAllColumns(schema.users),

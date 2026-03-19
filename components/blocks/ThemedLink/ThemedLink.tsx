@@ -1,7 +1,7 @@
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {usePathname, useRouter} from 'expo-router';
 import {FC} from 'react';
-import {GestureResponderEvent, Pressable} from 'react-native';
+import {GestureResponderEvent, Pressable, TextStyle} from 'react-native';
 import {IconSymbol, IconSymbolProps} from '../IconSymbol/IconSymbol';
 import {ThemedText} from '../ThemedText/ThemedText';
 
@@ -11,6 +11,7 @@ interface ThemedLnkProps {
   children?:string;
   href?: Parameters<ReturnType<typeof useRouter>['push']>[0];
   onPress?: (event: GestureResponderEvent) => void
+  style?: TextStyle
 }
 export const ThemedLink: FC<ThemedLnkProps> = (props) => {
   const theme = useAppTheme();
@@ -42,7 +43,7 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
             },
           ]}
         >
-          <ThemedText style={{color: theme.accent}}>{children}</ThemedText>
+          <ThemedText style={{color: theme.accent, ...props.style}}>{children}</ThemedText>
           {iconName && <IconSymbol name={iconName} color={theme.accent} size={iconSize} />}
         </Pressable>
   );

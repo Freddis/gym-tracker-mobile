@@ -3,16 +3,15 @@ import {View, Pressable} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
-import {AppWeight} from '../../../../../../types/models/AppWeight';
 import {WeightAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
 
-export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: AppWeight)=> void}> = (props) => {
+export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntry)=> void}> = (props) => {
   const weight = props.entry.weight;
   const theme = useAppTheme();
   const onPress = () => {
     if (props.onPress) {
-      props.onPress(weight);
+      props.onPress(props.entry);
     }
   };
   const getTime = (date: Date) => {

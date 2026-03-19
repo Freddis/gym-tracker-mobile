@@ -10,19 +10,27 @@ import {ThemedBlock} from '../ThemedBlock/ThemedBlock';
 
 interface ThemedButtonListProps {
   items: [string, RoutePath][];
+  replace?: boolean;
 }
 
-export const ThemedButtonList: FC<ThemedButtonListProps> = ({items}) => {
+export const ThemedButtonList: FC<ThemedButtonListProps> = ({items, replace = false}) => {
   const router = useRouter();
   const theme = useAppTheme();
 
+  const onPress = (path: RoutePath) => {
+    if (replace) {
+      router.replace(path);
+    } else {
+      router.push(path);
+    }
+  };
   return (
     <ThemedBlock>
       {items.map((item, i) => (
         <Fragment key={item[0]}>
           {i > 0 && <Separator />}
           <Pressable
-            onPress={() => router.push(item[1])}
+            onPress={() => onPress(item[1])}
             style={({pressed}) => [styles.button, pressed && styles.buttonPressed]}
           >
             <ThemedText style={styles.text}>{item[0]}</ThemedText>

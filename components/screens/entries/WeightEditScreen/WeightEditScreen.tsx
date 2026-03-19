@@ -1,0 +1,242 @@
+import {StyleSheet, View, KeyboardAvoidingView, Platform, Modal, Button} from 'react-native';
+import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
+import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
+import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
+import React, {FC, useEffect, useState} from 'react';
+import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
+import {useAuth} from '@/components/providers/AuthProvider/useAuth';
+import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
+import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
+import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
+import {Separator} from '@/components/blocks/Separator/Separator';
+import {useAppTheme} from '@/hooks/useAppTheme';
+import {Theme} from '@/types/Colors';
+import {useEntryService} from '../../../../utils/EntryService/useEntryService';
+import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
+import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
+
+const kilograms: WheelPickerItemProps<string>[] = [];
+for (let i = 1; i <= 500; i++) {
+  kilograms.push({label: i.toString(), value: i.toString()});
+}
+const grams: WheelPickerItemProps<string>[] = [];
+for (let i = 0; i <= 99; i++) {
+  grams.push({label: i.toString(), value: i.toString()});
+}
+
+const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const days: WheelPickerItemProps<string>[] = (() => {
+  const result: WheelPickerItemProps<string>[] = [];
+  const start = new Date();
+  start.setFullYear(start.getFullYear() - 1);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date();
+  end.setFullYear(end.getFullYear() + 1);
+  end.setHours(0, 0, 0, 0);
+  const cursor = new Date(start);
+  while (cursor.getTime() <= end.getTime()) {
+    const dayName = DAY_LABELS[cursor.getDay()];
+    const dayNum = cursor.getDate() - 1;
+    const monthName = MONTH_LABELS[cursor.getMonth()];
+    const label = `${dayName} ${dayNum} ${monthName}`;
+    const value = cursor.toISOString().slice(0, 10);
+    result.push({label, value});
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return result;
+})();
+const hours: WheelPickerItemProps<string>[] = [];
+for (let i = 0; i < 24; i++) {
+  hours.push({label: i.toString().padStart(2, '0'), value: i.toString().padStart(2, '0')});
+}
+const minutes: WheelPickerItemProps<string>[] = [];
+for (let i = 0; i < 60; i++) {
+  minutes.push({label: i.toString().padStart(2, '0'), value: i.toString().padStart(2, '0')});
+}
+
+export const WeightEditScreen: FC = () => {
+  const theme = useAppTheme();
+  const [entryService] = useEntryService();
+  const styles = getStyles(theme);
+  const auth = useAuth();
+  const user = auth.user;
+  const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [weightModalVisible, setWeightModalVisible] = useState(false);
+  if (!user) {
+    throw new Error('No user');
+  }
+  const [weightValue, setWeight] = useState(0.0);
+  const [dateValue, setDate] = useState(new Date());
+  const params = useLocalSearchParams();
+  const router = useRouter();
+  const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.entryId);
+  const entryId = validated.success ? validated.data : 0;
+  const queryResult = entryService.useWeightEntry(entryId, [entryId]);
+  const entry = queryResult.data;
+  useEffect(() => {
+    if (params.entryId) {
+      return;
+    }
+    entryService.addWeightEntry(user.id).then((result) => {
+      router.setParams({
+        entryId: result.id,
+      });
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.entryId]);
+
+  useEffect(() => {
+    if (!entry) {
+      return;
+    }
+    setDate(entry.weight.createdAt);
+    setWeight(entry.weight.weight);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entry?.id]);
+
+  if (!queryResult.data || !entry) {
+    return <LoadingBlock />;
+  }
+  const weight = entry.weight;
+  const initialKilos = weightValue.toString().split('.')[0];
+  const initalGrams = (weightValue.toString().split('.')[1] ?? '0').padEnd(2, '0');
+  const initialDay = dateValue.toISOString().slice(0, 10);
+  const initialHour = dateValue.getHours().toString().padStart(2, '0');
+  const initialMinute = dateValue.getMinutes().toString().padStart(2, '0');
+  const setKilos = (value: string) => {
+    const newValue = value + '.' + initalGrams;
+    setWeight(Number(newValue));
+    updateWeight(Number(newValue));
+  };
+  const setGrams = (value: string) => {
+    const newValue = initialKilos + '.' + value;
+    setWeight(Number(newValue));
+    updateWeight(Number(newValue));
+  };
+  const updateDate = (date: Date) => {
+    setDate(date);
+    entryService.saveEntry({
+      ...entry,
+      weight: {
+        ...entry.weight,
+        createdAt: date,
+      },
+    });
+  };
+  const updateWeight = (weight: number) => {
+    entryService.saveEntry({
+      ...entry,
+      weight: {
+        ...entry.weight,
+        weight: weight,
+      },
+    });
+  };
+  const setDay = (value: string) => {
+    const date = new Date(value);
+    date.setHours(dateValue.getHours(), dateValue.getMinutes(), 0, 0);
+    updateDate(date);
+  };
+  const setHour = (value: string) => {
+    const date = new Date(dateValue.getTime());
+    date.setHours(Number(value), dateValue.getMinutes(), 0, 0);
+    updateDate(date);
+  };
+  const setMinute = (value: string) => {
+    const date = new Date(dateValue.getTime());
+    date.setHours(dateValue.getHours(), Number(value), 0, 0);
+    updateDate(date);
+  };
+  const dateToString = (date: Date):string => {
+    return [
+      date.toLocaleDateString(),
+      [
+        date.getHours().toString().padStart(2, '0'),
+        date.getMinutes().toString().padStart(2, '0'),
+      ].join(':'),
+    ].join(' ');
+  };
+  const weightString = (weight: number) => {
+    const parts = weight.toString().split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+    return `${integerPart}.${(decimalPart ?? '0').padEnd(2, '0')}`;
+  };
+
+  const deleteEntry = async () => {
+    await entryService.deleteEntry(entryId);
+    router.back();
+  };
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ThemedScrollView style={{minHeight: '100%'}}>
+        <ThemedView style={styles.container}>
+          <Stack.Screen options={{title: `Weight Entry ${weight.id}`, headerShown: true}} />
+          <ThemedBlock>
+            <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
+              <ThemedText style={{flexGrow: 1}}>Body Weight</ThemedText>
+              <ThemedText onPress={() => setWeightModalVisible(true)}>{weightString(weightValue)} {weight.units}</ThemedText>
+            </View>
+            <Separator/>
+            <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
+              <ThemedText style={{flexGrow: 1}}>Date</ThemedText>
+              <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(dateValue)}</ThemedText>
+            </View>
+            <Separator/>
+            <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
+              <ThemedText style={{flexGrow: 1}}>Synced</ThemedText>
+              <EntrySyncButton entry={queryResult.data} />
+            </View>
+            <Separator />
+                <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
+
+                  <ThemedLink onPress={deleteEntry}>Delete</ThemedLink>
+                </View>
+          </ThemedBlock>
+        </ThemedView>
+         <Modal visible={dateModalVisible} transparent animationType="none">
+          <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
+            <View style={{backgroundColor: 'white'}}>
+              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                <Button title="Done" onPress={() => setDateModalVisible(false)} />
+              </View>
+              <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                <WheelPicker items={days} initialValue={initialDay} onChange={(item) => setDay(item)} style={{flexGrow: 1}} />
+                <WheelPicker items={hours} initialValue={initialHour} onChange={(item) => setHour(item)} style={{flexGrow: 1}} />
+                <WheelPicker items={minutes} initialValue={initialMinute} onChange={(item) => setMinute(item)} style={{flexGrow: 1}} />
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal visible={weightModalVisible} transparent animationType="none">
+          <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
+            <View style={{backgroundColor: theme.surface}}>
+              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                <ThemedLink style={{fontSize: 16, margin: theme.marginS}} onPress={() => setWeightModalVisible(false)}>Done</ThemedLink>
+              </View>
+              <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                <WheelPicker items={kilograms} initialValue={initialKilos} onChange={(item) => setKilos(item)} style={{flexGrow: 1}} />
+                <WheelPicker items={grams} initialValue={initalGrams} onChange={(item) => setGrams(item)} style={{flexGrow: 1}} />
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </ThemedScrollView>
+    </KeyboardAvoidingView>
+  );
+};
+
+const getStyles = (theme: Theme) => StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    padding: theme.paddingM,
+    marginBottom: 80,
+    gap: theme.marginL,
+    flex: 1,
+    flexGrow: 1,
+  },
+});

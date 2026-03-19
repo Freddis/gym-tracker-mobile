@@ -1,7 +1,7 @@
 import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, EntryUpsertDto, EntryVisibility, Weight, Workout} from '../../openapi-client';
-import {AppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
+import {AppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
 import {NewModel} from '../../types/NewModel';
 import {ApiService} from '../ApiService/ApiService';
@@ -16,53 +16,6 @@ export type LiveQueryQueryResult<T> = {
   updatedAt: Date | undefined;
 }
 export class EntryService {
-
-  useWorkoutEntry(workoutId: number, args: unknown[]) {
-    const query = this.db.query.entries.findFirst({
-      where: (t, op) => op.eq(t.workoutId, workoutId),
-      with: {
-        workout: {
-          with: {
-            exercises: {
-              with: {
-                exercise: true,
-                sets: true,
-              },
-            },
-            sets: {
-              with: {
-                exercise: true,
-              },
-            },
-          },
-        },
-      },
-    });
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const queryResult = useLiveQuery(query, args);
-
-    if (!queryResult.data) {
-      return {
-        data: undefined,
-        error: queryResult.error,
-        updatedAt: queryResult.updatedAt,
-      };
-    }
-
-    if (!queryResult.data.workout) {
-      throw new Error('Workout not found');
-    }
-    const wrappedResult: LiveQueryQueryResult<WorkoutAppEntry> = {
-      ...queryResult,
-      data: {
-        ...queryResult.data,
-        type: EntryType.WORKOUT,
-        workout: queryResult.data.workout,
-      },
-    };
-    return wrappedResult;
-  }
-
   protected logger: Logger = new Logger(EntryService.name);
 
   constructor(
@@ -118,7 +71,7 @@ export class EntryService {
     const workoutMap = await this.workoutService.processedPulledItem(db, workouts);
     const weightMap = await this.weightService.processedPulledItems(db, weights);
 
-    const entries = items.map((x) => {
+    for (const x of items) {
       const workoutId = workoutMap.get(x.workout?.id ?? 0);
       const weightId = weightMap.get(x.weight?.id ?? 0);
       const entry: typeof schema.entries.$inferInsert = {
@@ -132,13 +85,30 @@ export class EntryService {
         lastPushedAt: new Date(),
         createdAt: x.createdAt,
         deletedAt: x.deletedAt,
+        updatedAt: x.updatedAt,
       };
-      return entry;
-    });
-    await db.insert(schema.entries).values(entries).onConflictDoUpdate({
-      target: schema.entries.externalId,
-      set: conflictUpdateSetAllColumns(schema.workouts),
-    });
+      const existing = await db.query.entries.findFirst({
+        where: (t, op) => op.eq(t.externalId, x.id),
+      });
+      if (!existing) {
+        await db.insert(schema.entries).values(entry);
+        continue;
+      }
+      const lastUpdateStampOwn = Math.max(existing.createdAt.getTime(), existing.updatedAt?.getTime() ?? 0, existing.deletedAt?.getTime() ?? 0);
+      const lastUpdateStampServer = Math.max(x.createdAt.getTime(), x.updatedAt?.getTime() ?? 0, x.deletedAt?.getTime() ?? 0);
+      if (lastUpdateStampOwn >= lastUpdateStampServer) {
+        continue;
+      }
+      await db.update(schema.entries).set(entry).where(eq(schema.entries.id, existing.id));
+    }
+  }
+
+  async deleteEntry(entryId: number) {
+    await this.db.update(schema.entries).set({
+      deletedAt: new Date(),
+    }).where(
+      eq(schema.entries.id, entryId)
+    );
   }
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
@@ -158,7 +128,6 @@ export class EntryService {
       return false;
     }
     await this.db.update(schema.entries).set({
-      lastPushedAt: new Date(),
       externalId: response.data.items[0].id,
     }).where(
       eq(schema.entries.id, entry.id)
@@ -185,6 +154,93 @@ export class EntryService {
       updatedAt: entry.updatedAt,
     };
     return data;
+  }
+  async saveEntry(entry: AppEntry) {
+    if (entry.type === EntryType.WEIGHT) {
+      await this.db.update(schema.weight).set({
+        ...entry.weight,
+        updatedAt: new Date(),
+      }).where(
+        eq(schema.weight.id, entry.weight.id)
+      );
+    }
+  }
+
+  useWorkoutEntry(workoutId: number, args: unknown[]) {
+    const query = this.db.query.entries.findFirst({
+      where: (t, op) => op.eq(t.workoutId, workoutId),
+      with: {
+        workout: {
+          with: {
+            exercises: {
+              with: {
+                exercise: true,
+                sets: true,
+              },
+            },
+            sets: {
+              with: {
+                exercise: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const queryResult = useLiveQuery(query, args);
+
+    if (!queryResult.data) {
+      return {
+        data: undefined,
+        error: queryResult.error,
+        updatedAt: queryResult.updatedAt,
+      };
+    }
+
+    if (!queryResult.data.workout) {
+      throw new Error('Workout not found');
+    }
+    const wrappedResult: LiveQueryQueryResult<WorkoutAppEntry> = {
+      ...queryResult,
+      data: {
+        ...queryResult.data,
+        type: EntryType.WORKOUT,
+        workout: queryResult.data.workout,
+      },
+    };
+    return wrappedResult;
+  }
+
+  useWeightEntry(entryId: number, arg1: (string | number | string[] | undefined)[]) {
+    const query = this.db.query.entries.findFirst({
+      where: (t, op) => op.eq(t.id, entryId),
+      with: {
+        weight: true,
+      },
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const queryResult = useLiveQuery(query, arg1);
+    if (!queryResult.data) {
+      return {
+        data: undefined,
+        error: queryResult.error,
+        updatedAt: queryResult.updatedAt,
+      };
+    }
+
+    if (!queryResult.data.weight) {
+      throw new Error('Workout not found');
+    }
+    const wrappedResult: LiveQueryQueryResult<WeightAppEntry> = {
+      ...queryResult,
+      data: {
+        ...queryResult.data,
+        type: EntryType.WEIGHT,
+        weight: queryResult.data.weight,
+      },
+    };
+    return wrappedResult;
   }
 
   async getEntries(
@@ -248,6 +304,14 @@ export class EntryService {
     return result;
   }
 
+  async getEntry(id: number): Promise<AppEntry> {
+    const entries = await this.getEntries(this.db, {ids: [id]});
+    if (!entries[0]) {
+      throw new Error('Entry not found');
+    }
+    return entries[0];
+  }
+
   async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
     this.logger.info('Pushing entries to server', {userId});
     const lastPullSyncDate = await this.getLatestPushSyncDate(db);
@@ -260,6 +324,7 @@ export class EntryService {
         lastPullSyncDate ? op.or(
           op.gt(t.updatedAt, lastPullSyncDate),
           op.gt(t.createdAt, lastPullSyncDate),
+          op.gt(t.deletedAt, lastPullSyncDate),
         ) : undefined
       ),
     });
@@ -319,6 +384,64 @@ export class EntryService {
       return null;
     }
     return row.lastPulledAt;
+  }
+
+  async addWeightEntry(userId: number): Promise<WeightAppEntry> {
+    const result = await this.db.transaction(async (db) => {
+      const lastWeight = await db.query.entries.findFirst({
+        where: (t, op) =>
+          op.and(
+            op.eq(t.userId, userId),
+            op.isNull(t.deletedAt),
+            op.eq(t.type, EntryType.WEIGHT),
+          ),
+        with: {
+          weight: true,
+        },
+        orderBy: (t, op) => [op.desc(t.createdAt)],
+      });
+
+      const newWeight: typeof schema.weight.$inferInsert = {
+        externalId: null,
+        userId: userId,
+        weight: lastWeight?.weight?.weight ?? 50,
+        units: 'Kg',
+        createdAt: new Date(),
+      };
+
+      const insertResult = await db.insert(schema.weight).values(newWeight);
+      const entry: Omit<WeightAppEntry, 'weight' | 'id'> = {
+        userId: userId,
+        createdAt: new Date(),
+        updatedAt: null,
+        deletedAt: null,
+        visibility: EntryVisibility.PUBLIC,
+        type: EntryType.WEIGHT,
+        externalId: null,
+        lastPulledAt: null,
+        lastPushedAt: null,
+        workoutId: null,
+        weightId: insertResult.lastInsertRowId,
+      };
+      this.logger.info('Inserting entry', entry);
+      const entryResult = await db.insert(schema.entries).values(entry);
+
+      const result: WeightAppEntry = {
+        id: entryResult.lastInsertRowId,
+        ...entry,
+        type: EntryType.WEIGHT,
+        weight: {
+          ...newWeight,
+          id: insertResult.lastInsertRowId,
+          externalId: null,
+          updatedAt: null,
+          deletedAt: null,
+        },
+      };
+      return result;
+    });
+    return result;
+
   }
 
   async addWorkoutEntry(userId: number): Promise<WorkoutAppEntry> {

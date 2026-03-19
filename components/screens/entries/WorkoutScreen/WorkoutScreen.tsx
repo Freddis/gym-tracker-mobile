@@ -99,7 +99,6 @@ export const WorkoutScreen: FC = () => {
     await db.update(schema.workouts).set({
       updatedAt: new Date(),
     }).where(eq(schema.workouts.id, workout.id));
-    console.log('Updating counter');
     setRefreshCounter(refreshCounter + 1);
   };
 
@@ -134,7 +133,6 @@ export const WorkoutScreen: FC = () => {
     .where(
       eq(schema.workouts.id, workout.id)
     );
-    console.log('refresh');
     setRefreshCounter(refreshCounter + 1);
   };
   const finishWorkout = async () => {

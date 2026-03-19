@@ -35,7 +35,8 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) =>
     if (props.readonly) {
       return;
     }
-    const result = await service.pushEntry(props.entry);
+    const entry = await service.getEntry(props.entry.id);
+    const result = await service.pushEntry(entry);
     const successMessage = 'Successfully synced';
     const errorMessage = 'Something went wrong';
     const msg = result ? successMessage : errorMessage;

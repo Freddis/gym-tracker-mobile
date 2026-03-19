@@ -12,6 +12,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '@/components/providers/AuthProvider/AuthProvider';
 import {useDrizzle} from '@/utils/drizzle';
 import {useColorScheme} from 'react-native';
+import {Colors, ThemeManager} from 'react-native-ui-lib';
 
 // console.log = () => null // uncomment for prod / preview
 const queryClient = new QueryClient();
@@ -53,6 +54,11 @@ export default function RootLayout() {
   // }
   if (!loaded) {
     return null;
+  }
+  if (colorScheme === 'dark') {
+    Colors.setScheme('dark');
+  } else {
+    Colors.setScheme('light');
   }
 
   return (
