@@ -49,7 +49,7 @@ export const EntryListScreen: FC = () => {
       op.isNull(t.deletedAt),
       // op.not(op.isNull(t.weightId))
     ),
-    orderBy: (t, op) => op.desc(t.createdAt),
+    orderBy: (t, op) => op.desc(t.time),
     limit: 50,
   });
 

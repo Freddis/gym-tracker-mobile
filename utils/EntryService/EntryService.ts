@@ -5,7 +5,7 @@ import {AppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppE
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
 import {NewModel} from '../../types/NewModel';
 import {ApiService} from '../ApiService/ApiService';
-import {DrizzleDb, conflictUpdateSetAllColumns} from '../drizzle';
+import {DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {WeightService} from '../WeightService/WeightService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
@@ -83,6 +83,7 @@ export class EntryService {
         externalId: x.id,
         lastPulledAt: new Date(),
         lastPushedAt: new Date(),
+        time: x.time,
         createdAt: x.createdAt,
         deletedAt: x.deletedAt,
         updatedAt: x.updatedAt,
@@ -139,14 +140,24 @@ export class EntryService {
     const data: EntryUpsertDto = entry.type === EntryType.WORKOUT ? {
       id: entry.externalId ?? undefined,
       visibility: entry.visibility,
+      time: entry.time,
       createdAt: entry.createdAt,
       deletedAt: entry.deletedAt,
       type: entry.type,
-      workout: entry.workout,
+      workout: {
+        ...entry.workout,
+        exercises: entry.workout.exercises.map((x) => ({
+          exerciseId: x.exercise.externalId ?? 0,
+          createdAt: x.createdAt,
+          updatedAt: x.updatedAt,
+          sets: x.sets,
+        })),
+      },
       updatedAt: entry.updatedAt,
     } : {
       id: entry.externalId ?? undefined,
       visibility: entry.visibility,
+      time: entry.time,
       createdAt: entry.createdAt,
       deletedAt: entry.deletedAt,
       type: entry.type,
@@ -155,6 +166,7 @@ export class EntryService {
     };
     return data;
   }
+
   async saveEntry(entry: AppEntry) {
     if (entry.type === EntryType.WEIGHT) {
       await this.db.update(schema.weight).set({
@@ -164,6 +176,20 @@ export class EntryService {
         eq(schema.weight.id, entry.weight.id)
       );
     }
+    if (entry.type === EntryType.WORKOUT) {
+      await this.db.update(schema.workouts).set({
+        ...entry.workout,
+        updatedAt: new Date(),
+      }).where(
+        eq(schema.workouts.id, entry.workout.id)
+      );
+    }
+    await this.db.update(schema.entries).set({
+      time: entry.time,
+      updatedAt: new Date(),
+    }).where(
+      eq(schema.entries.id, entry.id)
+    );
   }
 
   useWorkoutEntry(workoutId: number, args: unknown[]) {
@@ -412,6 +438,7 @@ export class EntryService {
       const insertResult = await db.insert(schema.weight).values(newWeight);
       const entry: Omit<WeightAppEntry, 'weight' | 'id'> = {
         userId: userId,
+        time: new Date(),
         createdAt: new Date(),
         updatedAt: null,
         deletedAt: null,
@@ -466,6 +493,7 @@ export class EntryService {
         workoutId: insertResult.lastInsertRowId,
         userId: userId,
         createdAt: new Date(),
+        time: new Date(),
         updatedAt: null,
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
@@ -500,6 +528,7 @@ export class EntryService {
         workoutId: copiedWorkout.id,
         userId: workout.userId,
         createdAt: now,
+        time: now,
         updatedAt: null,
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,

@@ -135,6 +135,7 @@ export const entries = sqliteTable('entries', {
   workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
   visibility: text().notNull().$type<EntryVisibility>(),
+  time: integer({mode: 'timestamp'}).notNull(),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
   deletedAt: integer({mode: 'timestamp'}),

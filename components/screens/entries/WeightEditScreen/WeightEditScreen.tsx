@@ -15,6 +15,7 @@ import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
+import {DateTimeUpdateModal} from '../../common/DateTimeUpdateModal/DateTimeUpdateModal';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
@@ -23,38 +24,6 @@ for (let i = 1; i <= 500; i++) {
 const grams: WheelPickerItemProps<string>[] = [];
 for (let i = 0; i <= 99; i++) {
   grams.push({label: i.toString(), value: i.toString()});
-}
-
-const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-const days: WheelPickerItemProps<string>[] = (() => {
-  const result: WheelPickerItemProps<string>[] = [];
-  const start = new Date();
-  start.setFullYear(start.getFullYear() - 1);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date();
-  end.setFullYear(end.getFullYear() + 1);
-  end.setHours(0, 0, 0, 0);
-  const cursor = new Date(start);
-  while (cursor.getTime() <= end.getTime()) {
-    const dayName = DAY_LABELS[cursor.getDay()];
-    const dayNum = cursor.getDate() - 1;
-    const monthName = MONTH_LABELS[cursor.getMonth()];
-    const label = `${dayName} ${dayNum} ${monthName}`;
-    const value = cursor.toISOString().slice(0, 10);
-    result.push({label, value});
-    cursor.setDate(cursor.getDate() + 1);
-  }
-  return result;
-})();
-const hours: WheelPickerItemProps<string>[] = [];
-for (let i = 0; i < 24; i++) {
-  hours.push({label: i.toString().padStart(2, '0'), value: i.toString().padStart(2, '0')});
-}
-const minutes: WheelPickerItemProps<string>[] = [];
-for (let i = 0; i < 60; i++) {
-  minutes.push({label: i.toString().padStart(2, '0'), value: i.toString().padStart(2, '0')});
 }
 
 export const WeightEditScreen: FC = () => {
@@ -92,7 +61,7 @@ export const WeightEditScreen: FC = () => {
     if (!entry) {
       return;
     }
-    setDate(entry.weight.createdAt);
+    setDate(entry.time);
     setWeight(entry.weight.weight);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry?.id]);
@@ -103,9 +72,6 @@ export const WeightEditScreen: FC = () => {
   const weight = entry.weight;
   const initialKilos = weightValue.toString().split('.')[0];
   const initalGrams = (weightValue.toString().split('.')[1] ?? '0').padEnd(2, '0');
-  const initialDay = dateValue.toISOString().slice(0, 10);
-  const initialHour = dateValue.getHours().toString().padStart(2, '0');
-  const initialMinute = dateValue.getMinutes().toString().padStart(2, '0');
   const setKilos = (value: string) => {
     const newValue = value + '.' + initalGrams;
     setWeight(Number(newValue));
@@ -120,10 +86,7 @@ export const WeightEditScreen: FC = () => {
     setDate(date);
     entryService.saveEntry({
       ...entry,
-      weight: {
-        ...entry.weight,
-        createdAt: date,
-      },
+      time: date,
     });
   };
   const updateWeight = (weight: number) => {
@@ -134,21 +97,6 @@ export const WeightEditScreen: FC = () => {
         weight: weight,
       },
     });
-  };
-  const setDay = (value: string) => {
-    const date = new Date(value);
-    date.setHours(dateValue.getHours(), dateValue.getMinutes(), 0, 0);
-    updateDate(date);
-  };
-  const setHour = (value: string) => {
-    const date = new Date(dateValue.getTime());
-    date.setHours(Number(value), dateValue.getMinutes(), 0, 0);
-    updateDate(date);
-  };
-  const setMinute = (value: string) => {
-    const date = new Date(dateValue.getTime());
-    date.setHours(dateValue.getHours(), Number(value), 0, 0);
-    updateDate(date);
   };
   const dateToString = (date: Date):string => {
     return [
@@ -198,20 +146,7 @@ export const WeightEditScreen: FC = () => {
                 </View>
           </ThemedBlock>
         </ThemedView>
-         <Modal visible={dateModalVisible} transparent animationType="none">
-          <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
-            <View style={{backgroundColor: 'white'}}>
-              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <Button title="Done" onPress={() => setDateModalVisible(false)} />
-              </View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <WheelPicker items={days} initialValue={initialDay} onChange={(item) => setDay(item)} style={{flexGrow: 1}} />
-                <WheelPicker items={hours} initialValue={initialHour} onChange={(item) => setHour(item)} style={{flexGrow: 1}} />
-                <WheelPicker items={minutes} initialValue={initialMinute} onChange={(item) => setMinute(item)} style={{flexGrow: 1}} />
-              </View>
-            </View>
-          </View>
-        </Modal>
+        <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
         <Modal visible={weightModalVisible} transparent animationType="none">
           <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
             <View style={{backgroundColor: theme.surface}}>

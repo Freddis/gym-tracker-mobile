@@ -18,6 +18,7 @@ import m0013 from './0013_workout_types.sql';
 import m0014 from './0014_exercise_muscles2.sql';
 import m0015 from './0015_removing_exessive_external_ids.sql';
 import m0016 from './0016_adding_entries.sql';
+import m0017 from './0017_entry_time.sql';
 
 export default {
   journal,
@@ -39,5 +40,6 @@ export default {
     m0014,
     m0015,
     m0016,
+    m0017,
   },
 };

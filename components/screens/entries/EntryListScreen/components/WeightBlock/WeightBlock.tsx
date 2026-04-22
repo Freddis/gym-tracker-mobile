@@ -17,19 +17,20 @@ export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntr
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
+  const date = props.entry.time;
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
           <ThemedText style={{fontSize: 16, fontWeight: 'bold', color: theme.accent, flexGrow: 1}}>Weight</ThemedText>
           <ThemedText>
-            {weight.createdAt.toLocaleDateString()}
+            {date.toLocaleDateString()}
           </ThemedText>
         </View>
         <View style={{marginBottom: theme.marginM, flexDirection: 'row-reverse'}}>
           <View style={{alignItems: 'flex-end'}}>
             <ThemedText>
-            {weight.createdAt.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(weight.createdAt)}
+            {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
             <EntrySyncButton entry={props.entry} readonly/>
           </View>

@@ -21,9 +21,11 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
 import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {DateTimeUpdateModal} from '../../common/DateTimeUpdateModal/DateTimeUpdateModal';
 
 export const WorkoutScreen: FC = () => {
   const theme = useAppTheme();
+  const [dateModalVisible, setDateModalVisible] = useState(false);
   const [entryService] = useEntryService();
   const styles = getStyles(theme);
   const [refreshCounter, setRefreshCounter] = useState(0);
@@ -68,7 +70,8 @@ export const WorkoutScreen: FC = () => {
   //   },
   // });
   // const queryResult = useLiveQuery(query, [workoutId, params.exerciseId, refreshCounter]);
-  const workout = queryResult.data?.workout;
+  const entry = queryResult.data;
+  const workout = entry?.workout;
   useEffect(() => {
     const validatedExerciseId = ZodHelper.validators.numberOrStringNumber.safeParse(params.exerciseId);
     if (!workout || !validatedExerciseId.success) {
@@ -153,6 +156,22 @@ export const WorkoutScreen: FC = () => {
       workoutId: workoutEntry.workout.id,
     });
   };
+  const updateDate = (date: Date) => {
+    entryService.saveEntry({
+      ...entry,
+      time: date,
+    });
+    setRefreshCounter(refreshCounter + 1);
+  };
+  const dateToString = (date: Date):string => {
+    return [
+      date.toLocaleDateString(),
+      [
+        date.getHours().toString().padStart(2, '0'),
+        date.getMinutes().toString().padStart(2, '0'),
+      ].join(':'),
+    ].join(' ');
+  };
   const workoutFinished = workout.end !== null;
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -163,6 +182,11 @@ export const WorkoutScreen: FC = () => {
             <View style={{flexDirection: 'row'}}>
               <ThemedText style={{flexGrow: 1}}>Time:</ThemedText>
               <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
+            </View>
+            <Separator />
+            <View style={{flexDirection: 'row'}}>
+              <ThemedText style={{flexGrow: 1}}>Date:</ThemedText>
+              <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(entry.time)}</ThemedText>
             </View>
             <Separator />
             <View style={{flexDirection: 'row'}}>
@@ -189,6 +213,7 @@ export const WorkoutScreen: FC = () => {
             )}
           </View>
         </ThemedView>
+        <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={entry.time} visible={dateModalVisible} onUpdate={updateDate} />
       </ThemedScrollView>
     </KeyboardAvoidingView>
   );

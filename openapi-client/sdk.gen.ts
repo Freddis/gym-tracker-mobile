@@ -117,6 +117,18 @@ import type {
   PutEntriesData,
   PutEntriesResponse,
   PutEntriesError,
+  GetEntriesOwnDatesData,
+  GetEntriesOwnDatesResponse,
+  GetEntriesOwnDatesError,
+  PostImagesData,
+  PostImagesResponse,
+  PostImagesError,
+  GetImagesByIdData,
+  GetImagesByIdResponse,
+  GetImagesByIdError,
+  PatchImagesByIdData,
+  PatchImagesByIdResponse,
+  PatchImagesByIdError,
   GetCrmUsersData,
   GetCrmUsersResponse,
   GetCrmUsersError,
@@ -179,6 +191,10 @@ import {
   getEntriesByIdResponseTransformer,
   getEntriesResponseTransformer,
   putEntriesResponseTransformer,
+  getEntriesOwnDatesResponseTransformer,
+  postImagesResponseTransformer,
+  getImagesByIdResponseTransformer,
+  patchImagesByIdResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -1053,6 +1069,106 @@ export const putEntries = <ThrowOnError extends boolean = false>(
     ],
     responseTransformer: putEntriesResponseTransformer,
     url: "/entries",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns the list of days when entries were logged
+ */
+export const getEntriesOwnDates = <ThrowOnError extends boolean = false>(
+  options: Options<GetEntriesOwnDatesData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetEntriesOwnDatesResponse,
+    GetEntriesOwnDatesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getEntriesOwnDatesResponseTransformer,
+    url: "/entries/own/dates",
+    ...options,
+  });
+};
+
+/**
+ * Adds new image entry for the user
+ */
+export const postImages = <ThrowOnError extends boolean = false>(
+  options?: Options<PostImagesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostImagesResponse,
+    PostImagesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: postImagesResponseTransformer,
+    url: "/images",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Adds new image entry for the user
+ */
+export const getImagesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetImagesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetImagesByIdResponse,
+    GetImagesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getImagesByIdResponseTransformer,
+    url: "/images/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updates image entry for the user
+ */
+export const patchImagesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchImagesByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchImagesByIdResponse,
+    PatchImagesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: patchImagesByIdResponseTransformer,
+    url: "/images/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",

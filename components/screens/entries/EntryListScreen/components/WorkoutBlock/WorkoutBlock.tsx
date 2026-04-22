@@ -23,13 +23,14 @@ export const WorkoutBlock: FC<{entry: WorkoutAppEntry, onPress?: (x: AppWorkout)
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
+  const date = props.entry.time;
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
           <ThemedText style={{fontSize: 16, fontWeight: 'bold', color: theme.accent, flexGrow: 1}}>Workout</ThemedText>
           <ThemedText>
-            {workout.start.toLocaleDateString()}
+            {date.toLocaleDateString()}
           </ThemedText>
         </View>
         <View style={{marginBottom: theme.marginM, flexDirection: 'row'}}>
@@ -42,7 +43,7 @@ export const WorkoutBlock: FC<{entry: WorkoutAppEntry, onPress?: (x: AppWorkout)
           </View>
           <View style={{alignItems: 'flex-end'}}>
             <ThemedText>
-            {workout.start.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(workout.start)}
+            {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
             <EntrySyncButton entry={props.entry} readonly/>
           </View>

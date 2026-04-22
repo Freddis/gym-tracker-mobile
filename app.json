@@ -16,9 +16,18 @@
       },
       "supportsTablet": true,
       "jsEngine": "jsc",
-      "bundleIdentifier": "com.anonymous.gymtracker",
+      "bundleIdentifier": "com.anonymous.gymtracker2",
+      "appleTeamId": "N6E343XMKS",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocalNetworkUsageDescription": "This app needs access to devices on your local network.",
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "192.168.0.16": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        }
       }
     },
     "android": {
