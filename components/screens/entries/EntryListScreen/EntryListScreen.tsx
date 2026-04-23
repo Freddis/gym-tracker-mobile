@@ -9,11 +9,14 @@ import {AppWorkout} from '@/types/models/AppWorkout';
 import {WorkoutBlock} from './components/WorkoutBlock/WorkoutBlock';
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
-import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContainer';
+import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 import {WeightBlock} from './components/WeightBlock/WeightBlock';
 import {AppEntry, WeightAppEntry} from '../../../../types/models/AppEntry';
 import {EntryType} from '../../../../openapi-client';
+import {UknownEntryBlock} from './components/UknownEntryBlock/UknownEntryBlock';
+import {PostBlock} from './components/PostBlock/PostBlock';
+import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 
 export const EntryListScreen: FC = () => {
   const navigation = useNavigation();
@@ -21,11 +24,14 @@ export const EntryListScreen: FC = () => {
   navigation.addListener('focus', () => {
     setfocusedCounter(focusedCounter + 1);
   });
+  const [showFilterModal, setShowFilterModal] = useState(false);
   const router = useRouter();
   const [focusedCounter, setfocusedCounter] = useState(0);
   const [db] = useDrizzle();
+  const [types, setTypes] = useState<EntryType[]>(Object.values(EntryType));
   const sqlQuery = db.query.entries.findMany({
     with: {
+      image: true,
       workout: {
         with: {
           exercises: {
@@ -47,13 +53,14 @@ export const EntryListScreen: FC = () => {
     },
     where: (t, op) => op.and(
       op.isNull(t.deletedAt),
+      op.inArray(t.type, types),
       // op.not(op.isNull(t.weightId))
     ),
     orderBy: (t, op) => op.desc(t.time),
     limit: 50,
   });
 
-  const query = useLiveQuery(sqlQuery, [focusedCounter]);
+  const query = useLiveQuery(sqlQuery, [focusedCounter, types]);
 
   if (!query.data) {
     return <LoadingBlock />;
@@ -75,13 +82,19 @@ export const EntryListScreen: FC = () => {
       },
     });
   };
+  const onTypeChange = (types: EntryType[]) => {
+    setTypes(types);
+  };
   return (
     <ScreenContainer style={{paddingHorizontal: 0}}>
       <Stack.Screen options={{title: '', headerShown: false}} />
       <ScrollView style={{paddingHorizontal: theme.paddingM}}>
         <ThemedButtonList items={[['Workout Types', '/app/entries/workoutTypeList']]} />
         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-          <ThemedText style={{flexGrow: 1}}>Entries:</ThemedText>
+          <Pressable onPress={() => setShowFilterModal(true)} style={{flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
+            <ThemedText style={{color: theme.accent}}>Entries</ThemedText>
+            <IconSymbol name={'line.3.horizontal.decrease'} color={theme.accent} size={20}/>
+          </Pressable>
           <Link href={'./addEntry'} asChild>
             <Pressable style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
               <ThemedText style={{color: theme.accent}}>Add</ThemedText>
@@ -94,9 +107,12 @@ export const EntryListScreen: FC = () => {
             <Fragment key={entry.id}>
             {entry.type === EntryType.WORKOUT && <WorkoutBlock key={entry.id} onPress={openWorkout} entry={entry}/>}
             {entry.type === EntryType.WEIGHT && <WeightBlock key={entry.id} onPress={openWeight} entry={entry}/>}
+            {entry.type === EntryType.POST && <PostBlock key={entry.id} onPress={() => {}} entry={entry}/>}
+            {!Object.values(EntryType).includes(entry.type) && <UknownEntryBlock key={entry.id} entry={entry}/>}
             </Fragment>
           ))}
         </View>
+        <EntryFilterModal onChange={onTypeChange} visible={showFilterModal} onClose={() => setShowFilterModal(false)}/>
      </ScrollView>
     </ScreenContainer>
   );

@@ -1,4 +1,4 @@
-import {EntryType, EntryVisibility, Equipment, Muscle} from '@/openapi-client';
+import {EntryType, EntryVisibility, Equipment, ImageType, Muscle} from '@/openapi-client';
 import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
@@ -131,14 +131,28 @@ export const entries = sqliteTable('entries', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
   externalId: integer().unique(),
   type: text().notNull().$type<EntryType>(),
+  title: text(),
+  note: text(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),
+  imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
   visibility: text().notNull().$type<EntryVisibility>(),
   time: integer({mode: 'timestamp'}).notNull(),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
   deletedAt: integer({mode: 'timestamp'}),
+  lastPulledAt: integer({mode: 'timestamp'}),
+  lastPushedAt: integer({mode: 'timestamp'}),
+});
+
+export const images = sqliteTable('images', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer().unique(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  url: text(),
+  image: text(),
+  type: text().notNull().$type<ImageType>(),
   lastPulledAt: integer({mode: 'timestamp'}),
   lastPushedAt: integer({mode: 'timestamp'}),
 });

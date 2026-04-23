@@ -1,6 +1,7 @@
 import {FC, useEffect, useState} from 'react';
-import {Button, Modal, View} from 'react-native';
+import {View} from 'react-native';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
+import {AppModal} from '../AppModal/AppModel';
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -66,19 +67,12 @@ export const DateTimeUpdateModal: FC<DateTimeUpdateModalProps> = (props) => {
     props.onUpdate(newDate);
   };
   return (
-    <Modal visible={props.visible} transparent animationType="none">
-          <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
-            <View style={{backgroundColor: 'white'}}>
-              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <Button title="Done" onPress={props.onClose} />
-              </View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <WheelPicker items={days} initialValue={initialDay} onChange={(item) => setDay(item)} style={{flexGrow: 1}} />
-                <WheelPicker items={hours} initialValue={initialHour} onChange={(item) => setHour(item)} style={{flexGrow: 1}} />
-                <WheelPicker items={minutes} initialValue={initialMinute} onChange={(item) => setMinute(item)} style={{flexGrow: 1}} />
-              </View>
-            </View>
-          </View>
-        </Modal>
+    <AppModal visible={props.visible} onClose={props.onClose}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <WheelPicker items={days} initialValue={initialDay} onChange={(item) => setDay(item)} style={{flexGrow: 1}} />
+        <WheelPicker items={hours} initialValue={initialHour} onChange={(item) => setHour(item)} style={{flexGrow: 1}} />
+        <WheelPicker items={minutes} initialValue={initialMinute} onChange={(item) => setMinute(item)} style={{flexGrow: 1}} />
+      </View>
+    </AppModal>
   );
 };

@@ -120,15 +120,15 @@ import type {
   GetEntriesOwnDatesData,
   GetEntriesOwnDatesResponse,
   GetEntriesOwnDatesError,
-  PostImagesData,
-  PostImagesResponse,
-  PostImagesError,
-  GetImagesByIdData,
-  GetImagesByIdResponse,
-  GetImagesByIdError,
-  PatchImagesByIdData,
-  PatchImagesByIdResponse,
-  PatchImagesByIdError,
+  PostPostsData,
+  PostPostsResponse,
+  PostPostsError,
+  GetPostsByIdData,
+  GetPostsByIdResponse,
+  GetPostsByIdError,
+  PatchPostsByIdData,
+  PatchPostsByIdResponse,
+  PatchPostsByIdError,
   GetCrmUsersData,
   GetCrmUsersResponse,
   GetCrmUsersError,
@@ -192,9 +192,9 @@ import {
   getEntriesResponseTransformer,
   putEntriesResponseTransformer,
   getEntriesOwnDatesResponseTransformer,
-  postImagesResponseTransformer,
-  getImagesByIdResponseTransformer,
-  patchImagesByIdResponseTransformer,
+  postPostsResponseTransformer,
+  getPostsByIdResponseTransformer,
+  patchPostsByIdResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -1101,14 +1101,14 @@ export const getEntriesOwnDates = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Adds new image entry for the user
+ * Adds new post entry for the user
  */
-export const postImages = <ThrowOnError extends boolean = false>(
-  options?: Options<PostImagesData, ThrowOnError>
+export const postPosts = <ThrowOnError extends boolean = false>(
+  options?: Options<PostPostsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostImagesResponse,
-    PostImagesError,
+    PostPostsResponse,
+    PostPostsError,
     ThrowOnError
   >({
     security: [
@@ -1117,8 +1117,8 @@ export const postImages = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
-    responseTransformer: postImagesResponseTransformer,
-    url: "/images",
+    responseTransformer: postPostsResponseTransformer,
+    url: "/posts",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1128,14 +1128,14 @@ export const postImages = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Adds new image entry for the user
+ * Adds new post entry for the user
  */
-export const getImagesById = <ThrowOnError extends boolean = false>(
-  options: Options<GetImagesByIdData, ThrowOnError>
+export const getPostsById = <ThrowOnError extends boolean = false>(
+  options: Options<GetPostsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetImagesByIdResponse,
-    GetImagesByIdError,
+    GetPostsByIdResponse,
+    GetPostsByIdError,
     ThrowOnError
   >({
     security: [
@@ -1144,21 +1144,21 @@ export const getImagesById = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
-    responseTransformer: getImagesByIdResponseTransformer,
-    url: "/images/{id}",
+    responseTransformer: getPostsByIdResponseTransformer,
+    url: "/posts/{id}",
     ...options,
   });
 };
 
 /**
- * Updates image entry for the user
+ * Updates post entry for the user
  */
-export const patchImagesById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchImagesByIdData, ThrowOnError>
+export const patchPostsById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchPostsByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchImagesByIdResponse,
-    PatchImagesByIdError,
+    PatchPostsByIdResponse,
+    PatchPostsByIdError,
     ThrowOnError
   >({
     security: [
@@ -1167,8 +1167,8 @@ export const patchImagesById = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
-    responseTransformer: patchImagesByIdResponseTransformer,
-    url: "/images/{id}",
+    responseTransformer: patchPostsByIdResponseTransformer,
+    url: "/posts/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",

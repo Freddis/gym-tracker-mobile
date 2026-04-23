@@ -8,7 +8,7 @@ import {useQuery} from '@tanstack/react-query';
 import {LoadingBlock} from '../../../blocks/LoadingBlock/LoadingBlock';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
 import {Theme} from '../../../../types/Colors';
-import {ScreenContainer} from '../../../blocks/ScrenContainer/ScreenContainer';
+import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 

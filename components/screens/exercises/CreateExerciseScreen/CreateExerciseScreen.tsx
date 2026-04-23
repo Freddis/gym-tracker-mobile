@@ -24,7 +24,7 @@ import {ThemedPicker} from '../../../blocks/ThemedPicker/ThemedPicker';
 import {StringHelper} from '../../../../utils/StringHelper/StringHelper';
 import {ThemedPickerButton} from '../../../blocks/ThemedPickerButton/ThemedPickerButton';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
-import {ScreenContainer} from '../../../blocks/ScrenContainer/ScreenContainer';
+import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
 
 export const CreateExerciseScreen: FC = () => {

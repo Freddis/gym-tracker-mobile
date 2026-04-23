@@ -3,11 +3,12 @@ import {View, Pressable} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
-import {WeightAppEntry} from '../../../../../../types/models/AppEntry';
+import {PostAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
 
-export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntry)=> void}> = (props) => {
-  const weight = props.entry.weight;
+export const PostBlock: FC<{entry: PostAppEntry, onPress?: (x: PostAppEntry)=> void}> = (props) => {
+  const image = props.entry.image;
   const theme = useAppTheme();
   const onPress = () => {
     if (props.onPress) {
@@ -22,7 +23,7 @@ export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntr
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
-          <ThemedText style={{fontSize: 16, fontWeight: 'bold', color: theme.accent, flexGrow: 1}}>Weight</ThemedText>
+          <ThemedText style={{fontSize: 16, fontWeight: 'bold', color: theme.accent, flexGrow: 1}}>Post</ThemedText>
           <ThemedText>
             {date.toLocaleDateString()}
           </ThemedText>
@@ -35,11 +36,14 @@ export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntr
             <EntrySyncButton entry={props.entry} readonly/>
           </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <ThemedText style={{fontWeight: 'semibold'}}>
-            <ThemedText style={{fontSize: 40, lineHeight: 40}}>{weight.weight}</ThemedText>
-            {weight.units}
-          </ThemedText>
+        <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
+          {props.entry.title && (
+            <ThemedText style={{fontWeight: 'semibold'}}>
+              {props.entry.title}
+            </ThemedText>
+          )}
+          {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
+          {props.entry.image && <ThemedImage source={{uri: image?.url ?? undefined}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>}
         </View>
       </ThemedBlock>
     </Pressable>

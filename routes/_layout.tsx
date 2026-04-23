@@ -14,7 +14,7 @@ import {useDrizzle} from '@/utils/drizzle';
 import {useColorScheme, View} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import {ThemedText} from '../components/blocks/ThemedText/ThemedText';
-import {ScreenContainer} from '../components/blocks/ScrenContainer/ScreenContainer';
+import {ScreenContainer} from '../components/blocks/ScreenContainer/ScreenContainer';
 
 // console.log = () => null // uncomment for prod / preview
 const queryClient = new QueryClient();

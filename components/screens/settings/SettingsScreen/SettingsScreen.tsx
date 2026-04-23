@@ -8,7 +8,7 @@ import {useSyncService} from '@/utils/SyncService/useSyncService';
 import {useDrizzle} from '@/utils/drizzle';
 import {Progress} from '@/utils/SyncService/types/Progress';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
-import {ScreenContainer} from '@/components/blocks/ScrenContainer/ScreenContainer';
+import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Separator} from '@/components/blocks/Separator/Separator';

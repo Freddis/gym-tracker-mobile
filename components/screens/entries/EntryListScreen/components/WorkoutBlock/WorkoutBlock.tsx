@@ -33,7 +33,7 @@ export const WorkoutBlock: FC<{entry: WorkoutAppEntry, onPress?: (x: AppWorkout)
             {date.toLocaleDateString()}
           </ThemedText>
         </View>
-        <View style={{marginBottom: theme.marginM, flexDirection: 'row'}}>
+        <View style={{marginBottom: theme.marginS, flexDirection: 'row'}}>
           <View style={{flexGrow: 1}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <ThemedText>Duration: </ThemedText>

@@ -19,6 +19,7 @@ import m0014 from './0014_exercise_muscles2.sql';
 import m0015 from './0015_removing_exessive_external_ids.sql';
 import m0016 from './0016_adding_entries.sql';
 import m0017 from './0017_entry_time.sql';
+import m0018 from './0018_post_entries.sql';
 
 export default {
   journal,
@@ -41,5 +42,6 @@ export default {
     m0015,
     m0016,
     m0017,
+    m0018,
   },
 };

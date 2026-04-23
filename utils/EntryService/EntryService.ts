@@ -1,6 +1,6 @@
 import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {schema} from '../../db/schema';
-import {Entry, EntryType, EntryUpsertDto, EntryVisibility, Weight, Workout} from '../../openapi-client';
+import {Entry, EntryType, EntryUpsertDto, EntryVisibility, Weight, Workout, Image} from '../../openapi-client';
 import {AppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
 import {NewModel} from '../../types/NewModel';
@@ -10,6 +10,8 @@ import {Logger} from '../Logger/Logger';
 import {WeightService} from '../WeightService/WeightService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {eq} from 'drizzle-orm';
+import {ImageService} from '../ImageService/ImageService';
+
 export type LiveQueryQueryResult<T> = {
   data: T | undefined;
   error: Error | undefined;
@@ -22,6 +24,7 @@ export class EntryService {
     private readonly api: ApiService,
     private readonly weightService: WeightService,
     private readonly workoutService: WorkoutService,
+    private readonly imageService: ImageService,
     private readonly db: DrizzleDb,
   ) {
     this.logger = new Logger(EntryService.name);
@@ -57,6 +60,7 @@ export class EntryService {
     }
     const workouts: Workout[] = [];
     const weights: Weight[] = [];
+    const images: Image[] = [];
     for (const item of items) {
       if (item.workout) {
         workouts.push(item.workout);
@@ -66,19 +70,31 @@ export class EntryService {
         weights.push(item.weight);
         continue;
       }
+      if (item.image) {
+        images.push(item.image);
+        continue;
+      }
+      if (item.type === EntryType.POST) {
+        continue;
+      }
       throw new Error(`Unknown entry type: ${item.type}`);
     }
     const workoutMap = await this.workoutService.processedPulledItem(db, workouts);
     const weightMap = await this.weightService.processedPulledItems(db, weights);
+    const imageMap = await this.imageService.processedPulledItems(db, images);
 
     for (const x of items) {
       const workoutId = workoutMap.get(x.workout?.id ?? 0);
       const weightId = weightMap.get(x.weight?.id ?? 0);
+      const imageId = imageMap.get(x.image?.id ?? 0);
       const entry: typeof schema.entries.$inferInsert = {
         userId: x.user.id,
         type: x.type,
         weightId: weightId,
         workoutId: workoutId,
+        imageId: imageId,
+        title: x.title,
+        note: x.note,
         visibility: x.visibility,
         externalId: x.id,
         lastPulledAt: new Date(),
@@ -137,35 +153,73 @@ export class EntryService {
   }
 
   protected createUpsertDto(entry: AppEntry): EntryUpsertDto {
-    const data: EntryUpsertDto = entry.type === EntryType.WORKOUT ? {
+    const image = entry.image ? {
+      id: entry.image.id,
+      url: entry.image.url,
+      imageType: entry.image.type,
+      data: entry.image.image,
+    } : null;
+    if (entry.type === EntryType.WORKOUT) {
+      const data: EntryUpsertDto = {
+        id: entry.externalId ?? undefined,
+        visibility: entry.visibility,
+        time: entry.time,
+        createdAt: entry.createdAt,
+        deletedAt: entry.deletedAt,
+        type: entry.type,
+        title: entry.title,
+        note: entry.note,
+        externalId: null,
+        externalSource: null,
+        image: image,
+        workout: {
+          ...entry.workout,
+          exercises: entry.workout.exercises.map((x) => ({
+            exerciseId: x.exercise.externalId ?? 0,
+            createdAt: x.createdAt,
+            updatedAt: x.updatedAt,
+            sets: x.sets,
+          })),
+        },
+        updatedAt: entry.updatedAt,
+      };
+      return data;
+    }
+    if (entry.type === EntryType.WEIGHT) {
+      const data: EntryUpsertDto = {
+        id: entry.externalId ?? undefined,
+        visibility: entry.visibility,
+        time: entry.time,
+        createdAt: entry.createdAt,
+        deletedAt: entry.deletedAt,
+        type: entry.type,
+        weight: entry.weight,
+        updatedAt: entry.updatedAt,
+        title: entry.title,
+        note: entry.note,
+        externalId: null,
+        externalSource: null,
+        image: image,
+      };
+      return data;
+    }
+    const data: EntryUpsertDto = {
       id: entry.externalId ?? undefined,
       visibility: entry.visibility,
       time: entry.time,
       createdAt: entry.createdAt,
       deletedAt: entry.deletedAt,
       type: entry.type,
-      workout: {
-        ...entry.workout,
-        exercises: entry.workout.exercises.map((x) => ({
-          exerciseId: x.exercise.externalId ?? 0,
-          createdAt: x.createdAt,
-          updatedAt: x.updatedAt,
-          sets: x.sets,
-        })),
-      },
+      image: image,
       updatedAt: entry.updatedAt,
-    } : {
-      id: entry.externalId ?? undefined,
-      visibility: entry.visibility,
-      time: entry.time,
-      createdAt: entry.createdAt,
-      deletedAt: entry.deletedAt,
-      type: entry.type,
-      weight: entry.weight,
-      updatedAt: entry.updatedAt,
+      title: entry.title,
+      note: entry.note,
+      externalId: null,
+      externalSource: null,
     };
     return data;
   }
+
 
   async saveEntry(entry: AppEntry) {
     if (entry.type === EntryType.WEIGHT) {
@@ -196,6 +250,7 @@ export class EntryService {
     const query = this.db.query.entries.findFirst({
       where: (t, op) => op.eq(t.workoutId, workoutId),
       with: {
+        image: true,
         workout: {
           with: {
             exercises: {
@@ -242,6 +297,7 @@ export class EntryService {
     const query = this.db.query.entries.findFirst({
       where: (t, op) => op.eq(t.id, entryId),
       with: {
+        image: true,
         weight: true,
       },
     });
@@ -280,6 +336,7 @@ export class EntryService {
   ): Promise<AppEntry[]> {
     const sqlQuery = db.query.entries.findMany({
       with: {
+        image: true,
         workout: {
           with: {
             exercises: {
@@ -322,6 +379,14 @@ export class EntryService {
           ...item,
           type: EntryType.WEIGHT,
           weight: item.weight,
+        });
+        continue;
+      }
+      if (item.type === EntryType.POST) {
+        result.push({
+          ...item,
+          type: EntryType.POST,
+          image: item.image,
         });
         continue;
       }
@@ -449,6 +514,10 @@ export class EntryService {
         lastPushedAt: null,
         workoutId: null,
         weightId: insertResult.lastInsertRowId,
+        imageId: null,
+        image: null,
+        title: null,
+        note: null,
       };
       this.logger.info('Inserting entry', entry);
       const entryResult = await db.insert(schema.entries).values(entry);
@@ -502,6 +571,10 @@ export class EntryService {
         lastPulledAt: null,
         lastPushedAt: null,
         weightId: null,
+        imageId: null,
+        image: null,
+        title: null,
+        note: null,
       };
       this.logger.info('Inserting entry', entry);
       const entryResult = await db.insert(schema.entries).values(entry);
@@ -537,6 +610,10 @@ export class EntryService {
         lastPulledAt: null,
         lastPushedAt: null,
         weightId: null,
+        imageId: null,
+        image: null,
+        title: null,
+        note: null,
       };
       const entryResult = await db.insert(schema.entries).values(entry);
       const result: WorkoutAppEntry = {

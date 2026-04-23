@@ -21,7 +21,7 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
 import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
-import {DateTimeUpdateModal} from '../../common/DateTimeUpdateModal/DateTimeUpdateModal';
+import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 
 export const WorkoutScreen: FC = () => {
   const theme = useAppTheme();

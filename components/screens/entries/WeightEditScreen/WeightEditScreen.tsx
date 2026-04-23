@@ -1,4 +1,4 @@
-import {StyleSheet, View, KeyboardAvoidingView, Platform, Modal, Button} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Platform, Modal} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
@@ -15,7 +15,7 @@ import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
-import {DateTimeUpdateModal} from '../../common/DateTimeUpdateModal/DateTimeUpdateModal';
+import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
