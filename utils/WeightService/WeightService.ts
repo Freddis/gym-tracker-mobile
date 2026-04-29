@@ -5,7 +5,7 @@ import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 
 export class WeightService {
-  protected logger: Logger = new Logger(WeightService.name);
+  protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(WeightService.name);

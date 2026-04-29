@@ -9,6 +9,7 @@ import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
 import {AppExerciseMuscle} from '../../types/models/AppExerciseMuscle';
 import {eq} from 'drizzle-orm';
+import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 
 export class ExerciseService {
 
@@ -249,11 +250,12 @@ export class ExerciseService {
     return true;
   }
 
-  async pullFromServer(db: AsyncDrizzleDb): Promise<boolean> {
+  async pullFromServer(db: AsyncDrizzleDb, _userId: number, progress: StageProgressCallback): Promise<boolean> {
     console.log('Pull');
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
 
     let page = 1;
+    let processedItems = 0;
     const res = await transactionAsync(db, async (trx) => {
     // eslint-disable-next-line no-constant-condition
       while (true) {
@@ -268,6 +270,8 @@ export class ExerciseService {
         if (response.error) {
           return false;
         }
+        progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
+        processedItems += response.data.items.length;
         for (const exercise of response.data.items) {
           const row: NewModel<AppExercise> = {
             params: exercise.params,

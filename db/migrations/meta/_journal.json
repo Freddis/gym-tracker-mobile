@@ -134,6 +134,41 @@
       "when": 1776859862676,
       "tag": "0018_post_entries",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1777204269242,
+      "tag": "0019_external_id_renaming",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "6",
+      "when": 1777205280328,
+      "tag": "0020_extra_fields_for_entries",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1777219606063,
+      "tag": "0021_outdoor_run_entries",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "6",
+      "when": 1777320340603,
+      "tag": "0022_outdoor_walk_entries",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "6",
+      "when": 1777376148769,
+      "tag": "0023_outdoor_run_entries_restructuring",
+      "breakpoints": true
     }
   ]
 }

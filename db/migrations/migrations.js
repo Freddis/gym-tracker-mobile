@@ -20,6 +20,11 @@ import m0015 from './0015_removing_exessive_external_ids.sql';
 import m0016 from './0016_adding_entries.sql';
 import m0017 from './0017_entry_time.sql';
 import m0018 from './0018_post_entries.sql';
+import m0019 from './0019_external_id_renaming.sql';
+import m0020 from './0020_extra_fields_for_entries.sql';
+import m0021 from './0021_outdoor_run_entries.sql';
+import m0022 from './0022_outdoor_walk_entries.sql';
+import m0023 from './0023_outdoor_run_entries_restructuring.sql';
 
 export default {
   journal,
@@ -43,5 +48,10 @@ export default {
     m0016,
     m0017,
     m0018,
+    m0019,
+    m0020,
+    m0021,
+    m0022,
+    m0023,
   },
 };

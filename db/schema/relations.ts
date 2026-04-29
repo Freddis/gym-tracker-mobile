@@ -1,5 +1,20 @@
 import {relations} from 'drizzle-orm';
-import {entries, exercises, images, users, weight, workoutExercises, workoutExerciseSets, workouts} from './schema';
+import {
+  entries,
+  exercises,
+  images,
+  outdoorRunGeoData,
+  outdoorRunHeartrateData,
+  outdoorRuns,
+  outdoorWalkGeoData,
+  outdoorWalkHeartrateData,
+  outdoorWalks,
+  users,
+  weight,
+  workoutExercises,
+  workoutExerciseSets,
+  workouts,
+} from './schema';
 
 export const workoutRelations = relations(workouts, (relations) => ({
   user: relations.one(users),
@@ -27,4 +42,32 @@ export const entryRelations = relations(entries, (relations) => ({
   workout: relations.one(workouts, {fields: [entries.workoutId], references: [workouts.id]}),
   weight: relations.one(weight, {fields: [entries.weightId], references: [weight.id]}),
   image: relations.one(images, {fields: [entries.imageId], references: [images.id]}),
+  outdoorRun: relations.one(outdoorRuns, {fields: [entries.outdoorRunId], references: [outdoorRuns.id]}),
+  outdoorWalk: relations.one(outdoorWalks, {fields: [entries.outdoorWalkId], references: [outdoorWalks.id]}),
+}));
+
+export const outdoorRunGeoDataRelations = relations(outdoorRunGeoData, (relations) => ({
+  outdoorRun: relations.one(outdoorRuns, {fields: [outdoorRunGeoData.outdoorRunId], references: [outdoorRuns.id]}),
+}));
+
+export const outdoorRunHeartrateDataRelations = relations(outdoorRunHeartrateData, (relations) => ({
+  outdoorRun: relations.one(outdoorRuns, {fields: [outdoorRunHeartrateData.outdoorRunId], references: [outdoorRuns.id]}),
+}));
+
+export const outdoorRunRelations = relations(outdoorRuns, (relations) => ({
+  geoData: relations.many(outdoorRunGeoData),
+  heartRateData: relations.many(outdoorRunHeartrateData),
+}));
+
+export const outdoorWalkRelations = relations(outdoorWalks, (relations) => ({
+  geoData: relations.many(outdoorWalkGeoData),
+  heartRateData: relations.many(outdoorWalkHeartrateData),
+}));
+
+export const outdoorWalkGeoDataRelations = relations(outdoorWalkGeoData, (relations) => ({
+  outdoorWalk: relations.one(outdoorWalks, {fields: [outdoorWalkGeoData.outdoorWalkId], references: [outdoorWalks.id]}),
+}));
+
+export const outdoorWalkHeartrateDataRelations = relations(outdoorWalkHeartrateData, (relations) => ({
+  outdoorWalk: relations.one(outdoorWalks, {fields: [outdoorWalkHeartrateData.outdoorWalkId], references: [outdoorWalks.id]}),
 }));

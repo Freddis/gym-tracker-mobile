@@ -5,11 +5,14 @@ import {QueryLogger} from './QueryLogger/QueryLogger';
 import {SQLiteTable, SQLiteUpdateSetSource} from 'drizzle-orm/sqlite-core';
 import {getTableColumns, sql, SQL} from 'drizzle-orm';
 
+const createLogger = () => {
+  return new QueryLogger(false, false, 'mysql');
+};
 
 export const createDrizzle = (expo: SQLiteDatabase) => {
   const db = drizzle(expo, {
     schema: {...schema, ...relations},
-    logger: new QueryLogger(false, true, 'mysql'),
+    logger: createLogger(),
   });
   return db;
 };
@@ -43,7 +46,7 @@ export const asyncDrizzle = async () => {
   const expo = await openDatabaseAsync('db.db', {});
   const db = drizzle(expo, {
     schema: {...schema, ...relations},
-    logger: new QueryLogger(false, true, 'mysql'),
+    logger: createLogger(),
   });
   return db;
 };

@@ -1,6 +1,20 @@
 import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {schema} from '../../db/schema';
-import {Entry, EntryType, EntryUpsertDto, EntryVisibility, Weight, Workout, Image} from '../../openapi-client';
+import {
+  Entry,
+  EntryType,
+  EntryUpsertDto,
+  EntryVisibility,
+  Weight,
+  Workout,
+  Image,
+  OutdoorRunEntryUpsertDto,
+  WorkoutEntryUpsertDto,
+  OutdoorRun,
+  OutdoorWalkEntryUpsertDto,
+  OutdoorWalk,
+  ExternalSource,
+} from '../../openapi-client';
 import {AppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
 import {NewModel} from '../../types/NewModel';
@@ -11,6 +25,13 @@ import {WeightService} from '../WeightService/WeightService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {eq} from 'drizzle-orm';
 import {ImageService} from '../ImageService/ImageService';
+import {OutdoorRunService} from '../OutdoorRunService/OutdoorRunService';
+import {OutdoorWalkService} from '../OutdoorWalkService/OutdoorWalkService';
+import {WorkoutProxyTyped, QuantitySampleTyped, WorkoutActivityType} from '@kingstinct/react-native-healthkit';
+import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
+import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
+import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
+import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 
 export type LiveQueryQueryResult<T> = {
   data: T | undefined;
@@ -25,15 +46,18 @@ export class EntryService {
     private readonly weightService: WeightService,
     private readonly workoutService: WorkoutService,
     private readonly imageService: ImageService,
+    private readonly outdoorRunService: OutdoorRunService,
+    private readonly outdoorWalkService: OutdoorWalkService,
     private readonly db: DrizzleDb,
   ) {
     this.logger = new Logger(EntryService.name);
   }
 
-  async pullFromServer(db: DrizzleDb): Promise<boolean> {
+  async pullFromServer(db: DrizzleDb, _userId: number, progress: StageProgressCallback): Promise<boolean> {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
     // const result = await db.transaction(async (db) => {
     let page = 1;
+    let processedItems = 0;
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const response = await this.api.client().getEntriesOwn({
@@ -46,6 +70,8 @@ export class EntryService {
       if (response.error) {
         return false;
       }
+      progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
+      processedItems += response.data.items.length;
       await this.processedPulledItem(db, response.data.items);
       if (response.data.items.length < response.data.info.pageSize) {
         return true;
@@ -54,6 +80,7 @@ export class EntryService {
     // });
     // return result;
   }
+
   protected async processedPulledItem(db: DrizzleDb, items: Entry[]): Promise<void> {
     if (items.length === 0) {
       return;
@@ -61,7 +88,12 @@ export class EntryService {
     const workouts: Workout[] = [];
     const weights: Weight[] = [];
     const images: Image[] = [];
+    const outdoorRuns: OutdoorRun[] = [];
+    const outdoorWalks: OutdoorWalk[] = [];
     for (const item of items) {
+      if (item.image) {
+        images.push(item.image);
+      }
       if (item.workout) {
         workouts.push(item.workout);
         continue;
@@ -70,8 +102,12 @@ export class EntryService {
         weights.push(item.weight);
         continue;
       }
-      if (item.image) {
-        images.push(item.image);
+      if (item.outdoorRun) {
+        outdoorRuns.push(item.outdoorRun);
+        continue;
+      }
+      if (item.outdoorWalk) {
+        outdoorWalks.push(item.outdoorWalk);
         continue;
       }
       if (item.type === EntryType.POST) {
@@ -82,21 +118,28 @@ export class EntryService {
     const workoutMap = await this.workoutService.processedPulledItem(db, workouts);
     const weightMap = await this.weightService.processedPulledItems(db, weights);
     const imageMap = await this.imageService.processedPulledItems(db, images);
+    const outdoorRunMap = await this.outdoorRunService.processedPulledItems(db, outdoorRuns);
+    const outdoorWalkMap = await this.outdoorWalkService.processedPulledItems(db, outdoorWalks);
 
     for (const x of items) {
       const workoutId = workoutMap.get(x.workout?.id ?? 0);
       const weightId = weightMap.get(x.weight?.id ?? 0);
       const imageId = imageMap.get(x.image?.id ?? 0);
+      const outdoorRunId = outdoorRunMap.get(x.outdoorRun?.id ?? 0);
+      const outdoorWalkId = outdoorWalkMap.get(x.outdoorWalk?.id ?? 0);
       const entry: typeof schema.entries.$inferInsert = {
         userId: x.user.id,
         type: x.type,
         weightId: weightId,
         workoutId: workoutId,
         imageId: imageId,
+        outdoorRunId: outdoorRunId,
+        outdoorWalkId: outdoorWalkId,
         title: x.title,
         note: x.note,
         visibility: x.visibility,
-        externalId: x.id,
+        remoteId: x.id,
+        externalId: x.externalId,
         lastPulledAt: new Date(),
         lastPushedAt: new Date(),
         time: x.time,
@@ -105,7 +148,7 @@ export class EntryService {
         updatedAt: x.updatedAt,
       };
       const existing = await db.query.entries.findFirst({
-        where: (t, op) => op.eq(t.externalId, x.id),
+        where: (t, op) => op.eq(t.remoteId, x.id),
       });
       if (!existing) {
         await db.insert(schema.entries).values(entry);
@@ -120,6 +163,22 @@ export class EntryService {
     }
   }
 
+  async deleteEntryFromDb(entry: AppEntry, db: DrizzleDb): Promise<void> {
+    await db.delete(schema.entries).where(eq(schema.entries.id, entry.id));
+    if (entry.type === EntryType.WEIGHT) {
+      // await this.weightService.deleteById(entry.weight.id, db);
+    }
+    if (entry.type === EntryType.WORKOUT) {
+      // await this.workoutService.deleteById(entry.workout.id, db);
+    }
+    if (entry.type === EntryType.OUTDOOR_RUN) {
+      await this.outdoorRunService.deleteById(entry.outdoorRun.id, db);
+    }
+    if (entry.type === EntryType.OUTDOOR_WALK) {
+      await this.outdoorWalkService.deleteById(entry.outdoorWalk.id, db);
+    }
+  }
+
   async deleteEntry(entryId: number) {
     await this.db.update(schema.entries).set({
       deletedAt: new Date(),
@@ -129,9 +188,12 @@ export class EntryService {
   }
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+    await db.delete(schema.entries);
     await this.weightService.wipeLocalData(db);
     await this.workoutService.wipeLocalData(db);
-    await db.delete(schema.entries);
+    await this.outdoorRunService.wipeLocalData(db);
+    await this.outdoorWalkService.wipeLocalData(db);
+    await this.imageService.wipeLocalData(db);
     return true;
   }
   async pushEntry(entry: AppEntry): Promise<boolean> {
@@ -145,7 +207,7 @@ export class EntryService {
       return false;
     }
     await this.db.update(schema.entries).set({
-      externalId: response.data.items[0].id,
+      remoteId: response.data.items[0].id,
     }).where(
       eq(schema.entries.id, entry.id)
     );
@@ -160,8 +222,8 @@ export class EntryService {
       data: entry.image.image,
     } : null;
     if (entry.type === EntryType.WORKOUT) {
-      const data: EntryUpsertDto = {
-        id: entry.externalId ?? undefined,
+      const data: WorkoutEntryUpsertDto = {
+        id: entry.remoteId ?? undefined,
         visibility: entry.visibility,
         time: entry.time,
         createdAt: entry.createdAt,
@@ -169,8 +231,6 @@ export class EntryService {
         type: entry.type,
         title: entry.title,
         note: entry.note,
-        externalId: null,
-        externalSource: null,
         image: image,
         workout: {
           ...entry.workout,
@@ -182,12 +242,21 @@ export class EntryService {
           })),
         },
         updatedAt: entry.updatedAt,
+        externalId: entry.externalId,
+        externalSource: entry.externalSource,
+        healthkitId: entry.healthkitId,
+        healthkitAnchor: entry.healthkitAnchor,
+        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
+        healthkitSource: entry.healthkitSource,
+        healthkitSourceName: entry.healthkitSourceName,
+        healthkitDevice: entry.healthkitDevice,
+        healthkitDeviceName: entry.healthkitDeviceName,
       };
       return data;
     }
     if (entry.type === EntryType.WEIGHT) {
       const data: EntryUpsertDto = {
-        id: entry.externalId ?? undefined,
+        id: entry.remoteId ?? undefined,
         visibility: entry.visibility,
         time: entry.time,
         createdAt: entry.createdAt,
@@ -197,14 +266,74 @@ export class EntryService {
         updatedAt: entry.updatedAt,
         title: entry.title,
         note: entry.note,
-        externalId: null,
-        externalSource: null,
         image: image,
+        externalId: entry.externalId,
+        externalSource: entry.externalSource,
+        healthkitId: entry.healthkitId,
+        healthkitAnchor: entry.healthkitAnchor,
+        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
+        healthkitSource: entry.healthkitSource,
+        healthkitSourceName: entry.healthkitSourceName,
+        healthkitDevice: entry.healthkitDevice,
+        healthkitDeviceName: entry.healthkitDeviceName,
       };
       return data;
     }
+    if (entry.type === EntryType.OUTDOOR_RUN) {
+      const data: OutdoorRunEntryUpsertDto = {
+        id: entry.remoteId ?? undefined,
+        visibility: entry.visibility,
+        time: entry.time,
+        createdAt: entry.createdAt,
+        deletedAt: entry.deletedAt,
+        type: entry.type,
+        outdoorRun: entry.outdoorRun,
+        updatedAt: entry.updatedAt,
+        title: entry.title,
+        note: entry.note,
+        image: image,
+        externalId: entry.externalId,
+        externalSource: entry.externalSource,
+        healthkitId: entry.healthkitId,
+        healthkitAnchor: entry.healthkitAnchor,
+        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
+        healthkitSource: entry.healthkitSource,
+        healthkitSourceName: entry.healthkitSourceName,
+        healthkitDevice: entry.healthkitDevice,
+        healthkitDeviceName: entry.healthkitDeviceName,
+
+      };
+      return data;
+    }
+
+    if (entry.type === EntryType.OUTDOOR_WALK) {
+      const data: OutdoorWalkEntryUpsertDto = {
+        id: entry.remoteId ?? undefined,
+        visibility: entry.visibility,
+        time: entry.time,
+        createdAt: entry.createdAt,
+        deletedAt: entry.deletedAt,
+        type: entry.type,
+        outdoorWalk: entry.outdoorWalk,
+        updatedAt: entry.updatedAt,
+        title: entry.title,
+        note: entry.note,
+        image: image,
+        externalId: entry.externalId,
+        externalSource: entry.externalSource,
+        healthkitId: entry.healthkitId,
+        healthkitAnchor: entry.healthkitAnchor,
+        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
+        healthkitSource: entry.healthkitSource,
+        healthkitSourceName: entry.healthkitSourceName,
+        healthkitDevice: entry.healthkitDevice,
+        healthkitDeviceName: entry.healthkitDeviceName,
+      };
+      return data;
+    }
+
     const data: EntryUpsertDto = {
-      id: entry.externalId ?? undefined,
+      id: entry.remoteId ?? undefined,
       visibility: entry.visibility,
       time: entry.time,
       createdAt: entry.createdAt,
@@ -214,8 +343,15 @@ export class EntryService {
       updatedAt: entry.updatedAt,
       title: entry.title,
       note: entry.note,
-      externalId: null,
-      externalSource: null,
+      externalId: entry.externalId,
+      externalSource: entry.externalSource,
+      healthkitId: entry.healthkitId,
+      healthkitAnchor: entry.healthkitAnchor,
+      healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
+      healthkitSource: entry.healthkitSource,
+      healthkitSourceName: entry.healthkitSourceName,
+      healthkitDevice: entry.healthkitDevice,
+      healthkitDeviceName: entry.healthkitDeviceName,
     };
     return data;
   }
@@ -328,6 +464,7 @@ export class EntryService {
   async getEntries(
     db: DrizzleDb,
     params?: {
+      externalIds?: string[],
       ids?: number[],
       limit?: number,
       updatedAt?: Date,
@@ -355,9 +492,22 @@ export class EntryService {
           },
         },
         weight: true,
+        outdoorRun: {
+          with: {
+            geoData: true,
+            heartRateData: true,
+          },
+        },
+        outdoorWalk: {
+          with: {
+            geoData: true,
+            heartRateData: true,
+          },
+        },
       },
       where: (t, op) => op.and(
         params?.ids ? op.inArray(t.id, params.ids) : undefined,
+        params?.externalIds ? op.inArray(t.externalId, params.externalIds) : undefined,
         params?.includeDeleted ? undefined : op.isNull(t.deletedAt),
       ),
       orderBy: (t, op) => op.desc(t.createdAt),
@@ -390,6 +540,22 @@ export class EntryService {
         });
         continue;
       }
+      if (item.type === EntryType.OUTDOOR_RUN && item.outdoorRun) {
+        result.push({
+          ...item,
+          type: EntryType.OUTDOOR_RUN,
+          outdoorRun: item.outdoorRun,
+        });
+        continue;
+      }
+      if (item.type === EntryType.OUTDOOR_WALK && item.outdoorWalk) {
+        result.push({
+          ...item,
+          type: EntryType.OUTDOOR_WALK,
+          outdoorWalk: item.outdoorWalk,
+        });
+        continue;
+      }
       throw new Error('Unknown entry type');
     }
     return result;
@@ -401,6 +567,11 @@ export class EntryService {
       throw new Error('Entry not found');
     }
     return entries[0];
+  }
+
+  async getEntryByExternalId(externalId: string): Promise<AppEntry | null> {
+    const entries = await this.getEntries(this.db, {externalIds: [externalId]});
+    return entries[0] ?? null;
   }
 
   async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
@@ -444,7 +615,7 @@ export class EntryService {
       }
       await db.update(schema.entries).set({
         lastPushedAt: new Date(),
-        externalId: entry.id,
+        remoteId: entry.id,
       }).where(
         eq(schema.entries.id, entriesToUpsert[i].id)
       );
@@ -475,6 +646,81 @@ export class EntryService {
       return null;
     }
     return row.lastPulledAt;
+  }
+
+  async importFromHealthKit(
+    user: AuthUser,
+    workout: WorkoutProxyTyped,
+    hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[]
+  ): Promise<void> {
+    await this.db.transaction(async (db) => {
+      this.logger.info('Getting existing entry by external id', {externalId: workout.uuid});
+      const existing = await this.getEntryByExternalId(workout.uuid);
+      let createdAt: Date = existing?.createdAt ?? new Date();
+      let updatedAt: Date | null = existing ? new Date() : null;
+      let remoteId = existing?.remoteId ?? null;
+      if (existing) {
+        this.logger.info('Deleting existing entry', {id: existing.id});
+        await this.deleteEntryFromDb(existing, db);
+      }
+      const typeMap: Partial<Record<WorkoutActivityType, EntryType>> = {
+        [WorkoutActivityType.walking]: EntryType.OUTDOOR_WALK,
+        [WorkoutActivityType.running]: EntryType.OUTDOOR_RUN,
+      };
+      const type = typeMap[workout.workoutActivityType];
+      if (!type) {
+        throw new Error('Unknown workout activity type');
+      }
+      this.logger.info('Importing workout', {externalId: workout.uuid, type});
+      let walk: AppOutdoorWalk | null = null;
+      let run: AppOutdoorRun | null = null;
+      let time: Date = createdAt;
+      const routes = (await workout.getWorkoutRoutes()).map((route) => route.locations).flat();
+      if (type === EntryType.OUTDOOR_WALK) {
+        walk = await this.outdoorWalkService.import(user, workout, routes, hr, db);
+        time = walk.start;
+      }
+      if (type === EntryType.OUTDOOR_RUN) {
+        run = await this.outdoorRunService.import(user, workout, routes, hr, db);
+        time = run.start;
+      }
+      console.log(workout.sourceRevision.source.toJSON());
+      console.log(workout.device);
+      // For some reason name in non JSON version is SourceProxy. Weird.
+      const sourceRev = workout.sourceRevision.source.toJSON();
+      const entry: typeof schema.entries.$inferInsert = {
+        userId: user.id,
+        type: type,
+        time: time,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        visibility: EntryVisibility.PUBLIC,
+        remoteId: remoteId,
+        lastPulledAt: existing?.lastPulledAt ?? null,
+        lastPushedAt: existing?.lastPushedAt ?? null,
+        workoutId: null,
+        weightId: null,
+        outdoorRunId: run?.id ?? null,
+        outdoorWalkId: walk?.id ?? null,
+        imageId: null,
+        title: null,
+        note: null,
+        healthkitId: workout.uuid,
+        healthkitAnchor: null,
+        healthkitAnchors_3_0: null,
+        healthkitSource: sourceRev.bundleIdentifier,
+        healthkitSourceName: sourceRev.name,
+        healthkitDevice: workout.device?.localIdentifier,
+        healthkitDeviceName: workout.device?.name,
+        externalId: workout.uuid,
+        externalSource: ExternalSource.APPLE_HEALTH,
+      };
+      const insertedRows = await db.insert(schema.entries).values(entry).returning();
+      const insertedRow = insertedRows[0];
+      if (!insertedRow) {
+        throw new Error('Failed to insert entry');
+      }
+    });
   }
 
   async addWeightEntry(userId: number): Promise<WeightAppEntry> {
@@ -509,7 +755,7 @@ export class EntryService {
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
         type: EntryType.WEIGHT,
-        externalId: null,
+        remoteId: null,
         lastPulledAt: null,
         lastPushedAt: null,
         workoutId: null,
@@ -518,6 +764,17 @@ export class EntryService {
         image: null,
         title: null,
         note: null,
+        healthkitId: null,
+        healthkitAnchor: null,
+        healthkitAnchors_3_0: null,
+        healthkitSource: null,
+        healthkitSourceName: null,
+        healthkitDevice: null,
+        healthkitDeviceName: null,
+        externalId: null,
+        externalSource: null,
+        outdoorRunId: null,
+        outdoorWalkId: null,
       };
       this.logger.info('Inserting entry', entry);
       const entryResult = await db.insert(schema.entries).values(entry);
@@ -567,7 +824,7 @@ export class EntryService {
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
         type: EntryType.WORKOUT,
-        externalId: null,
+        remoteId: null,
         lastPulledAt: null,
         lastPushedAt: null,
         weightId: null,
@@ -575,6 +832,17 @@ export class EntryService {
         image: null,
         title: null,
         note: null,
+        healthkitId: null,
+        healthkitAnchor: null,
+        healthkitAnchors_3_0: null,
+        healthkitSource: null,
+        healthkitSourceName: null,
+        healthkitDevice: null,
+        healthkitDeviceName: null,
+        externalId: null,
+        externalSource: null,
+        outdoorRunId: null,
+        outdoorWalkId: null,
       };
       this.logger.info('Inserting entry', entry);
       const entryResult = await db.insert(schema.entries).values(entry);
@@ -606,7 +874,7 @@ export class EntryService {
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
         type: EntryType.WORKOUT,
-        externalId: null,
+        remoteId: null,
         lastPulledAt: null,
         lastPushedAt: null,
         weightId: null,
@@ -614,6 +882,17 @@ export class EntryService {
         image: null,
         title: null,
         note: null,
+        healthkitId: null,
+        healthkitAnchor: null,
+        healthkitAnchors_3_0: null,
+        healthkitSource: null,
+        healthkitSourceName: null,
+        healthkitDevice: null,
+        healthkitDeviceName: null,
+        externalId: null,
+        externalSource: null,
+        outdoorRunId: null,
+        outdoorWalkId: null,
       };
       const entryResult = await db.insert(schema.entries).values(entry);
       const result: WorkoutAppEntry = {

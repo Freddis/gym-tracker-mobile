@@ -42,7 +42,7 @@ export class ImageService {
   }
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
-    await db.delete(schema.weight);
+    await db.delete(schema.images);
     return true;
   }
 }

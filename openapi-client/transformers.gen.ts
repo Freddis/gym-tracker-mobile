@@ -323,6 +323,17 @@ const imageSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
+const outdoorRunSchemaResponseTransformer = (data: any) => {
+  data.start = new Date(data.start);
+  data.end = new Date(data.end);
+  return data;
+};
+
+const outdoorWalkSchemaResponseTransformer = (data: any) => {
+  data = outdoorRunSchemaResponseTransformer(data);
+  return data;
+};
+
 const entrySchemaResponseTransformer = (data: any) => {
   data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
@@ -340,6 +351,12 @@ const entrySchemaResponseTransformer = (data: any) => {
   }
   if (data.image) {
     data.image = imageSchemaResponseTransformer(data.image);
+  }
+  if (data.outdoorRun) {
+    data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
+  }
+  if (data.outdoorWalk) {
+    data.outdoorWalk = outdoorWalkSchemaResponseTransformer(data.outdoorWalk);
   }
   return data;
 };
@@ -410,6 +427,12 @@ const postEntrySchemaResponseTransformer = (data: any) => {
   }
   if (data.image) {
     data.image = imageSchemaResponseTransformer(data.image);
+  }
+  if (data.outdoorRun) {
+    data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
+  }
+  if (data.outdoorWalk) {
+    data.outdoorWalk = outdoorWalkSchemaResponseTransformer(data.outdoorWalk);
   }
   return data;
 };

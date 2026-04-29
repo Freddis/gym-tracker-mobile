@@ -51,12 +51,12 @@ export class SyncService {
     finalMessage = 'Done'
   ): Promise<Progress> {
     const itemsNumber = stages.length;
-    let itemsDone = 0;
+    let itemsDone = 1;
 
     for (const stage of stages) {
       const state: Progress = {
         currentStageName: stage.name,
-        itemsDone: itemsDone++,
+        itemsInProgress: itemsDone++,
         itemsNumber,
         message: 'In Progress',
         error: false,
@@ -65,7 +65,13 @@ export class SyncService {
       try {
         callback(state);
         const db = await asyncDrizzle();
-        const success = await transactionAsync(db, async (trx) => stage.action(trx, userId));
+        const success = await transactionAsync(db, async (trx) => stage.action(trx, userId, (progress) => {
+          callback({
+            ...state,
+            subItemsDone: progress.itemsDone,
+            subItemsNumber: progress.itemsNumber,
+          });
+        }));
         if (!success) {
           const newState: Progress = {
             ...state,
@@ -92,7 +98,7 @@ export class SyncService {
     }
     const final: Progress = {
       currentStageName: stages[stages.length - 1]?.name ?? 'Done',
-      itemsDone: itemsNumber,
+      itemsInProgress: itemsNumber,
       itemsNumber,
       error: false,
       message: finalMessage,

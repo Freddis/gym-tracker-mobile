@@ -6,7 +6,7 @@ import {useAppTheme} from '../../../hooks/useAppTheme';
 export const AppModal: FC<AppModalProps> = (props) => {
   const theme = useAppTheme();
   return (
-    <Modal visible={props.visible} transparent animationType="none">
+    <Modal visible={props.visible} transparent animationType="slide">
       <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
         <View style={{backgroundColor: theme.surface}}>
           <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>

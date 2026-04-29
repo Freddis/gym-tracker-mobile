@@ -1,7 +1,7 @@
 // https://docs.expo.dev/guides/using-eslint/
 module.exports = {
   extends: 'expo',
-  ignorePatterns: ['/dist/*', '/openapi-client/*'],
+  ignorePatterns: ['/dist/*', '/openapi-client/*', '/ios/*', '/android/*'],
   env: {
     browser: true,
     jest: true,

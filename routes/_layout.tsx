@@ -32,7 +32,7 @@ export default function RootLayout() {
       // you have to enjoy the logo
       setTimeout(() => {
         SplashScreen.hideAsync();
-      }, 5000);
+      }, 2000);
     }
   }, [loaded]);
 
@@ -64,6 +64,7 @@ export default function RootLayout() {
   } else {
     Colors.setScheme('light');
   }
+
 
   return (
   <SQLiteProvider databaseName="db.db">

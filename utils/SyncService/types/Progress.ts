@@ -1,7 +1,9 @@
 export interface Progress {
   currentStageName: string,
-  itemsDone: number,
-  itemsNumber: number
+  itemsInProgress: number,
+  itemsNumber: number,
+  subItemsDone?: number,
+  subItemsNumber?: number,
   done: boolean
   error: boolean,
   message: string

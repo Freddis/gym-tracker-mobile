@@ -1,4 +1,4 @@
-import {EntryType, EntryVisibility, Equipment, ImageType, Muscle} from '@/openapi-client';
+import {EntryType, EntryVisibility, Equipment, ExternalSource, ImageType, Muscle} from '@/openapi-client';
 import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
@@ -129,7 +129,7 @@ export const weight = sqliteTable('weight', {
 
 export const entries = sqliteTable('entries', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
-  externalId: integer().unique(),
+  remoteId: integer().unique(),
   type: text().notNull().$type<EntryType>(),
   title: text(),
   note: text(),
@@ -137,6 +137,8 @@ export const entries = sqliteTable('entries', {
   workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),
   imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
+  outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
+  outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
   visibility: text().notNull().$type<EntryVisibility>(),
   time: integer({mode: 'timestamp'}).notNull(),
   createdAt: integer({mode: 'timestamp'}).notNull(),
@@ -144,6 +146,15 @@ export const entries = sqliteTable('entries', {
   deletedAt: integer({mode: 'timestamp'}),
   lastPulledAt: integer({mode: 'timestamp'}),
   lastPushedAt: integer({mode: 'timestamp'}),
+  externalId: text(),
+  externalSource: text().$type<ExternalSource>(),
+  healthkitId: text(),
+  healthkitAnchor: integer(),
+  healthkitAnchors_3_0: text(),
+  healthkitSource: text(),
+  healthkitSourceName: text(),
+  healthkitDevice: text(),
+  healthkitDeviceName: text(),
 });
 
 export const images = sqliteTable('images', {
@@ -155,4 +166,84 @@ export const images = sqliteTable('images', {
   type: text().notNull().$type<ImageType>(),
   lastPulledAt: integer({mode: 'timestamp'}),
   lastPushedAt: integer({mode: 'timestamp'}),
+});
+
+export const outdoorRuns = sqliteTable('outdoor_runs', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer().unique(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  distance: real().notNull(),
+  pace: real().notNull(),
+  maxPace: real().notNull(),
+  cadence: real(),
+  maxCadence: real(),
+  elevationGain: real(),
+  heartRate: real(),
+  maxHeartRate: real(),
+  duration: integer().notNull(),
+  calories: integer().notNull(),
+  start: integer({mode: 'timestamp'}).notNull(),
+  end: integer({mode: 'timestamp'}).notNull(),
+});
+
+export const outdoorWalks = sqliteTable('outdoor_walks', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  externalId: integer().unique(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  distance: real().notNull(),
+  pace: real().notNull(),
+  maxPace: real().notNull(),
+  cadence: real(),
+  maxCadence: real(),
+  elevationGain: real(),
+  heartRate: real(),
+  maxHeartRate: real(),
+  duration: integer().notNull(),
+  calories: integer().notNull(),
+  start: integer({mode: 'timestamp'}).notNull(),
+  end: integer({mode: 'timestamp'}).notNull(),
+});
+
+export const outdoorWalkGeoData = sqliteTable('outdoor_walk_geo_data', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  outdoorWalkId: integer().notNull().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
+  latitude: real().notNull(),
+  longitude: real().notNull(),
+  altitude: real().notNull(),
+  course: real(),
+  speed: real(),
+  speedAccuracy: real(),
+  horizontalAccuracy: real(),
+  verticalAccuracy: real(),
+  distance: real(),
+  timestamp: integer().notNull(),
+});
+
+export const outdoorWalkHeartrateData = sqliteTable('outdoor_walk_heartrate_data', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  outdoorWalkId: integer().notNull().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
+  timestamp: integer().notNull(),
+  heartRate: real().notNull(),
+});
+
+export const outdoorRunGeoData = sqliteTable('outdoor_run_geo_data', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  outdoorRunId: integer().notNull().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
+  latitude: real().notNull(),
+  longitude: real().notNull(),
+  altitude: real().notNull(),
+  course: real(),
+  speed: real(),
+  speedAccuracy: real(),
+  horizontalAccuracy: real(),
+  verticalAccuracy: real(),
+  distance: real(),
+  timestamp: integer().notNull(),
+});
+
+export const outdoorRunHeartrateData = sqliteTable('outdoor_run_heartrate_data', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  outdoorRunId: integer().notNull().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
+  timestamp: integer().notNull(),
+  heartRate: real().notNull(),
 });

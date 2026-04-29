@@ -1,6 +1,5 @@
-import {Switch, View, useColorScheme, Appearance, Alert, StyleSheet} from 'react-native';
+import {Switch, View, useColorScheme, Appearance, Alert, StyleSheet, Modal, ActivityIndicator} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {useRouter} from 'expo-router';
 import {FC, useContext, useState} from 'react';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
@@ -14,6 +13,9 @@ import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useQueryClient} from '@tanstack/react-query';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
+import {queryQuantitySamples, queryWorkoutSamples, requestAuthorization, WorkoutActivityType} from '@kingstinct/react-native-healthkit';
+import {ThemedButton} from '../../../blocks/ThemedButton/ThemedButton';
+import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 
 const styles = StyleSheet.create({
   progressContainer: {
@@ -54,6 +56,11 @@ export const SettingsScreen: FC = () => {
   const [syncService] = useSyncService();
   const [db] = useDrizzle();
   const queryClient = useQueryClient();
+  const [entryService] = useEntryService();
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [showSyncModal, setShowSyncModal] = useState(false);
+  const [importedItems, setImportedItems] = useState(1);
+  const [totalItems, setTotalItems] = useState(10);
   if (!userId) {
     return null;
   }
@@ -65,12 +72,14 @@ export const SettingsScreen: FC = () => {
     Appearance.setColorScheme(themeName === 'dark' ? 'light' : 'dark');
   };
   const syncWithServerButtonPress = async () => {
+    setShowSyncModal(true);
     const result = await syncService.syncWithServer(db, userId, (data) =>
       setProgressState({...data}),
     );
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
     queryClient.clear();
+    setShowSyncModal(false);
   };
   const wipeLocalData = async () => {
     const result = await syncService.wipeLocalData(db, userId, (data) =>
@@ -87,14 +96,58 @@ export const SettingsScreen: FC = () => {
     ]);
   };
 
-  if (progresState && !progresState.done) {
-    const progress = `Processing ${progresState.itemsDone + 1}/${progresState.itemsNumber}: ${progresState.currentStageName}`;
-    return (
-      <ThemedView style={styles.progressContainer}>
-        <ThemedText style={styles.progressText}>{progress}</ThemedText>
-      </ThemedView>
-    );
-  }
+
+  const onHealthClick = async () => {
+    setShowImportModal(true);
+    const authorized = await requestAuthorization({
+      toRead: [
+        'HKWorkoutTypeIdentifier',
+        'HKWorkoutRouteTypeIdentifier',
+        'HKQuantityTypeIdentifierHeartRate',
+      ],
+    });
+
+    if (!authorized) {
+      setShowImportModal(false);
+      Alert.alert('Error', 'Please grant permission to access health data');
+      return;
+    }
+    const workouts = await queryWorkoutSamples({
+      limit: 10,
+      filter: {
+        OR: [
+          {
+            workoutActivityType: WorkoutActivityType.running,
+          },
+          {
+            workoutActivityType: WorkoutActivityType.walking,
+          },
+        ],
+      },
+      ascending: false,
+    });
+    setTotalItems(workouts.length);
+    setImportedItems(0);
+    console.log(`Found workouts: ${workouts.length}`);
+    let i = 0;
+    for (const workout of workouts) {
+      setImportedItems(i++);
+      const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
+        limit: 10,
+        filter: {
+          workout: workout,
+        },
+      });
+      if (!auth.user) {
+        setShowImportModal(false);
+        Alert.alert('Error', 'No user found');
+        return;
+      }
+      await entryService.importFromHealthKit(auth.user, workout, hr);
+    }
+    setShowImportModal(false);
+    Alert.alert('Success', 'Data imported successfully');
+  };
 
   return (
     <ThemedScrollView>
@@ -128,7 +181,33 @@ export const SettingsScreen: FC = () => {
             </ThemedLink>
             <ThemedLink onPress={performSignOut}>Sign Out</ThemedLink>
           </View>
+          <ThemedButton onPress={onHealthClick} style={{marginTop: 30}}>
+            Get Health Data
+          </ThemedButton>
         </ThemedBlock>
+        <Modal visible={showImportModal} transparent animationType="fade">
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000090'}}>
+            <ThemedBlock style={{width: '80%', gap: theme.marginM}}>
+              <ThemedText style={{textAlign: 'center'}}>Importing data from Health Kit</ThemedText>
+              <ThemedText style={{textAlign: 'center'}}>{importedItems} of {totalItems} items imported</ThemedText>
+              <ActivityIndicator size="large" color={theme.accent} />
+            </ThemedBlock>
+          </View>
+        </Modal>
+        <Modal visible={showSyncModal} transparent animationType="fade">
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000090'}}>
+            <ThemedBlock style={{width: '80%', gap: theme.marginM}}>
+            <ThemedText style={{textAlign: 'center'}}>
+              Syncing data with server: {progresState?.itemsInProgress} of {progresState?.itemsNumber}
+            </ThemedText>
+            <ThemedText style={{textAlign: 'center'}}>{progresState?.currentStageName}</ThemedText>
+            {progresState?.subItemsDone !== undefined && progresState.subItemsNumber !== undefined && (
+              <ThemedText style={{textAlign: 'center'}}>{progresState?.subItemsDone} of {progresState?.subItemsNumber} items processed</ThemedText>
+            )}
+              <ActivityIndicator size="large" color={theme.accent} />
+            </ThemedBlock>
+          </View>
+        </Modal>
       </ScreenContainer>
     </ThemedScrollView>
   );

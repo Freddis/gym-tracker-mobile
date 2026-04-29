@@ -17,7 +17,7 @@
       "supportsTablet": true,
       "jsEngine": "jsc",
       "bundleIdentifier": "com.anonymous.gymtracker2",
-      "appleTeamId": "N6E343XMKS",
+      "appleTeamId": "SGDX27QAU8",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSLocalNetworkUsageDescription": "This app needs access to devices on your local network.",
@@ -38,6 +38,7 @@
       "package": "com.anonymous.gymtracker"
     },
     "plugins": [
+      ["react-native-maps"],
       [
         "expo-router",
         {
@@ -73,7 +74,13 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      ["@kingstinct/react-native-healthkit",{
+        "NSHealthShareUsageDescription": "Read and understand health data.",
+        "NSHealthUpdateUsageDescription": "Share workout data with other apps.",
+        "NSHealthClinicalHealthRecordsShareUsageDescription": "Read and understand clinical health data.",
+        "background": true
+      }]
     ],
     "experiments": {
       "typedRoutes": true

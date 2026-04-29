@@ -17,6 +17,9 @@ import {EntryType} from '../../../../openapi-client';
 import {UknownEntryBlock} from './components/UknownEntryBlock/UknownEntryBlock';
 import {PostBlock} from './components/PostBlock/PostBlock';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
+import {OutdoorRunBlock} from './components/OutdoorRunBlock/OutdoorRunBlock';
+import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
+import {OutdoorWalkBlock} from './components/OutdoorWalkBlock/OutdoorWalkBlock';
 
 export const EntryListScreen: FC = () => {
   const navigation = useNavigation();
@@ -28,7 +31,8 @@ export const EntryListScreen: FC = () => {
   const router = useRouter();
   const [focusedCounter, setfocusedCounter] = useState(0);
   const [db] = useDrizzle();
-  const [types, setTypes] = useState<EntryType[]>(Object.values(EntryType));
+  const [types, setTypes] = useState<EntryType[]| null>(null);
+  const [date, setDate] = useState<Date | null>(null);
   const sqlQuery = db.query.entries.findMany({
     with: {
       image: true,
@@ -50,17 +54,29 @@ export const EntryListScreen: FC = () => {
         },
       },
       weight: true,
+      outdoorRun: {
+        with: {
+          geoData: true,
+        },
+      },
+      outdoorWalk: {
+        with: {
+          geoData: true,
+          heartRateData: true,
+        },
+      },
     },
     where: (t, op) => op.and(
       op.isNull(t.deletedAt),
-      op.inArray(t.type, types),
+      types ? op.inArray(t.type, types) : undefined,
+      date ? op.gte(t.time, date) : undefined,
       // op.not(op.isNull(t.weightId))
     ),
-    orderBy: (t, op) => op.desc(t.time),
+    orderBy: (t, op) => date ? op.asc(t.time) : op.desc(t.time),
     limit: 50,
   });
 
-  const query = useLiveQuery(sqlQuery, [focusedCounter, types]);
+  const query = useLiveQuery(sqlQuery, [focusedCounter, types, date]);
 
   if (!query.data) {
     return <LoadingBlock />;
@@ -82,8 +98,9 @@ export const EntryListScreen: FC = () => {
       },
     });
   };
-  const onTypeChange = (types: EntryType[]) => {
-    setTypes(types);
+  const onFilterChange: EntryFilterModalProps['onChange'] = (e) => {
+    setTypes(e.types);
+    setDate(e.date);
   };
   return (
     <ScreenContainer style={{paddingHorizontal: 0}}>
@@ -108,11 +125,13 @@ export const EntryListScreen: FC = () => {
             {entry.type === EntryType.WORKOUT && <WorkoutBlock key={entry.id} onPress={openWorkout} entry={entry}/>}
             {entry.type === EntryType.WEIGHT && <WeightBlock key={entry.id} onPress={openWeight} entry={entry}/>}
             {entry.type === EntryType.POST && <PostBlock key={entry.id} onPress={() => {}} entry={entry}/>}
+            {entry.type === EntryType.OUTDOOR_RUN && <OutdoorRunBlock key={entry.id} onPress={() => {}} entry={entry}/>}
+            {entry.type === EntryType.OUTDOOR_WALK && <OutdoorWalkBlock key={entry.id} onPress={() => {}} entry={entry}/>}
             {!Object.values(EntryType).includes(entry.type) && <UknownEntryBlock key={entry.id} entry={entry}/>}
             </Fragment>
           ))}
         </View>
-        <EntryFilterModal onChange={onTypeChange} visible={showFilterModal} onClose={() => setShowFilterModal(false)}/>
+        <EntryFilterModal onChange={onFilterChange} visible={showFilterModal} onClose={() => setShowFilterModal(false)}/>
      </ScrollView>
     </ScreenContainer>
   );
