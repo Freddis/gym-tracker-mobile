@@ -148,7 +148,7 @@ export const CreateExerciseScreen: FC = () => {
         <ThemedView style={styles.titleContainer}>
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <ImageUploadButton
-            value={image ?? undefined}
+            value={image ?? null}
             style={{
               borderRadius: 20,
               height: 200,

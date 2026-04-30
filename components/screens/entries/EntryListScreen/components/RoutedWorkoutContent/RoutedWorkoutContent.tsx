@@ -1,0 +1,60 @@
+import {View} from 'react-native';
+import {OutdoorRun, OutdoorWalk} from '../../../../../../openapi-client';
+import {AppEntry} from '../../../../../../types/models/AppEntry';
+import {durationToTimeString} from '../../../../../../utils/durationToTimeString';
+import {paceToString} from '../../../../../../utils/paceToString';
+import {AppWorkoutMap} from '../../../../../blocks/AppWorkoutMap/AppWorkoutMap';
+import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
+import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
+import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {useAppTheme} from '../../../../../../hooks/useAppTheme';
+import {FC} from 'react';
+import {getTimeString} from '../../../../../../utils/getTimeString';
+import {usePathDataProcessing} from '../../../../../../utils/usePathDataProcessing';
+import {speedToPace} from '../../../../../../utils/speedToPace';
+
+export interface RoutedWorkoutContentProps {
+  entry: AppEntry;
+  workout: OutdoorRun | OutdoorWalk;
+}
+
+export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
+  const theme = useAppTheme();
+  const path = usePathDataProcessing(props.workout.geoData ?? [], props.workout.start, [props.workout]);
+  return (
+   <>
+    <View style={{marginBottom: theme.marginS, flexDirection: 'row'}}>
+    <View style={{flexDirection: 'column', alignItems: 'flex-start', gap: theme.marginS, flexGrow: 1}}>
+      <ThemedText>Distance: {(props.workout.distance / 1000).toFixed(3)} km</ThemedText>
+      <ThemedText>Duration: {durationToTimeString(props.workout.duration)}</ThemedText>
+      <ThemedText>Calories: {props.workout.calories.toFixed(0)}</ThemedText>
+    </View>
+    <View style={{alignItems: 'flex-end'}}>
+      <ThemedText>
+      {props.entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(props.entry.time)}
+      </ThemedText>
+      <ThemedText>Pace: {paceToString(props.workout.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
+      <EntrySyncButton entry={props.entry} readonly/>
+    </View>
+    </View>
+    <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
+      {props.entry.title && (
+        <ThemedText style={{fontWeight: 'semibold'}}>
+          {props.entry.title}
+        </ThemedText>
+      )}
+      {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
+      {props.entry.image && (
+        <ThemedImage source={{uri: props.entry.image?.url ?? undefined}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>
+      )}
+      {props.workout.geoData && props.workout.geoData.length > 0 && (
+        <View style={{width: '100%', height: 300, overflow: 'hidden', borderRadius: theme.borderRadiusM, marginTop: theme.marginS}}>
+          <AppWorkoutMap
+            data={path}
+          />
+      </View>
+    )}
+    </View>
+   </>
+  );
+};
