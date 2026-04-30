@@ -14,8 +14,9 @@ import {
   OutdoorWalkEntryUpsertDto,
   OutdoorWalk,
   ExternalSource,
+  ImageType,
 } from '../../openapi-client';
-import {AppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
+import {AppEntry, PostAppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
 import {NewModel} from '../../types/NewModel';
 import {ApiService} from '../ApiService/ApiService';
@@ -32,6 +33,7 @@ import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
+import {AppImage} from '../../types/models/AppImage';
 
 export type LiveQueryQueryResult<T> = {
   data: T | undefined;
@@ -356,30 +358,88 @@ export class EntryService {
     return data;
   }
 
+  async saveEntry(entry: AppEntry, image?: string | null) {
+    await this.db.transaction(async (db) => {
+      if (image !== undefined) {
+        await this.updateEntryImage(db, entry, image);
+      }
 
-  async saveEntry(entry: AppEntry) {
-    if (entry.type === EntryType.WEIGHT) {
-      await this.db.update(schema.weight).set({
-        ...entry.weight,
-        updatedAt: new Date(),
-      }).where(
+      if (entry.type === EntryType.WEIGHT) {
+        await db.update(schema.weight).set({
+          ...entry.weight,
+          updatedAt: new Date(),
+        }).where(
         eq(schema.weight.id, entry.weight.id)
       );
-    }
-    if (entry.type === EntryType.WORKOUT) {
-      await this.db.update(schema.workouts).set({
-        ...entry.workout,
-        updatedAt: new Date(),
-      }).where(
+      }
+      if (entry.type === EntryType.WORKOUT) {
+        await db.update(schema.workouts).set({
+          ...entry.workout,
+          updatedAt: new Date(),
+        }).where(
         eq(schema.workouts.id, entry.workout.id)
       );
-    }
-    await this.db.update(schema.entries).set({
-      time: entry.time,
-      updatedAt: new Date(),
-    }).where(
+      }
+      await db.update(schema.entries).set({
+        note: entry.note,
+        imageId: entry.imageId,
+        title: entry.title,
+        visibility: entry.visibility,
+        time: entry.time,
+        updatedAt: new Date(),
+      }).where(
       eq(schema.entries.id, entry.id)
-    );
+      );
+
+    });
+  }
+
+  protected async updateEntryImage(db: DrizzleDb, entry: AppEntry, image: string | null) {
+    if (entry.image && image === null) {
+      await db.update(schema.entries).set({
+        imageId: null,
+      }).where(
+        eq(schema.entries.id, entry.id)
+      );
+      await db.delete(schema.images).where(
+        eq(schema.images.id, entry.image.id)
+      );
+      entry.image = null;
+      entry.imageId = null;
+      return;
+    }
+
+    if (entry.image) {
+      await db.update(schema.images).set({
+        image: image,
+      }).where(
+        eq(schema.images.id, entry.image.id)
+      );
+      entry.image.image = image;
+      return;
+    }
+
+    const newImage: typeof schema.images.$inferInsert = {
+      userId: entry.userId,
+      image: image,
+      type: ImageType.ENTRY,
+    };
+    const imageRows = await db.insert(schema.images).values(newImage).returning();
+    const imageRow = imageRows[0];
+    if (!imageRow) {
+      throw new Error('Failed to insert image');
+    }
+    entry.imageId = imageRow.id;
+    entry.image = {
+      id: imageRow.id,
+      type: ImageType.ENTRY,
+      image: image,
+      userId: entry.userId,
+      externalId: null,
+      lastPulledAt: null,
+      lastPushedAt: null,
+      url: null,
+    };
   }
 
   useWorkoutEntry(workoutId: number, args: unknown[]) {
@@ -429,7 +489,7 @@ export class EntryService {
     return wrappedResult;
   }
 
-  useWeightEntry(entryId: number, arg1: (string | number | string[] | undefined)[]) {
+  useWeightEntry(entryId: number, queryKey: (string | number | string[] | undefined)[]) {
     const query = this.db.query.entries.findFirst({
       where: (t, op) => op.eq(t.id, entryId),
       with: {
@@ -438,7 +498,7 @@ export class EntryService {
       },
     });
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const queryResult = useLiveQuery(query, arg1);
+    const queryResult = useLiveQuery(query, queryKey);
     if (!queryResult.data) {
       return {
         data: undefined,
@@ -456,6 +516,34 @@ export class EntryService {
         ...queryResult.data,
         type: EntryType.WEIGHT,
         weight: queryResult.data.weight,
+      },
+    };
+    return wrappedResult;
+  }
+
+  usePostEntry(entryId: number, queryKey: (string | number | string[] | undefined)[]) {
+    const query = this.db.query.entries.findFirst({
+      where: (t, op) => op.eq(t.id, entryId),
+      with: {
+        image: true,
+        weight: true,
+      },
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const queryResult = useLiveQuery(query, queryKey);
+    if (!queryResult.data) {
+      return {
+        data: undefined,
+        error: queryResult.error,
+        updatedAt: queryResult.updatedAt,
+      };
+    }
+
+    const wrappedResult: LiveQueryQueryResult<PostAppEntry> = {
+      ...queryResult,
+      data: {
+        ...queryResult.data,
+        type: EntryType.POST,
       },
     };
     return wrappedResult;
@@ -619,6 +707,15 @@ export class EntryService {
       }).where(
         eq(schema.entries.id, entriesToUpsert[i].id)
       );
+      // update image url if it was changed
+      if (entriesToUpsert[i].imageId && entry.image) {
+        await db.update(schema.images).set({
+          url: entry.image.url,
+          image: null,
+        }).where(
+          eq(schema.images.id, entriesToUpsert[i].imageId)
+        );
+      }
     }
     return true;
   }
@@ -721,6 +818,51 @@ export class EntryService {
         throw new Error('Failed to insert entry');
       }
     });
+  }
+
+  async addPostEntry(userId: number, note: string | null, image: string | null): Promise<PostAppEntry> {
+    const result = await this.db.transaction(async (db) => {
+      const newPost: typeof schema.entries.$inferInsert = {
+        userId: userId,
+        type: EntryType.POST,
+        time: new Date(),
+        createdAt: new Date(),
+        visibility: EntryVisibility.PUBLIC,
+        imageId: null,
+        note: note,
+      };
+
+      const appImage: AppImage | null = null;
+      if (image) {
+        const newImage: typeof schema.images.$inferInsert = {
+          userId: userId,
+          image: image,
+          type: ImageType.ENTRY,
+        };
+        const imageRows = await db.insert(schema.images).values(newImage).returning();
+        let imageRow = imageRows[0];
+        if (!imageRow) {
+          throw new Error('Failed to insert image');
+        }
+        newPost.imageId = imageRow.id;
+        imageRow = {
+          ...imageRow,
+        };
+      }
+
+      const entryResult = await db.insert(schema.entries).values(newPost).returning();
+      const entry = entryResult[0];
+      if (!entry) {
+        throw new Error('Failed to insert entry');
+      }
+      const result: PostAppEntry = {
+        ...entry,
+        type: EntryType.POST,
+        image: appImage,
+      };
+      return result;
+    });
+    return result;
   }
 
   async addWeightEntry(userId: number): Promise<WeightAppEntry> {

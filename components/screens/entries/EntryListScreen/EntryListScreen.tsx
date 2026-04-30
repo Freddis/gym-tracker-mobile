@@ -12,7 +12,7 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 import {WeightBlock} from './components/WeightBlock/WeightBlock';
-import {AppEntry, WeightAppEntry} from '../../../../types/models/AppEntry';
+import {AppEntry, PostAppEntry, WeightAppEntry} from '../../../../types/models/AppEntry';
 import {EntryType} from '../../../../openapi-client';
 import {UknownEntryBlock} from './components/UknownEntryBlock/UknownEntryBlock';
 import {PostBlock} from './components/PostBlock/PostBlock';
@@ -98,6 +98,14 @@ export const EntryListScreen: FC = () => {
       },
     });
   };
+  const openPost = (entry: PostAppEntry) => {
+    router.navigate({
+      pathname: './editPost',
+      params: {
+        entryId: entry.id,
+      },
+    });
+  };
   const onFilterChange: EntryFilterModalProps['onChange'] = (e) => {
     setTypes(e.types);
     setDate(e.date);
@@ -124,7 +132,7 @@ export const EntryListScreen: FC = () => {
             <Fragment key={entry.id}>
             {entry.type === EntryType.WORKOUT && <WorkoutBlock key={entry.id} onPress={openWorkout} entry={entry}/>}
             {entry.type === EntryType.WEIGHT && <WeightBlock key={entry.id} onPress={openWeight} entry={entry}/>}
-            {entry.type === EntryType.POST && <PostBlock key={entry.id} onPress={() => {}} entry={entry}/>}
+            {entry.type === EntryType.POST && <PostBlock key={entry.id} onPress={openPost} entry={entry}/>}
             {entry.type === EntryType.OUTDOOR_RUN && <OutdoorRunBlock key={entry.id} onPress={() => {}} entry={entry}/>}
             {entry.type === EntryType.OUTDOOR_WALK && <OutdoorWalkBlock key={entry.id} onPress={() => {}} entry={entry}/>}
             {!Object.values(EntryType).includes(entry.type) && <UknownEntryBlock key={entry.id} entry={entry}/>}

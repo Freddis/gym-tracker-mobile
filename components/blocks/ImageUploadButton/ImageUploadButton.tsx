@@ -1,51 +1,63 @@
-import {FC, useState} from 'react';
+import {FC} from 'react';
 import {useAppTheme} from '../../../hooks/useAppTheme';
 import {IconSymbol} from '../IconSymbol/IconSymbol';
 import {ThemedView} from '../ThemedView/ThemedView';
 import {Theme} from '../../../types/Colors';
-import {StyleSheet, Image, StyleProp, ImageStyle, ImageLoadEvent, ImageProps} from 'react-native';
-
+import {StyleSheet, Pressable, View, Alert, Image} from 'react-native';
+import {ThemedButton} from '../ThemedButton/ThemedButton';
+import {requestMediaLibraryPermissionsAsync, launchImageLibraryAsync} from 'expo-image-picker';
+import {ImageUploadButtonProps} from './types/ImageUploadButtonProps';
 
 const getStyles = (theme: Theme) => StyleSheet.create({
   container: {
     borderRadius: theme.borderRadiusS,
-    borderWidth: 1,
-    borderColor: theme.surfaceText,
-    flexShrink: 1,
-    flexGrow: 0,
-    padding: theme.paddingM,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-start',
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
   },
 });
 
-const AutoAspectImage: FC<ImageProps> = (props) => {
-  const [ratio, setRatio] = useState<number>(1);
-
-  const imageStyle: StyleProp<ImageStyle> = {
-    aspectRatio: ratio,
-    width: null,
-  };
-
-  const onLoad = (e: ImageLoadEvent) => {
-    const {width: w, height: h} = e.nativeEvent.source;
-    setRatio(w / h);
-  };
-
-  return <Image {...props} style={[props.style, imageStyle]} onLoad={onLoad} />;
-};
-
-export const ImageUploadButton: FC<{value: string | undefined, style: StyleProp<ImageStyle>}> = (props) => {
+export const ImageUploadButton: FC<ImageUploadButtonProps> = (props) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const onPress = async () => {
+    const permissionResult = await requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert('Permission required', 'Permission to access the media library is required.');
+      return;
+    }
+    const result = await launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      base64: true,
+      selectionLimit: 1,
+    });
+    if (!result.canceled && result.assets[0]?.base64) {
+      props.onChange?.(result.assets[0].base64);
+    }
+  };
+  const onRemovePress = () => {
+    if (!props.onRemove) {
+      return;
+    }
+    props.onRemove();
+  };
   return (
     <>
-    {!props.value && (
-      <ThemedView style={[styles.container, props.style]}>
-        <IconSymbol name="photo.badge.plus" size={50} color={theme.surfaceText} />
-      </ThemedView>)}
-    {props.value && <AutoAspectImage src={props.value} style={props.style} />}
+      <Pressable onPress={onPress} style={[props.style]}>
+        <ThemedView style={styles.container}>
+        {!props.value && (
+          <View style={{padding: theme.paddingM, width: '50%', height: '50%', alignItems: 'center', justifyContent: 'center'}}>
+            <IconSymbol name="photo.badge.plus" size={50} color={theme.surfaceText} />
+          </View>
+          )}
+        {props.value && <Image src={props.value} style={{height: '100%', width: '100%', resizeMode: 'cover'}} />}
+        {props.value && props.onRemove && <ThemedButton style={{position: 'absolute', bottom: 10}} onPress={onRemovePress}>Remove</ThemedButton>}
+        </ThemedView>
+      </Pressable>
     </>
   );
 };

@@ -19,6 +19,7 @@ export const PostBlock: FC<{entry: PostAppEntry, onPress?: (x: PostAppEntry)=> v
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
   const date = props.entry.time;
+  const imageSrc = image?.image ? `data:image/jpeg;base64,${image.image}` : undefined;
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
@@ -43,7 +44,7 @@ export const PostBlock: FC<{entry: PostAppEntry, onPress?: (x: PostAppEntry)=> v
             </ThemedText>
           )}
           {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
-          {props.entry.image && <ThemedImage source={{uri: image?.url ?? undefined}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>}
+          {props.entry.image && <ThemedImage source={{uri: image?.url ?? imageSrc}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>}
         </View>
       </ThemedBlock>
     </Pressable>

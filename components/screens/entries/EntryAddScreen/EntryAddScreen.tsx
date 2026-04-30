@@ -13,6 +13,7 @@ export const EntryAddScreen = () => {
   const items: [string, RoutePath][] = [
     ['Workout', '/app/entries/editWorkout'],
     ['Weight', '/app/entries/editWeight'],
+    ['Post', '/app/entries/createPost'],
   ];
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
