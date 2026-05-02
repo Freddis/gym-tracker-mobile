@@ -61,7 +61,7 @@ export class WorkoutTypeService {
         throw new Error('Unable to insert workout type');
       }
       for (const remoteExercise of remoteWorkoutType.exercises) {
-        const localExercise = await this.exerciseService.findByExternalId(remoteExercise.exercise.id);
+        const localExercise = await this.exerciseService.getExercise(remoteExercise.exercise.id);
         const newExerciseRow: NewModel<WorkoutTypeExerciseRow> = {
           updatedAt: new Date(),
           userId: insertedWorkoutType.userId,

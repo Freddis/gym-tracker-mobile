@@ -5,7 +5,6 @@ import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import React, {FC, useEffect, useState} from 'react';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
-import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
@@ -16,6 +15,7 @@ import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/Ent
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
+import {string} from 'zod';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
@@ -41,8 +41,8 @@ export const WeightEditScreen: FC = () => {
   const [dateValue, setDate] = useState(new Date());
   const params = useLocalSearchParams();
   const router = useRouter();
-  const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.entryId);
-  const entryId = validated.success ? validated.data : 0;
+  const validated = string().safeParse(params.entryId);
+  const entryId = validated.success ? validated.data : '';
   const queryResult = entryService.useWeightEntry(entryId, [entryId]);
   const entry = queryResult.data;
   useEffect(() => {

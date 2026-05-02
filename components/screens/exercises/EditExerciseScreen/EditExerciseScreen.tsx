@@ -5,10 +5,10 @@ import {Stack, useLocalSearchParams, useNavigation, useRouter} from 'expo-router
 import {FC, useContext, useEffect, useState} from 'react';
 import {AppExercise} from '@/types/models/AppExercise';
 import {useDrizzle} from '@/utils/drizzle';
-import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
-import {NewModel} from '@/types/NewModel';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
+import {string} from 'zod';
+import {v4} from 'uuid';
 
 export const EditExerciseScreen: FC = () => {
   const navigation = useNavigation();
@@ -21,9 +21,9 @@ export const EditExerciseScreen: FC = () => {
   const [baseExercise, setBaseExercise] = useState<AppExercise| null>(null);
   const router = useRouter();
   const [name, setName] = useState('');
-  const exerciseId = params.exerciseId;
+  const exerciseId = params.exerciseId as string;
   useEffect(() => {
-    const validated = ZodHelper.validators.numberOrStringNumber.safeParse(exerciseId);
+    const validated = string().safeParse(exerciseId);
     if (!validated.success) {
       return;
     }
@@ -50,8 +50,8 @@ export const EditExerciseScreen: FC = () => {
       alert('Invalid name');
       return;
     }
-    const newValue: NewModel<AppExercise> = {
-      externalId: null,
+    const newValue: AppExercise = {
+      id: v4(),
       name: name,
       description: description,
       difficulty: baseExercise?.difficulty ?? null,

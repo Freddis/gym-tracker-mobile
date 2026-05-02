@@ -5,7 +5,6 @@ import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import React, {FC, useEffect, useState} from 'react';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
-import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
@@ -17,6 +16,7 @@ import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {ImageUploadButton} from '../../../blocks/ImageUploadButton/ImageUploadButton';
 import {TextArea} from 'react-native-ui-lib';
+import {string} from 'zod';
 
 export const PostEditScreen: FC = () => {
   const theme = useAppTheme();
@@ -34,8 +34,8 @@ export const PostEditScreen: FC = () => {
   const [dateValue, setDate] = useState(new Date());
   const params = useLocalSearchParams();
   const router = useRouter();
-  const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.entryId);
-  const entryId = validated.success ? validated.data : 0;
+  const validated = string().safeParse(params.entryId);
+  const entryId = validated.success ? validated.data : '';
   const queryResult = entryService.usePostEntry(entryId, [entryId]);
   const entry = queryResult.data;
 

@@ -34,6 +34,7 @@ import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {AppImage} from '../../types/models/AppImage';
+import {v4} from 'uuid';
 
 export type LiveQueryQueryResult<T> = {
   data: T | undefined;
@@ -130,6 +131,7 @@ export class EntryService {
       const outdoorRunId = outdoorRunMap.get(x.outdoorRun?.id ?? 0);
       const outdoorWalkId = outdoorWalkMap.get(x.outdoorWalk?.id ?? 0);
       const entry: typeof schema.entries.$inferInsert = {
+        id: x.id,
         userId: x.user.id,
         type: x.type,
         weightId: weightId,
@@ -140,7 +142,6 @@ export class EntryService {
         title: x.title,
         note: x.note,
         visibility: x.visibility,
-        remoteId: x.id,
         externalId: x.externalId,
         lastPulledAt: new Date(),
         lastPushedAt: new Date(),
@@ -150,7 +151,7 @@ export class EntryService {
         updatedAt: x.updatedAt,
       };
       const existing = await db.query.entries.findFirst({
-        where: (t, op) => op.eq(t.remoteId, x.id),
+        where: (t, op) => op.eq(t.id, x.id),
       });
       if (!existing) {
         await db.insert(schema.entries).values(entry);
@@ -181,7 +182,7 @@ export class EntryService {
     }
   }
 
-  async deleteEntry(entryId: number) {
+  async deleteEntry(entryId: string) {
     await this.db.update(schema.entries).set({
       deletedAt: new Date(),
     }).where(
@@ -198,6 +199,7 @@ export class EntryService {
     await this.imageService.wipeLocalData(db);
     return true;
   }
+
   async pushEntry(entry: AppEntry): Promise<boolean> {
     const data: EntryUpsertDto = this.createUpsertDto(entry);
     const response = await this.api.client().putEntries({
@@ -208,11 +210,6 @@ export class EntryService {
     if (!response.data || !response.data.items[0]) {
       return false;
     }
-    await this.db.update(schema.entries).set({
-      remoteId: response.data.items[0].id,
-    }).where(
-      eq(schema.entries.id, entry.id)
-    );
     return true;
   }
 
@@ -225,7 +222,7 @@ export class EntryService {
     } : null;
     if (entry.type === EntryType.WORKOUT) {
       const data: WorkoutEntryUpsertDto = {
-        id: entry.remoteId ?? undefined,
+        id: entry.id,
         visibility: entry.visibility,
         time: entry.time,
         createdAt: entry.createdAt,
@@ -237,7 +234,7 @@ export class EntryService {
         workout: {
           ...entry.workout,
           exercises: entry.workout.exercises.map((x) => ({
-            exerciseId: x.exercise.externalId ?? 0,
+            exerciseId: x.exercise.id,
             createdAt: x.createdAt,
             updatedAt: x.updatedAt,
             sets: x.sets,
@@ -258,7 +255,7 @@ export class EntryService {
     }
     if (entry.type === EntryType.WEIGHT) {
       const data: EntryUpsertDto = {
-        id: entry.remoteId ?? undefined,
+        id: entry.id,
         visibility: entry.visibility,
         time: entry.time,
         createdAt: entry.createdAt,
@@ -283,7 +280,7 @@ export class EntryService {
     }
     if (entry.type === EntryType.OUTDOOR_RUN) {
       const data: OutdoorRunEntryUpsertDto = {
-        id: entry.remoteId ?? undefined,
+        id: entry.id,
         visibility: entry.visibility,
         time: entry.time,
         createdAt: entry.createdAt,
@@ -310,7 +307,7 @@ export class EntryService {
 
     if (entry.type === EntryType.OUTDOOR_WALK) {
       const data: OutdoorWalkEntryUpsertDto = {
-        id: entry.remoteId ?? undefined,
+        id: entry.id,
         visibility: entry.visibility,
         time: entry.time,
         createdAt: entry.createdAt,
@@ -335,7 +332,7 @@ export class EntryService {
     }
 
     const data: EntryUpsertDto = {
-      id: entry.remoteId ?? undefined,
+      id: entry.id,
       visibility: entry.visibility,
       time: entry.time,
       createdAt: entry.createdAt,
@@ -435,9 +432,9 @@ export class EntryService {
       type: ImageType.ENTRY,
       image: image,
       userId: entry.userId,
-      externalId: null,
-      lastPulledAt: null,
-      lastPushedAt: null,
+      // externalId: null,
+      // lastPulledAt: null,
+      // lastPushedAt: null,
       url: null,
     };
   }
@@ -489,7 +486,7 @@ export class EntryService {
     return wrappedResult;
   }
 
-  useWeightEntry(entryId: number, queryKey: (string | number | string[] | undefined)[]) {
+  useWeightEntry(entryId: string, queryKey: (string | number | string[] | undefined)[]) {
     const query = this.db.query.entries.findFirst({
       where: (t, op) => op.eq(t.id, entryId),
       with: {
@@ -521,7 +518,7 @@ export class EntryService {
     return wrappedResult;
   }
 
-  usePostEntry(entryId: number, queryKey: (string | number | string[] | undefined)[]) {
+  usePostEntry(entryId: string, queryKey: (string | number | string[] | undefined)[]) {
     const query = this.db.query.entries.findFirst({
       where: (t, op) => op.eq(t.id, entryId),
       with: {
@@ -553,7 +550,7 @@ export class EntryService {
     db: DrizzleDb,
     params?: {
       externalIds?: string[],
-      ids?: number[],
+      ids?: string[],
       limit?: number,
       updatedAt?: Date,
       includeDeleted?: boolean,
@@ -649,7 +646,7 @@ export class EntryService {
     return result;
   }
 
-  async getEntry(id: number): Promise<AppEntry> {
+  async getEntry(id: string): Promise<AppEntry> {
     const entries = await this.getEntries(this.db, {ids: [id]});
     if (!entries[0]) {
       throw new Error('Entry not found');
@@ -703,7 +700,7 @@ export class EntryService {
       }
       await db.update(schema.entries).set({
         lastPushedAt: new Date(),
-        remoteId: entry.id,
+        // remoteId: entry.id,
       }).where(
         eq(schema.entries.id, entriesToUpsert[i].id)
       );
@@ -755,7 +752,7 @@ export class EntryService {
       const existing = await this.getEntryByExternalId(workout.uuid);
       let createdAt: Date = existing?.createdAt ?? new Date();
       let updatedAt: Date | null = existing ? new Date() : null;
-      let remoteId = existing?.remoteId ?? null;
+      // let remoteId = existing?.remoteId ?? null;
       if (existing) {
         this.logger.info('Deleting existing entry', {id: existing.id});
         await this.deleteEntryFromDb(existing, db);
@@ -786,13 +783,14 @@ export class EntryService {
       // For some reason name in non JSON version is SourceProxy. Weird.
       const sourceRev = workout.sourceRevision.source.toJSON();
       const entry: typeof schema.entries.$inferInsert = {
+        id: v4(),
         userId: user.id,
         type: type,
         time: time,
         createdAt: createdAt,
         updatedAt: updatedAt,
         visibility: EntryVisibility.PUBLIC,
-        remoteId: remoteId,
+        // remoteId: remoteId,
         lastPulledAt: existing?.lastPulledAt ?? null,
         lastPushedAt: existing?.lastPushedAt ?? null,
         workoutId: null,
@@ -823,6 +821,7 @@ export class EntryService {
   async addPostEntry(userId: number, note: string | null, image: string | null): Promise<PostAppEntry> {
     const result = await this.db.transaction(async (db) => {
       const newPost: typeof schema.entries.$inferInsert = {
+        id: v4(),
         userId: userId,
         type: EntryType.POST,
         time: new Date(),
@@ -889,7 +888,8 @@ export class EntryService {
       };
 
       const insertResult = await db.insert(schema.weight).values(newWeight);
-      const entry: Omit<WeightAppEntry, 'weight' | 'id'> = {
+      const entry: Omit<WeightAppEntry, 'weight'> = {
+        id: v4(),
         userId: userId,
         time: new Date(),
         createdAt: new Date(),
@@ -897,7 +897,6 @@ export class EntryService {
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
         type: EntryType.WEIGHT,
-        remoteId: null,
         lastPulledAt: null,
         lastPushedAt: null,
         workoutId: null,
@@ -919,10 +918,9 @@ export class EntryService {
         outdoorWalkId: null,
       };
       this.logger.info('Inserting entry', entry);
-      const entryResult = await db.insert(schema.entries).values(entry);
+      await db.insert(schema.entries).values(entry);
 
       const result: WeightAppEntry = {
-        id: entryResult.lastInsertRowId,
         ...entry,
         type: EntryType.WEIGHT,
         weight: {
@@ -957,7 +955,8 @@ export class EntryService {
       };
       const insertResult = await db.insert(schema.workouts)
         .values(newWorkout);
-      const entry: NewModel<AppEntry> = {
+      const entry: typeof schema.entries.$inferInsert = {
+        id: v4(),
         workoutId: insertResult.lastInsertRowId,
         userId: userId,
         createdAt: new Date(),
@@ -966,12 +965,12 @@ export class EntryService {
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
         type: EntryType.WORKOUT,
-        remoteId: null,
+        // remoteId: null,
         lastPulledAt: null,
         lastPushedAt: null,
         weightId: null,
         imageId: null,
-        image: null,
+        // image: null,
         title: null,
         note: null,
         healthkitId: null,
@@ -987,10 +986,14 @@ export class EntryService {
         outdoorWalkId: null,
       };
       this.logger.info('Inserting entry', entry);
-      const entryResult = await db.insert(schema.entries).values(entry);
+      const entryResult = await db.insert(schema.entries).values(entry).returning();
+      const entryRow = entryResult[0];
+      if (!entryRow) {
+        throw new Error('Failed to insert entry');
+      }
       const result: WorkoutAppEntry = {
-        id: entryResult.lastInsertRowId,
-        ...entry,
+        ...entryRow,
+        image: null,
         type: EntryType.WORKOUT,
         workout: {
           ...newWorkout,
@@ -1007,7 +1010,8 @@ export class EntryService {
     const now = new Date();
     const result = await this.db.transaction(async (db) => {
       const copiedWorkout = await this.workoutService.copyWorkout(workout, db);
-      const entry: NewModel<AppEntry> = {
+      const entry: typeof schema.entries.$inferInsert = {
+        id: v4(),
         workoutId: copiedWorkout.id,
         userId: workout.userId,
         createdAt: now,
@@ -1016,12 +1020,12 @@ export class EntryService {
         deletedAt: null,
         visibility: EntryVisibility.PUBLIC,
         type: EntryType.WORKOUT,
-        remoteId: null,
+        // remoteId: null,
         lastPulledAt: null,
         lastPushedAt: null,
         weightId: null,
         imageId: null,
-        image: null,
+        // image: null,
         title: null,
         note: null,
         healthkitId: null,
@@ -1036,10 +1040,14 @@ export class EntryService {
         outdoorRunId: null,
         outdoorWalkId: null,
       };
-      const entryResult = await db.insert(schema.entries).values(entry);
+      const entryResult = await db.insert(schema.entries).values(entry).returning();
+      const entryRow = entryResult[0];
+      if (!entryRow) {
+        throw new Error('Failed to insert entry');
+      }
       const result: WorkoutAppEntry = {
-        id: entryResult.lastInsertRowId,
-        ...entry,
+        ...entryRow,
+        image: null,
         type: EntryType.WORKOUT,
         workout: copiedWorkout,
       };

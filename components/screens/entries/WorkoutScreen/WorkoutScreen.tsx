@@ -22,6 +22,7 @@ import {Theme} from '@/types/Colors';
 import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
+import {string} from 'zod';
 
 export const WorkoutScreen: FC = () => {
   const theme = useAppTheme();
@@ -73,7 +74,7 @@ export const WorkoutScreen: FC = () => {
   const entry = queryResult.data;
   const workout = entry?.workout;
   useEffect(() => {
-    const validatedExerciseId = ZodHelper.validators.numberOrStringNumber.safeParse(params.exerciseId);
+    const validatedExerciseId = string().safeParse(params.exerciseId);
     if (!workout || !validatedExerciseId.success) {
       return;
     }
@@ -84,7 +85,7 @@ export const WorkoutScreen: FC = () => {
   if (!queryResult.data || !workout) {
     return <LoadingBlock />;
   }
-  const addExerciseToWorkout = async (workout: CompleteAppWorkout, exerciseId: number) => {
+  const addExerciseToWorkout = async (workout: CompleteAppWorkout, exerciseId: string) => {
     const workoutExercise: NewModel<AppWorkoutExercise> = {
       workoutId: workout.id,
       // externalId: null,

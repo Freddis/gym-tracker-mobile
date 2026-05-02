@@ -2,8 +2,7 @@ import {EntryType, EntryVisibility, Equipment, ExternalSource, ImageType, Muscle
 import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
-  id: integer().primaryKey().notNull(),
-  externalId: integer().unique(),
+  id: text().primaryKey().notNull(),
   name: text().notNull(),
   description: text(),
   difficulty: integer(),
@@ -11,8 +10,8 @@ export const exercises = sqliteTable('exercises', {
   images: text({mode: 'json'}).notNull().$type<string[]>(),
   params: text({mode: 'json'}).notNull().$type<number[]>(),
   userId: integer(),
-  copiedFromId: integer(),
-  parentExerciseId: integer(),
+  copiedFromId: text(),
+  parentExerciseId: text(),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
   deletedAt: integer({mode: 'timestamp'}),
@@ -22,7 +21,7 @@ export const exercises = sqliteTable('exercises', {
 
 export const exerciseMuscle = sqliteTable('muscles', {
   id: integer().primaryKey().notNull(),
-  exerciseId: integer().notNull(),
+  exerciseId: text().notNull(),
   isPrimary: integer({mode: 'boolean'}).notNull(),
   muscle: text().notNull().$type<Muscle>(),
 },
@@ -49,7 +48,7 @@ export const workouts = sqliteTable('workouts', {
 export const workoutExercises = sqliteTable('workout_exercises', {
   id: integer().primaryKey().notNull(),
   workoutId: integer().notNull().references(() => workouts.id),
-  exerciseId: integer().notNull().references(() => exercises.id),
+  exerciseId: text().notNull().references(() => exercises.id),
   userId: integer().notNull(),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
@@ -57,7 +56,7 @@ export const workoutExercises = sqliteTable('workout_exercises', {
 
 export const workoutExerciseSets = sqliteTable('workout_exercise_sets', {
   id: integer().primaryKey().notNull(),
-  exerciseId: integer().notNull().references(() => exercises.id),
+  exerciseId: text().notNull().references(() => exercises.id),
   workoutExerciseId: integer().notNull().references(() => workoutExercises.id),
   userId: integer().notNull(),
   workoutId: integer().notNull().references(() => workouts.id),
@@ -98,7 +97,7 @@ export const workoutTypeExercises = sqliteTable('workout_type_exercise', {
   userId: integer().notNull(),
   index: integer().notNull(),
   workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
-  exerciseId: integer().notNull().references(() => exercises.id, {onDelete: 'restrict'}),
+  exerciseId: text().notNull().references(() => exercises.id, {onDelete: 'restrict'}),
   createdAt: integer({mode: 'timestamp'}).notNull(),
   updatedAt: integer({mode: 'timestamp'}),
   deletedAt: integer({mode: 'timestamp'}),
@@ -107,7 +106,7 @@ export const workoutTypeExercises = sqliteTable('workout_type_exercise', {
 export const workoutTypeExerciseSets = sqliteTable('workout_type_exercise_sets', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
   reps: integer(),
-  exerciseId: integer().notNull().references(() => exercises.id, {onDelete: 'cascade'}),
+  exerciseId: text().notNull().references(() => exercises.id, {onDelete: 'cascade'}),
   workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
   userId: integer().notNull(),
   workoutTypeExerciseId: integer().notNull().references(() => workoutTypeExercises.id, {onDelete: 'cascade'}),
@@ -128,8 +127,7 @@ export const weight = sqliteTable('weight', {
 });
 
 export const entries = sqliteTable('entries', {
-  id: integer().primaryKey({autoIncrement: true}).notNull(),
-  remoteId: integer().unique(),
+  id: text().primaryKey(),
   type: text().notNull().$type<EntryType>(),
   title: text(),
   note: text(),
@@ -159,13 +157,12 @@ export const entries = sqliteTable('entries', {
 
 export const images = sqliteTable('images', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
-  externalId: integer().unique(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   url: text(),
   image: text(),
   type: text().notNull().$type<ImageType>(),
-  lastPulledAt: integer({mode: 'timestamp'}),
-  lastPushedAt: integer({mode: 'timestamp'}),
+  // lastPulledAt: integer({mode: 'timestamp'}),
+  // lastPushedAt: integer({mode: 'timestamp'}),
 });
 
 export const outdoorRuns = sqliteTable('outdoor_runs', {

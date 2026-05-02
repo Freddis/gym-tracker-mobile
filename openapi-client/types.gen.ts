@@ -44,7 +44,7 @@ export type Exercise = {
   /**
    * Id of the exercise
    */
-  id: number;
+  id: string;
   /**
    * Exercise Name
    */
@@ -76,11 +76,11 @@ export type Exercise = {
   /**
    * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
    */
-  copiedFromId: number | null;
+  copiedFromId: string | null;
   /**
    * Id of the parent exercises. If this id is not NULL then this excercise is a variation of another exercise
    */
-  parentExerciseId: number | null;
+  parentExerciseId: string | null;
   /**
    * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
    */
@@ -117,7 +117,7 @@ export type Exercise = {
     /**
      * Id of the exercise
      */
-    id: number;
+    id: string;
     /**
      * Exercise Name
      */
@@ -149,11 +149,11 @@ export type Exercise = {
     /**
      * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
      */
-    copiedFromId: number | null;
+    copiedFromId: string | null;
     /**
      * Id of the parent exercises. If this id is not NULL then this excercise is a variation of another exercise
      */
-    parentExerciseId: number | null;
+    parentExerciseId: string | null;
     /**
      * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
      */
@@ -264,7 +264,7 @@ export type ExerciseUpsertDto = {
   /**
    * Id of the exercise
    */
-  id: number | null;
+  id: string;
   /**
    * Exercise Name
    */
@@ -292,7 +292,7 @@ export type ExerciseUpsertDto = {
   /**
    * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
    */
-  copiedFromId: number | null;
+  copiedFromId: string | null;
   /**
    * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
    */
@@ -348,7 +348,7 @@ export type WorkoutUpdateDto = {
     /**
      * Id of the exercise
      */
-    exerciseId: number;
+    exerciseId: string;
     /**
      * List of sets performed for this excercise
      */
@@ -500,7 +500,7 @@ export type WorkoutUpsertDto = {
     /**
      * Id of the exercise
      */
-    exerciseId: number;
+    exerciseId: string;
     /**
      * The date the workout excercise was created
      */
@@ -594,7 +594,7 @@ export type WorkoutTypeExerciseUpdateDto = {
   /**
    * Id of the exercise
    */
-  exerciseId: number;
+  exerciseId: string;
 };
 
 export type WorkoutTypeExerciseSet = {
@@ -730,7 +730,7 @@ export type Entry = {
   /**
    * Id of an entry
    */
-  id: number;
+  id: string;
   user: User;
   visibility: EntryVisibility;
   /**
@@ -1022,7 +1022,7 @@ export type WorkoutEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1122,7 +1122,7 @@ export type WeightEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1252,7 +1252,7 @@ export type PostEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1352,7 +1352,7 @@ export type OutdoorRunEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1518,7 +1518,7 @@ export type OutdoorWalkEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1636,7 +1636,7 @@ export type PostEntry = {
   /**
    * Id of an entry
    */
-  id: number;
+  id: string;
   user: User;
   visibility: EntryVisibility;
   /**
@@ -2971,7 +2971,7 @@ export type DeleteExercisesByIdData = {
     /**
      * Id of the exercise
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/exercises/{id}";
@@ -3095,7 +3095,7 @@ export type GetExercisesByIdData = {
     /**
      * Id of the excercise
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/exercises/{id}";
@@ -3209,7 +3209,7 @@ export type PatchExercisesByIdData = {
     /**
      * Id of the excercise
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/exercises/{id}";
@@ -6514,7 +6514,7 @@ export type DeleteEntriesByIdData = {
     /**
      * Id of the entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/entries/{id}";
@@ -6635,7 +6635,7 @@ export type GetEntriesByIdData = {
     /**
      * Id of the entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/entries/{id}";
@@ -7277,7 +7277,7 @@ export type GetPostsByIdData = {
     /**
      * Id of the post entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/posts/{id}";
@@ -7408,7 +7408,7 @@ export type PatchPostsByIdData = {
     /**
      * Id of the post entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/posts/{id}";
@@ -8301,7 +8301,7 @@ export type GetCrmExercisesByIdData = {
     /**
      * Id of the excercise
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/crm/exercises/{id}";
@@ -8450,7 +8450,7 @@ export type PatchCrmExercisesByIdData = {
     /**
      * Id of the excercise
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/crm/exercises/{id}";

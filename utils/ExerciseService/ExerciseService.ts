@@ -13,7 +13,7 @@ import {StageProgressCallback} from '../SyncService/types/StageProgressCallback'
 
 export class ExerciseService {
 
-  async getExercise(exerciseId: number): Promise<Exercise> {
+  async getExercise(exerciseId: string): Promise<Exercise> {
     const row = await db.query.exercises.findFirst({
       where: (t, op) => op.eq(t.id, exerciseId),
     });
@@ -54,8 +54,8 @@ export class ExerciseService {
     if (!params.presonal) {
       result = [];
       const map = items.reduce(
-        (acc, item) => item.externalId ? acc.set(item.externalId, item) : acc,
-        new Map<number, NestedAppExercise>()
+        (acc, item) => item.id ? acc.set(item.id, item) : acc,
+        new Map<string, NestedAppExercise>()
       );
 
       for (const item of items) {
@@ -79,8 +79,8 @@ export class ExerciseService {
       where: (t, op) => op.inArray(t.exerciseId, exIds),
     });
 
-    const primaryMuscles = new Map<number, Muscle[]>();
-    const secondaryMuscles = new Map<number, Muscle[]>();
+    const primaryMuscles = new Map<string, Muscle[]>();
+    const secondaryMuscles = new Map<string, Muscle[]>();
     for (const muscleRow of muscles) {
       // eslint-disable-next-line max-len
       if (muscleRow.isPrimary) {
@@ -117,15 +117,15 @@ export class ExerciseService {
     return nested;
   }
 
-  async findByExternalId(id: number): Promise<AppExercise> {
-    const res = await db.query.exercises.findFirst({
-      where: (t, op) => op.eq(t.externalId, id),
-    });
-    if (!res) {
-      throw new Error('Exercise not found');
-    }
-    return res;
-  }
+  // async findByExternalId(id: number): Promise<AppExercise> {
+  //   const res = await db.query.exercises.findFirst({
+  //     where: (t, op) => op.eq(t.externalId, id),
+  //   });
+  //   if (!res) {
+  //     throw new Error('Exercise not found');
+  //   }
+  //   return res;
+  // }
   protected logger: Logger = new Logger(ExerciseService.name);
 
   processExerciseList(
@@ -134,7 +134,7 @@ export class ExerciseService {
       nameFilter?: string
     }
   ): {builtIn: NestedAppExercise[], personal: AppExercise[]} {
-    const map = new Map<number, AppExercise[]>();
+    const map = new Map<string, AppExercise[]>();
     const primaryExercises: AppExercise[] = [];
     const personalExercises: AppExercise[] = [];
     const search = opts?.nameFilter ?? null;
@@ -163,7 +163,7 @@ export class ExerciseService {
       map.set(exercise.parentExerciseId, existing);
     }
     const nestedExercises = primaryExercises.map((item) => {
-      let variations = map.get(item.externalId ?? 0);
+      let variations = map.get(item.id);
       if (variations && variations.length === 1) {
         variations = undefined;
       }
@@ -222,7 +222,6 @@ export class ExerciseService {
         primary: [],
         secondary: [],
       },
-      id: exercise.externalId ?? null,
     }));
     const response = await openApiRequest(putExercises, {
       body: {
@@ -238,7 +237,7 @@ export class ExerciseService {
       if (!upsertedEntities[i]) {
         throw new Error('Matching upserted entity not found');
       }
-      exercise.externalId = upsertedEntities[i].id;
+      // exercise.externalId = upsertedEntities[i].id;
       exercise.lastPushedAt = new Date();
     }
     await db.insert(schema.exercises).values(exercises).onConflictDoUpdate(
@@ -273,7 +272,8 @@ export class ExerciseService {
         progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
         processedItems += response.data.items.length;
         for (const exercise of response.data.items) {
-          const row: NewModel<AppExercise> = {
+          const row: AppExercise = {
+            id: exercise.id,
             params: exercise.params,
             name: exercise.name,
             description: exercise.description,
@@ -286,12 +286,11 @@ export class ExerciseService {
             createdAt: exercise.createdAt,
             updatedAt: exercise.updatedAt,
             deletedAt: exercise.deletedAt,
-            externalId: exercise.id,
             lastPulledAt: new Date(),
             lastPushedAt: new Date(),
           };
           const inserted = await db.insert(schema.exercises).values(row).onConflictDoUpdate({
-            target: schema.exercises.externalId,
+            target: schema.exercises.id,
             set: conflictUpdateSetAllColumns(schema.exercises),
           }).returning();
           if (!inserted[0]) {

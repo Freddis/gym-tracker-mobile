@@ -18,25 +18,25 @@ export class ImageService {
     }
     const items = images.map((image) => {
       const row: typeof schema.images.$inferInsert = {
-        externalId: image.id,
+        // externalId: image.id,
         userId: image.userId ?? 0,
         url: image.url,
         image: null,
         type: image.imageType,
-        lastPulledAt: new Date(),
-        lastPushedAt: new Date(),
+        // lastPulledAt: new Date(),
+        // lastPushedAt: new Date(),
       };
       return row;
     });
     const rows = await db.insert(schema.images).values(items).onConflictDoUpdate({
-      target: schema.images.externalId,
+      target: schema.images.id,
       set: conflictUpdateSetAllColumns(schema.images),
     }).returning();
     for (const row of rows) {
-      if (!row.externalId) {
+      if (!row.id) {
         throw new Error('External id was lost. This should never happen');
       }
-      map.set(row.externalId, row.id);
+      map.set(row.id, row.id);
     }
     return map;
   }

@@ -10,8 +10,6 @@ import {
 import {FC, useContext, useEffect, useState} from 'react';
 import {AppExercise} from '@/types/models/AppExercise';
 import {useDrizzle} from '@/utils/drizzle';
-import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
-import {NewModel} from '@/types/NewModel';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
@@ -19,13 +17,14 @@ import {ImageUploadButton} from '../../../blocks/ImageUploadButton/ImageUploadBu
 import Slider from '@react-native-community/slider';
 import {PickerItemProps, PickerModes, PickerValue} from 'react-native-ui-lib';
 import {Equipment, Exercise, Muscle} from '../../../../openapi-client';
-import {nativeEnum} from 'zod';
+import {nativeEnum, string} from 'zod';
 import {ThemedPicker} from '../../../blocks/ThemedPicker/ThemedPicker';
 import {StringHelper} from '../../../../utils/StringHelper/StringHelper';
 import {ThemedPickerButton} from '../../../blocks/ThemedPickerButton/ThemedPickerButton';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
+import {v4} from 'uuid';
 
 export const CreateExerciseScreen: FC = () => {
   const navigation = useNavigation();
@@ -46,7 +45,7 @@ export const CreateExerciseScreen: FC = () => {
   const maxDifficulty = 10;
   const [service] = useExerciseService();
   useEffect(() => {
-    const validated = ZodHelper.validators.numberOrStringNumber.safeParse(exerciseId);
+    const validated = string().safeParse(exerciseId);
     if (!validated.success) {
       return;
     }
@@ -71,8 +70,9 @@ export const CreateExerciseScreen: FC = () => {
       alert('Invalid name');
       return;
     }
-    const newValue: NewModel<AppExercise> = {
-      externalId: null,
+    const newValue: AppExercise = {
+      // externalId: null,
+      id: v4(),
       name: name,
       description: description,
       difficulty: baseExercise?.difficulty ?? null,
