@@ -34,7 +34,7 @@ import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {AppImage} from '../../types/models/AppImage';
-import {v4} from 'uuid';
+import uuid from 'react-native-uuid';
 
 export type LiveQueryQueryResult<T> = {
   data: T | undefined;
@@ -90,12 +90,12 @@ export class EntryService {
     }
     const workouts: Workout[] = [];
     const weights: Weight[] = [];
-    const images: Image[] = [];
+    const images: [string, Image][] = [];
     const outdoorRuns: OutdoorRun[] = [];
     const outdoorWalks: OutdoorWalk[] = [];
     for (const item of items) {
       if (item.image) {
-        images.push(item.image);
+        images.push([item.id, item.image]);
       }
       if (item.workout) {
         workouts.push(item.workout);
@@ -127,7 +127,7 @@ export class EntryService {
     for (const x of items) {
       const workoutId = workoutMap.get(x.workout?.id ?? 0);
       const weightId = weightMap.get(x.weight?.id ?? 0);
-      const imageId = imageMap.get(x.image?.id ?? 0);
+      const imageId = imageMap.get(x.id);
       const outdoorRunId = outdoorRunMap.get(x.outdoorRun?.id ?? 0);
       const outdoorWalkId = outdoorWalkMap.get(x.outdoorWalk?.id ?? 0);
       const entry: typeof schema.entries.$inferInsert = {
@@ -783,7 +783,7 @@ export class EntryService {
       // For some reason name in non JSON version is SourceProxy. Weird.
       const sourceRev = workout.sourceRevision.source.toJSON();
       const entry: typeof schema.entries.$inferInsert = {
-        id: v4(),
+        id: uuid.v4(),
         userId: user.id,
         type: type,
         time: time,
@@ -821,7 +821,7 @@ export class EntryService {
   async addPostEntry(userId: number, note: string | null, image: string | null): Promise<PostAppEntry> {
     const result = await this.db.transaction(async (db) => {
       const newPost: typeof schema.entries.$inferInsert = {
-        id: v4(),
+        id: uuid.v4(),
         userId: userId,
         type: EntryType.POST,
         time: new Date(),
@@ -889,7 +889,7 @@ export class EntryService {
 
       const insertResult = await db.insert(schema.weight).values(newWeight);
       const entry: Omit<WeightAppEntry, 'weight'> = {
-        id: v4(),
+        id: uuid.v4(),
         userId: userId,
         time: new Date(),
         createdAt: new Date(),
@@ -956,7 +956,7 @@ export class EntryService {
       const insertResult = await db.insert(schema.workouts)
         .values(newWorkout);
       const entry: typeof schema.entries.$inferInsert = {
-        id: v4(),
+        id: uuid.v4(),
         workoutId: insertResult.lastInsertRowId,
         userId: userId,
         createdAt: new Date(),
@@ -1011,7 +1011,7 @@ export class EntryService {
     const result = await this.db.transaction(async (db) => {
       const copiedWorkout = await this.workoutService.copyWorkout(workout, db);
       const entry: typeof schema.entries.$inferInsert = {
-        id: v4(),
+        id: uuid.v4(),
         workoutId: copiedWorkout.id,
         userId: workout.userId,
         createdAt: now,

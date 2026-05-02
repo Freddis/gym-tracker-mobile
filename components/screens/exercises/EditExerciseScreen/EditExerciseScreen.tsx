@@ -8,7 +8,7 @@ import {useDrizzle} from '@/utils/drizzle';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {string} from 'zod';
-import {v4} from 'uuid';
+import uuid from 'react-native-uuid';
 
 export const EditExerciseScreen: FC = () => {
   const navigation = useNavigation();
@@ -51,7 +51,7 @@ export const EditExerciseScreen: FC = () => {
       return;
     }
     const newValue: AppExercise = {
-      id: v4(),
+      id: uuid.v4(),
       name: name,
       description: description,
       difficulty: baseExercise?.difficulty ?? null,

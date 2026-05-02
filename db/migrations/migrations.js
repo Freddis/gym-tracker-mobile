@@ -27,34 +27,33 @@ import m0022 from './0022_outdoor_walk_entries.sql';
 import m0023 from './0023_outdoor_run_entries_restructuring.sql';
 import m0024 from './0024_switching_from_id_to_uuid.sql';
 
-  export default {
-    journal,
-    migrations: {
-      m0000,
-m0001,
-m0002,
-m0003,
-m0004,
-m0005,
-m0006,
-m0007,
-m0008,
-m0009,
-m0010,
-m0011,
-m0012,
-m0013,
-m0014,
-m0015,
-m0016,
-m0017,
-m0018,
-m0019,
-m0020,
-m0021,
-m0022,
-m0023,
-m0024
-    }
-  }
-  
+export default {
+  journal,
+  migrations: {
+    m0000,
+    m0001,
+    m0002,
+    m0003,
+    m0004,
+    m0005,
+    m0006,
+    m0007,
+    m0008,
+    m0009,
+    m0010,
+    m0011,
+    m0012,
+    m0013,
+    m0014,
+    m0015,
+    m0016,
+    m0017,
+    m0018,
+    m0019,
+    m0020,
+    m0021,
+    m0022,
+    m0023,
+    m0024,
+  },
+};

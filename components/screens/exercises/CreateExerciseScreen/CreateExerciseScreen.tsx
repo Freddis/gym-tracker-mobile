@@ -24,7 +24,7 @@ import {ThemedPickerButton} from '../../../blocks/ThemedPickerButton/ThemedPicke
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
-import {v4} from 'uuid';
+import uuid from 'react-native-uuid';
 
 export const CreateExerciseScreen: FC = () => {
   const navigation = useNavigation();
@@ -72,7 +72,7 @@ export const CreateExerciseScreen: FC = () => {
     }
     const newValue: AppExercise = {
       // externalId: null,
-      id: v4(),
+      id: uuid.v4(),
       name: name,
       description: description,
       difficulty: baseExercise?.difficulty ?? null,

@@ -68,6 +68,7 @@
     "react-native-screens": "^4.24.0",
     "react-native-svg": "^15.12.0",
     "react-native-ui-lib": "^8.3.4",
+    "react-native-uuid": "^2.0.4",
     "react-native-webview": "13.12.5",
     "uilib-native": "^5.0.1",
     "uuid": "^14.0.0",

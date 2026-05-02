@@ -11,12 +11,12 @@ export class ImageService {
     this.logger = new Logger(ImageService.name);
   }
 
-  async processedPulledItems(db: DrizzleDb, images: Image[]): Promise<Map<number, number>> {
-    const map = new Map<number, number>();
+  async processedPulledItems(db: DrizzleDb, images: [string, Image][]): Promise<Map<string, number>> {
+    const map = new Map<string, number>();
     if (images.length === 0) {
       return map;
     }
-    const items = images.map((image) => {
+    const items = images.map(([, image]) => {
       const row: typeof schema.images.$inferInsert = {
         // externalId: image.id,
         userId: image.userId ?? 0,
@@ -32,11 +32,14 @@ export class ImageService {
       target: schema.images.id,
       set: conflictUpdateSetAllColumns(schema.images),
     }).returning();
-    for (const row of rows) {
-      if (!row.id) {
-        throw new Error('External id was lost. This should never happen');
+
+    for (const [index, row] of rows.entries()) {
+      const input = images[index];
+      if (!input) {
+        throw new Error('Entry id was lost. This should never happen');
       }
-      map.set(row.id, row.id);
+      const entryId = input[0];
+      map.set(entryId, row.id);
     }
     return map;
   }
