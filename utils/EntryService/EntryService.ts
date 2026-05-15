@@ -662,6 +662,7 @@ export class EntryService {
   async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
     this.logger.info('Pushing entries to server', {userId});
     const lastPullSyncDate = await this.getLatestPushSyncDate(db);
+    this.logger.info('Last pull sync date', {lastPullSyncDate});
     const idRows = await db.query.entries.findMany({
       columns: {
         id: true,
@@ -676,6 +677,7 @@ export class EntryService {
       ),
     });
     if (idRows.length === 0) {
+      this.logger.info('No entries to push');
       return true;
     }
     this.logger.info('Getting entries to upsert', {ids: idRows.map((x) => x.id)});

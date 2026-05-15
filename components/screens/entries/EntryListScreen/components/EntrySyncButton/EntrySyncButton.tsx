@@ -32,9 +32,9 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) =>
   }, [considerSynced]);
   const [service] = useEntryService();
   const sync = async () => {
-    if (props.readonly) {
-      return;
-    }
+    // if (props.readonly) {
+    //   return;
+    // }
     const entry = await service.getEntry(props.entry.id);
     const result = await service.pushEntry(entry);
     const successMessage = 'Successfully synced';
@@ -45,13 +45,13 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) =>
   };
   return (<>
     {!synced && (
-      <Pressable onPress={sync} disabled={props.readonly}>
+      <Pressable onPress={sync} disabled={false}>
       {!props.readonly && <IconSymbol name={'icloud.and.arrow.up'} color={theme.accent} style={{bottom: -3}} size={iconSize}/>}
       {props.readonly && <IconSymbol name={'icloud'} color={theme.accent} style={{bottom: -3}} size={iconSize}/>}
     </Pressable>
   )}
     {synced && (
-      <Pressable onPress={sync} disabled={props.readonly}>
+      <Pressable onPress={sync} disabled={false}>
       {!props.readonly && <IconSymbol name={'arrow.counterclockwise.icloud.fill'} color={theme.accent} size={iconSize}/>}
       {props.readonly && <IconSymbol name={'icloud.fill'} color={theme.accent} size={iconSize}/>}
     </Pressable>
