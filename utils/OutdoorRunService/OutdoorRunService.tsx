@@ -1,6 +1,6 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {OutdoorRun} from '../../openapi-client';
+import {Entry, EntryType, OutdoorRun, OutdoorRunEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
@@ -8,12 +8,28 @@ import {WorkoutProxyTyped, QuantitySampleTyped, WorkoutActivityType, WorkoutRout
 import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 import {batch} from '../batch';
+import {IEntryService} from '../../types/IEntryService';
+import {OutdoorRunAppEntry} from '../../types/models/AppEntry';
 
-export class OutdoorRunService {
+export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
   protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorRunService.name);
+  }
+  getObject(entry: Entry): OutdoorRun | null {
+    return entry.outdoorRun ?? null;
+  }
+
+  getUpsertDto(entry: OutdoorRunAppEntry, dto: PostEntryUpsertDto): OutdoorRunEntryUpsertDto {
+    const data: OutdoorRunEntryUpsertDto = {
+      ...dto,
+      type: 'OutdoorRun',
+      outdoorRun: {
+        ...entry.outdoorRun,
+      },
+    };
+    return data;
   }
 
   async deleteById(id: number, db: DrizzleDb): Promise<void> {
@@ -22,13 +38,13 @@ export class OutdoorRunService {
     await db.delete(schema.outdoorRuns).where(eq(schema.outdoorRuns.id, id));
   }
 
-  async processedPulledItems(db: DrizzleDb, items: OutdoorRun[]): Promise<Map<number, number>> {
-    const map = new Map<number, number>();
+  async processedPulledItems(db: DrizzleDb, items: [string, OutdoorRun][]): Promise<Map<string, number>> {
+    const map = new Map<string, number>();
     if (items.length === 0) {
       return map;
     }
-    const input = items.map((item) => {
-      const row: typeof schema.outdoorRuns.$inferInsert = {
+    for (const [id, item] of items) {
+      const input: typeof schema.outdoorRuns.$inferInsert = {
         externalId: item.id,
         duration: item.duration,
         userId: item.userId,
@@ -39,23 +55,16 @@ export class OutdoorRunService {
         start: item.start,
         end: item.end,
       };
-      return row;
-    });
-    const rows = await db.insert(schema.outdoorRuns).values(input).onConflictDoUpdate({
-      target: schema.outdoorRuns.externalId,
-      set: conflictUpdateSetAllColumns(schema.outdoorRuns),
-    }).returning();
-    for (const row of rows) {
-      if (!row.externalId) {
-        throw new Error('External id was lost. This should never happen');
+      const rows = await db.insert(schema.outdoorRuns).values(input).onConflictDoUpdate({
+        target: schema.outdoorRuns.externalId,
+        set: conflictUpdateSetAllColumns(schema.outdoorRuns),
+      }).returning();
+      const row = rows[0];
+      if (!row) {
+        throw new Error('Outdoor run not found');
       }
-      map.set(row.externalId, row.id);
-    }
-    for (const item of items) {
-      const outdoorRunId = map.get(item.id);
-      if (!outdoorRunId) {
-        throw new Error('Outdoor run id not found. This should never happen');
-      }
+      map.set(id, row.id);
+      const outdoorRunId = row.id;
       const geoData = item.geoData?.map((geoData) => {
         return {
           outdoorRunId: outdoorRunId,
@@ -97,6 +106,7 @@ export class OutdoorRunService {
     }
     return map;
   }
+
   async import(
     user: AuthUser,
     workout: WorkoutProxyTyped,

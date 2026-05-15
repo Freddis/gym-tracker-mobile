@@ -1,6 +1,6 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {OutdoorWalk} from '../../openapi-client';
+import {Entry, EntryType, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
@@ -8,18 +8,35 @@ import {QuantitySampleTyped, WorkoutActivityType, WorkoutProxyTyped, WorkoutRout
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {batch} from '../batch';
+import {IEntryService} from '../../types/IEntryService';
+import {OutdoorWalkAppEntry} from '../../types/models/AppEntry';
 
-export class OutdoorWalkService {
+export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK> {
   protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorWalkService.name);
   }
 
+  getUpsertDto(entry: OutdoorWalkAppEntry, dto: PostEntryUpsertDto): OutdoorWalkEntryUpsertDto {
+    const data: OutdoorWalkEntryUpsertDto = {
+      ...dto,
+      type: 'OutdoorWalk',
+      outdoorWalk: {
+        ...entry.outdoorWalk,
+      },
+    };
+    return data;
+  }
+
   async deleteById(id: number, db: DrizzleDb): Promise<void> {
     await db.delete(schema.outdoorWalkGeoData).where(eq(schema.outdoorWalkGeoData.outdoorWalkId, id));
     await db.delete(schema.outdoorWalkHeartrateData).where(eq(schema.outdoorWalkHeartrateData.outdoorWalkId, id));
     await db.delete(schema.outdoorWalks).where(eq(schema.outdoorWalks.id, id));
+  }
+
+  getObject(entry: Entry): OutdoorWalk | null {
+    return entry.outdoorWalk ?? null;
   }
 
   async import(
@@ -128,13 +145,14 @@ export class OutdoorWalkService {
     return result;
   }
 
-  async processedPulledItems(db: DrizzleDb, items: OutdoorWalk[]): Promise<Map<number, number>> {
-    const map = new Map<number, number>();
+  async processedPulledItems(db: DrizzleDb, items: [string, OutdoorWalk][]): Promise<Map<string, number>> {
+    const map = new Map<string, number>();
     if (items.length === 0) {
       return map;
     }
-    const input = items.map((item) => {
-      const row: typeof schema.outdoorWalks.$inferInsert = {
+
+    for (const [id, item] of items) {
+      const input: typeof schema.outdoorWalks.$inferInsert = {
         externalId: item.id,
         duration: item.duration,
         userId: item.userId,
@@ -145,23 +163,16 @@ export class OutdoorWalkService {
         start: item.start,
         end: item.end,
       };
-      return row;
-    });
-    const rows = await db.insert(schema.outdoorWalks).values(input).onConflictDoUpdate({
-      target: schema.outdoorWalks.externalId,
-      set: conflictUpdateSetAllColumns(schema.outdoorWalks),
-    }).returning();
-    for (const row of rows) {
-      if (!row.externalId) {
-        throw new Error('External id was lost. This should never happen');
+      const rows = await db.insert(schema.outdoorWalks).values(input).onConflictDoUpdate({
+        target: schema.outdoorWalks.externalId,
+        set: conflictUpdateSetAllColumns(schema.outdoorWalks),
+      }).returning();
+      const row = rows[0];
+      if (!row) {
+        throw new Error('Outdoor walk not found');
       }
-      map.set(row.externalId, row.id);
-    }
-    for (const item of items) {
-      const outdoorWalkId = map.get(item.id);
-      if (!outdoorWalkId) {
-        throw new Error('Outdoor walk id not found. This should never happen');
-      }
+      map.set(id, row.id);
+      const outdoorWalkId = row.id;
       const geoData: typeof schema.outdoorWalkGeoData.$inferInsert[] = item.geoData?.map((geoData) => {
         return {
           outdoorWalkId: outdoorWalkId,

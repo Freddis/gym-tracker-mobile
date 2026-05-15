@@ -5,16 +5,11 @@ import {
   EntryType,
   EntryUpsertDto,
   EntryVisibility,
-  Weight,
-  Workout,
   Image,
-  OutdoorRunEntryUpsertDto,
-  WorkoutEntryUpsertDto,
-  OutdoorRun,
-  OutdoorWalkEntryUpsertDto,
-  OutdoorWalk,
   ExternalSource,
   ImageType,
+  ImageUpsertDto,
+  PostEntryUpsertDto,
 } from '../../openapi-client';
 import {AppEntry, PostAppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
@@ -35,14 +30,30 @@ import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {AppImage} from '../../types/models/AppImage';
 import uuid from 'react-native-uuid';
+import {EntryObjectMap, IEntryService} from '../../types/IEntryService';
+import {avoidLet} from '../avoidLet';
 
 export type LiveQueryQueryResult<T> = {
   data: T | undefined;
   error: Error | undefined;
   updatedAt: Date | undefined;
 }
+type NumericEntryKeys = Exclude<{
+  [K in keyof typeof schema.entries.$inferInsert]: Exclude<typeof schema.entries.$inferInsert[K], null | undefined> extends number ? K : never
+}[keyof typeof schema.entries.$inferInsert], undefined>
+
+type EntryObjectArrayMap = {
+  [key in Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>]: [string, EntryObjectMap[key]][]
+}
+type EntryServiceMap = {
+ [k in Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>]: {
+  key: NumericEntryKeys,
+  service: IEntryService<k>
+}
+}
 export class EntryService {
   protected logger: Logger = new Logger(EntryService.name);
+  protected entryServices: EntryServiceMap;
 
   constructor(
     private readonly api: ApiService,
@@ -54,13 +65,31 @@ export class EntryService {
     private readonly db: DrizzleDb,
   ) {
     this.logger = new Logger(EntryService.name);
+    this.entryServices = {
+      [EntryType.WORKOUT]: {
+        key: 'workoutId',
+        service: workoutService,
+      },
+      [EntryType.WEIGHT]: {
+        key: 'weightId',
+        service: weightService,
+      },
+      [EntryType.OUTDOOR_RUN]: {
+        key: 'outdoorRunId',
+        service: outdoorRunService,
+      },
+      [EntryType.OUTDOOR_WALK]: {
+        key: 'outdoorWalkId',
+        service: outdoorWalkService,
+      },
+    };
   }
 
   async pullFromServer(db: DrizzleDb, _userId: number, progress: StageProgressCallback): Promise<boolean> {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
-    // const result = await db.transaction(async (db) => {
     let page = 1;
     let processedItems = 0;
+    const types: EntryType[] = Object.values(EntryType).filter((x) => x !== EntryType.MEAL && x !== EntryType.CALORIE_GOAL);
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const response = await this.api.client().getEntriesOwn({
@@ -68,6 +97,7 @@ export class EntryService {
           updatedAfter: lastUpdateFromServer ?? undefined,
           includeDeleted: true,
           page: page++,
+          type: types,
         },
       });
       if (response.error) {
@@ -80,65 +110,69 @@ export class EntryService {
         return true;
       }
     }
-    // });
-    // return result;
   }
 
   protected async processedPulledItem(db: DrizzleDb, items: Entry[]): Promise<void> {
     if (items.length === 0) {
       return;
     }
-    const workouts: Workout[] = [];
-    const weights: Weight[] = [];
     const images: [string, Image][] = [];
-    const outdoorRuns: OutdoorRun[] = [];
-    const outdoorWalks: OutdoorWalk[] = [];
+    function pushMappedEntry<T extends Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>>(
+      map: EntryObjectArrayMap,
+      type: T,
+      id: string,
+      object: EntryObjectMap[T],
+    ) {
+      map[type].push([id, object]);
+    }
+    const map: EntryObjectArrayMap = {
+      [EntryType.WORKOUT]: [],
+      [EntryType.WEIGHT]: [],
+      [EntryType.OUTDOOR_RUN]: [],
+      [EntryType.OUTDOOR_WALK]: [],
+    };
     for (const item of items) {
       if (item.image) {
         images.push([item.id, item.image]);
       }
-      if (item.workout) {
-        workouts.push(item.workout);
+      if (item.type === EntryType.POST || item.type === EntryType.MEAL || item.type === EntryType.CALORIE_GOAL) {
         continue;
       }
-      if (item.weight) {
-        weights.push(item.weight);
+      const object: EntryObjectMap[typeof item.type] | null = this.entryServices[item.type].service.getObject(item);
+      if (object) {
+        pushMappedEntry(map, item.type, item.id, object);
         continue;
       }
-      if (item.outdoorRun) {
-        outdoorRuns.push(item.outdoorRun);
-        continue;
-      }
-      if (item.outdoorWalk) {
-        outdoorWalks.push(item.outdoorWalk);
-        continue;
-      }
-      if (item.type === EntryType.POST) {
-        continue;
-      }
-      throw new Error(`Unknown entry type: ${item.type}`);
     }
-    const workoutMap = await this.workoutService.processedPulledItem(db, workouts);
-    const weightMap = await this.weightService.processedPulledItems(db, weights);
     const imageMap = await this.imageService.processedPulledItems(db, images);
-    const outdoorRunMap = await this.outdoorRunService.processedPulledItems(db, outdoorRuns);
-    const outdoorWalkMap = await this.outdoorWalkService.processedPulledItems(db, outdoorWalks);
-
+    const objectMapMap: Record<
+    Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>,
+    {key: NumericEntryKeys, map: Map<string, number>}
+    > = {
+      [EntryType.WORKOUT]: {
+        key: 'workoutId',
+        map: await this.entryServices[EntryType.WORKOUT].service.processedPulledItems(db, map[EntryType.WORKOUT]),
+      },
+      [EntryType.WEIGHT]: {
+        key: 'weightId',
+        map: await this.entryServices[EntryType.WEIGHT].service.processedPulledItems(db, map[EntryType.WEIGHT]),
+      },
+      [EntryType.OUTDOOR_RUN]: {
+        key: 'outdoorRunId',
+        map: await this.entryServices[EntryType.OUTDOOR_RUN].service.processedPulledItems(db, map[EntryType.OUTDOOR_RUN]),
+      },
+      [EntryType.OUTDOOR_WALK]: {
+        key: 'outdoorWalkId',
+        map: await this.entryServices[EntryType.OUTDOOR_WALK].service.processedPulledItems(db, map[EntryType.OUTDOOR_WALK]),
+      },
+    };
     for (const x of items) {
-      const workoutId = workoutMap.get(x.workout?.id ?? 0);
-      const weightId = weightMap.get(x.weight?.id ?? 0);
       const imageId = imageMap.get(x.id);
-      const outdoorRunId = outdoorRunMap.get(x.outdoorRun?.id ?? 0);
-      const outdoorWalkId = outdoorWalkMap.get(x.outdoorWalk?.id ?? 0);
       const entry: typeof schema.entries.$inferInsert = {
         id: x.id,
         userId: x.user.id,
         type: x.type,
-        weightId: weightId,
-        workoutId: workoutId,
         imageId: imageId,
-        outdoorRunId: outdoorRunId,
-        outdoorWalkId: outdoorWalkId,
         title: x.title,
         note: x.note,
         visibility: x.visibility,
@@ -150,6 +184,15 @@ export class EntryService {
         deletedAt: x.deletedAt,
         updatedAt: x.updatedAt,
       };
+      if (x.type !== EntryType.POST && x.type !== EntryType.MEAL && x.type !== EntryType.CALORIE_GOAL) {
+        const objectMap = objectMapMap[x.type];
+        const objectId = objectMap.map.get(x.id);
+        if (!objectId) {
+          throw new Error(`Object id not found for entry ${x.id}`);
+        }
+        entry[objectMap.key] = objectId;
+      }
+
       const existing = await db.query.entries.findFirst({
         where: (t, op) => op.eq(t.id, x.id),
       });
@@ -168,17 +211,14 @@ export class EntryService {
 
   async deleteEntryFromDb(entry: AppEntry, db: DrizzleDb): Promise<void> {
     await db.delete(schema.entries).where(eq(schema.entries.id, entry.id));
-    if (entry.type === EntryType.WEIGHT) {
-      // await this.weightService.deleteById(entry.weight.id, db);
+    if (entry.type === EntryType.POST) {
+      return;
     }
-    if (entry.type === EntryType.WORKOUT) {
-      // await this.workoutService.deleteById(entry.workout.id, db);
-    }
-    if (entry.type === EntryType.OUTDOOR_RUN) {
-      await this.outdoorRunService.deleteById(entry.outdoorRun.id, db);
-    }
-    if (entry.type === EntryType.OUTDOOR_WALK) {
-      await this.outdoorWalkService.deleteById(entry.outdoorWalk.id, db);
+    const service: IEntryService<typeof entry.type> = this.entryServices[entry.type].service;
+    const objectKey = this.entryServices[entry.type].key;
+    const objectId = entry[objectKey];
+    if (objectId) {
+      await service.deleteById(objectId, db);
     }
   }
 
@@ -214,130 +254,25 @@ export class EntryService {
   }
 
   protected createUpsertDto(entry: AppEntry): EntryUpsertDto {
-    const image = entry.image ? {
-      id: entry.image.id,
-      url: entry.image.url,
-      imageType: entry.image.type,
-      data: entry.image.image,
-    } : null;
-    if (entry.type === EntryType.WORKOUT) {
-      const data: WorkoutEntryUpsertDto = {
-        id: entry.id,
-        visibility: entry.visibility,
-        time: entry.time,
-        createdAt: entry.createdAt,
-        deletedAt: entry.deletedAt,
-        type: entry.type,
-        title: entry.title,
-        note: entry.note,
-        image: image,
-        workout: {
-          ...entry.workout,
-          exercises: entry.workout.exercises.map((x) => ({
-            exerciseId: x.exercise.id,
-            createdAt: x.createdAt,
-            updatedAt: x.updatedAt,
-            sets: x.sets,
-          })),
-        },
-        updatedAt: entry.updatedAt,
-        externalId: entry.externalId,
-        externalSource: entry.externalSource,
-        healthkitId: entry.healthkitId,
-        healthkitAnchor: entry.healthkitAnchor,
-        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
-        healthkitSource: entry.healthkitSource,
-        healthkitSourceName: entry.healthkitSourceName,
-        healthkitDevice: entry.healthkitDevice,
-        healthkitDeviceName: entry.healthkitDeviceName,
+    const image: ImageUpsertDto | undefined | null = avoidLet(() => {
+      if (!entry.image) {
+        return null;
+      }
+      if (!entry.image.image) {
+        return undefined;
+      }
+      return {
+        data: entry.image.image,
       };
-      return data;
-    }
-    if (entry.type === EntryType.WEIGHT) {
-      const data: EntryUpsertDto = {
-        id: entry.id,
-        visibility: entry.visibility,
-        time: entry.time,
-        createdAt: entry.createdAt,
-        deletedAt: entry.deletedAt,
-        type: entry.type,
-        weight: entry.weight,
-        updatedAt: entry.updatedAt,
-        title: entry.title,
-        note: entry.note,
-        image: image,
-        externalId: entry.externalId,
-        externalSource: entry.externalSource,
-        healthkitId: entry.healthkitId,
-        healthkitAnchor: entry.healthkitAnchor,
-        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
-        healthkitSource: entry.healthkitSource,
-        healthkitSourceName: entry.healthkitSourceName,
-        healthkitDevice: entry.healthkitDevice,
-        healthkitDeviceName: entry.healthkitDeviceName,
-      };
-      return data;
-    }
-    if (entry.type === EntryType.OUTDOOR_RUN) {
-      const data: OutdoorRunEntryUpsertDto = {
-        id: entry.id,
-        visibility: entry.visibility,
-        time: entry.time,
-        createdAt: entry.createdAt,
-        deletedAt: entry.deletedAt,
-        type: entry.type,
-        outdoorRun: entry.outdoorRun,
-        updatedAt: entry.updatedAt,
-        title: entry.title,
-        note: entry.note,
-        image: image,
-        externalId: entry.externalId,
-        externalSource: entry.externalSource,
-        healthkitId: entry.healthkitId,
-        healthkitAnchor: entry.healthkitAnchor,
-        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
-        healthkitSource: entry.healthkitSource,
-        healthkitSourceName: entry.healthkitSourceName,
-        healthkitDevice: entry.healthkitDevice,
-        healthkitDeviceName: entry.healthkitDeviceName,
+    });
 
-      };
-      return data;
-    }
-
-    if (entry.type === EntryType.OUTDOOR_WALK) {
-      const data: OutdoorWalkEntryUpsertDto = {
-        id: entry.id,
-        visibility: entry.visibility,
-        time: entry.time,
-        createdAt: entry.createdAt,
-        deletedAt: entry.deletedAt,
-        type: entry.type,
-        outdoorWalk: entry.outdoorWalk,
-        updatedAt: entry.updatedAt,
-        title: entry.title,
-        note: entry.note,
-        image: image,
-        externalId: entry.externalId,
-        externalSource: entry.externalSource,
-        healthkitId: entry.healthkitId,
-        healthkitAnchor: entry.healthkitAnchor,
-        healthkitAnchors_3_0: entry.healthkitAnchors_3_0,
-        healthkitSource: entry.healthkitSource,
-        healthkitSourceName: entry.healthkitSourceName,
-        healthkitDevice: entry.healthkitDevice,
-        healthkitDeviceName: entry.healthkitDeviceName,
-      };
-      return data;
-    }
-
-    const data: EntryUpsertDto = {
+    const postDto: PostEntryUpsertDto = {
       id: entry.id,
       visibility: entry.visibility,
       time: entry.time,
       createdAt: entry.createdAt,
       deletedAt: entry.deletedAt,
-      type: entry.type,
+      type: 'Post',
       image: image,
       updatedAt: entry.updatedAt,
       title: entry.title,
@@ -352,7 +287,12 @@ export class EntryService {
       healthkitDevice: entry.healthkitDevice,
       healthkitDeviceName: entry.healthkitDeviceName,
     };
-    return data;
+    if (entry.type === EntryType.POST) {
+      return postDto;
+    }
+    const service: IEntryService<typeof entry.type> = this.entryServices[entry.type].service;
+    const dto = service.getUpsertDto(entry, postDto);
+    return dto;
   }
 
   async saveEntry(entry: AppEntry, image?: string | null) {
@@ -1057,18 +997,4 @@ export class EntryService {
     });
     return result;
   }
-
-  // async getPage(db: DrizzleDb): Promise<AppWorkout[]> {
-  //   const rows = await db.query.entries.findMany({
-  //     where: (t, op) => op.and(
-  //       op.isNull(t.deletedAt)
-  //     ),
-  //     orderBy: (t, op) => op.desc(t.createdAt),
-  //     limit: 50,
-  //   });
-
-  //   const workoutIds = rows.map((x) => x.workoutId).filter((x) => x !== null);
-  //   this.workoutService.getPage(this.db, workoutIds);
-
-  // }
 }

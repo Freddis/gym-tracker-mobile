@@ -31,6 +31,12 @@ import type {
   PostPostsResponse,
   GetPostsByIdResponse,
   PatchPostsByIdResponse,
+  GetFoodListResponse,
+  UpsertFoodResponse,
+  GetFoodResponse,
+  GetOwnProfileResponse,
+  GetSettingsResponse,
+  UpdateSettingsResponse,
   GetCrmManagersResponse,
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
@@ -275,6 +281,16 @@ const weightSchemaResponseTransformer = (data: any) => {
   if (data.deletedAt) {
     data.deletedAt = new Date(data.deletedAt);
   }
+  data.history = data.history.map((item: any) => {
+    item.createdAt = new Date(item.createdAt);
+    if (item.updatedAt) {
+      item.updatedAt = new Date(item.updatedAt);
+    }
+    if (item.deletedAt) {
+      item.deletedAt = new Date(item.deletedAt);
+    }
+    return item;
+  });
   return data;
 };
 
@@ -312,17 +328,6 @@ export const getArgusCheckinResponseTransformer = async (
   return data;
 };
 
-const imageSchemaResponseTransformer = (data: any) => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
-  if (data.deletedAt) {
-    data.deletedAt = new Date(data.deletedAt);
-  }
-  return data;
-};
-
 const outdoorRunSchemaResponseTransformer = (data: any) => {
   data.start = new Date(data.start);
   data.end = new Date(data.end);
@@ -331,6 +336,54 @@ const outdoorRunSchemaResponseTransformer = (data: any) => {
 
 const outdoorWalkSchemaResponseTransformer = (data: any) => {
   data = outdoorRunSchemaResponseTransformer(data);
+  return data;
+};
+
+const foodSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  data.components = data.components.map((item: any) => {
+    return foodComponentSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const foodComponentSchemaResponseTransformer = (data: any) => {
+  data.food = foodSchemaResponseTransformer(data.food);
+  return data;
+};
+
+const mealFoodComponentSchemaResponseTransformer = (data: any) => {
+  data.food.createdAt = new Date(data.food.createdAt);
+  if (data.food.updatedAt) {
+    data.food.updatedAt = new Date(data.food.updatedAt);
+  }
+  if (data.food.deletedAt) {
+    data.food.deletedAt = new Date(data.food.deletedAt);
+  }
+  data.food.components = data.food.components.map((item: any) => {
+    return foodComponentSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const mealSchemaResponseTransformer = (data: any) => {
+  data.food = data.food.map((item: any) => {
+    return mealFoodComponentSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const calorieGoalSchemaResponseTransformer = (data: any) => {
+  data.start = new Date(data.start);
+  if (data.end) {
+    data.end = new Date(data.end);
+  }
   return data;
 };
 
@@ -349,14 +402,17 @@ const entrySchemaResponseTransformer = (data: any) => {
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
   }
-  if (data.image) {
-    data.image = imageSchemaResponseTransformer(data.image);
-  }
   if (data.outdoorRun) {
     data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
   }
   if (data.outdoorWalk) {
     data.outdoorWalk = outdoorWalkSchemaResponseTransformer(data.outdoorWalk);
+  }
+  if (data.meal) {
+    data.meal = mealSchemaResponseTransformer(data.meal);
+  }
+  if (data.calorieGoal) {
+    data.calorieGoal = calorieGoalSchemaResponseTransformer(data.calorieGoal);
   }
   return data;
 };
@@ -425,14 +481,17 @@ const postEntrySchemaResponseTransformer = (data: any) => {
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
   }
-  if (data.image) {
-    data.image = imageSchemaResponseTransformer(data.image);
-  }
   if (data.outdoorRun) {
     data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
   }
   if (data.outdoorWalk) {
     data.outdoorWalk = outdoorWalkSchemaResponseTransformer(data.outdoorWalk);
+  }
+  if (data.meal) {
+    data.meal = mealSchemaResponseTransformer(data.meal);
+  }
+  if (data.calorieGoal) {
+    data.calorieGoal = calorieGoalSchemaResponseTransformer(data.calorieGoal);
   }
   return data;
 };
@@ -455,6 +514,69 @@ export const patchPostsByIdResponseTransformer = async (
   data: any
 ): Promise<PatchPostsByIdResponse> => {
   data = postEntrySchemaResponseTransformer(data);
+  return data;
+};
+
+export const getFoodListResponseTransformer = async (
+  data: any
+): Promise<GetFoodListResponse> => {
+  data.items = data.items.map((item: any) => {
+    return foodSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const upsertFoodResponseTransformer = async (
+  data: any
+): Promise<UpsertFoodResponse> => {
+  data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getFoodResponseTransformer = async (
+  data: any
+): Promise<GetFoodResponse> => {
+  data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+const goalSchemaResponseTransformer = (data: any) => {
+  if (data.calorie) {
+    data.calorie = calorieGoalSchemaResponseTransformer(data.calorie);
+  }
+  return data;
+};
+
+const profileSchemaResponseTransformer = (data: any) => {
+  data.goals = data.goals.map((item: any) => {
+    return goalSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getOwnProfileResponseTransformer = async (
+  data: any
+): Promise<GetOwnProfileResponse> => {
+  data = profileSchemaResponseTransformer(data);
+  return data;
+};
+
+const settingsSchemaResponseTransformer = (data: any) => {
+  data.birthDate = new Date(data.birthDate);
+  return data;
+};
+
+export const getSettingsResponseTransformer = async (
+  data: any
+): Promise<GetSettingsResponse> => {
+  data = settingsSchemaResponseTransformer(data);
+  return data;
+};
+
+export const updateSettingsResponseTransformer = async (
+  data: any
+): Promise<UpdateSettingsResponse> => {
+  data = settingsSchemaResponseTransformer(data);
   return data;
 };
 
@@ -528,11 +650,22 @@ export const getCrmExercisesResponseTransformer = async (
   return data;
 };
 
+const managedImageSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
 export const getCrmImagesResponseTransformer = async (
   data: any
 ): Promise<GetCrmImagesResponse> => {
   data.items = data.items.map((item: any) => {
-    return imageSchemaResponseTransformer(item);
+    return managedImageSchemaResponseTransformer(item);
   });
   return data;
 };

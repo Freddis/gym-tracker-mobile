@@ -114,7 +114,7 @@ export const EntryListScreen: FC = () => {
     <ScreenContainer style={{paddingHorizontal: 0}}>
       <Stack.Screen options={{title: '', headerShown: false}} />
       <ScrollView style={{paddingHorizontal: theme.paddingM}}>
-        <ThemedButtonList items={[['Workout Types', '/app/entries/workoutTypeList']]} />
+        <ThemedButtonList items={[['Workout Types', '/app/entries/workoutTypeList'], ['Food', '/app/entries/food/list']]} />
         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
           <Pressable onPress={() => setShowFilterModal(true)} style={{flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
             <ThemedText style={{color: theme.accent}}>Entries</ThemedText>

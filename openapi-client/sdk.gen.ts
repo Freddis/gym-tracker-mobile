@@ -6,18 +6,21 @@ import type {
   Client,
 } from "@hey-api/client-axios";
 import type {
-  PostAuthRegisterData,
-  PostAuthRegisterResponse,
-  PostAuthRegisterError,
-  PostAuthLoginData,
-  PostAuthLoginResponse,
-  PostAuthLoginError,
-  PostAuthPasswordResetData,
-  PostAuthPasswordResetResponse,
-  PostAuthPasswordResetError,
-  PostAuthPasswordResetCompleteData,
-  PostAuthPasswordResetCompleteResponse,
-  PostAuthPasswordResetCompleteError,
+  RegisterData,
+  RegisterResponse,
+  RegisterError,
+  LoginData,
+  LoginResponse,
+  LoginError,
+  StartPasswordResetData,
+  StartPasswordResetResponse,
+  StartPasswordResetError,
+  FinishPasswordResetData,
+  FinishPasswordResetResponse,
+  FinishPasswordResetError,
+  ChangePasswordData,
+  ChangePasswordResponse,
+  ChangePasswordError,
   GetExercisesData,
   GetExercisesResponse,
   GetExercisesError,
@@ -129,15 +132,33 @@ import type {
   PatchPostsByIdData,
   PatchPostsByIdResponse,
   PatchPostsByIdError,
+  GetFoodListData,
+  GetFoodListResponse,
+  GetFoodListError,
+  UpsertFoodData,
+  UpsertFoodResponse,
+  UpsertFoodError,
+  GetFoodData,
+  GetFoodResponse,
+  GetFoodError,
+  GetOwnProfileData,
+  GetOwnProfileResponse,
+  GetOwnProfileError,
+  GetSettingsData,
+  GetSettingsResponse,
+  GetSettingsError,
+  UpdateSettingsData,
+  UpdateSettingsResponse,
+  UpdateSettingsError,
   GetCrmUsersData,
   GetCrmUsersResponse,
   GetCrmUsersError,
   GetCrmManagersData,
   GetCrmManagersResponse,
   GetCrmManagersError,
-  PostCrmAuthLoginData,
-  PostCrmAuthLoginResponse,
-  PostCrmAuthLoginError,
+  ManagerLoginData,
+  ManagerLoginResponse,
+  ManagerLoginError,
   GetCrmTranslationsByIdData,
   GetCrmTranslationsByIdResponse,
   GetCrmTranslationsByIdError,
@@ -195,6 +216,12 @@ import {
   postPostsResponseTransformer,
   getPostsByIdResponseTransformer,
   patchPostsByIdResponseTransformer,
+  getFoodListResponseTransformer,
+  upsertFoodResponseTransformer,
+  getFoodResponseTransformer,
+  getOwnProfileResponseTransformer,
+  getSettingsResponseTransformer,
+  updateSettingsResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -224,12 +251,12 @@ export type Options<
 /**
  * Registers a user
  */
-export const postAuthRegister = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthRegisterData, ThrowOnError>
+export const register = <ThrowOnError extends boolean = false>(
+  options?: Options<RegisterData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthRegisterResponse,
-    PostAuthRegisterError,
+    RegisterResponse,
+    RegisterError,
     ThrowOnError
   >({
     url: "/auth/register",
@@ -244,12 +271,12 @@ export const postAuthRegister = <ThrowOnError extends boolean = false>(
 /**
  * Logins a user
  */
-export const postAuthLogin = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthLoginData, ThrowOnError>
+export const login = <ThrowOnError extends boolean = false>(
+  options?: Options<LoginData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthLoginResponse,
-    PostAuthLoginError,
+    LoginResponse,
+    LoginError,
     ThrowOnError
   >({
     url: "/auth/login",
@@ -264,12 +291,12 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(
 /**
  * Sends a password reset email for a user
  */
-export const postAuthPasswordReset = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthPasswordResetData, ThrowOnError>
+export const startPasswordReset = <ThrowOnError extends boolean = false>(
+  options?: Options<StartPasswordResetData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthPasswordResetResponse,
-    PostAuthPasswordResetError,
+    StartPasswordResetResponse,
+    StartPasswordResetError,
     ThrowOnError
   >({
     url: "/auth/password-reset",
@@ -284,17 +311,41 @@ export const postAuthPasswordReset = <ThrowOnError extends boolean = false>(
 /**
  * Resets the user password and logs the user in
  */
-export const postAuthPasswordResetComplete = <
-  ThrowOnError extends boolean = false
->(
-  options?: Options<PostAuthPasswordResetCompleteData, ThrowOnError>
+export const finishPasswordReset = <ThrowOnError extends boolean = false>(
+  options?: Options<FinishPasswordResetData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthPasswordResetCompleteResponse,
-    PostAuthPasswordResetCompleteError,
+    FinishPasswordResetResponse,
+    FinishPasswordResetError,
     ThrowOnError
   >({
     url: "/auth/password-reset-complete",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Changes the password of the user
+ */
+export const changePassword = <ThrowOnError extends boolean = false>(
+  options?: Options<ChangePasswordData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    ChangePasswordResponse,
+    ChangePasswordError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/auth/change-password",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1178,6 +1229,152 @@ export const patchPostsById = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Updates or inserts food for user
+ */
+export const getFoodList = <ThrowOnError extends boolean = false>(
+  options?: Options<GetFoodListData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetFoodListResponse,
+    GetFoodListError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getFoodListResponseTransformer,
+    url: "/food",
+    ...options,
+  });
+};
+
+/**
+ * Updates or inserts food for user
+ */
+export const upsertFood = <ThrowOnError extends boolean = false>(
+  options?: Options<UpsertFoodData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    UpsertFoodResponse,
+    UpsertFoodError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: upsertFoodResponseTransformer,
+    url: "/food",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on food for user
+ */
+export const getFood = <ThrowOnError extends boolean = false>(
+  options: Options<GetFoodData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetFoodResponse,
+    GetFoodError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getFoodResponseTransformer,
+    url: "/food/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns data on user profile
+ */
+export const getOwnProfile = <ThrowOnError extends boolean = false>(
+  options?: Options<GetOwnProfileData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetOwnProfileResponse,
+    GetOwnProfileError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getOwnProfileResponseTransformer,
+    url: "/profile",
+    ...options,
+  });
+};
+
+/**
+ * Returns data on user settings & profile
+ */
+export const getSettings = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSettingsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetSettingsResponse,
+    GetSettingsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getSettingsResponseTransformer,
+    url: "/settings",
+    ...options,
+  });
+};
+
+/**
+ * Updates user settings & profile
+ */
+export const updateSettings = <ThrowOnError extends boolean = false>(
+  options?: Options<UpdateSettingsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    UpdateSettingsResponse,
+    UpdateSettingsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: updateSettingsResponseTransformer,
+    url: "/settings",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * Returns list of users
  */
 export const getCrmUsers = <ThrowOnError extends boolean = false>(
@@ -1225,12 +1422,12 @@ export const getCrmManagers = <ThrowOnError extends boolean = false>(
 /**
  * Logins a manager into CRM
  */
-export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
-  options?: Options<PostCrmAuthLoginData, ThrowOnError>
+export const managerLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<ManagerLoginData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostCrmAuthLoginResponse,
-    PostCrmAuthLoginError,
+    ManagerLoginResponse,
+    ManagerLoginError,
     ThrowOnError
   >({
     url: "/crm/auth/login",

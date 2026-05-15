@@ -1,5 +1,5 @@
 import {schema} from '../../db/schema';
-import {Image} from '../../openapi-client';
+import {Image, ImageType} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
@@ -19,10 +19,10 @@ export class ImageService {
     const items = images.map(([, image]) => {
       const row: typeof schema.images.$inferInsert = {
         // externalId: image.id,
-        userId: image.userId ?? 0,
+        userId: 0,
         url: image.url,
         image: null,
-        type: image.imageType,
+        type: ImageType.ENTRY,
         // lastPulledAt: new Date(),
         // lastPushedAt: new Date(),
       };

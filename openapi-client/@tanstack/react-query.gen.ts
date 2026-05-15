@@ -2,10 +2,11 @@
 
 import {
   type Options,
-  postAuthRegister,
-  postAuthLogin,
-  postAuthPasswordReset,
-  postAuthPasswordResetComplete,
+  register,
+  login,
+  startPasswordReset,
+  finishPasswordReset,
+  changePassword,
   getExercises,
   postExercises,
   putExercises,
@@ -43,9 +44,15 @@ import {
   postPosts,
   getPostsById,
   patchPostsById,
+  getFoodList,
+  upsertFood,
+  getFood,
+  getOwnProfile,
+  getSettings,
+  updateSettings,
   getCrmUsers,
   getCrmManagers,
-  postCrmAuthLogin,
+  managerLogin,
   getCrmTranslationsById,
   patchCrmTranslationsById,
   getCrmTranslations,
@@ -62,18 +69,21 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import type {
-  PostAuthRegisterData,
-  PostAuthRegisterError,
-  PostAuthRegisterResponse,
-  PostAuthLoginData,
-  PostAuthLoginError,
-  PostAuthLoginResponse,
-  PostAuthPasswordResetData,
-  PostAuthPasswordResetError,
-  PostAuthPasswordResetResponse,
-  PostAuthPasswordResetCompleteData,
-  PostAuthPasswordResetCompleteError,
-  PostAuthPasswordResetCompleteResponse,
+  RegisterData,
+  RegisterError,
+  RegisterResponse,
+  LoginData,
+  LoginError,
+  LoginResponse,
+  StartPasswordResetData,
+  StartPasswordResetError,
+  StartPasswordResetResponse,
+  FinishPasswordResetData,
+  FinishPasswordResetError,
+  FinishPasswordResetResponse,
+  ChangePasswordData,
+  ChangePasswordError,
+  ChangePasswordResponse,
   GetExercisesData,
   GetExercisesError,
   GetExercisesResponse,
@@ -167,15 +177,29 @@ import type {
   PatchPostsByIdData,
   PatchPostsByIdError,
   PatchPostsByIdResponse,
+  GetFoodListData,
+  GetFoodListError,
+  GetFoodListResponse,
+  UpsertFoodData,
+  UpsertFoodError,
+  UpsertFoodResponse,
+  GetFoodData,
+  GetFoodError,
+  GetFoodResponse,
+  GetOwnProfileData,
+  GetSettingsData,
+  UpdateSettingsData,
+  UpdateSettingsError,
+  UpdateSettingsResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
   GetCrmManagersData,
   GetCrmManagersError,
   GetCrmManagersResponse,
-  PostCrmAuthLoginData,
-  PostCrmAuthLoginError,
-  PostCrmAuthLoginResponse,
+  ManagerLoginData,
+  ManagerLoginError,
+  ManagerLoginResponse,
   GetCrmTranslationsByIdData,
   PatchCrmTranslationsByIdData,
   PatchCrmTranslationsByIdError,
@@ -234,16 +258,13 @@ const createQueryKey = <TOptions extends Options>(
   return [params];
 };
 
-export const postAuthRegisterQueryKey = (
-  options?: Options<PostAuthRegisterData>
-) => createQueryKey("postAuthRegister", options);
+export const registerQueryKey = (options?: Options<RegisterData>) =>
+  createQueryKey("register", options);
 
-export const postAuthRegisterOptions = (
-  options?: Options<PostAuthRegisterData>
-) => {
+export const registerOptions = (options?: Options<RegisterData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRegister({
+      const { data } = await register({
         ...options,
         ...queryKey[0],
         signal,
@@ -251,24 +272,24 @@ export const postAuthRegisterOptions = (
       });
       return data;
     },
-    queryKey: postAuthRegisterQueryKey(options),
+    queryKey: registerQueryKey(options),
   });
 };
 
-export const postAuthRegisterMutation = (
-  options?: Partial<Options<PostAuthRegisterData>>
+export const registerMutation = (
+  options?: Partial<Options<RegisterData>>
 ): UseMutationOptions<
-  PostAuthRegisterResponse,
-  AxiosError<PostAuthRegisterError>,
-  Options<PostAuthRegisterData>
+  RegisterResponse,
+  AxiosError<RegisterError>,
+  Options<RegisterData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthRegisterResponse,
-    AxiosError<PostAuthRegisterError>,
-    Options<PostAuthRegisterData>
+    RegisterResponse,
+    AxiosError<RegisterError>,
+    Options<RegisterData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRegister({
+      const { data } = await register({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -279,13 +300,13 @@ export const postAuthRegisterMutation = (
   return mutationOptions;
 };
 
-export const postAuthLoginQueryKey = (options?: Options<PostAuthLoginData>) =>
-  createQueryKey("postAuthLogin", options);
+export const loginQueryKey = (options?: Options<LoginData>) =>
+  createQueryKey("login", options);
 
-export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
+export const loginOptions = (options?: Options<LoginData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthLogin({
+      const { data } = await login({
         ...options,
         ...queryKey[0],
         signal,
@@ -293,24 +314,24 @@ export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
       });
       return data;
     },
-    queryKey: postAuthLoginQueryKey(options),
+    queryKey: loginQueryKey(options),
   });
 };
 
-export const postAuthLoginMutation = (
-  options?: Partial<Options<PostAuthLoginData>>
+export const loginMutation = (
+  options?: Partial<Options<LoginData>>
 ): UseMutationOptions<
-  PostAuthLoginResponse,
-  AxiosError<PostAuthLoginError>,
-  Options<PostAuthLoginData>
+  LoginResponse,
+  AxiosError<LoginError>,
+  Options<LoginData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthLoginResponse,
-    AxiosError<PostAuthLoginError>,
-    Options<PostAuthLoginData>
+    LoginResponse,
+    AxiosError<LoginError>,
+    Options<LoginData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthLogin({
+      const { data } = await login({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -321,16 +342,16 @@ export const postAuthLoginMutation = (
   return mutationOptions;
 };
 
-export const postAuthPasswordResetQueryKey = (
-  options?: Options<PostAuthPasswordResetData>
-) => createQueryKey("postAuthPasswordReset", options);
+export const startPasswordResetQueryKey = (
+  options?: Options<StartPasswordResetData>
+) => createQueryKey("startPasswordReset", options);
 
-export const postAuthPasswordResetOptions = (
-  options?: Options<PostAuthPasswordResetData>
+export const startPasswordResetOptions = (
+  options?: Options<StartPasswordResetData>
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthPasswordReset({
+      const { data } = await startPasswordReset({
         ...options,
         ...queryKey[0],
         signal,
@@ -338,24 +359,24 @@ export const postAuthPasswordResetOptions = (
       });
       return data;
     },
-    queryKey: postAuthPasswordResetQueryKey(options),
+    queryKey: startPasswordResetQueryKey(options),
   });
 };
 
-export const postAuthPasswordResetMutation = (
-  options?: Partial<Options<PostAuthPasswordResetData>>
+export const startPasswordResetMutation = (
+  options?: Partial<Options<StartPasswordResetData>>
 ): UseMutationOptions<
-  PostAuthPasswordResetResponse,
-  AxiosError<PostAuthPasswordResetError>,
-  Options<PostAuthPasswordResetData>
+  StartPasswordResetResponse,
+  AxiosError<StartPasswordResetError>,
+  Options<StartPasswordResetData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthPasswordResetResponse,
-    AxiosError<PostAuthPasswordResetError>,
-    Options<PostAuthPasswordResetData>
+    StartPasswordResetResponse,
+    AxiosError<StartPasswordResetError>,
+    Options<StartPasswordResetData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthPasswordReset({
+      const { data } = await startPasswordReset({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -366,16 +387,16 @@ export const postAuthPasswordResetMutation = (
   return mutationOptions;
 };
 
-export const postAuthPasswordResetCompleteQueryKey = (
-  options?: Options<PostAuthPasswordResetCompleteData>
-) => createQueryKey("postAuthPasswordResetComplete", options);
+export const finishPasswordResetQueryKey = (
+  options?: Options<FinishPasswordResetData>
+) => createQueryKey("finishPasswordReset", options);
 
-export const postAuthPasswordResetCompleteOptions = (
-  options?: Options<PostAuthPasswordResetCompleteData>
+export const finishPasswordResetOptions = (
+  options?: Options<FinishPasswordResetData>
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthPasswordResetComplete({
+      const { data } = await finishPasswordReset({
         ...options,
         ...queryKey[0],
         signal,
@@ -383,24 +404,68 @@ export const postAuthPasswordResetCompleteOptions = (
       });
       return data;
     },
-    queryKey: postAuthPasswordResetCompleteQueryKey(options),
+    queryKey: finishPasswordResetQueryKey(options),
   });
 };
 
-export const postAuthPasswordResetCompleteMutation = (
-  options?: Partial<Options<PostAuthPasswordResetCompleteData>>
+export const finishPasswordResetMutation = (
+  options?: Partial<Options<FinishPasswordResetData>>
 ): UseMutationOptions<
-  PostAuthPasswordResetCompleteResponse,
-  AxiosError<PostAuthPasswordResetCompleteError>,
-  Options<PostAuthPasswordResetCompleteData>
+  FinishPasswordResetResponse,
+  AxiosError<FinishPasswordResetError>,
+  Options<FinishPasswordResetData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthPasswordResetCompleteResponse,
-    AxiosError<PostAuthPasswordResetCompleteError>,
-    Options<PostAuthPasswordResetCompleteData>
+    FinishPasswordResetResponse,
+    AxiosError<FinishPasswordResetError>,
+    Options<FinishPasswordResetData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthPasswordResetComplete({
+      const { data } = await finishPasswordReset({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const changePasswordQueryKey = (options?: Options<ChangePasswordData>) =>
+  createQueryKey("changePassword", options);
+
+export const changePasswordOptions = (
+  options?: Options<ChangePasswordData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await changePassword({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: changePasswordQueryKey(options),
+  });
+};
+
+export const changePasswordMutation = (
+  options?: Partial<Options<ChangePasswordData>>
+): UseMutationOptions<
+  ChangePasswordResponse,
+  AxiosError<ChangePasswordError>,
+  Options<ChangePasswordData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    ChangePasswordResponse,
+    AxiosError<ChangePasswordError>,
+    Options<ChangePasswordData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await changePassword({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1807,6 +1872,239 @@ export const patchPostsByIdMutation = (
   return mutationOptions;
 };
 
+export const getFoodListQueryKey = (options?: Options<GetFoodListData>) =>
+  createQueryKey("getFoodList", options);
+
+export const getFoodListOptions = (options?: Options<GetFoodListData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFoodList({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFoodListQueryKey(options),
+  });
+};
+
+export const getFoodListInfiniteQueryKey = (
+  options?: Options<GetFoodListData>
+): QueryKey<Options<GetFoodListData>> =>
+  createQueryKey("getFoodList", options, true);
+
+export const getFoodListInfiniteOptions = (
+  options?: Options<GetFoodListData>
+) => {
+  return infiniteQueryOptions<
+    GetFoodListResponse,
+    AxiosError<GetFoodListError>,
+    InfiniteData<GetFoodListResponse>,
+    QueryKey<Options<GetFoodListData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetFoodListData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetFoodListData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getFoodList({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getFoodListInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const upsertFoodMutation = (
+  options?: Partial<Options<UpsertFoodData>>
+): UseMutationOptions<
+  UpsertFoodResponse,
+  AxiosError<UpsertFoodError>,
+  Options<UpsertFoodData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpsertFoodResponse,
+    AxiosError<UpsertFoodError>,
+    Options<UpsertFoodData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await upsertFood({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getFoodQueryKey = (options: Options<GetFoodData>) =>
+  createQueryKey("getFood", options);
+
+export const getFoodOptions = (options: Options<GetFoodData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFood({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFoodQueryKey(options),
+  });
+};
+
+export const getFoodInfiniteQueryKey = (
+  options: Options<GetFoodData>
+): QueryKey<Options<GetFoodData>> => createQueryKey("getFood", options, true);
+
+export const getFoodInfiniteOptions = (options: Options<GetFoodData>) => {
+  return infiniteQueryOptions<
+    GetFoodResponse,
+    AxiosError<GetFoodError>,
+    InfiniteData<GetFoodResponse>,
+    QueryKey<Options<GetFoodData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetFoodData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetFoodData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getFood({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getFoodInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const getOwnProfileQueryKey = (options?: Options<GetOwnProfileData>) =>
+  createQueryKey("getOwnProfile", options);
+
+export const getOwnProfileOptions = (options?: Options<GetOwnProfileData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOwnProfile({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOwnProfileQueryKey(options),
+  });
+};
+
+export const getSettingsQueryKey = (options?: Options<GetSettingsData>) =>
+  createQueryKey("getSettings", options);
+
+export const getSettingsOptions = (options?: Options<GetSettingsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSettings({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSettingsQueryKey(options),
+  });
+};
+
+export const updateSettingsQueryKey = (options?: Options<UpdateSettingsData>) =>
+  createQueryKey("updateSettings", options);
+
+export const updateSettingsOptions = (
+  options?: Options<UpdateSettingsData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await updateSettings({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: updateSettingsQueryKey(options),
+  });
+};
+
+export const updateSettingsMutation = (
+  options?: Partial<Options<UpdateSettingsData>>
+): UseMutationOptions<
+  UpdateSettingsResponse,
+  AxiosError<UpdateSettingsError>,
+  Options<UpdateSettingsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateSettingsResponse,
+    AxiosError<UpdateSettingsError>,
+    Options<UpdateSettingsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateSettings({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getCrmUsersQueryKey = (options?: Options<GetCrmUsersData>) =>
   createQueryKey("getCrmUsers", options);
 
@@ -1941,16 +2239,13 @@ export const getCrmManagersInfiniteOptions = (
   );
 };
 
-export const postCrmAuthLoginQueryKey = (
-  options?: Options<PostCrmAuthLoginData>
-) => createQueryKey("postCrmAuthLogin", options);
+export const managerLoginQueryKey = (options?: Options<ManagerLoginData>) =>
+  createQueryKey("managerLogin", options);
 
-export const postCrmAuthLoginOptions = (
-  options?: Options<PostCrmAuthLoginData>
-) => {
+export const managerLoginOptions = (options?: Options<ManagerLoginData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postCrmAuthLogin({
+      const { data } = await managerLogin({
         ...options,
         ...queryKey[0],
         signal,
@@ -1958,24 +2253,24 @@ export const postCrmAuthLoginOptions = (
       });
       return data;
     },
-    queryKey: postCrmAuthLoginQueryKey(options),
+    queryKey: managerLoginQueryKey(options),
   });
 };
 
-export const postCrmAuthLoginMutation = (
-  options?: Partial<Options<PostCrmAuthLoginData>>
+export const managerLoginMutation = (
+  options?: Partial<Options<ManagerLoginData>>
 ): UseMutationOptions<
-  PostCrmAuthLoginResponse,
-  AxiosError<PostCrmAuthLoginError>,
-  Options<PostCrmAuthLoginData>
+  ManagerLoginResponse,
+  AxiosError<ManagerLoginError>,
+  Options<ManagerLoginData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostCrmAuthLoginResponse,
-    AxiosError<PostCrmAuthLoginError>,
-    Options<PostCrmAuthLoginData>
+    ManagerLoginResponse,
+    AxiosError<ManagerLoginError>,
+    Options<ManagerLoginData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postCrmAuthLogin({
+      const { data } = await managerLogin({
         ...options,
         ...localOptions,
         throwOnError: true,

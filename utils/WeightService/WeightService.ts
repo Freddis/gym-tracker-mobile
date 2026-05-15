@@ -1,23 +1,44 @@
+import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {Weight} from '../../openapi-client';
+import {Entry, EntryType, EntryUpsertDto, PostEntryUpsertDto, Weight, WeightEntryUpsertDto} from '../../openapi-client';
+import {IEntryService} from '../../types/IEntryService';
+import {WeightAppEntry} from '../../types/models/AppEntry';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
-
-export class WeightService {
+export class WeightService implements IEntryService<EntryType.WEIGHT> {
   protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(WeightService.name);
   }
 
-  async processedPulledItems(db: DrizzleDb, weights: Weight[]): Promise<Map<number, number>> {
-    const map = new Map<number, number>();
-    if (weights.length === 0) {
+  getObject(entry: Entry): Weight | null {
+    return entry.weight ?? null;
+  }
+
+  getUpsertDto(entry: WeightAppEntry & {type: EntryType.WEIGHT;}, dto: PostEntryUpsertDto): EntryUpsertDto {
+    const data: WeightEntryUpsertDto = {
+      ...dto,
+      type: 'Weight',
+      weight: {
+        ...entry.weight,
+      },
+    };
+    return data;
+  }
+
+  async deleteById(id: number, db: DrizzleDb): Promise<void> {
+    await db.delete(schema.weight).where(eq(schema.weight.id, id));
+  }
+
+  async processedPulledItems(db: DrizzleDb, items: [string, Weight][]): Promise<Map<string, number>> {
+    const map = new Map<string, number>();
+    if (items.length === 0) {
       return map;
     }
-    const items = weights.map((weight) => {
-      const row: typeof schema.weight.$inferInsert = {
+    for (const [id, weight] of items) {
+      const input: typeof schema.weight.$inferInsert = {
         externalId: weight.id,
         userId: weight.userId,
         weight: weight.weight,
@@ -26,17 +47,16 @@ export class WeightService {
         updatedAt: weight.updatedAt,
         deletedAt: weight.deletedAt,
       };
-      return row;
-    });
-    const rows = await db.insert(schema.weight).values(items).onConflictDoUpdate({
-      target: schema.weight.externalId,
-      set: conflictUpdateSetAllColumns(schema.weight),
-    }).returning();
-    for (const row of rows) {
-      if (!row.externalId) {
-        throw new Error('External id was lost. This should never happen');
+
+      const rows = await db.insert(schema.weight).values(input).onConflictDoUpdate({
+        target: schema.weight.externalId,
+        set: conflictUpdateSetAllColumns(schema.weight),
+      }).returning();
+      const row = rows[0];
+      if (!row) {
+        throw new Error('Weight not found');
       }
-      map.set(row.externalId, row.id);
+      map.set(id, row.id);
     }
     return map;
   }

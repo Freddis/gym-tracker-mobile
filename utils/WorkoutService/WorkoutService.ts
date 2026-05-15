@@ -1,4 +1,4 @@
-import {getWorkouts, Workout} from '@/openapi-client';
+import {Entry, EntryType, PostEntryUpsertDto, Workout, WorkoutEntryUpsertDto} from '@/openapi-client';
 import {DrizzleDb} from '../drizzle';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
@@ -7,9 +7,10 @@ import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {Logger} from '../Logger/Logger';
+import {IEntryService} from '../../types/IEntryService';
+import {WorkoutAppEntry} from '../../types/models/AppEntry';
 
-export class WorkoutService {
-
+export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
   protected logger: Logger = new Logger(WorkoutService.name);
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
@@ -22,6 +23,19 @@ export class WorkoutService {
       return false;
     }
     return true;
+  }
+  getUpsertDto(entry: WorkoutAppEntry, dto: PostEntryUpsertDto): WorkoutEntryUpsertDto {
+    return {
+      ...dto,
+      type: 'Workout',
+      workout: {
+        ...entry.workout,
+      },
+    };
+  }
+
+  async deleteById(id: number, db: DrizzleDb): Promise<void> {
+    await db.delete(schema.workouts).where(eq(schema.workouts.id, id));
   }
 
   transformSetWeight(val: string): number {
@@ -87,10 +101,17 @@ export class WorkoutService {
     return workout ?? null;
   }
 
-  async processedPulledItem(db: DrizzleDb, items: Workout[]): Promise<Map<number, number>> {
-    const map = new Map<number, number>();
+  getObject(entry: Entry): Workout | null {
+    return entry.workout ?? null;
+  }
 
-    for (const workout of items) {
+  async processedPulledItems(db: DrizzleDb, items: [string, Workout][]): Promise<Map<string, number>> {
+    const map = new Map<string, number>();
+    if (items.length === 0) {
+      return map;
+    }
+
+    for (const [id, workout] of items) {
     // --- save workout first ---
       const newWorkoutRow: NewModel<AppWorkout> = {
         externalId: workout.id,
@@ -108,7 +129,7 @@ export class WorkoutService {
 
     // upsert workout and get local id
       const savedWorkoutId = await this.saveWorkoutToDb(db, workout.id, newWorkoutRow);
-      map.set(workout.id, savedWorkoutId);
+      map.set(id, savedWorkoutId);
 
     // clean up existing children before inserting fresh ones
       await db.delete(schema.workoutExerciseSets).where(eq(schema.workoutExerciseSets.workoutId, savedWorkoutId));
@@ -163,94 +184,6 @@ export class WorkoutService {
     }
     return map;
   }
-
-
-  async pullFromServer(db: DrizzleDb): Promise<boolean> {
-    const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
-    // const result = await db.transaction(async (db) => {
-    let page = 1;
-          // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const response = await getWorkouts({
-        query: {
-          updatedAfter: lastUpdateFromServer ?? undefined,
-          page: page++,
-        },
-      });
-      if (response.error) {
-        return false;
-      }
-      await this.processedPulledItem(db, response.data.items);
-      if (response.data.items.length < response.data.info.pageSize) {
-        return true;
-      }
-    }
-    // });
-    // return result;
-  }
-
-  protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
-    const row = await db.query.workouts.findFirst({
-      columns: {
-        lastPulledAt: true,
-      },
-      orderBy: (t, op) => [op.desc(t.lastPulledAt)],
-    });
-    if (!row) {
-      return null;
-    }
-    return row.lastPulledAt;
-  }
-
-  protected async getLatestPushSyncDate(db: DrizzleDb): Promise<Date | null> {
-    const row = await db.query.workouts.findFirst({
-      columns: {
-        lastPushedAt: true,
-      },
-      orderBy: (t, op) => [op.desc(t.lastPushedAt)],
-    });
-    if (!row) {
-      return null;
-    }
-    return row.lastPushedAt;
-  }
-
-  // protected async saveWorkouts(db: DrizzleDb, workouts: NewModel<AppWorkout>[]): Promise<AppWorkout[]> {
-
-  //   const result = await processInBatches(workouts, 200, async (rows) => {
-  //     const res = await db.insert(schema.workouts).values(rows)
-  //       // .onConflictDoUpdate({
-  //       //   target: schema.workouts.externalId,
-  //       //   set: conflictUpdateSetAllColumns(schema.workouts),
-  //       // })
-  //       .returning();
-  //     return res;
-  //   });
-  //   return result;
-  // }
-  // protected async saveExercises(db: DrizzleDb, exercises: NewModel<AppWorkoutExercise>[]): Promise<AppWorkoutExercise[]> {
-  //   const result = await processInBatches(exercises, 200, async (rows) => {
-  //     const res = await db.insert(schema.workoutExercises).values(rows)
-  //       // .onConflictDoUpdate({
-  //       //   target: schema.workoutExercises.externalId,
-  //       //   set: conflictUpdateSetAllColumns(schema.workoutExercises),
-  //       // })
-  //       .returning();
-  //     return res;
-  //   });
-  //   return result;
-  // }
-
-  // protected async saveSets(db: DrizzleDb, sets: NewModel<AppWorkoutExerciseSet>[]): Promise<AppWorkoutExerciseSet[]> {
-  //   const result = await processInBatches(sets, 200, async (rows) => {
-  //     const res = await db.insert(schema.workoutExerciseSets).values(rows).onConflictDoUpdate({
-  //       target: schema.workoutExerciseSets.externalId,
-  //       set: conflictUpdateSetAllColumns(schema.workoutExerciseSets),
-  //     }).returning();
-  //     return res;
-  //   });
-  //   return result;
-  // }
 
   protected async saveWorkoutToDb(db: DrizzleDb, externalId: number, workout: NewModel<AppWorkout>): Promise<number> {
     const existing = await db.query.workouts.findFirst({

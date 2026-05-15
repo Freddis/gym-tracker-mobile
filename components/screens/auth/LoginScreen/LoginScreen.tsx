@@ -3,7 +3,7 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useRouter} from 'expo-router';
 import {FC, useContext, useEffect, useState} from 'react';
-import {postAuthLogin, PostAuthLoginError} from '@/openapi-client';
+import {LoginError} from '@/openapi-client';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {useResponseErrors} from '@/hooks/useResponseErrors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,6 +14,7 @@ import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {ThemedInputError} from '@/components/blocks/ThemedInputError/ThemedInputError';
 import {Theme} from '../../../../types/Colors';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
+import {api} from '../../../../utils/api';
 
 const ASYNC_STORAGE_KEY = 'auth_login';
 
@@ -36,14 +37,14 @@ export const LoginScreen: FC = () => {
 
   const performLogin = async () => {
     setLoading(true);
-    const result = await postAuthLogin({
+    const result = await api.login({
       body: {email, password},
       timeout: 5000,
     });
     setLoading(false);
 
     if (result.error) {
-      const err: PostAuthLoginError = result.error;
+      const err: LoginError = result.error;
       console.log(result);
       if (err.error.code === 'ValidationFailed') {
         setErrors(err.error.fieldErrors ?? []);
