@@ -1,6 +1,7 @@
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {EntryService} from '../EntryService/EntryService';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
+import {FoodService} from '../FoodService/FoodService';
 import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
 import {WeightService} from '../WeightService/WeightService';
@@ -15,18 +16,21 @@ export class SyncService {
   protected workoutTypeService: WorkoutTypeService;
   protected weightService: WeightService;
   protected entryService: EntryService;
+  protected foodService: FoodService;
   constructor(
     workouts: WorkoutService,
     exercises: ExerciseService,
     workoutTypes: WorkoutTypeService,
     weightService: WeightService,
     entryService: EntryService,
+    foodService: FoodService,
   ) {
     this.workoutService = workouts;
     this.exerciseService = exercises;
     this.workoutTypeService = workoutTypes;
     this.weightService = weightService;
     this.entryService = entryService;
+    this.foodService = foodService;
     this.logger = new Logger(this.constructor.name);
   }
 
@@ -65,7 +69,7 @@ export class SyncService {
       try {
         callback(state);
         const db = await asyncDrizzle();
-        const success = await transactionAsync(db, async (trx) => stage.action(trx, userId, (progress) => {
+        const success = await transactionAsync(db, async (trx) => stage.action(userId, trx, (progress) => {
           callback({
             ...state,
             subItemsDone: progress.itemsDone,
@@ -122,6 +126,11 @@ export class SyncService {
         action: this.workoutTypeService.pullFromServer.bind(this.workoutTypeService),
       },
       {
+        name: 'Pulling Food',
+        action: this.foodService.pullFromServer.bind(this.foodService),
+        errorMsg: "Couldn't pull foods",
+      },
+      {
         name: 'Pulling Entries',
         action: this.entryService.pullFromServer.bind(this.entryService),
         errorMsg: "Couldn't pull entries",
@@ -157,6 +166,11 @@ export class SyncService {
         name: 'Wiping Exercises',
         errorMsg: "Couldn't delete exercises",
         action: this.exerciseService.wipeLocalData.bind(this.exerciseService),
+      },
+      {
+        name: 'Wiping Food',
+        errorMsg: "Couldn't delete food",
+        action: this.foodService.wipeLocalData.bind(this.foodService),
       },
     ];
     return stages;

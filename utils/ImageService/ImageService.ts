@@ -1,5 +1,6 @@
 import {schema} from '../../db/schema';
 import {Image, ImageType} from '../../openapi-client';
+import {AppImage} from '../../types/models/AppImage';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
@@ -11,7 +12,7 @@ export class ImageService {
     this.logger = new Logger(ImageService.name);
   }
 
-  async processedPulledItems(db: DrizzleDb, images: [string, Image][]): Promise<Map<string, number>> {
+  async processedPulledItems(userId: number, db: DrizzleDb, images: [string, Image][], type: ImageType): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (images.length === 0) {
       return map;
@@ -19,10 +20,10 @@ export class ImageService {
     const items = images.map(([, image]) => {
       const row: typeof schema.images.$inferInsert = {
         // externalId: image.id,
-        userId: 0,
+        userId: userId,
         url: image.url,
         image: null,
-        type: ImageType.ENTRY,
+        type: type,
         // lastPulledAt: new Date(),
         // lastPushedAt: new Date(),
       };
@@ -47,5 +48,16 @@ export class ImageService {
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
     await db.delete(schema.images);
     return true;
+  }
+
+  async loadMap(imageIds: number[]): Promise<Map<number, AppImage>> {
+    if (imageIds.length === 0) {
+      return new Map();
+    }
+    const images = await this.db.query.images.findMany({
+      where: (t, op) => op.inArray(t.id, imageIds),
+    });
+    return new Map(images.map((x) => [x.id, x]));
+
   }
 }

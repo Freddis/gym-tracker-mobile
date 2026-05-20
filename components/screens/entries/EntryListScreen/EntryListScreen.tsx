@@ -1,10 +1,9 @@
-import {View, Pressable, ScrollView} from 'react-native';
+import {View, Pressable, RefreshControl, Alert} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {Link, Stack, useNavigation, useRouter} from 'expo-router';
+import {Link, Stack, useFocusEffect, useRouter} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
-import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {useDrizzle} from '@/utils/drizzle';
-import {FC, Fragment, useState} from 'react';
+import {FC, Fragment, useCallback, useState} from 'react';
 import {AppWorkout} from '@/types/models/AppWorkout';
 import {WorkoutBlock} from './components/WorkoutBlock/WorkoutBlock';
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
@@ -20,63 +19,41 @@ import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 import {OutdoorRunBlock} from './components/OutdoorRunBlock/OutdoorRunBlock';
 import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
 import {OutdoorWalkBlock} from './components/OutdoorWalkBlock/OutdoorWalkBlock';
+import {useQuery} from '@tanstack/react-query';
+import {useEntryService} from '../../../../utils/EntryService/useEntryService';
+import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
+import {useSyncService} from '../../../../utils/SyncService/useSyncService';
+import {useAuth} from '../../../providers/AuthProvider/useAuth';
 
 export const EntryListScreen: FC = () => {
-  const navigation = useNavigation();
   const theme = useAppTheme();
-  navigation.addListener('focus', () => {
-    setfocusedCounter(focusedCounter + 1);
-  });
+  useFocusEffect(
+    useCallback(() => {
+      query.refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  );
+  const {user} = useAuth();
+  const [syncService] = useSyncService();
+  const [refreshing, setRefreshing] = useState(false);
+  const [entryService] = useEntryService();
   const [showFilterModal, setShowFilterModal] = useState(false);
   const router = useRouter();
-  const [focusedCounter, setfocusedCounter] = useState(0);
   const [db] = useDrizzle();
   const [types, setTypes] = useState<EntryType[]| null>(null);
   const [date, setDate] = useState<Date | null>(null);
-  const sqlQuery = db.query.entries.findMany({
-    with: {
-      image: true,
-      workout: {
-        with: {
-          exercises: {
-            with: {
-              exercise: true,
-              sets: {
-                orderBy: (t, op) => [
-                  op.asc(t.createdAt),
-                ],
-              },
-            },
-            orderBy: (t, op) => [
-              op.asc(t.createdAt),
-            ],
-          },
-        },
-      },
-      weight: true,
-      outdoorRun: {
-        with: {
-          geoData: true,
-        },
-      },
-      outdoorWalk: {
-        with: {
-          geoData: true,
-          heartRateData: true,
-        },
-      },
-    },
-    where: (t, op) => op.and(
-      op.isNull(t.deletedAt),
-      types ? op.inArray(t.type, types) : undefined,
-      date ? op.gte(t.time, date) : undefined,
-      // op.not(op.isNull(t.weightId))
-    ),
-    orderBy: (t, op) => date ? op.asc(t.time) : op.desc(t.time),
-    limit: 50,
-  });
 
-  const query = useLiveQuery(sqlQuery, [focusedCounter, types, date]);
+  const query = useQuery({
+    queryKey: ['entries'],
+    queryFn: () => {
+      return entryService.getEntries(db, {
+        types: types ?? undefined,
+        date: date ?? undefined,
+        includeDeleted: false,
+        limit: 50,
+      });
+    },
+  });
 
   if (!query.data) {
     return <LoadingBlock />;
@@ -110,10 +87,26 @@ export const EntryListScreen: FC = () => {
     setTypes(e.types);
     setDate(e.date);
   };
+  const onRefresh = async () => {
+    if (!user) {
+      return;
+    }
+    try {
+      setRefreshing(true);
+      await syncService.syncWithServer(db, user.id);
+      query.refetch();
+      setRefreshing(false);
+    } catch (e: unknown) {
+      console.log(e);
+      Alert.alert('Error', 'Failed to refresh entries');
+    } finally {
+      setRefreshing(false);
+    }
+  };
   return (
     <ScreenContainer style={{paddingHorizontal: 0}}>
       <Stack.Screen options={{title: '', headerShown: false}} />
-      <ScrollView style={{paddingHorizontal: theme.paddingM}}>
+      <ThemedScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>} style={{paddingHorizontal: theme.paddingM}}>
         <ThemedButtonList items={[['Workout Types', '/app/entries/workoutTypeList'], ['Food', '/app/entries/food/list']]} />
         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
           <Pressable onPress={() => setShowFilterModal(true)} style={{flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
@@ -140,7 +133,7 @@ export const EntryListScreen: FC = () => {
           ))}
         </View>
         <EntryFilterModal onChange={onFilterChange} visible={showFilterModal} onClose={() => setShowFilterModal(false)}/>
-     </ScrollView>
+     </ThemedScrollView>
     </ScreenContainer>
   );
 };

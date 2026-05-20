@@ -8,10 +8,14 @@ import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {Logger} from '../Logger/Logger';
 import {IEntryService} from '../../types/IEntryService';
-import {WorkoutAppEntry} from '../../types/models/AppEntry';
+import {BaseEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 
 export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
-  protected logger: Logger = new Logger(WorkoutService.name);
+  protected logger: Logger;
+
+  constructor(private readonly db: DrizzleDb) {
+    this.logger = new Logger(WorkoutService.name);
+  }
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
     try {
@@ -24,6 +28,7 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
     }
     return true;
   }
+
   getUpsertDto(entry: WorkoutAppEntry, dto: PostEntryUpsertDto): WorkoutEntryUpsertDto {
     return {
       ...dto,
@@ -217,5 +222,35 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
       throw new Error('Couldn\'t insert workout exercise');
     }
     return insertedId;
+  }
+
+  async loadMap(ids: number[]): Promise<Map<number, CompleteAppWorkout>> {
+    const workouts: CompleteAppWorkout[] = await this.db.query.workouts.findMany({
+      where: (t, op) => op.inArray(t.id, ids),
+      with: {
+        exercises: {
+          with: {
+            exercise: true,
+            sets: {
+              orderBy: (t, op) => [
+                op.asc(t.createdAt),
+              ],
+            },
+          },
+          orderBy: (t, op) => [
+            op.asc(t.createdAt),
+          ],
+        },
+      },
+    });
+    return new Map(workouts.map((x) => [x.id, x]));
+  }
+
+  construct(row: BaseEntry, value: CompleteAppWorkout): WorkoutAppEntry {
+    return {
+      ...row,
+      type: EntryType.WORKOUT,
+      workout: value,
+    };
   }
 }

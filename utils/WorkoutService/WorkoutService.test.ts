@@ -8,8 +8,8 @@ import {WorkoutService} from './WorkoutService';
 describe(WorkoutService.name, () => {
   test('Wipes workout data', async () => {
     // prepare
-    const service = new WorkoutService();
     const [db, schema] = useDrizzle();
+    const service = new WorkoutService(db);
     await migrate(db, migrations);
     await db.delete(schema.workouts);
     const testWorkout: NewModel<AppWorkout> = {
@@ -41,7 +41,8 @@ describe(WorkoutService.name, () => {
   describe('Set data operations', () => {
     test('Converts comma correctly', async () => {
       // prepare
-      const service = new WorkoutService();
+      const [db] = useDrizzle();
+      const service = new WorkoutService(db);
       // check
       expect(service.transformSetWeight('12.2')).toBe(12.2);
       expect(service.transformSetWeight('12,2')).toBe(12.2);
@@ -49,7 +50,8 @@ describe(WorkoutService.name, () => {
 
     test('Returns 0 on invalid input', async () => {
       // prepare
-      const service = new WorkoutService();
+      const [db] = useDrizzle();
+      const service = new WorkoutService(db);
       // check
       expect(service.transformSetWeight('')).toBe(0);
     });

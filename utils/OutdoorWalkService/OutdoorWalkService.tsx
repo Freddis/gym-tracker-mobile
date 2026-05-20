@@ -9,13 +9,32 @@ import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {batch} from '../batch';
 import {IEntryService} from '../../types/IEntryService';
-import {OutdoorWalkAppEntry} from '../../types/models/AppEntry';
+import {BaseEntry, OutdoorWalkAppEntry} from '../../types/models/AppEntry';
 
 export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK> {
   protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorWalkService.name);
+  }
+
+  async loadMap(ids: number[]): Promise<Map<number, AppOutdoorWalk>> {
+    const outdoorWalks: AppOutdoorWalk[] = await this.db.query.outdoorWalks.findMany({
+      where: (t, op) => op.inArray(t.id, ids),
+      with: {
+        geoData: true,
+        heartRateData: true,
+      },
+    });
+    return new Map(outdoorWalks.map((x) => [x.id, x]));
+  }
+
+  construct(row: BaseEntry, value: AppOutdoorWalk): OutdoorWalkAppEntry & {type: EntryType.OUTDOOR_WALK;} {
+    return {
+      ...row,
+      type: EntryType.OUTDOOR_WALK,
+      outdoorWalk: value,
+    };
   }
 
   getUpsertDto(entry: OutdoorWalkAppEntry, dto: PostEntryUpsertDto): OutdoorWalkEntryUpsertDto {

@@ -43,6 +43,7 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) =>
     alert(msg);
     setSynced(result);
   };
+  // console.log({lastSyncDate, lastUpdate, synced});
   return (<>
     {!synced && (
       <Pressable onPress={sync} disabled={false}>

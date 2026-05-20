@@ -2,6 +2,8 @@ import {relations} from 'drizzle-orm';
 import {
   entries,
   exercises,
+  food,
+  foodComponents,
   images,
   outdoorRunGeoData,
   outdoorRunHeartrateData,
@@ -70,4 +72,14 @@ export const outdoorWalkGeoDataRelations = relations(outdoorWalkGeoData, (relati
 
 export const outdoorWalkHeartrateDataRelations = relations(outdoorWalkHeartrateData, (relations) => ({
   outdoorWalk: relations.one(outdoorWalks, {fields: [outdoorWalkHeartrateData.outdoorWalkId], references: [outdoorWalks.id]}),
+}));
+
+export const foodRelations = relations(food, (relations) => ({
+  image: relations.one(images, {fields: [food.imageId], references: [images.id]}),
+  components: relations.many(foodComponents),
+}));
+
+export const foodComponentRelations = relations(foodComponents, (relations) => ({
+  food: relations.one(food, {fields: [foodComponents.foodId], references: [food.id]}),
+  // component: relations.one(food, {fields: [foodComponents.componentId], references: [food.id]}),
 }));

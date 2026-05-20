@@ -10,8 +10,9 @@ import {transactionAsync} from '../runTransaction';
 import {AppExerciseMuscle} from '../../types/models/AppExerciseMuscle';
 import {eq} from 'drizzle-orm';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
+import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
 
-export class ExerciseService {
+export class ExerciseService implements ISyncedEntityService {
 
   async getExercise(exerciseId: string): Promise<Exercise> {
     const row = await db.query.exercises.findFirst({
@@ -192,7 +193,7 @@ export class ExerciseService {
     return items;
   }
 
-  async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+  async wipeLocalData(userId: number, db: DrizzleDb): Promise<boolean> {
     try {
       await db.delete(schema.exercises);
     } catch (e: unknown) {
@@ -201,7 +202,7 @@ export class ExerciseService {
     }
     return true;
   }
-  async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
+  async pushToServer(userId: number, db: DrizzleDb): Promise<boolean> {
     const lastUpdate = await this.getLatestPushSyncDate(db);
     const exercises = await db.query.exercises.findMany({
       where: (t, op) => op.and(
@@ -249,7 +250,7 @@ export class ExerciseService {
     return true;
   }
 
-  async pullFromServer(db: AsyncDrizzleDb, _userId: number, progress: StageProgressCallback): Promise<boolean> {
+  async pullFromServer(_userId: number, db: AsyncDrizzleDb, progress: StageProgressCallback): Promise<boolean> {
     console.log('Pull');
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
 

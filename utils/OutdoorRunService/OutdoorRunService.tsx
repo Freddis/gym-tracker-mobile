@@ -9,14 +9,32 @@ import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 import {batch} from '../batch';
 import {IEntryService} from '../../types/IEntryService';
-import {OutdoorRunAppEntry} from '../../types/models/AppEntry';
-
+import {BaseEntry, OutdoorRunAppEntry} from '../../types/models/AppEntry';
 export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
   protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorRunService.name);
   }
+
+  async loadMap(ids: number[]): Promise<Map<number, AppOutdoorRun>> {
+    const outdoorRuns: AppOutdoorRun[] = await this.db.query.outdoorRuns.findMany({
+      where: (t, op) => op.inArray(t.id, ids),
+      with: {
+        geoData: true,
+        heartRateData: true,
+      },
+    });
+    return new Map(outdoorRuns.map((x) => [x.id, x]));
+  }
+  construct(row: BaseEntry, value: AppOutdoorRun): OutdoorRunAppEntry & {type: EntryType.OUTDOOR_RUN;} {
+    return {
+      ...row,
+      type: EntryType.OUTDOOR_RUN,
+      outdoorRun: value,
+    };
+  }
+
   getObject(entry: Entry): OutdoorRun | null {
     return entry.outdoorRun ?? null;
   }

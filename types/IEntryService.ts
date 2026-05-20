@@ -1,6 +1,10 @@
 import {CalorieGoal, Entry, EntryType, EntryUpsertDto, Meal, OutdoorRun, OutdoorWalk, PostEntryUpsertDto, Weight, Workout} from '../openapi-client';
 import {DrizzleDb} from '../utils/drizzle';
-import {AppEntry} from './models/AppEntry';
+import {AppEntry, BaseEntry} from './models/AppEntry';
+import {AppOutdoorRun} from './models/AppOutdoorRun';
+import {AppOutdoorWalk} from './models/AppOutdoorWalk';
+import {AppWeight} from './models/AppWeight';
+import {CompleteAppWorkout} from './models/AppWorkout';
 
 export type EntryObjectMap = Record<EntryType, unknown> & {
   [EntryType.WEIGHT]: Weight;
@@ -11,6 +15,13 @@ export type EntryObjectMap = Record<EntryType, unknown> & {
   [EntryType.MEAL]: Meal;
   [EntryType.CALORIE_GOAL]: CalorieGoal;
 }
+export type EntryAppObjectMap = Record<EntryType, unknown> & {
+  [EntryType.WEIGHT]: AppWeight;
+  [EntryType.WORKOUT]: CompleteAppWorkout;
+  [EntryType.POST]: null;
+  [EntryType.OUTDOOR_RUN]: AppOutdoorRun;
+  [EntryType.OUTDOOR_WALK]: AppOutdoorWalk;
+}
 
 export interface IEntryService<TType extends EntryType> {
   getObject(entry: Entry): EntryObjectMap[TType] | null
@@ -18,4 +29,6 @@ export interface IEntryService<TType extends EntryType> {
   wipeLocalData(db: DrizzleDb): Promise<boolean>
   deleteById(id: number, db: DrizzleDb): Promise<void>
   processedPulledItems(db: DrizzleDb, items: [string, EntryObjectMap[TType]][]): Promise<Map<string, number>>
+  loadMap(ids: number[]): Promise<Map<number, EntryAppObjectMap[TType]>>
+  construct(row: BaseEntry, value: EntryAppObjectMap[TType]): AppEntry & {type: TType};
 }

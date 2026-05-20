@@ -1,3 +1,3 @@
-import {FoodListScreen} from '@/components/screens/food/FoodList';
+import {FoodListScreen} from '@/components/screens/food/FoodListScreen/FoodList';
 
 export default FoodListScreen;

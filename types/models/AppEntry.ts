@@ -22,7 +22,6 @@ export interface WeightAppEntry extends BaseEntry {
 
 export interface PostAppEntry extends BaseEntry {
   type: typeof EntryType.POST;
-
 }
 
 export interface OutdoorRunAppEntry extends BaseEntry {

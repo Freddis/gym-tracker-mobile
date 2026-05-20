@@ -8,8 +8,9 @@ import {WorkoutTypeExerciseRow} from './types/WorkoutTypeExerciseRow';
 import {AppWorkoutType} from './types/AppWorkoutType';
 import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
+import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
 
-export class WorkoutTypeService {
+export class WorkoutTypeService implements ISyncedEntityService {
   protected exerciseService: ExerciseService;
   protected logger: Logger = new Logger(WorkoutTypeService.name);
 
@@ -27,7 +28,7 @@ export class WorkoutTypeService {
     }));
     return result;
   }
-  async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+  async wipeLocalData(userId: number, db: DrizzleDb): Promise<boolean> {
     try {
       await db.delete(db._.fullSchema.workoutTypeExerciseSets);
       await db.delete(db._.fullSchema.workoutTypeExercises);
@@ -97,7 +98,7 @@ export class WorkoutTypeService {
     }
   }
 
-  async pullFromServer(db: AsyncDrizzleDb): Promise<boolean> {
+  async pullFromServer(_userId: number, db: AsyncDrizzleDb): Promise<boolean> {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
     const result = await transactionAsync(db, async (db) => {
       let page = 1;
@@ -121,7 +122,9 @@ export class WorkoutTypeService {
     return result;
 
   }
-
+  async pushToServer(userId: number, trx: DrizzleDb): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
   async getLatestPullSyncDate(db: DrizzleDb) {
     const row = await db.query.workoutTypes.findFirst({
       columns: {

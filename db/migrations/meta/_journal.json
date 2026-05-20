@@ -176,6 +176,13 @@
       "when": 1777662846992,
       "tag": "0024_switching_from_id_to_uuid",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "6",
+      "when": 1778846645577,
+      "tag": "0025_food_entries",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import {EntryType, EntryVisibility, Equipment, ExternalSource, ImageType, Muscle} from '@/openapi-client';
+import {EntryType, EntryVisibility, Equipment, ExternalSource, FoodAmountUnit, ImageType, Muscle, ServingSizeUnit} from '@/openapi-client';
 import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
@@ -243,4 +243,31 @@ export const outdoorRunHeartrateData = sqliteTable('outdoor_run_heartrate_data',
   outdoorRunId: integer().notNull().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
   timestamp: integer().notNull(),
   heartRate: real().notNull(),
+});
+
+export const food = sqliteTable('food', {
+  id: text().primaryKey(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  name: text().notNull(),
+  description: text(),
+  imageId: integer().references(() => images.id, {onDelete: 'set null'}),
+  protein: real().notNull(),
+  carbs: real().notNull(),
+  fat: real().notNull(),
+  servingSize: real(),
+  servingSizeUnit: text().notNull().$type<ServingSizeUnit>(),
+  isMeal: integer({mode: 'boolean'}).notNull(),
+  createdAt: integer({mode: 'timestamp'}).notNull(),
+  updatedAt: integer({mode: 'timestamp'}),
+  deletedAt: integer({mode: 'timestamp'}),
+  lastPulledAt: integer({mode: 'timestamp'}),
+  lastPushedAt: integer({mode: 'timestamp'}),
+});
+
+export const foodComponents = sqliteTable('food_components', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  foodId: text().notNull().references(() => food.id, {onDelete: 'restrict'}),
+  componentId: text().notNull().references(() => food.id, {onDelete: 'restrict'}),
+  amount: real().notNull(),
+  unit: text().notNull().$type<FoodAmountUnit>(),
 });

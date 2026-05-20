@@ -99,54 +99,60 @@ export const SettingsScreen: FC = () => {
 
   const onHealthClick = async () => {
     setShowImportModal(true);
-    const authorized = await requestAuthorization({
-      toRead: [
-        'HKWorkoutTypeIdentifier',
-        'HKWorkoutRouteTypeIdentifier',
-        'HKQuantityTypeIdentifierHeartRate',
-      ],
-    });
-
-    if (!authorized) {
-      setShowImportModal(false);
-      Alert.alert('Error', 'Please grant permission to access health data');
-      return;
-    }
-    const workouts = await queryWorkoutSamples({
-      limit: 10,
-      filter: {
-        OR: [
-          {
-            workoutActivityType: WorkoutActivityType.running,
-          },
-          {
-            workoutActivityType: WorkoutActivityType.walking,
-          },
+    try {
+      const authorized = await requestAuthorization({
+        toRead: [
+          'HKWorkoutTypeIdentifier',
+          'HKWorkoutRouteTypeIdentifier',
+          'HKQuantityTypeIdentifierHeartRate',
         ],
-      },
-      ascending: false,
-    });
-    setTotalItems(workouts.length);
-    setImportedItems(0);
-    console.log(`Found workouts: ${workouts.length}`);
-    let i = 0;
-    for (const workout of workouts) {
-      setImportedItems(i++);
-      const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
-        limit: 10,
-        filter: {
-          workout: workout,
-        },
       });
-      if (!auth.user) {
+
+      if (!authorized) {
         setShowImportModal(false);
-        Alert.alert('Error', 'No user found');
+        Alert.alert('Error', 'Please grant permission to access health data');
         return;
       }
-      await entryService.importFromHealthKit(auth.user, workout, hr);
+      const workouts = await queryWorkoutSamples({
+        limit: 10,
+        filter: {
+          OR: [
+            {
+              workoutActivityType: WorkoutActivityType.running,
+            },
+            {
+              workoutActivityType: WorkoutActivityType.walking,
+            },
+          ],
+        },
+        ascending: false,
+      });
+      setTotalItems(workouts.length);
+      setImportedItems(0);
+      console.log(`Found workouts: ${workouts.length}`);
+      let i = 0;
+      for (const workout of workouts) {
+        setImportedItems(i++);
+        const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
+          limit: 10,
+          filter: {
+            workout: workout,
+          },
+        });
+        if (!auth.user) {
+          setShowImportModal(false);
+          Alert.alert('Error', 'No user found');
+          return;
+        }
+        await entryService.importFromHealthKit(auth.user, workout, hr);
+      }
+      setShowImportModal(false);
+      Alert.alert('Success', 'Data imported successfully');
+    } catch (error) {
+      Alert.alert('Error', 'Error importing data from Health Kit');
+      console.error(error);
+      setShowImportModal(false);
     }
-    setShowImportModal(false);
-    Alert.alert('Success', 'Data imported successfully');
   };
 
   return (

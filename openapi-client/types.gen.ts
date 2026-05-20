@@ -2591,6 +2591,7 @@ export type Profile = {
   gender: Gender;
   units: UnitSettings;
   consumedCalories: ConsumedCalories;
+  consumedCaloriesHistory: ConsumedCaloriesHistory;
 };
 
 /**
@@ -2688,6 +2689,26 @@ export type ConsumedCalories = {
    * Fat consumed today
    */
   fat: number;
+};
+
+/**
+ * Consumed calories history
+ */
+export type ConsumedCaloriesHistory = {
+  /**
+   * History records
+   */
+  data: Array<{
+    /**
+     * Date of the consumed calories
+     */
+    date: Date;
+    value: ConsumedCalories;
+  }>;
+  /**
+   * Size of the history in days
+   */
+  size: number;
 };
 
 /**
@@ -8923,6 +8944,14 @@ export type GetFoodListData = {
      * Filter for dishes only
      */
     isDish?: boolean;
+    /**
+     * Only return foods updated after this date.
+     */
+    updatedAfter?: Date;
+    /**
+     * Include deleted foods.
+     */
+    includeDeleted?: boolean;
     /**
      * Page
      */

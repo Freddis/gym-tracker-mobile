@@ -2,15 +2,30 @@ import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, EntryUpsertDto, PostEntryUpsertDto, Weight, WeightEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
-import {WeightAppEntry} from '../../types/models/AppEntry';
+import {BaseEntry, WeightAppEntry} from '../../types/models/AppEntry';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
+import {AppWeight} from '../../types/models/AppWeight';
 export class WeightService implements IEntryService<EntryType.WEIGHT> {
   protected logger: Logger;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(WeightService.name);
+  }
+
+  async loadMap(ids: number[]): Promise<Map<number, AppWeight>> {
+    const weights: AppWeight[] = await this.db.query.weight.findMany({
+      where: (t, op) => op.inArray(t.id, ids),
+    });
+    return new Map(weights.map((x) => [x.id, x]));
+  }
+  construct(row: BaseEntry, value: AppWeight): WeightAppEntry {
+    return {
+      ...row,
+      type: EntryType.WEIGHT,
+      weight: value,
+    };
   }
 
   getObject(entry: Entry): Weight | null {

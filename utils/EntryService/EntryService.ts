@@ -11,11 +11,11 @@ import {
   ImageUpsertDto,
   PostEntryUpsertDto,
 } from '../../openapi-client';
-import {AppEntry, PostAppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
+import {AppEntry, BaseEntry, PostAppEntry, WeightAppEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {AppWorkout, CompleteAppWorkout} from '../../types/models/AppWorkout';
 import {NewModel} from '../../types/NewModel';
 import {ApiService} from '../ApiService/ApiService';
-import {DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {WeightService} from '../WeightService/WeightService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
@@ -30,28 +30,17 @@ import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {AppImage} from '../../types/models/AppImage';
 import uuid from 'react-native-uuid';
-import {EntryObjectMap, IEntryService} from '../../types/IEntryService';
+import {EntryAppObjectMap, EntryObjectMap, IEntryService} from '../../types/IEntryService';
 import {avoidLet} from '../avoidLet';
+import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
+import {LiveQueryQueryResult} from '../LiveQueryQueryResult';
+import {EntryObjectArrayMap} from './types/EntryObjectArrayMap';
+import {EntryServiceMap} from './types/EntryServiceMap';
+import {NumericEntryKeys} from './types/NumericEntryKeys';
+import {transactionAsync} from '../runTransaction';
+import {EntryObjectMapMap} from './types/EntryObjectMapMap';
 
-export type LiveQueryQueryResult<T> = {
-  data: T | undefined;
-  error: Error | undefined;
-  updatedAt: Date | undefined;
-}
-type NumericEntryKeys = Exclude<{
-  [K in keyof typeof schema.entries.$inferInsert]: Exclude<typeof schema.entries.$inferInsert[K], null | undefined> extends number ? K : never
-}[keyof typeof schema.entries.$inferInsert], undefined>
-
-type EntryObjectArrayMap = {
-  [key in Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>]: [string, EntryObjectMap[key]][]
-}
-type EntryServiceMap = {
- [k in Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>]: {
-  key: NumericEntryKeys,
-  service: IEntryService<k>
-}
-}
-export class EntryService {
+export class EntryService implements ISyncedEntityService {
   protected logger: Logger = new Logger(EntryService.name);
   protected entryServices: EntryServiceMap;
 
@@ -85,7 +74,7 @@ export class EntryService {
     };
   }
 
-  async pullFromServer(db: DrizzleDb, _userId: number, progress: StageProgressCallback): Promise<boolean> {
+  async pullFromServer(_userId: number, db: DrizzleDb, progress: StageProgressCallback): Promise<boolean> {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
     let page = 1;
     let processedItems = 0;
@@ -113,7 +102,8 @@ export class EntryService {
   }
 
   protected async processedPulledItem(db: DrizzleDb, items: Entry[]): Promise<void> {
-    if (items.length === 0) {
+    const firstItem = items[0];
+    if (!firstItem) {
       return;
     }
     const images: [string, Image][] = [];
@@ -144,7 +134,7 @@ export class EntryService {
         continue;
       }
     }
-    const imageMap = await this.imageService.processedPulledItems(db, images);
+    const imageMap = await this.imageService.processedPulledItems(firstItem.user.id, db, images, ImageType.ENTRY);
     const objectMapMap: Record<
     Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>,
     {key: NumericEntryKeys, map: Map<string, number>}
@@ -193,6 +183,7 @@ export class EntryService {
         entry[objectMap.key] = objectId;
       }
 
+      // todo: this needs to be on top and we should pull all entries from db and create map, then only process good records
       const existing = await db.query.entries.findFirst({
         where: (t, op) => op.eq(t.id, x.id),
       });
@@ -209,8 +200,8 @@ export class EntryService {
     }
   }
 
-  async deleteEntryFromDb(entry: AppEntry, db: DrizzleDb): Promise<void> {
-    await db.delete(schema.entries).where(eq(schema.entries.id, entry.id));
+  async deleteEntryObjectsFromDb(entry: AppEntry, trx: DrizzleDb): Promise<void> {
+    await trx.delete(schema.entries).where(eq(schema.entries.id, entry.id));
     if (entry.type === EntryType.POST) {
       return;
     }
@@ -218,7 +209,7 @@ export class EntryService {
     const objectKey = this.entryServices[entry.type].key;
     const objectId = entry[objectKey];
     if (objectId) {
-      await service.deleteById(objectId, db);
+      await service.deleteById(objectId, trx);
     }
   }
 
@@ -230,7 +221,7 @@ export class EntryService {
     );
   }
 
-  async wipeLocalData(db: DrizzleDb): Promise<boolean> {
+  async wipeLocalData(userId: number, db: DrizzleDb): Promise<boolean> {
     await db.delete(schema.entries);
     await this.weightService.wipeLocalData(db);
     await this.workoutService.wipeLocalData(db);
@@ -241,16 +232,7 @@ export class EntryService {
   }
 
   async pushEntry(entry: AppEntry): Promise<boolean> {
-    const data: EntryUpsertDto = this.createUpsertDto(entry);
-    const response = await this.api.client().putEntries({
-      body: {
-        items: [data],
-      },
-    });
-    if (!response.data || !response.data.items[0]) {
-      return false;
-    }
-    return true;
+    return await this.pushEntries(this.db, [entry.id]);
   }
 
   protected createUpsertDto(entry: AppEntry): EntryUpsertDto {
@@ -494,6 +476,8 @@ export class EntryService {
       limit?: number,
       updatedAt?: Date,
       includeDeleted?: boolean,
+      types?: EntryType[],
+      date?: Date,
     }
   ): Promise<AppEntry[]> {
     const sqlQuery = db.query.entries.findMany({
@@ -534,55 +518,68 @@ export class EntryService {
         params?.ids ? op.inArray(t.id, params.ids) : undefined,
         params?.externalIds ? op.inArray(t.externalId, params.externalIds) : undefined,
         params?.includeDeleted ? undefined : op.isNull(t.deletedAt),
+        params?.types ? op.inArray(t.type, params.types) : undefined,
+        params?.date ? op.gte(t.time, params.date) : undefined,
       ),
-      orderBy: (t, op) => op.desc(t.createdAt),
+      orderBy: (t, op) => op.desc(t.time),
       limit: params?.limit,
     });
+
     const entries = await sqlQuery;
-    const result: AppEntry[] = [];
-    for (const item of entries) {
-      if (item.type === EntryType.WORKOUT && item.workout) {
-        result.push({
-          ...item,
-          type: EntryType.WORKOUT,
-          workout: item.workout,
-        });
-        continue;
+
+    const createMap = async <T extends Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>>(
+      type: T,
+      rows: typeof schema.entries.$inferSelect[]
+    ): Promise<Map<number, EntryAppObjectMap[T]>> => {
+      if (rows.length === 0) {
+        return new Map();
       }
-      if (item.type === EntryType.WEIGHT && item.weight) {
-        result.push({
-          ...item,
-          type: EntryType.WEIGHT,
-          weight: item.weight,
-        });
-        continue;
+      const entryService = this.entryServices[type];
+      const key = entryService.key;
+      if (!key) {
+        return new Map();
       }
-      if (item.type === EntryType.POST) {
-        result.push({
-          ...item,
+      const ids = rows.map((x) => x[key]).filter((x) => x !== null);
+      return await entryService.service.loadMap(ids);
+    };
+
+    const objectMapMap: EntryObjectMapMap = {
+      [EntryType.WORKOUT]: await createMap(EntryType.WORKOUT, entries),
+      [EntryType.WEIGHT]: await createMap(EntryType.WEIGHT, entries),
+      [EntryType.OUTDOOR_RUN]: await createMap(EntryType.OUTDOOR_RUN, entries),
+      [EntryType.OUTDOOR_WALK]: await createMap(EntryType.OUTDOOR_WALK, entries),
+    };
+    const imageIds: number[] = entries.map((x) => x.imageId).filter((x) => x !== null);
+    const imageMap = await this.imageService.loadMap(imageIds);
+
+    // const result: AppEntry[] = [];
+    const result: AppEntry[] = entries.map((item) => {
+      const image = imageMap.get(item.imageId ?? 0);
+      const base: BaseEntry = {
+        ...item,
+        image: image ?? null,
+      };
+
+      if (item.type === EntryType.POST || item.type === EntryType.MEAL || item.type === EntryType.CALORIE_GOAL) {
+        return {
+          ...base,
           type: EntryType.POST,
-          image: item.image,
-        });
-        continue;
+        };
       }
-      if (item.type === EntryType.OUTDOOR_RUN && item.outdoorRun) {
-        result.push({
-          ...item,
-          type: EntryType.OUTDOOR_RUN,
-          outdoorRun: item.outdoorRun,
-        });
-        continue;
+      const {key} = this.entryServices[item.type];
+      const entryService: IEntryService<typeof item.type> = this.entryServices[item.type].service;
+      const id = item[key];
+      if (!id) {
+        throw new Error(`Object id not found for entry ${item.id}`);
       }
-      if (item.type === EntryType.OUTDOOR_WALK && item.outdoorWalk) {
-        result.push({
-          ...item,
-          type: EntryType.OUTDOOR_WALK,
-          outdoorWalk: item.outdoorWalk,
-        });
-        continue;
+      const data: EntryAppObjectMap[typeof item.type] | undefined = objectMapMap[item.type].get(id);
+      if (!data) {
+        throw new Error(`Object data not found for entry ${item.id}`);
       }
-      throw new Error('Unknown entry type');
-    }
+      const object: AppEntry = entryService.construct(base, data);
+      return object;
+
+    });
     return result;
   }
 
@@ -599,7 +596,7 @@ export class EntryService {
     return entries[0] ?? null;
   }
 
-  async pushToServer(db: DrizzleDb, userId: number): Promise<boolean> {
+  async pushToServer(userId: number, db: DrizzleDb): Promise<boolean> {
     this.logger.info('Pushing entries to server', {userId});
     const lastPullSyncDate = await this.getLatestPushSyncDate(db);
     this.logger.info('Last pull sync date', {lastPullSyncDate});
@@ -613,6 +610,7 @@ export class EntryService {
           op.gt(t.updatedAt, lastPullSyncDate),
           op.gt(t.createdAt, lastPullSyncDate),
           op.gt(t.deletedAt, lastPullSyncDate),
+          op.isNull(t.lastPushedAt),
         ) : undefined
       ),
     });
@@ -620,9 +618,13 @@ export class EntryService {
       this.logger.info('No entries to push');
       return true;
     }
-    this.logger.info('Getting entries to upsert', {ids: idRows.map((x) => x.id)});
+    return await this.pushEntries(db, idRows.map((x) => x.id));
+  }
+
+  protected async pushEntries(db: DrizzleDb, ids: string[]): Promise<boolean> {
+    this.logger.info('Getting entries to upsert', {ids: ids});
     const entriesToUpsert: AppEntry[] = await this.getEntries(db, {
-      ids: idRows.map((x) => x.id),
+      ids: ids,
       includeDeleted: true,
     });
     const data: EntryUpsertDto[] = entriesToUpsert.map((x) => this.createUpsertDto(x));
@@ -658,6 +660,7 @@ export class EntryService {
     }
     return true;
   }
+
   protected async getLatestPushSyncDate(db: DrizzleDb): Promise<Date | null> {
     const row = await db.query.entries.findFirst({
       columns: {
@@ -689,15 +692,16 @@ export class EntryService {
     workout: WorkoutProxyTyped,
     hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[]
   ): Promise<void> {
-    await this.db.transaction(async (db) => {
+    const existing = await this.getEntryByExternalId(workout.uuid);
+    const db = await asyncDrizzle();
+    await transactionAsync(db, async (trx) => {
       this.logger.info('Getting existing entry by external id', {externalId: workout.uuid});
-      const existing = await this.getEntryByExternalId(workout.uuid);
       let createdAt: Date = existing?.createdAt ?? new Date();
       let updatedAt: Date | null = existing ? new Date() : null;
       // let remoteId = existing?.remoteId ?? null;
       if (existing) {
         this.logger.info('Deleting existing entry', {id: existing.id});
-        await this.deleteEntryFromDb(existing, db);
+        await this.deleteEntryObjectsFromDb(existing, trx);
       }
       const typeMap: Partial<Record<WorkoutActivityType, EntryType>> = {
         [WorkoutActivityType.walking]: EntryType.OUTDOOR_WALK,
@@ -713,19 +717,17 @@ export class EntryService {
       let time: Date = createdAt;
       const routes = (await workout.getWorkoutRoutes()).map((route) => route.locations).flat();
       if (type === EntryType.OUTDOOR_WALK) {
-        walk = await this.outdoorWalkService.import(user, workout, routes, hr, db);
+        walk = await this.outdoorWalkService.import(user, workout, routes, hr, trx);
         time = walk.start;
       }
       if (type === EntryType.OUTDOOR_RUN) {
-        run = await this.outdoorRunService.import(user, workout, routes, hr, db);
+        run = await this.outdoorRunService.import(user, workout, routes, hr, trx);
         time = run.start;
       }
-      console.log(workout.sourceRevision.source.toJSON());
-      console.log(workout.device);
       // For some reason name in non JSON version is SourceProxy. Weird.
       const sourceRev = workout.sourceRevision.source.toJSON();
       const entry: typeof schema.entries.$inferInsert = {
-        id: uuid.v4(),
+        id: existing?.id ?? uuid.v4(),
         userId: user.id,
         type: type,
         time: time,
@@ -752,7 +754,7 @@ export class EntryService {
         externalId: workout.uuid,
         externalSource: ExternalSource.APPLE_HEALTH,
       };
-      const insertedRows = await db.insert(schema.entries).values(entry).returning();
+      const insertedRows = await trx.insert(schema.entries).values(entry).returning();
       const insertedRow = insertedRows[0];
       if (!insertedRow) {
         throw new Error('Failed to insert entry');
