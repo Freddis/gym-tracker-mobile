@@ -6,7 +6,7 @@
     "check": "tsc --noEmit && npm run lint:fix",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo run:android",
+    "android": "ANDROID_HOME=$HOME/Library/Android/sdk JAVA_HOME=$(/usr/libexec/java_home -v 17) expo run:android",
     "ios": "npm run openapi:ts; expo start --ios -c",
     "web": "expo start --web",
     "build": "npx expo prebuild --clean && npx expo run:ios",
