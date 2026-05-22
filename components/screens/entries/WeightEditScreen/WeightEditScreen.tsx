@@ -9,7 +9,6 @@ import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
@@ -32,7 +31,7 @@ export const WeightEditScreen: FC = () => {
   const theme = useAppTheme();
   const [entryAtom] = useAtom(weightAtom);
   const [entry, setEntry] = useAtom(entryAtom);
-  const [entryService] = useEntryService();
+  const {entryService} = useServices();
   const styles = getStyles(theme);
   const auth = useAuth();
   const user = auth.user;

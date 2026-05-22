@@ -3,18 +3,18 @@ import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollVie
 import {ThemedText} from '../../../blocks/ThemedText/ThemedText';
 import {Stack} from 'expo-router';
 import {ActivityIndicator, RefreshControl} from 'react-native';
-import {useFoodService} from '../../../../utils/FoodService/useFoodService';
 import {Food} from '../../../../openapi-client';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {FoodBlock} from './components/FoodBlock';
 import {ThemedView} from '../../../blocks/ThemedView/ThemedView';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const FoodListScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [food, setFood] = useState<Food[]>([]);
-  const [foodService] = useFoodService();
+  const {foodService} = useServices();
   const {user} = useAuth();
   const theme = useAppTheme();
   const onRefresh = async () => {

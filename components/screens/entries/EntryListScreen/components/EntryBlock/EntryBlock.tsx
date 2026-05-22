@@ -23,6 +23,7 @@ export const entryLens = <T extends AppEntry>(
   value: T,
   entryAtom: PrimitiveAtom<AppEntry>
 ): PrimitiveAtom<T> => {
+  // console.log('render entry'); //debug
   const valueAtom = atom(value);
   const lens = atom<T, [SetStateAction<T>], void>(
     (get): T => {
@@ -76,7 +77,6 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
       },
     });
   };
-  console.log('render entry');
   switch (entry.type) {
     case EntryType.WORKOUT:
       return <WorkoutBlock onPress={openWorkout} entryAtom={entryLens(entry, props.entry)} />;

@@ -23,8 +23,8 @@ import {StringHelper} from '../../../../utils/StringHelper/StringHelper';
 import {ThemedPickerButton} from '../../../blocks/ThemedPickerButton/ThemedPickerButton';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
-import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
 import uuid from 'react-native-uuid';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const CreateExerciseScreen: FC = () => {
   const navigation = useNavigation();
@@ -43,13 +43,13 @@ export const CreateExerciseScreen: FC = () => {
   const [difficulty, setDifficulty] = useState(5);
   const minDifficulty = 1;
   const maxDifficulty = 10;
-  const [service] = useExerciseService();
+  const {exerciseService} = useServices();
   useEffect(() => {
     const validated = string().safeParse(exerciseId);
     if (!validated.success) {
       return;
     }
-    service.getExercise(validated.data).then((item) => {
+    exerciseService.getExercise(validated.data).then((item) => {
       setBaseExercise(item);
       setName(item.name);
       setImage(item.images[0] ?? null);
@@ -59,7 +59,7 @@ export const CreateExerciseScreen: FC = () => {
       setSecondaryMuscles(item.muscles.secondary);
     });
 
-  }, [exerciseId, service]);
+  }, [exerciseId, exerciseService]);
   const user = auth.user;
   if (!user) {
     return null;

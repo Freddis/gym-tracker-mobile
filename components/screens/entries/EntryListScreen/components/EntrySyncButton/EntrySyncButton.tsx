@@ -2,11 +2,10 @@ import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Pressable} from 'react-native';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
-import {useEntryService} from '../../../../../../utils/EntryService/useEntryService';
-
+import {useServices} from '../../../../../providers/ServiceProvider/ServiceProvider';
 
 export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean, onUpdate: (entry: AppEntry) => void}) => {
-  // const lastSyncDate = props.workout.lastPulledAt ?? props.workout.lastPushedAt
+  const {entryService} = useServices();
   const lastSyncDate = props.entry.lastPushedAt;
   const lastUpdate = props.entry.updatedAt;
   const theme = useAppTheme();
@@ -31,18 +30,18 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean, onU
   //   setSynced(considerSynced);
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [considerSynced, props.entry.updatedAt]);
-  const [service] = useEntryService();
+
   const sync = async () => {
     // if (props.readonly) {
     //   return;
     // }
-    const entry = await service.getEntry(props.entry.id);
-    const result = await service.pushEntry(entry);
+    const entry = await entryService.getEntry(props.entry.id);
+    const result = await entryService.pushEntry(entry);
     const successMessage = 'Successfully synced';
     const errorMessage = 'Something went wrong';
     const msg = result ? successMessage : errorMessage;
     if (props.onUpdate) {
-      const updatedEntry = await service.getEntry(props.entry.id);
+      const updatedEntry = await entryService.getEntry(props.entry.id);
       props.onUpdate(updatedEntry);
     }
     alert(msg);

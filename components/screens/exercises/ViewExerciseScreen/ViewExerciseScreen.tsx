@@ -2,7 +2,6 @@ import {StyleSheet, Image, View} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {FC, Fragment} from 'react';
-import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
 import {useQuery} from '@tanstack/react-query';
 import {LoadingBlock} from '../../../blocks/LoadingBlock/LoadingBlock';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
@@ -11,18 +10,19 @@ import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {string} from 'zod';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const ViewExerciseScreen: FC = () => {
   const params = useLocalSearchParams();
   const placeHolderImage = require('@/assets/images/icon.png');
   const theme = useAppTheme();
   const router = useRouter();
-  const [service] = useExerciseService();
+  const {exerciseService} = useServices();
   const validated = string().safeParse(params.exerciseId);
   const exerciseId = validated.success ? validated.data : '';
 
   const result = useQuery({
-    queryFn: () => service.getExercise(exerciseId),
+    queryFn: () => exerciseService.getExercise(exerciseId),
     queryKey: ['exercises', exerciseId],
   });
   const exercise = result.data;

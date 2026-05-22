@@ -3,7 +3,6 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {useRouter} from 'expo-router';
 import {FC, useContext, useState} from 'react';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
-import {useSyncService} from '@/utils/SyncService/useSyncService';
 import {useDrizzle} from '@/utils/drizzle';
 import {Progress} from '@/utils/SyncService/types/Progress';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
@@ -15,7 +14,7 @@ import {useQueryClient} from '@tanstack/react-query';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {queryQuantitySamples, queryWorkoutSamples, requestAuthorization, WorkoutActivityType} from '@kingstinct/react-native-healthkit';
 import {ThemedButton} from '../../../blocks/ThemedButton/ThemedButton';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 const styles = StyleSheet.create({
   progressContainer: {
@@ -53,10 +52,9 @@ export const SettingsScreen: FC = () => {
   const theme = useAppTheme();
   const router = useRouter();
   const [progresState, setProgressState] = useState<Progress | null>(null);
-  const [syncService] = useSyncService();
+  const {syncService, entryService} = useServices();
   const [db] = useDrizzle();
   const queryClient = useQueryClient();
-  const [entryService] = useEntryService();
   const [showImportModal, setShowImportModal] = useState(false);
   const [showSyncModal, setShowSyncModal] = useState(false);
   const [importedItems, setImportedItems] = useState(1);

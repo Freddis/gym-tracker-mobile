@@ -6,12 +6,12 @@ import {Theme} from '../../../../types/Colors';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
 import {ThemedButtonList} from '../../../blocks/ThemedButtonList/ThemedButtonList';
 import {RoutePath} from '../../../../types/RoutePath';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {atom, useSetAtom} from 'jotai';
 import {weightAtom} from '../WeightEditScreen/utils/weightAtom';
 import {useQueryClient} from '@tanstack/react-query';
 import {workoutAtom} from '../WorkoutScreen/utils/workoutAtom';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const EntryAddScreen = () => {
   const theme = useAppTheme();
@@ -20,7 +20,7 @@ export const EntryAddScreen = () => {
   const setWorkoutEntry = useSetAtom(workoutAtom);
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [entryService] = useEntryService();
+  const {entryService} = useServices();
   const auth = useAuth();
   const user = auth.user;
   if (!user) {

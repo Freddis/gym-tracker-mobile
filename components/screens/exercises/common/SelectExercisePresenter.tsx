@@ -7,8 +7,8 @@ import {FC, useMemo, useState} from 'react';
 import {ThemedSearchInput} from '../../../blocks/ThemedSearchInput/ThemedSearchInput';
 import {useQuery} from '@tanstack/react-query';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
-import {useExerciseService} from '../../../../utils/ExerciseService/useExerciseService';
 import {Exercise} from '../../../../openapi-client';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 interface SelectExercisePresenterProps {
   onPress?: (item: Exercise) => void
@@ -18,7 +18,7 @@ export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props)
   const theme = useAppTheme();
   const [searchName, setSearchName] = useState<string|null>(null);
   const [library, setLibrary] = useState<'personal' | 'built-in'>('personal');
-  const [exerciseService] = useExerciseService();
+  const {exerciseService} = useServices();
 
   const response = useQuery({
     queryFn: () => exerciseService.getPersonalLibrary({

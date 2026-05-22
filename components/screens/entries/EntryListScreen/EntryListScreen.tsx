@@ -3,7 +3,7 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {Link, Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useDrizzle} from '@/utils/drizzle';
-import {FC, memo, useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
@@ -12,28 +12,23 @@ import {EntryType} from '../../../../openapi-client';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
-import {useSyncService} from '../../../../utils/SyncService/useSyncService';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useAtomValue} from 'jotai';
-import {EntryBlock} from './components/EntryBlock/EntryBlock';
+import {MemoEntryBlock} from './components/EntryBlock/MemoEntryBlock';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
-const MemoEntryBlock = memo(EntryBlock);
-
 export const EntryListScreen: FC = () => {
+  // console.log('render list'); //debug
   const theme = useAppTheme();
   const {entryListService} = useServices();
   const entryAtoms = useAtomValue(entryListService.getEntryAtoms());
   const {user} = useAuth();
-  const [syncService] = useSyncService();
+  const {syncService, entryService} = useServices();
   const [refreshing, setRefreshing] = useState(false);
-  const [entryService] = useEntryService();
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [db] = useDrizzle();
   const [types, setTypes] = useState<EntryType[]| null>(null);
   const [date, setDate] = useState<Date | null>(null);
-  console.log('here');
   const query = useInfiniteQuery({
     queryKey: ['entries', types, date],
     queryFn: ({pageParam}) => {
@@ -80,7 +75,6 @@ export const EntryListScreen: FC = () => {
       query.fetchNextPage();
     }
   };
-  console.log('rerender list');
   return (
     <ScreenContainer style={{paddingHorizontal: 0}}>
       <Stack.Screen options={{title: '', headerShown: false}} />
@@ -92,7 +86,7 @@ export const EntryListScreen: FC = () => {
         keyExtractor={(item) => item.toString()}
         renderItem={({item}) => <MemoEntryBlock entry={item} />}
         onEndReached={fetchNextPage}
-        onEndReachedThreshold={2}
+        onEndReachedThreshold={0.5}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

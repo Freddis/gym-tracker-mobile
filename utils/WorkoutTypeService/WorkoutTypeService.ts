@@ -29,14 +29,9 @@ export class WorkoutTypeService implements ISyncedEntityService {
     return result;
   }
   async wipeLocalData(userId: number, db: DrizzleDb): Promise<boolean> {
-    try {
-      await db.delete(db._.fullSchema.workoutTypeExerciseSets);
-      await db.delete(db._.fullSchema.workoutTypeExercises);
-      await db.delete(db._.fullSchema.workoutTypes);
-    } catch (e: unknown) {
-      this.logger.error('Error during wiping local data', e);
-      return false;
-    }
+    await db.delete(db._.fullSchema.workoutTypeExerciseSets);
+    await db.delete(db._.fullSchema.workoutTypeExercises);
+    await db.delete(db._.fullSchema.workoutTypes);
     return true;
   }
   protected async processedPulledItem(db: DrizzleDb, items: WorkoutType[]): Promise<void> {
