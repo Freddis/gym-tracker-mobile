@@ -16,6 +16,7 @@ import {Colors} from 'react-native-ui-lib';
 import {ThemedText} from '../components/blocks/ThemedText/ThemedText';
 import {ScreenContainer} from '../components/blocks/ScreenContainer/ScreenContainer';
 import {ServiceProvider} from '../components/providers/ServiceProvider/ServiceProvider';
+import '../utils/global.css';
 
 // console.log = () => null // uncomment for prod / preview
 export const queryClient = new QueryClient();

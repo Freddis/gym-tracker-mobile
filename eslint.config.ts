@@ -4,12 +4,7 @@ import {defineConfig} from 'eslint/config';
 
 // https://docs.expo.dev/guides/using-eslint/
 module.exports = defineConfig([expo, {
-  // extends: 'expo',
-  // ignorePatterns: ['/dist/*', '/openapi-client/*', '/ios/*', '/android/*'],
-  // env: {
-  //   browser: true,
-  //   jest: true,
-  // },
+  ignores: ['./openapi-client/**', './ios/**', './android/**'],
   rules: {
     'array-bracket-spacing': [2, 'never'],
     'arrow-spacing': 2,

@@ -4,422 +4,349 @@
  * Gender
  */
 export enum Gender {
-  MALE = 'Male',
-  FEMALE = 'Female',
-  OTHER = 'Other',
+    MALE = 'Male',
+    FEMALE = 'Female',
+    OTHER = 'Other'
 }
 
 /**
  * Country
  */
 export enum Country {
-  AF = 'AF',
-  AX = 'AX',
-  AL = 'AL',
-  DZ = 'DZ',
-  AS = 'AS',
-  AD = 'AD',
-  AO = 'AO',
-  AI = 'AI',
-  AQ = 'AQ',
-  AG = 'AG',
-  AR = 'AR',
-  AM = 'AM',
-  AW = 'AW',
-  AU = 'AU',
-  AT = 'AT',
-  AZ = 'AZ',
-  BS = 'BS',
-  BH = 'BH',
-  BD = 'BD',
-  BB = 'BB',
-  BY = 'BY',
-  BE = 'BE',
-  BZ = 'BZ',
-  BJ = 'BJ',
-  BM = 'BM',
-  BT = 'BT',
-  BO = 'BO',
-  BQ = 'BQ',
-  BA = 'BA',
-  BW = 'BW',
-  BV = 'BV',
-  BR = 'BR',
-  IO = 'IO',
-  BN = 'BN',
-  BG = 'BG',
-  BF = 'BF',
-  BI = 'BI',
-  KH = 'KH',
-  CM = 'CM',
-  CA = 'CA',
-  CV = 'CV',
-  KY = 'KY',
-  CF = 'CF',
-  TD = 'TD',
-  CL = 'CL',
-  CN = 'CN',
-  CX = 'CX',
-  CC = 'CC',
-  CO = 'CO',
-  KM = 'KM',
-  CG = 'CG',
-  CD = 'CD',
-  CK = 'CK',
-  CR = 'CR',
-  CI = 'CI',
-  HR = 'HR',
-  CU = 'CU',
-  CW = 'CW',
-  CY = 'CY',
-  CZ = 'CZ',
-  DK = 'DK',
-  DJ = 'DJ',
-  DM = 'DM',
-  DO = 'DO',
-  EC = 'EC',
-  EG = 'EG',
-  SV = 'SV',
-  GQ = 'GQ',
-  ER = 'ER',
-  EE = 'EE',
-  ET = 'ET',
-  FK = 'FK',
-  FO = 'FO',
-  FJ = 'FJ',
-  FI = 'FI',
-  FR = 'FR',
-  GF = 'GF',
-  PF = 'PF',
-  TF = 'TF',
-  GA = 'GA',
-  GM = 'GM',
-  GE = 'GE',
-  DE = 'DE',
-  GH = 'GH',
-  GI = 'GI',
-  GR = 'GR',
-  GL = 'GL',
-  GD = 'GD',
-  GP = 'GP',
-  GU = 'GU',
-  GT = 'GT',
-  GG = 'GG',
-  GN = 'GN',
-  GW = 'GW',
-  GY = 'GY',
-  HT = 'HT',
-  HM = 'HM',
-  VA = 'VA',
-  HN = 'HN',
-  HK = 'HK',
-  HU = 'HU',
-  IS = 'IS',
-  IN = 'IN',
-  ID = 'ID',
-  IR = 'IR',
-  IQ = 'IQ',
-  IE = 'IE',
-  IM = 'IM',
-  IL = 'IL',
-  IT = 'IT',
-  JM = 'JM',
-  JP = 'JP',
-  JE = 'JE',
-  JO = 'JO',
-  KZ = 'KZ',
-  KE = 'KE',
-  KI = 'KI',
-  KR = 'KR',
-  KP = 'KP',
-  KW = 'KW',
-  KG = 'KG',
-  LA = 'LA',
-  LV = 'LV',
-  LB = 'LB',
-  LS = 'LS',
-  LR = 'LR',
-  LY = 'LY',
-  LI = 'LI',
-  LT = 'LT',
-  LU = 'LU',
-  MO = 'MO',
-  MK = 'MK',
-  MG = 'MG',
-  MW = 'MW',
-  MY = 'MY',
-  MV = 'MV',
-  ML = 'ML',
-  MT = 'MT',
-  MH = 'MH',
-  MQ = 'MQ',
-  MR = 'MR',
-  MU = 'MU',
-  YT = 'YT',
-  MX = 'MX',
-  FM = 'FM',
-  MD = 'MD',
-  MC = 'MC',
-  MN = 'MN',
-  ME = 'ME',
-  MS = 'MS',
-  MA = 'MA',
-  MZ = 'MZ',
-  MM = 'MM',
-  NA = 'NA',
-  NR = 'NR',
-  NP = 'NP',
-  NL = 'NL',
-  NC = 'NC',
-  NZ = 'NZ',
-  NI = 'NI',
-  NE = 'NE',
-  NG = 'NG',
-  NU = 'NU',
-  NF = 'NF',
-  MP = 'MP',
-  NO = 'NO',
-  OM = 'OM',
-  PK = 'PK',
-  PW = 'PW',
-  PS = 'PS',
-  PA = 'PA',
-  PG = 'PG',
-  PY = 'PY',
-  PE = 'PE',
-  PH = 'PH',
-  PN = 'PN',
-  PL = 'PL',
-  PT = 'PT',
-  PR = 'PR',
-  QA = 'QA',
-  RE = 'RE',
-  RO = 'RO',
-  RU = 'RU',
-  RW = 'RW',
-  BL = 'BL',
-  SH = 'SH',
-  KN = 'KN',
-  LC = 'LC',
-  MF = 'MF',
-  PM = 'PM',
-  VC = 'VC',
-  WS = 'WS',
-  SM = 'SM',
-  ST = 'ST',
-  SA = 'SA',
-  SN = 'SN',
-  RS = 'RS',
-  SC = 'SC',
-  SL = 'SL',
-  SG = 'SG',
-  SX = 'SX',
-  SK = 'SK',
-  SI = 'SI',
-  SB = 'SB',
-  SO = 'SO',
-  ZA = 'ZA',
-  GS = 'GS',
-  SS = 'SS',
-  ES = 'ES',
-  LK = 'LK',
-  SD = 'SD',
-  SR = 'SR',
-  SJ = 'SJ',
-  SZ = 'SZ',
-  SE = 'SE',
-  CH = 'CH',
-  SY = 'SY',
-  TW = 'TW',
-  TJ = 'TJ',
-  TZ = 'TZ',
-  TH = 'TH',
-  TL = 'TL',
-  TG = 'TG',
-  TK = 'TK',
-  TO = 'TO',
-  TT = 'TT',
-  TN = 'TN',
-  TR = 'TR',
-  TM = 'TM',
-  TC = 'TC',
-  TV = 'TV',
-  UG = 'UG',
-  UA = 'UA',
-  AE = 'AE',
-  GB = 'GB',
-  US = 'US',
-  UM = 'UM',
-  UY = 'UY',
-  UZ = 'UZ',
-  VU = 'VU',
-  VE = 'VE',
-  VN = 'VN',
-  VG = 'VG',
-  VI = 'VI',
-  WF = 'WF',
-  EH = 'EH',
-  YE = 'YE',
-  ZM = 'ZM',
-  ZW = 'ZW',
+    AF = 'AF',
+    AX = 'AX',
+    AL = 'AL',
+    DZ = 'DZ',
+    AS = 'AS',
+    AD = 'AD',
+    AO = 'AO',
+    AI = 'AI',
+    AQ = 'AQ',
+    AG = 'AG',
+    AR = 'AR',
+    AM = 'AM',
+    AW = 'AW',
+    AU = 'AU',
+    AT = 'AT',
+    AZ = 'AZ',
+    BS = 'BS',
+    BH = 'BH',
+    BD = 'BD',
+    BB = 'BB',
+    BY = 'BY',
+    BE = 'BE',
+    BZ = 'BZ',
+    BJ = 'BJ',
+    BM = 'BM',
+    BT = 'BT',
+    BO = 'BO',
+    BQ = 'BQ',
+    BA = 'BA',
+    BW = 'BW',
+    BV = 'BV',
+    BR = 'BR',
+    IO = 'IO',
+    BN = 'BN',
+    BG = 'BG',
+    BF = 'BF',
+    BI = 'BI',
+    KH = 'KH',
+    CM = 'CM',
+    CA = 'CA',
+    CV = 'CV',
+    KY = 'KY',
+    CF = 'CF',
+    TD = 'TD',
+    CL = 'CL',
+    CN = 'CN',
+    CX = 'CX',
+    CC = 'CC',
+    CO = 'CO',
+    KM = 'KM',
+    CG = 'CG',
+    CD = 'CD',
+    CK = 'CK',
+    CR = 'CR',
+    CI = 'CI',
+    HR = 'HR',
+    CU = 'CU',
+    CW = 'CW',
+    CY = 'CY',
+    CZ = 'CZ',
+    DK = 'DK',
+    DJ = 'DJ',
+    DM = 'DM',
+    DO = 'DO',
+    EC = 'EC',
+    EG = 'EG',
+    SV = 'SV',
+    GQ = 'GQ',
+    ER = 'ER',
+    EE = 'EE',
+    ET = 'ET',
+    FK = 'FK',
+    FO = 'FO',
+    FJ = 'FJ',
+    FI = 'FI',
+    FR = 'FR',
+    GF = 'GF',
+    PF = 'PF',
+    TF = 'TF',
+    GA = 'GA',
+    GM = 'GM',
+    GE = 'GE',
+    DE = 'DE',
+    GH = 'GH',
+    GI = 'GI',
+    GR = 'GR',
+    GL = 'GL',
+    GD = 'GD',
+    GP = 'GP',
+    GU = 'GU',
+    GT = 'GT',
+    GG = 'GG',
+    GN = 'GN',
+    GW = 'GW',
+    GY = 'GY',
+    HT = 'HT',
+    HM = 'HM',
+    VA = 'VA',
+    HN = 'HN',
+    HK = 'HK',
+    HU = 'HU',
+    IS = 'IS',
+    IN = 'IN',
+    ID = 'ID',
+    IR = 'IR',
+    IQ = 'IQ',
+    IE = 'IE',
+    IM = 'IM',
+    IL = 'IL',
+    IT = 'IT',
+    JM = 'JM',
+    JP = 'JP',
+    JE = 'JE',
+    JO = 'JO',
+    KZ = 'KZ',
+    KE = 'KE',
+    KI = 'KI',
+    KR = 'KR',
+    KP = 'KP',
+    KW = 'KW',
+    KG = 'KG',
+    LA = 'LA',
+    LV = 'LV',
+    LB = 'LB',
+    LS = 'LS',
+    LR = 'LR',
+    LY = 'LY',
+    LI = 'LI',
+    LT = 'LT',
+    LU = 'LU',
+    MO = 'MO',
+    MK = 'MK',
+    MG = 'MG',
+    MW = 'MW',
+    MY = 'MY',
+    MV = 'MV',
+    ML = 'ML',
+    MT = 'MT',
+    MH = 'MH',
+    MQ = 'MQ',
+    MR = 'MR',
+    MU = 'MU',
+    YT = 'YT',
+    MX = 'MX',
+    FM = 'FM',
+    MD = 'MD',
+    MC = 'MC',
+    MN = 'MN',
+    ME = 'ME',
+    MS = 'MS',
+    MA = 'MA',
+    MZ = 'MZ',
+    MM = 'MM',
+    NA = 'NA',
+    NR = 'NR',
+    NP = 'NP',
+    NL = 'NL',
+    NC = 'NC',
+    NZ = 'NZ',
+    NI = 'NI',
+    NE = 'NE',
+    NG = 'NG',
+    NU = 'NU',
+    NF = 'NF',
+    MP = 'MP',
+    NO = 'NO',
+    OM = 'OM',
+    PK = 'PK',
+    PW = 'PW',
+    PS = 'PS',
+    PA = 'PA',
+    PG = 'PG',
+    PY = 'PY',
+    PE = 'PE',
+    PH = 'PH',
+    PN = 'PN',
+    PL = 'PL',
+    PT = 'PT',
+    PR = 'PR',
+    QA = 'QA',
+    RE = 'RE',
+    RO = 'RO',
+    RU = 'RU',
+    RW = 'RW',
+    BL = 'BL',
+    SH = 'SH',
+    KN = 'KN',
+    LC = 'LC',
+    MF = 'MF',
+    PM = 'PM',
+    VC = 'VC',
+    WS = 'WS',
+    SM = 'SM',
+    ST = 'ST',
+    SA = 'SA',
+    SN = 'SN',
+    RS = 'RS',
+    SC = 'SC',
+    SL = 'SL',
+    SG = 'SG',
+    SX = 'SX',
+    SK = 'SK',
+    SI = 'SI',
+    SB = 'SB',
+    SO = 'SO',
+    ZA = 'ZA',
+    GS = 'GS',
+    SS = 'SS',
+    ES = 'ES',
+    LK = 'LK',
+    SD = 'SD',
+    SR = 'SR',
+    SJ = 'SJ',
+    SZ = 'SZ',
+    SE = 'SE',
+    CH = 'CH',
+    SY = 'SY',
+    TW = 'TW',
+    TJ = 'TJ',
+    TZ = 'TZ',
+    TH = 'TH',
+    TL = 'TL',
+    TG = 'TG',
+    TK = 'TK',
+    TO = 'TO',
+    TT = 'TT',
+    TN = 'TN',
+    TR = 'TR',
+    TM = 'TM',
+    TC = 'TC',
+    TV = 'TV',
+    UG = 'UG',
+    UA = 'UA',
+    AE = 'AE',
+    GB = 'GB',
+    US = 'US',
+    UM = 'UM',
+    UY = 'UY',
+    UZ = 'UZ',
+    VU = 'VU',
+    VE = 'VE',
+    VN = 'VN',
+    VG = 'VG',
+    VI = 'VI',
+    WF = 'WF',
+    EH = 'EH',
+    YE = 'YE',
+    ZM = 'ZM',
+    ZW = 'ZW'
 }
 
 /**
  * User. Public representation of the user, should not contain sensitive data
  */
 export type User = {
-  /**
-   * Id of the User
-   */
-  id: number;
-  /**
-   * Name
-   */
-  name: string;
-  /**
-   * Profile picture for display. Url of the image.
-   */
-  profilePicture: Image | null;
+    /**
+     * Id of the User
+     */
+    id: number;
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Profile picture for display. Url of the image.
+     */
+    profilePicture: Image | null;
 };
 
 /**
  * Image record
  */
 export type Image = {
-  /**
-   * Id of the image
-   */
-  id: number;
-  /**
-   * URL of the image
-   */
-  url: string;
+    /**
+     * Id of the image
+     */
+    id: number;
+    /**
+     * URL of the image
+     */
+    url: string;
 };
 
 /**
  * User object used for authentication purposes. Non public and contains private information.
  */
 export type AuthUser = User & {
-  /**
-   * Email of the user
-   */
-  email: string;
-  /**
-   * JWT token. Used in API requests for authentication.
-   */
-  jwt: string;
+    /**
+     * Email of the user
+     */
+    email: string;
+    /**
+     * JWT token. Used in API requests for authentication.
+     */
+    jwt: string;
 };
 
 /**
  * Error response
  */
 export type UnknownErrorResponse = {
-  /**
-   * Error envelope
-   */
-  error: {
     /**
-     * Code to handle on the frontend
+     * Error envelope
      */
-    code: 'UnknownError';
-  };
+    error: {
+        /**
+         * Code to handle on the frontend
+         */
+        code: 'UnknownError';
+    };
 };
 
 /**
  * Request to change the password of the user
  */
 export type ChangePasswordRequest = {
-  /**
-   * Old password of the user
-   */
-  oldPassword: string;
-  /**
-   * New password of the user
-   */
-  newPassword: string;
-  /**
-   * Confirmation of the new password
-   */
-  confirmation: string;
+    /**
+     * Old password of the user
+     */
+    oldPassword: string;
+    /**
+     * New password of the user
+     */
+    newPassword: string;
+    /**
+     * Confirmation of the new password
+     */
+    confirmation: string;
 };
 
 /**
  * Exercise. Either from built-in library or created by a user.
  */
 export type Exercise = {
-  /**
-   * Id of the exercise
-   */
-  id: string;
-  /**
-   * Exercise Name
-   */
-  name: string;
-  /**
-   * Description and instructions on how to perform this exercise
-   */
-  description: string | null;
-  /**
-   * How difficult is this exercise
-   */
-  difficulty: number | null;
-  /**
-   * Equipmnet required to perform exercise
-   */
-  equipment: Equipment | null;
-  /**
-   * List of images for this exercise
-   */
-  images: string[];
-  /**
-   * Types of the parameters, such as: weight, reps, duration
-   */
-  params: number[];
-  /**
-   * Id of the user excercise belongs to
-   */
-  userId: number | null;
-  /**
-   * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
-   */
-  copiedFromId: string | null;
-  /**
-   * Id of the parent exercises. If this id is not NULL then this excercise is a variation of another exercise
-   */
-  parentExerciseId: string | null;
-  /**
-   * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
-   */
-  isArchived: boolean;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion. Deleted exercises are not accessible to users.
-   */
-  deletedAt: Date | null;
-  /**
-   * List of muscles involved in this excercise
-   */
-  muscles: {
-    /**
-     * List of primary muscles this exercise targets
-     */
-    primary: Muscle[];
-    /**
-     * List of secondary muscles this exercise targets
-     */
-    secondary: Muscle[];
-  };
-  /**
-   * List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.
-   */
-  variations: {
     /**
      * Id of the exercise
      */
@@ -480,537 +407,574 @@ export type Exercise = {
      * List of muscles involved in this excercise
      */
     muscles: {
-      /**
-       * List of primary muscles this exercise targets
-       */
-      primary: Muscle[];
-      /**
-       * List of secondary muscles this exercise targets
-       */
-      secondary: Muscle[];
+        /**
+         * List of primary muscles this exercise targets
+         */
+        primary: Muscle[];
+        /**
+         * List of secondary muscles this exercise targets
+         */
+        secondary: Muscle[];
     };
-  }[];
+    /**
+     * List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.
+     */
+    variations: {
+        /**
+         * Id of the exercise
+         */
+        id: string;
+        /**
+         * Exercise Name
+         */
+        name: string;
+        /**
+         * Description and instructions on how to perform this exercise
+         */
+        description: string | null;
+        /**
+         * How difficult is this exercise
+         */
+        difficulty: number | null;
+        /**
+         * Equipmnet required to perform exercise
+         */
+        equipment: Equipment | null;
+        /**
+         * List of images for this exercise
+         */
+        images: string[];
+        /**
+         * Types of the parameters, such as: weight, reps, duration
+         */
+        params: number[];
+        /**
+         * Id of the user excercise belongs to
+         */
+        userId: number | null;
+        /**
+         * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
+         */
+        copiedFromId: string | null;
+        /**
+         * Id of the parent exercises. If this id is not NULL then this excercise is a variation of another exercise
+         */
+        parentExerciseId: string | null;
+        /**
+         * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+         */
+        isArchived: boolean;
+        /**
+         * Date the creation
+         */
+        createdAt: Date;
+        /**
+         * Date of last update
+         */
+        updatedAt: Date | null;
+        /**
+         * Date of deletion. Deleted exercises are not accessible to users.
+         */
+        deletedAt: Date | null;
+        /**
+         * List of muscles involved in this excercise
+         */
+        muscles: {
+            /**
+             * List of primary muscles this exercise targets
+             */
+            primary: Muscle[];
+            /**
+             * List of secondary muscles this exercise targets
+             */
+            secondary: Muscle[];
+        };
+    }[];
 };
 
 /**
  * Gym Equipment
  */
 export enum Equipment {
-  ROWING = 'rowing',
-  SWIMMING = 'swimming',
-  PLATE_LOADED = 'plate loaded',
-  FOAM_ROLLER = 'foam roller',
-  PULLUP_BAR = 'pullup bar',
-  STAIR_CLIMBER = 'stair climber',
-  SELECTORIZED = 'selectorized',
-  DIP_BAR = 'dip bar',
-  PREACHER = 'preacher',
-  HYPEREXTENSION = 'hyperextension',
-  SANDBAG = 'sandbag',
-  ELLIPTICAL = 'elliptical',
-  CHAIR = 'chair',
-  CABLE = 'cable',
-  CAPTAINS_CHAIR = 'captains chair',
-  TOWEL = 'towel',
-  WATER_BOTTLE = 'water bottle',
-  STABILITY_BALL = 'stability ball',
-  TABLE = 'table',
-  SMITH = 'smith',
-  KETTLEBELL = 'kettlebell',
-  CYCLING = 'cycling',
-  STEP_AEROBICS = 'step aerobics',
-  PLATE = 'plate',
-  PLATFORM = 'platform',
-  MEDICINE_BALL = 'medicine ball',
-  RUNNING = 'running',
-  BARBELL = 'barbell',
-  BACKPACK = 'backpack',
-  EZ_CURL_BAR = 'ez curl bar',
-  WALKING = 'walking',
-  BENCH = 'bench',
-  BODYWEIGHT = 'bodyweight',
-  RESISTANCE_BAND = 'resistance band',
-  DUMBBELL = 'dumbbell',
-  JUMP_ROPE = 'jump rope',
-  TREADMILL = 'treadmill',
-  BOSU_BALL = 'bosu ball',
+    ROWING = 'rowing',
+    SWIMMING = 'swimming',
+    PLATE_LOADED = 'plate loaded',
+    FOAM_ROLLER = 'foam roller',
+    PULLUP_BAR = 'pullup bar',
+    STAIR_CLIMBER = 'stair climber',
+    SELECTORIZED = 'selectorized',
+    DIP_BAR = 'dip bar',
+    PREACHER = 'preacher',
+    HYPEREXTENSION = 'hyperextension',
+    SANDBAG = 'sandbag',
+    ELLIPTICAL = 'elliptical',
+    CHAIR = 'chair',
+    CABLE = 'cable',
+    CAPTAINS_CHAIR = 'captains chair',
+    TOWEL = 'towel',
+    WATER_BOTTLE = 'water bottle',
+    STABILITY_BALL = 'stability ball',
+    TABLE = 'table',
+    SMITH = 'smith',
+    KETTLEBELL = 'kettlebell',
+    CYCLING = 'cycling',
+    STEP_AEROBICS = 'step aerobics',
+    PLATE = 'plate',
+    PLATFORM = 'platform',
+    MEDICINE_BALL = 'medicine ball',
+    RUNNING = 'running',
+    BARBELL = 'barbell',
+    BACKPACK = 'backpack',
+    EZ_CURL_BAR = 'ez curl bar',
+    WALKING = 'walking',
+    BENCH = 'bench',
+    BODYWEIGHT = 'bodyweight',
+    RESISTANCE_BAND = 'resistance band',
+    DUMBBELL = 'dumbbell',
+    JUMP_ROPE = 'jump rope',
+    TREADMILL = 'treadmill',
+    BOSU_BALL = 'bosu ball'
 }
 
 /**
  * Body Muscle
  */
 export enum Muscle {
-  LOWER_BACK = 'Lower Back',
-  SOLEUS = 'Soleus',
-  FRONT_DELTOIDS = 'Front Deltoids',
-  LATS = 'Lats',
-  FOREARMS = 'Forearms',
-  PECS = 'Pecs',
-  HAMSTRINGS = 'Hamstrings',
-  WRIST_FLEXORS = 'Wrist Flexors',
-  BICEPS = 'Biceps',
-  TRICEPS = 'Triceps',
-  REAR_DELTOIDS = 'Rear Deltoids',
-  ROTATOR_CUFF = 'Rotator Cuff',
-  ANKLE = 'Ankle',
-  ABDOMINALS = 'Abdominals',
-  GLUTES = 'Glutes',
-  QUADRICEPS = 'Quadriceps',
-  OBLIQUES = 'Obliques',
-  ABDUCTORS = 'Abductors',
-  GASTROCNEMIUS = 'Gastrocnemius',
-  LATERAL_DELTOIDS = 'Lateral Deltoids',
-  HIP_FLEXORS = 'Hip Flexors',
-  TRAPEZIUS = 'Trapezius',
-  NECK = 'Neck',
-  ADDUCTORS = 'Adductors',
+    LOWER_BACK = 'Lower Back',
+    SOLEUS = 'Soleus',
+    FRONT_DELTOIDS = 'Front Deltoids',
+    LATS = 'Lats',
+    FOREARMS = 'Forearms',
+    PECS = 'Pecs',
+    HAMSTRINGS = 'Hamstrings',
+    WRIST_FLEXORS = 'Wrist Flexors',
+    BICEPS = 'Biceps',
+    TRICEPS = 'Triceps',
+    REAR_DELTOIDS = 'Rear Deltoids',
+    ROTATOR_CUFF = 'Rotator Cuff',
+    ANKLE = 'Ankle',
+    ABDOMINALS = 'Abdominals',
+    GLUTES = 'Glutes',
+    QUADRICEPS = 'Quadriceps',
+    OBLIQUES = 'Obliques',
+    ABDUCTORS = 'Abductors',
+    GASTROCNEMIUS = 'Gastrocnemius',
+    LATERAL_DELTOIDS = 'Lateral Deltoids',
+    HIP_FLEXORS = 'Hip Flexors',
+    TRAPEZIUS = 'Trapezius',
+    NECK = 'Neck',
+    ADDUCTORS = 'Adductors'
 }
 
 export type ExerciseUpsertDto = {
-  /**
-   * Id of the exercise
-   */
-  id: string;
-  /**
-   * Exercise Name
-   */
-  name: string;
-  /**
-   * Description and instructions on how to perform this exercise
-   */
-  description: string | null;
-  /**
-   * How difficult is this exercise
-   */
-  difficulty: number | null;
-  /**
-   * Equipmnet required to perform exercise
-   */
-  equipment: Equipment | null;
-  /**
-   * List of images for this exercise
-   */
-  images: string[];
-  /**
-   * Types of the parameters, such as: weight, reps, duration
-   */
-  params: number[];
-  /**
-   * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
-   */
-  copiedFromId: string | null;
-  /**
-   * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
-   */
-  isArchived: boolean;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion. Deleted exercises are not accessible to users.
-   */
-  deletedAt: Date | null;
-  /**
-   * List of muscles involved in this excercise
-   */
-  muscles: {
-    /**
-     * List of primary muscles this exercise targets
-     */
-    primary: Muscle[];
-    /**
-     * List of secondary muscles this exercise targets
-     */
-    secondary: Muscle[];
-  };
-};
-
-export type WorkoutUpdateDto = {
-  /**
-   * Id of the workout type. Users can create their own workout types as templates for workouts.
-   */
-  typeId: number | null;
-  /**
-   * Calories burned during workout
-   */
-  calories: number;
-  /**
-   * Time when workout started
-   */
-  start: Date;
-  /**
-   * Time when workout finished
-   */
-  end: Date | null;
-  /**
-   * List of the performed exercises
-   */
-  exercises: {
     /**
      * Id of the exercise
      */
-    exerciseId: string;
+    id: string;
     /**
-     * List of sets performed for this excercise
+     * Exercise Name
      */
-    sets: WorkoutExerciseSetUpdateDto[];
-  }[];
+    name: string;
+    /**
+     * Description and instructions on how to perform this exercise
+     */
+    description: string | null;
+    /**
+     * How difficult is this exercise
+     */
+    difficulty: number | null;
+    /**
+     * Equipmnet required to perform exercise
+     */
+    equipment: Equipment | null;
+    /**
+     * List of images for this exercise
+     */
+    images: string[];
+    /**
+     * Types of the parameters, such as: weight, reps, duration
+     */
+    params: number[];
+    /**
+     * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
+     */
+    copiedFromId: string | null;
+    /**
+     * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+     */
+    isArchived: boolean;
+    /**
+     * Date the creation
+     */
+    createdAt: Date;
+    /**
+     * Date of last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of deletion. Deleted exercises are not accessible to users.
+     */
+    deletedAt: Date | null;
+    /**
+     * List of muscles involved in this excercise
+     */
+    muscles: {
+        /**
+         * List of primary muscles this exercise targets
+         */
+        primary: Muscle[];
+        /**
+         * List of secondary muscles this exercise targets
+         */
+        secondary: Muscle[];
+    };
+};
+
+export type WorkoutUpdateDto = {
+    /**
+     * Id of the workout type. Users can create their own workout types as templates for workouts.
+     */
+    typeId: number | null;
+    /**
+     * Calories burned during workout
+     */
+    calories: number;
+    /**
+     * Time when workout started
+     */
+    start: Date;
+    /**
+     * Time when workout finished
+     */
+    end: Date | null;
+    /**
+     * List of the performed exercises
+     */
+    exercises: {
+        /**
+         * Id of the exercise
+         */
+        exerciseId: string;
+        /**
+         * List of sets performed for this excercise
+         */
+        sets: WorkoutExerciseSetUpdateDto[];
+    }[];
 };
 
 export type WorkoutExerciseSetUpdateDto = {
-  /**
-   * The time when set started
-   */
-  start: Date | null;
-  /**
-   * The time set ended.
-   */
-  end: Date | null;
-  /**
-   * Weight in lifted in units that user is using
-   */
-  weight: number | null;
-  /**
-   * Number of repetitions
-   */
-  reps: number | null;
+    /**
+     * The time when set started
+     */
+    start: Date | null;
+    /**
+     * The time set ended.
+     */
+    end: Date | null;
+    /**
+     * Weight in lifted in units that user is using
+     */
+    weight: number | null;
+    /**
+     * Number of repetitions
+     */
+    reps: number | null;
 };
 
 /**
  * Gym Workout. Consists of performed excercises and sets.
  */
 export type Workout = {
-  /**
-   * Id of the workout
-   */
-  id: number;
-  /**
-   * Id of the workout type. Users can create their own workout types as templates for workouts.
-   */
-  typeId: number | null;
-  /**
-   * Id of the user that created this workout
-   */
-  userId: number;
-  /**
-   * Calories burned during workout
-   */
-  calories: number;
-  /**
-   * Time when workout started
-   */
-  start: Date;
-  /**
-   * Time when workout finished
-   */
-  end: Date | null;
-  /**
-   * Time when the workout was created. Not changeable by user
-   */
-  createdAt: Date;
-  /**
-   * The last time the workout was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * The time workout has been deleted. Users cannot access deleted workouts
-   */
-  deletedAt: Date | null;
-  /**
-   * List of the performed exercises
-   */
-  exercises: WorkoutExercise[];
+    /**
+     * Id of the workout
+     */
+    id: number;
+    /**
+     * Id of the workout type. Users can create their own workout types as templates for workouts.
+     */
+    typeId: number | null;
+    /**
+     * Id of the user that created this workout
+     */
+    userId: number;
+    /**
+     * Calories burned during workout
+     */
+    calories: number;
+    /**
+     * Time when workout started
+     */
+    start: Date;
+    /**
+     * Time when workout finished
+     */
+    end: Date | null;
+    /**
+     * Time when the workout was created. Not changeable by user
+     */
+    createdAt: Date;
+    /**
+     * The last time the workout was updated
+     */
+    updatedAt: Date | null;
+    /**
+     * The time workout has been deleted. Users cannot access deleted workouts
+     */
+    deletedAt: Date | null;
+    /**
+     * List of the performed exercises
+     */
+    exercises: WorkoutExercise[];
 };
 
 /**
  * Excercise performed during workout. Not to be confused with Excercise.
  */
 export type WorkoutExercise = {
-  /**
-   * Library excercise
-   */
-  exercise: Exercise;
-  /**
-   * List of sets performed for this excercise
-   */
-  sets: WorkoutExerciseSet[];
+    /**
+     * Library excercise
+     */
+    exercise: Exercise;
+    /**
+     * List of sets performed for this excercise
+     */
+    sets: WorkoutExerciseSet[];
 };
 
 /**
  * Set is a group of repetitionss performed back to back one after
  */
 export type WorkoutExerciseSet = {
-  /**
-   * The time when set started
-   */
-  start: Date | null;
-  /**
-   * The time set ended.
-   */
-  end: Date | null;
-  /**
-   * Weight in lifted in units that user is using
-   */
-  weight: number | null;
-  /**
-   * Number of repetitions
-   */
-  reps: number | null;
+    /**
+     * The time when set started
+     */
+    start: Date | null;
+    /**
+     * The time set ended.
+     */
+    end: Date | null;
+    /**
+     * Weight in lifted in units that user is using
+     */
+    weight: number | null;
+    /**
+     * Number of repetitions
+     */
+    reps: number | null;
 };
 
 /**
  * Fields needed to update a workout
  */
 export type WorkoutUpsertDto = {
-  /**
-   * Id of the workout
-   */
-  id?: number;
-  /**
-   * Id of the workout type. Users can create their own workout types as templates for workouts.
-   */
-  typeId: number | null;
-  /**
-   * Calories burned during workout
-   */
-  calories: number;
-  /**
-   * Time when workout started
-   */
-  start: Date;
-  /**
-   * Time when workout finished
-   */
-  end: Date | null;
-  /**
-   * Time when the workout was created. Not changeable by user
-   */
-  createdAt: Date;
-  /**
-   * The last time the workout was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * The time workout has been deleted. Users cannot access deleted workouts
-   */
-  deletedAt: Date | null;
-  /**
-   * List of the performed exercises
-   */
-  exercises: {
     /**
-     * Id of the exercise
+     * Id of the workout
      */
-    exerciseId: string;
+    id?: number;
     /**
-     * The date the workout excercise was created
+     * Id of the workout type. Users can create their own workout types as templates for workouts.
+     */
+    typeId: number | null;
+    /**
+     * Calories burned during workout
+     */
+    calories: number;
+    /**
+     * Time when workout started
+     */
+    start: Date;
+    /**
+     * Time when workout finished
+     */
+    end: Date | null;
+    /**
+     * Time when the workout was created. Not changeable by user
      */
     createdAt: Date;
     /**
-     * The last time  the workout excercise was updated
+     * The last time the workout was updated
      */
     updatedAt: Date | null;
     /**
-     * List of sets performed for this excercise
+     * The time workout has been deleted. Users cannot access deleted workouts
      */
-    sets: {
-      /**
-       * Id of the set
-       */
-      id?: number;
-      /**
-       * The time when set started
-       */
-      start: Date | null;
-      /**
-       * The time set ended.
-       */
-      end: Date | null;
-      /**
-       * Weight in lifted in units that user is using
-       */
-      weight: number | null;
-      /**
-       * Number of repetitions
-       */
-      reps: number | null;
-      /**
-       * The date set was created
-       */
-      createdAt: Date;
-      /**
-       * The date set was last time updated
-       */
-      updatedAt: Date | null;
+    deletedAt: Date | null;
+    /**
+     * List of the performed exercises
+     */
+    exercises: {
+        /**
+         * Id of the exercise
+         */
+        exerciseId: string;
+        /**
+         * The date the workout excercise was created
+         */
+        createdAt: Date;
+        /**
+         * The last time  the workout excercise was updated
+         */
+        updatedAt: Date | null;
+        /**
+         * List of sets performed for this excercise
+         */
+        sets: {
+            /**
+             * Id of the set
+             */
+            id?: number;
+            /**
+             * The time when set started
+             */
+            start: Date | null;
+            /**
+             * The time set ended.
+             */
+            end: Date | null;
+            /**
+             * Weight in lifted in units that user is using
+             */
+            weight: number | null;
+            /**
+             * Number of repetitions
+             */
+            reps: number | null;
+            /**
+             * The date set was created
+             */
+            createdAt: Date;
+            /**
+             * The date set was last time updated
+             */
+            updatedAt: Date | null;
+        }[];
     }[];
-  }[];
 };
 
 /**
  * Workout Plan. Consist of workout templates that users supposed to conduct.
  */
 export type WorkoutPlan = {
-  /**
-   * Id
-   */
-  id: number;
-  /**
-   * Name of the workout plan
-   */
-  name: string | null;
-  /**
-   * Description of the workpout plan
-   */
-  description: string | null;
-  /**
-   * Id of the user
-   */
-  userId: number;
-  /**
-   * Date of creation
-   */
-  createdAt: Date;
-  /**
-   * The last time workout plan was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * Date workout plan was deleted
-   */
-  deletedAt: Date | null;
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Name of the workout plan
+     */
+    name: string | null;
+    /**
+     * Description of the workpout plan
+     */
+    description: string | null;
+    /**
+     * Id of the user
+     */
+    userId: number;
+    /**
+     * Date of creation
+     */
+    createdAt: Date;
+    /**
+     * The last time workout plan was updated
+     */
+    updatedAt: Date | null;
+    /**
+     * Date workout plan was deleted
+     */
+    deletedAt: Date | null;
 };
 
 /**
  * Workout Type. Workout template for  that user follows every other day.
  */
 export type WorkoutTypeExerciseUpdateDto = {
-  /**
-   * Sets
-   */
-  sets: WorkoutTypeExerciseSet[];
-  /**
-   * Position / ordering inside the workout type
-   */
-  index: number;
-  /**
-   * Id of the exercise
-   */
-  exerciseId: string;
+    /**
+     * Sets
+     */
+    sets: WorkoutTypeExerciseSet[];
+    /**
+     * Position / ordering inside the workout type
+     */
+    index: number;
+    /**
+     * Id of the exercise
+     */
+    exerciseId: string;
 };
 
 export type WorkoutTypeExerciseSet = {
-  /**
-   * Target number of reps
-   */
-  reps: number | null;
+    /**
+     * Target number of reps
+     */
+    reps: number | null;
 };
 
 /**
  * Workout Type. Workout template for  that user follows every other day.
  */
 export type WorkoutType = {
-  /**
-   * Id
-   */
-  id: number;
-  /**
-   * Id of the user
-   */
-  userId: number;
-  /**
-   * Workout Plan Id
-   */
-  planIndex: number | null;
-  /**
-   * Position inside Workout Plan
-   */
-  planId: number | null;
-  /**
-   * Name of the workout type
-   */
-  name: string;
-  /**
-   * Description of the workpout type
-   */
-  description: string | null;
-  /**
-   * Date of creation
-   */
-  createdAt: Date;
-  /**
-   * The last time workout type was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * Date workout type was deleted
-   */
-  deletedAt: Date | null;
-  /**
-   * Exercises
-   */
-  exercises: WorkoutTypeExercise[];
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Id of the user
+     */
+    userId: number;
+    /**
+     * Workout Plan Id
+     */
+    planIndex: number | null;
+    /**
+     * Position inside Workout Plan
+     */
+    planId: number | null;
+    /**
+     * Name of the workout type
+     */
+    name: string;
+    /**
+     * Description of the workpout type
+     */
+    description: string | null;
+    /**
+     * Date of creation
+     */
+    createdAt: Date;
+    /**
+     * The last time workout type was updated
+     */
+    updatedAt: Date | null;
+    /**
+     * Date workout type was deleted
+     */
+    deletedAt: Date | null;
+    /**
+     * Exercises
+     */
+    exercises: WorkoutTypeExercise[];
 };
 
 /**
  * Workout Type. Workout template for  that user follows every other day.
  */
 export type WorkoutTypeExercise = {
-  exercise: Exercise;
-  /**
-   * Sets
-   */
-  sets: WorkoutTypeExerciseSet[];
-  /**
-   * Position / ordering inside the workout type
-   */
-  index: number;
+    exercise: Exercise;
+    /**
+     * Sets
+     */
+    sets: WorkoutTypeExerciseSet[];
+    /**
+     * Position / ordering inside the workout type
+     */
+    index: number;
 };
 
 /**
  * Weight record added by user
  */
 export type Weight = {
-  /**
-   * Id of the weight record
-   */
-  id: number;
-  /**
-   * Id of the record in external source if it was imported.
-   */
-  externalId: string | null;
-  /**
-   * Id of the user
-   */
-  userId: number;
-  /**
-   * Weight value in orbitrary units
-   */
-  weight: number;
-  /**
-   * Units in which this weight record is calculdated
-   */
-  units: string;
-  /**
-   * The date record was created
-   */
-  createdAt: Date;
-  /**
-   * The date record was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * The date record was deleted
-   */
-  deletedAt: Date | null;
-  /**
-   * History of weight records for this user
-   */
-  history: {
     /**
      * Id of the weight record
      */
@@ -1043,263 +1007,299 @@ export type Weight = {
      * The date record was deleted
      */
     deletedAt: Date | null;
-  }[];
-  /**
-   * Size of the history in days
-   */
-  historySize: number;
+    /**
+     * History of weight records for this user
+     */
+    history: {
+        /**
+         * Id of the weight record
+         */
+        id: number;
+        /**
+         * Id of the record in external source if it was imported.
+         */
+        externalId: string | null;
+        /**
+         * Id of the user
+         */
+        userId: number;
+        /**
+         * Weight value in orbitrary units
+         */
+        weight: number;
+        /**
+         * Units in which this weight record is calculdated
+         */
+        units: string;
+        /**
+         * The date record was created
+         */
+        createdAt: Date;
+        /**
+         * The date record was updated
+         */
+        updatedAt: Date | null;
+        /**
+         * The date record was deleted
+         */
+        deletedAt: Date | null;
+    }[];
+    /**
+     * Size of the history in days
+     */
+    historySize: number;
 };
 
 /**
  * Possible types that Argus checkins can have.
  */
 export enum ArgusCheckinType {
-  STEPS = 'steps',
-  WEATHER = 'weather',
-  CALORIES = 'calories',
-  FOOD = 'food',
-  ACTIVITY = 'activity',
-  WEIGHT = 'weight',
-  CONSUMEDCALORIES = 'consumedcalories',
-  DRINK = 'drink',
-  HEARTRATE = 'heartrate',
-  STATUS = 'status',
-  BODYMETRICS = 'bodymetrics',
-  WORKOUT_LOG = 'workout_log',
-  SLEEPREPORT = 'sleepreport',
-  FITNESSTEST = 'fitnesstest',
+    STEPS = 'steps',
+    WEATHER = 'weather',
+    CALORIES = 'calories',
+    FOOD = 'food',
+    ACTIVITY = 'activity',
+    WEIGHT = 'weight',
+    CONSUMEDCALORIES = 'consumedcalories',
+    DRINK = 'drink',
+    HEARTRATE = 'heartrate',
+    STATUS = 'status',
+    BODYMETRICS = 'bodymetrics',
+    WORKOUT_LOG = 'workout_log',
+    SLEEPREPORT = 'sleepreport',
+    FITNESSTEST = 'fitnesstest'
 }
 
 /**
  * Entry. Can be a wirkout entry, a weight entry and so on.
  */
 export type Entry = {
-  /**
-   * Id of an entry
-   */
-  id: string;
-  user: User;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry, when the entry was created by user. Immutable.
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry. Another app.
-   */
-  externalSource: ExternalSource | null;
-  type: EntryType;
-  /**
-   * Weight. Only for weight entries
-   */
-  weight?: Weight;
-  /**
-   * Workout. Only for workout entries.
-   */
-  workout?: Workout;
-  /**
-   * Image. Only for image entries.
-   */
-  image?: Image | null;
-  /**
-   * Outdoor run. Only for outdoor run entries.
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk. Only for outdoor walk entries.
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal. Only for meal entries.
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal. Only for calorie goal entries.
-   */
-  calorieGoal?: CalorieGoal;
+    /**
+     * Id of an entry
+     */
+    id: string;
+    user: User;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry, when the entry was created by user. Immutable.
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry. Another app.
+     */
+    externalSource: ExternalSource | null;
+    type: EntryType;
+    /**
+     * Weight. Only for weight entries
+     */
+    weight?: Weight;
+    /**
+     * Workout. Only for workout entries.
+     */
+    workout?: Workout;
+    /**
+     * Image. Only for image entries.
+     */
+    image?: Image | null;
+    /**
+     * Outdoor run. Only for outdoor run entries.
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk. Only for outdoor walk entries.
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal. Only for meal entries.
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal. Only for calorie goal entries.
+     */
+    calorieGoal?: CalorieGoal;
 };
 
 /**
  * Visibility of the entry
  */
 export enum EntryVisibility {
-  PUBLIC = 'Public',
-  PRIVATE = 'Private',
+    PUBLIC = 'Public',
+    PRIVATE = 'Private'
 }
 
 /**
  * External source of the entry. Another app.
  */
 export enum ExternalSource {
-  ARGUS = 'Argus',
-  APPLE_HEALTH = 'AppleHealth',
+    ARGUS = 'Argus',
+    APPLE_HEALTH = 'AppleHealth'
 }
 
 /**
  * Entry type
  */
 export enum EntryType {
-  WORKOUT = 'Workout',
-  WEIGHT = 'Weight',
-  POST = 'Post',
-  OUTDOOR_RUN = 'OutdoorRun',
-  OUTDOOR_WALK = 'OutdoorWalk',
-  MEAL = 'Meal',
-  CALORIE_GOAL = 'CalorieGoal',
+    WORKOUT = 'Workout',
+    WEIGHT = 'Weight',
+    POST = 'Post',
+    OUTDOOR_RUN = 'OutdoorRun',
+    OUTDOOR_WALK = 'OutdoorWalk',
+    MEAL = 'Meal',
+    CALORIE_GOAL = 'CalorieGoal'
 }
 
 /**
  * Outdoor run
  */
 export type OutdoorRun = {
-  /**
-   * Id of the outdoor run
-   */
-  id: number;
-  /**
-   * User id of the outdoor run
-   */
-  userId: number;
-  /**
-   * Distance of the outdoor run
-   */
-  distance: number;
-  /**
-   * Duration of the outdoor run
-   */
-  duration: number;
-  /**
-   * Calories of the outdoor run
-   */
-  calories: number;
-  /**
-   * Pace of the outdoor run
-   */
-  pace: number;
-  /**
-   * Max pace of the outdoor run
-   */
-  maxPace: number;
-  /**
-   * Cadence of the outdoor run
-   */
-  cadence: number | null;
-  /**
-   * Max cadence of the outdoor run
-   */
-  maxCadence: number | null;
-  /**
-   * Heart rate of the outdoor run
-   */
-  heartRate: number | null;
-  /**
-   * Max heart rate of the outdoor run
-   */
-  maxHeartRate: number | null;
-  /**
-   * Start time of the outdoor run
-   */
-  start: Date;
-  /**
-   * End time of the outdoor run
-   */
-  end: Date;
-  /**
-   * Elevation gain of the outdoor run
-   */
-  elevationGain: number | null;
-  /**
-   * Geo data of the outdoor walk
-   */
-  geoData: PathPoint[] | null;
-  /**
-   * Heart rate data of the outdoor walk
-   */
-  heartRateData: HeartRatePoint[] | null;
+    /**
+     * Id of the outdoor run
+     */
+    id: number;
+    /**
+     * User id of the outdoor run
+     */
+    userId: number;
+    /**
+     * Distance of the outdoor run
+     */
+    distance: number;
+    /**
+     * Duration of the outdoor run
+     */
+    duration: number;
+    /**
+     * Calories of the outdoor run
+     */
+    calories: number;
+    /**
+     * Pace of the outdoor run
+     */
+    pace: number;
+    /**
+     * Max pace of the outdoor run
+     */
+    maxPace: number;
+    /**
+     * Cadence of the outdoor run
+     */
+    cadence: number | null;
+    /**
+     * Max cadence of the outdoor run
+     */
+    maxCadence: number | null;
+    /**
+     * Heart rate of the outdoor run
+     */
+    heartRate: number | null;
+    /**
+     * Max heart rate of the outdoor run
+     */
+    maxHeartRate: number | null;
+    /**
+     * Start time of the outdoor run
+     */
+    start: Date;
+    /**
+     * End time of the outdoor run
+     */
+    end: Date;
+    /**
+     * Elevation gain of the outdoor run
+     */
+    elevationGain: number | null;
+    /**
+     * Geo data of the outdoor walk
+     */
+    geoData: PathPoint[] | null;
+    /**
+     * Heart rate data of the outdoor walk
+     */
+    heartRateData: HeartRatePoint[] | null;
 };
 
 /**
  * Path point used to display routes on map for activities such as walking, hiking, etc.
  */
 export type PathPoint = {
-  /**
-   * Altitude of the geo data point
-   */
-  altitude: number;
-  /**
-   * Course of the geo data point
-   */
-  course: number | null;
-  /**
-   * Speed of the geo data point
-   */
-  speed: number | null;
-  /**
-   * Distance of the geo data point
-   */
-  distance: number | null;
-  /**
-   * Latitude of the geo data point
-   */
-  latitude: number;
-  /**
-   * Longitude of the geo data point
-   */
-  longitude: number;
-  /**
-   * Horizontal accuracy of the geo data point
-   */
-  horizontalAccuracy: number | null;
-  /**
-   * Vertical accuracy of the geo data point
-   */
-  verticalAccuracy: number | null;
-  /**
-   * Speed accuracy of the geo data point
-   */
-  speedAccuracy: number | null;
-  /**
-   * Timestamp of the path point
-   */
-  timestamp: number;
+    /**
+     * Altitude of the geo data point
+     */
+    altitude: number;
+    /**
+     * Course of the geo data point
+     */
+    course: number | null;
+    /**
+     * Speed of the geo data point
+     */
+    speed: number | null;
+    /**
+     * Distance of the geo data point
+     */
+    distance: number | null;
+    /**
+     * Latitude of the geo data point
+     */
+    latitude: number;
+    /**
+     * Longitude of the geo data point
+     */
+    longitude: number;
+    /**
+     * Horizontal accuracy of the geo data point
+     */
+    horizontalAccuracy: number | null;
+    /**
+     * Vertical accuracy of the geo data point
+     */
+    verticalAccuracy: number | null;
+    /**
+     * Speed accuracy of the geo data point
+     */
+    speedAccuracy: number | null;
+    /**
+     * Timestamp of the path point
+     */
+    timestamp: number;
 };
 
 /**
  * Heart rate point
  */
 export type HeartRatePoint = {
-  /**
-   * Timestamp of the heart rate point
-   */
-  timestamp: number;
-  /**
-   * Heart rate of the heart rate point
-   */
-  heartRate: number;
+    /**
+     * Timestamp of the heart rate point
+     */
+    timestamp: number;
+    /**
+     * Heart rate of the heart rate point
+     */
+    heartRate: number;
 };
 
 /**
@@ -1311,32 +1311,104 @@ export type OutdoorWalk = OutdoorRun;
  * Meal record. Tracks consumed calories.
  */
 export type Meal = {
-  type: MealType;
-  /**
-   * Food components of the meal
-   */
-  food: MealFoodComponent[];
+    type: MealType;
+    /**
+     * Food components of the meal
+     */
+    food: MealFoodComponent[];
 };
 
 /**
  * Type of the meal
  */
 export enum MealType {
-  BREAKFAST = 'Breakfast',
-  LUNCH = 'Lunch',
-  DINNER = 'Dinner',
-  SNACK = 'Snack',
-  OTHER = 'Other',
+    BREAKFAST = 'Breakfast',
+    LUNCH = 'Lunch',
+    DINNER = 'Dinner',
+    SNACK = 'Snack',
+    OTHER = 'Other'
 }
 
 /**
  * Meal food component
  */
 export type MealFoodComponent = {
-  /**
-   * Food of the meal component
-   */
-  food: {
+    /**
+     * Food of the meal component
+     */
+    food: {
+        /**
+         * Id of the food
+         */
+        id: string;
+        /**
+         * Name of the food
+         */
+        name: string;
+        /**
+         * Description of the food
+         */
+        description: string | null;
+        /**
+         * Image of the food
+         */
+        image: Image | null;
+        /**
+         * Calories of the food
+         */
+        calories: number;
+        /**
+         * Protein of the food
+         */
+        protein: number;
+        /**
+         * Carbs of the food
+         */
+        carbs: number;
+        /**
+         * Fat of the food
+         */
+        fat: number;
+        /**
+         * Serving size of the food
+         */
+        servingSize: number | null;
+        servingSizeUnit: ServingSizeUnit;
+        /**
+         * Date the creation
+         */
+        createdAt: Date;
+        /**
+         * Date of last update
+         */
+        updatedAt: Date | null;
+        /**
+         * Date of deletion
+         */
+        deletedAt: Date | null;
+        /**
+         * Is the food a meal
+         */
+        isMeal: boolean;
+        /**
+         * Components of the food
+         */
+        components: FoodComponent[];
+    };
+    /**
+     * Amount of the meal component
+     */
+    amount: number;
+    /**
+     * Unit of the meal component
+     */
+    unit: FoodAmountUnit;
+};
+
+/**
+ * Food record
+ */
+export type Food = {
     /**
      * Id of the food
      */
@@ -1394,756 +1466,677 @@ export type MealFoodComponent = {
      * Components of the food
      */
     components: FoodComponent[];
-  };
-  /**
-   * Amount of the meal component
-   */
-  amount: number;
-  /**
-   * Unit of the meal component
-   */
-  unit: FoodAmountUnit;
-};
-
-/**
- * Food record
- */
-export type Food = {
-  /**
-   * Id of the food
-   */
-  id: string;
-  /**
-   * Name of the food
-   */
-  name: string;
-  /**
-   * Description of the food
-   */
-  description: string | null;
-  /**
-   * Image of the food
-   */
-  image: Image | null;
-  /**
-   * Calories of the food
-   */
-  calories: number;
-  /**
-   * Protein of the food
-   */
-  protein: number;
-  /**
-   * Carbs of the food
-   */
-  carbs: number;
-  /**
-   * Fat of the food
-   */
-  fat: number;
-  /**
-   * Serving size of the food
-   */
-  servingSize: number | null;
-  servingSizeUnit: ServingSizeUnit;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Is the food a meal
-   */
-  isMeal: boolean;
-  /**
-   * Components of the food
-   */
-  components: FoodComponent[];
 };
 
 /**
  * Unit in which the food is measured
  */
 export enum ServingSizeUnit {
-  GRAM = 'Gram',
+    GRAM = 'Gram'
 }
 
 /**
  * Food component
  */
 export type FoodComponent = {
-  /**
-   * Ingredient food
-   */
-  food: Food;
-  /**
-   * Amount of the food component
-   */
-  amount: number;
-  /**
-   * Unit of the food component
-   */
-  unit: FoodAmountUnit;
+    /**
+     * Ingredient food
+     */
+    food: Food;
+    /**
+     * Amount of the food component
+     */
+    amount: number;
+    /**
+     * Unit of the food component
+     */
+    unit: FoodAmountUnit;
 };
 
 /**
  * Unit in which the food is measured
  */
 export enum FoodAmountUnit {
-  GRAM = 'Gram',
-  SERVING = 'Serving',
+    GRAM = 'Gram',
+    SERVING = 'Serving'
 }
 
 /**
  * Calorie goal record
  */
 export type CalorieGoal = {
-  /**
-   * Calories of the calorie goal
-   */
-  calories: number;
-  /**
-   * Carbs of the calorie goal
-   */
-  carbs: number;
-  /**
-   * Protein of the calorie goal
-   */
-  protein: number;
-  /**
-   * Fat of the calorie goal
-   */
-  fat: number;
-  /**
-   * Start date of the calorie goal
-   */
-  start: Date;
-  /**
-   * End date of the calorie goal
-   */
-  end: Date | null;
+    /**
+     * Calories of the calorie goal
+     */
+    calories: number;
+    /**
+     * Carbs of the calorie goal
+     */
+    carbs: number;
+    /**
+     * Protein of the calorie goal
+     */
+    protein: number;
+    /**
+     * Fat of the calorie goal
+     */
+    fat: number;
+    /**
+     * Start date of the calorie goal
+     */
+    start: Date;
+    /**
+     * End date of the calorie goal
+     */
+    end: Date | null;
 };
 
 /**
  * Fields needed to update a workout
  */
-export type EntryUpsertDto =
-  | WorkoutEntryUpsertDto
-  | WeightEntryUpsertDto
-  | PostEntryUpsertDto
-  | OutdoorRunEntryUpsertDto
-  | OutdoorWalkEntryUpsertDto
-  | MealEntryUpsertDto
-  | CalorieGoalEntryUpsertDto;
+export type EntryUpsertDto = WorkoutEntryUpsertDto | WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto | OutdoorWalkEntryUpsertDto | MealEntryUpsertDto | CalorieGoalEntryUpsertDto;
 
 export type WorkoutEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'Workout';
-  /**
-   * Weight
-   */
-  weight?: Weight;
-  /**
-   * Workout
-   */
-  workout: WorkoutUpsertDto;
-  /**
-   * Outdoor run
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal
-   */
-  calorieGoal?: CalorieGoal;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'Workout';
+    /**
+     * Weight
+     */
+    weight?: Weight;
+    /**
+     * Workout
+     */
+    workout: WorkoutUpsertDto;
+    /**
+     * Outdoor run
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal
+     */
+    calorieGoal?: CalorieGoal;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 /**
  * Image to upsert
  */
 export type ImageUpsertDto = {
-  data: string;
+    data: string;
 };
 
 export type WeightEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'Weight';
-  /**
-   * Weight
-   */
-  weight: WeightUpsertDto;
-  /**
-   * Workout
-   */
-  workout?: Workout;
-  /**
-   * Outdoor run
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal
-   */
-  calorieGoal?: CalorieGoal;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'Weight';
+    /**
+     * Weight
+     */
+    weight: WeightUpsertDto;
+    /**
+     * Workout
+     */
+    workout?: Workout;
+    /**
+     * Outdoor run
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal
+     */
+    calorieGoal?: CalorieGoal;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 /**
  * Fields needed to upsert a weight record
  */
 export type WeightUpsertDto = {
-  /**
-   * Weight value in orbitrary units
-   */
-  weight: number;
-  /**
-   * Units in which this weight record is calculdated
-   */
-  units: string;
-  /**
-   * The date record was created
-   */
-  createdAt: Date;
-  /**
-   * The date record was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * The date record was deleted
-   */
-  deletedAt: Date | null;
-  /**
-   * Id of the weight record
-   */
-  id?: number;
+    /**
+     * Weight value in orbitrary units
+     */
+    weight: number;
+    /**
+     * Units in which this weight record is calculdated
+     */
+    units: string;
+    /**
+     * The date record was created
+     */
+    createdAt: Date;
+    /**
+     * The date record was updated
+     */
+    updatedAt: Date | null;
+    /**
+     * The date record was deleted
+     */
+    deletedAt: Date | null;
+    /**
+     * Id of the weight record
+     */
+    id?: number;
 };
 
 export type PostEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'Post';
-  /**
-   * Weight
-   */
-  weight?: Weight;
-  /**
-   * Workout
-   */
-  workout?: Workout;
-  /**
-   * Outdoor run
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal
-   */
-  calorieGoal?: CalorieGoal;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'Post';
+    /**
+     * Weight
+     */
+    weight?: Weight;
+    /**
+     * Workout
+     */
+    workout?: Workout;
+    /**
+     * Outdoor run
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal
+     */
+    calorieGoal?: CalorieGoal;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 export type OutdoorRunEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'OutdoorRun';
-  /**
-   * Weight
-   */
-  weight?: Weight;
-  /**
-   * Workout
-   */
-  workout?: Workout;
-  /**
-   * Outdoor run
-   */
-  outdoorRun: OutdoorRunUpsertDto;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal
-   */
-  calorieGoal?: CalorieGoal;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'OutdoorRun';
+    /**
+     * Weight
+     */
+    weight?: Weight;
+    /**
+     * Workout
+     */
+    workout?: Workout;
+    /**
+     * Outdoor run
+     */
+    outdoorRun: OutdoorRunUpsertDto;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal
+     */
+    calorieGoal?: CalorieGoal;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 /**
  * Outdoor run upsert dto
  */
 export type OutdoorRunUpsertDto = {
-  /**
-   * Distance of the outdoor run
-   */
-  distance: number;
-  /**
-   * Duration of the outdoor run
-   */
-  duration: number;
-  /**
-   * Calories of the outdoor run
-   */
-  calories: number;
-  /**
-   * Pace of the outdoor run
-   */
-  pace: number;
-  /**
-   * Max pace of the outdoor run
-   */
-  maxPace: number;
-  /**
-   * Cadence of the outdoor run
-   */
-  cadence: number | null;
-  /**
-   * Max cadence of the outdoor run
-   */
-  maxCadence: number | null;
-  /**
-   * Heart rate of the outdoor run
-   */
-  heartRate: number | null;
-  /**
-   * Max heart rate of the outdoor run
-   */
-  maxHeartRate: number | null;
-  /**
-   * Start time of the outdoor run
-   */
-  start: Date;
-  /**
-   * End time of the outdoor run
-   */
-  end: Date;
-  /**
-   * Elevation gain of the outdoor run
-   */
-  elevationGain: number | null;
-  /**
-   * Geo data of the outdoor walk
-   */
-  geoData: PathPoint[] | null;
-  /**
-   * Heart rate data of the outdoor walk
-   */
-  heartRateData: HeartRatePoint[] | null;
-  /**
-   * Id of the outdoor run
-   */
-  id?: number;
+    /**
+     * Distance of the outdoor run
+     */
+    distance: number;
+    /**
+     * Duration of the outdoor run
+     */
+    duration: number;
+    /**
+     * Calories of the outdoor run
+     */
+    calories: number;
+    /**
+     * Pace of the outdoor run
+     */
+    pace: number;
+    /**
+     * Max pace of the outdoor run
+     */
+    maxPace: number;
+    /**
+     * Cadence of the outdoor run
+     */
+    cadence: number | null;
+    /**
+     * Max cadence of the outdoor run
+     */
+    maxCadence: number | null;
+    /**
+     * Heart rate of the outdoor run
+     */
+    heartRate: number | null;
+    /**
+     * Max heart rate of the outdoor run
+     */
+    maxHeartRate: number | null;
+    /**
+     * Start time of the outdoor run
+     */
+    start: Date;
+    /**
+     * End time of the outdoor run
+     */
+    end: Date;
+    /**
+     * Elevation gain of the outdoor run
+     */
+    elevationGain: number | null;
+    /**
+     * Geo data of the outdoor walk
+     */
+    geoData: PathPoint[] | null;
+    /**
+     * Heart rate data of the outdoor walk
+     */
+    heartRateData: HeartRatePoint[] | null;
+    /**
+     * Id of the outdoor run
+     */
+    id?: number;
 };
 
 export type OutdoorWalkEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'OutdoorWalk';
-  /**
-   * Weight
-   */
-  weight?: Weight;
-  /**
-   * Workout
-   */
-  workout?: Workout;
-  /**
-   * Outdoor run
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk: OutdoorWalkUpsertDto;
-  /**
-   * Meal
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal
-   */
-  calorieGoal?: CalorieGoal;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'OutdoorWalk';
+    /**
+     * Weight
+     */
+    weight?: Weight;
+    /**
+     * Workout
+     */
+    workout?: Workout;
+    /**
+     * Outdoor run
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk: OutdoorWalkUpsertDto;
+    /**
+     * Meal
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal
+     */
+    calorieGoal?: CalorieGoal;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 /**
@@ -2152,9132 +2145,8041 @@ export type OutdoorWalkEntryUpsertDto = {
 export type OutdoorWalkUpsertDto = OutdoorRunUpsertDto;
 
 export type MealEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'Meal';
-  /**
-   * Weight
-   */
-  weight?: Weight;
-  /**
-   * Workout
-   */
-  workout?: Workout;
-  /**
-   * Outdoor run
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal
-   */
-  meal: MealUpsertDto;
-  /**
-   * Calorie goal
-   */
-  calorieGoal?: CalorieGoal;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'Meal';
+    /**
+     * Weight
+     */
+    weight?: Weight;
+    /**
+     * Workout
+     */
+    workout?: Workout;
+    /**
+     * Outdoor run
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal
+     */
+    meal: MealUpsertDto;
+    /**
+     * Calorie goal
+     */
+    calorieGoal?: CalorieGoal;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 /**
  * Meal record to upsert
  */
 export type MealUpsertDto = {
-  type: MealType;
-  /**
-   * Components of the meal
-   */
-  food: FoodComponentUpsertDto[];
+    type: MealType;
+    /**
+     * Components of the meal
+     */
+    food: FoodComponentUpsertDto[];
 };
 
 /**
  * Food component to upsert
  */
 export type FoodComponentUpsertDto = {
-  /**
-   * Food to add as component
-   */
-  food: {
     /**
-     * Id of the food
+     * Food to add as component
      */
-    id: string;
-  };
-  /**
-   * Amount of the food component
-   */
-  amount: number;
-  /**
-   * Unit of the food component
-   */
-  unit: FoodAmountUnit;
+    food: {
+        /**
+         * Id of the food
+         */
+        id: string;
+    };
+    /**
+     * Amount of the food component
+     */
+    amount: number;
+    /**
+     * Unit of the food component
+     */
+    unit: FoodAmountUnit;
 };
 
 export type CalorieGoalEntryUpsertDto = {
-  /**
-   * Id of the entry
-   */
-  id: string;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type of the entry
-   */
-  type: 'CalorieGoal';
-  /**
-   * Weight
-   */
-  weight?: Weight;
-  /**
-   * Workout
-   */
-  workout?: Workout;
-  /**
-   * Outdoor run
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal
-   */
-  calorieGoal: CalorieGoalUpsertDto;
-  /**
-   * Image
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Id of the healthkit entry
-   */
-  healthkitId: string | null;
-  /**
-   * Last sync date
-   */
-  healthkitAnchor: number | null;
-  /**
-   * Last sync anchor
-   */
-  healthkitAnchors_3_0: string | null;
-  /**
-   * Id of the app that added healthkit record
-   */
-  healthkitSource: string | null;
-  /**
-   * Name of the app that added healthkit record
-   */
-  healthkitSourceName: string | null;
-  /**
-   * Id of the device that added healthkit record
-   */
-  healthkitDevice: string | null;
-  /**
-   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-   */
-  healthkitDeviceName: string | null;
+    /**
+     * Id of the entry
+     */
+    id: string;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type of the entry
+     */
+    type: 'CalorieGoal';
+    /**
+     * Weight
+     */
+    weight?: Weight;
+    /**
+     * Workout
+     */
+    workout?: Workout;
+    /**
+     * Outdoor run
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal
+     */
+    calorieGoal: CalorieGoalUpsertDto;
+    /**
+     * Image
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
 };
 
 /**
  * Calorie goal record to upsert
  */
 export type CalorieGoalUpsertDto = {
-  /**
-   * Calories of the calorie goal
-   */
-  calories: number;
-  /**
-   * Carbs of the calorie goal
-   */
-  carbs: number;
-  /**
-   * Protein of the calorie goal
-   */
-  protein: number;
-  /**
-   * Fat of the calorie goal
-   */
-  fat: number;
-  /**
-   * Start date of the calorie goal
-   */
-  start: Date;
-  /**
-   * End date of the calorie goal
-   */
-  end: Date | null;
+    /**
+     * Calories of the calorie goal
+     */
+    calories: number;
+    /**
+     * Carbs of the calorie goal
+     */
+    carbs: number;
+    /**
+     * Protein of the calorie goal
+     */
+    protein: number;
+    /**
+     * Fat of the calorie goal
+     */
+    fat: number;
+    /**
+     * Start date of the calorie goal
+     */
+    start: Date;
+    /**
+     * End date of the calorie goal
+     */
+    end: Date | null;
 };
 
 /**
  * List of dates. Workout about bug in array transformation in @hey-api/openapi-ts
  */
 export type DateList = {
-  /**
-   * Date
-   */
-  value: Date;
+    /**
+     * Date
+     */
+    value: Date;
 }[];
 
 /**
  * Post entry
  */
 export type PostEntry = {
-  /**
-   * Id of an entry
-   */
-  id: string;
-  user: User;
-  visibility: EntryVisibility;
-  /**
-   * Time of the entry. Can be changed by user.
-   */
-  time: Date;
-  /**
-   * Date of the entry, when the entry was created by user. Immutable.
-   */
-  createdAt: Date;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of the deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Title of the entry
-   */
-  title: string | null;
-  /**
-   * Note of the entry
-   */
-  note: string | null;
-  /**
-   * External id of the entry
-   */
-  externalId: string | null;
-  /**
-   * External source of the entry. Another app.
-   */
-  externalSource: ExternalSource | null;
-  /**
-   * Type
-   */
-  type: 'Post';
-  /**
-   * Weight. Only for weight entries
-   */
-  weight?: Weight;
-  /**
-   * Workout. Only for workout entries.
-   */
-  workout?: Workout;
-  /**
-   * Image
-   */
-  image: Image | null;
-  /**
-   * Outdoor run. Only for outdoor run entries.
-   */
-  outdoorRun?: OutdoorRun;
-  /**
-   * Outdoor walk. Only for outdoor walk entries.
-   */
-  outdoorWalk?: OutdoorWalk;
-  /**
-   * Meal. Only for meal entries.
-   */
-  meal?: Meal;
-  /**
-   * Calorie goal. Only for calorie goal entries.
-   */
-  calorieGoal?: CalorieGoal;
+    /**
+     * Id of an entry
+     */
+    id: string;
+    user: User;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry, when the entry was created by user. Immutable.
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry. Another app.
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Type
+     */
+    type: 'Post';
+    /**
+     * Weight. Only for weight entries
+     */
+    weight?: Weight;
+    /**
+     * Workout. Only for workout entries.
+     */
+    workout?: Workout;
+    /**
+     * Image
+     */
+    image: Image | null;
+    /**
+     * Outdoor run. Only for outdoor run entries.
+     */
+    outdoorRun?: OutdoorRun;
+    /**
+     * Outdoor walk. Only for outdoor walk entries.
+     */
+    outdoorWalk?: OutdoorWalk;
+    /**
+     * Meal. Only for meal entries.
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal. Only for calorie goal entries.
+     */
+    calorieGoal?: CalorieGoal;
 };
 
 /**
  * Food record to upsert
  */
 export type FoodUpsertDto = {
-  /**
-   * Id of the food
-   */
-  id: string;
-  /**
-   * Name of the food
-   */
-  name: string;
-  /**
-   * Description of the food
-   */
-  description: string | null;
-  /**
-   * Image of the food
-   */
-  image?: ImageUpsertDto | null;
-  /**
-   * Protein of the food
-   */
-  protein: number;
-  /**
-   * Carbs of the food
-   */
-  carbs: number;
-  /**
-   * Fat of the food
-   */
-  fat: number;
-  /**
-   * Is the food a dish
-   */
-  isMeal: boolean;
-  /**
-   * Serving size of the food
-   */
-  servingSize: number | null;
-  /**
-   * Serving size unit of the food
-   */
-  servingSizeUnit: ServingSizeUnit;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Components of the food
-   */
-  components: FoodComponentUpsertDto[];
+    /**
+     * Id of the food
+     */
+    id: string;
+    /**
+     * Name of the food
+     */
+    name: string;
+    /**
+     * Description of the food
+     */
+    description: string | null;
+    /**
+     * Image of the food
+     */
+    image?: ImageUpsertDto | null;
+    /**
+     * Protein of the food
+     */
+    protein: number;
+    /**
+     * Carbs of the food
+     */
+    carbs: number;
+    /**
+     * Fat of the food
+     */
+    fat: number;
+    /**
+     * Is the food a dish
+     */
+    isMeal: boolean;
+    /**
+     * Serving size of the food
+     */
+    servingSize: number | null;
+    /**
+     * Serving size unit of the food
+     */
+    servingSizeUnit: ServingSizeUnit;
+    /**
+     * Date the creation
+     */
+    createdAt: Date;
+    /**
+     * Date of last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Components of the food
+     */
+    components: FoodComponentUpsertDto[];
 };
 
 /**
  * Profile of the user
  */
 export type Profile = {
-  user: User;
-  /**
-   * List of calorie goals
-   */
-  goals: Goal[];
-  /**
-   * Note of the user
-   */
-  note: string | null;
-  /**
-   * Height of the user
-   */
-  height: number;
-  /**
-   * Weight of the user
-   */
-  weight: number | null;
-  /**
-   * Age of the user
-   */
-  age: number;
-  gender: Gender;
-  units: UnitSettings;
-  consumedCalories: ConsumedCalories;
-  consumedCaloriesHistory: ConsumedCaloriesHistory;
+    user: User;
+    /**
+     * List of calorie goals
+     */
+    goals: Goal[];
+    /**
+     * Note of the user
+     */
+    note: string | null;
+    /**
+     * Height of the user
+     */
+    height: number;
+    /**
+     * Weight of the user
+     */
+    weight: number | null;
+    /**
+     * Age of the user
+     */
+    age: number;
+    gender: Gender;
+    units: UnitSettings;
+    consumedCalories: ConsumedCalories;
+    consumedCaloriesHistory: ConsumedCaloriesHistory;
 };
 
 /**
  * Goal of the user
  */
 export type Goal = {
-  type: GoalType;
-  /**
-   * Calorie goal of the user
-   */
-  calorie?: CalorieGoal;
-  /**
-   * Weight goal of the user
-   */
-  weight?: WeightGoal;
+    type: GoalType;
+    /**
+     * Calorie goal of the user
+     */
+    calorie?: CalorieGoal;
+    /**
+     * Weight goal of the user
+     */
+    weight?: WeightGoal;
 };
 
 /**
  * Type of the goal
  */
 export enum GoalType {
-  CALORIE = 'Calorie',
-  WEIGHT = 'Weight',
+    CALORIE = 'Calorie',
+    WEIGHT = 'Weight'
 }
 
 /**
  * Weight goal record
  */
 export type WeightGoal = {
-  /**
-   * Target weight of the goal
-   */
-  target: number;
+    /**
+     * Target weight of the goal
+     */
+    target: number;
 };
 
 /**
  * Unit preferences of the user
  */
 export type UnitSettings = {
-  weight: WeightUnit;
-  distance: DistanceUnit;
-  height: HeightUnit;
-  temperature: TemperatureUnit;
+    weight: WeightUnit;
+    distance: DistanceUnit;
+    height: HeightUnit;
+    temperature: TemperatureUnit;
 };
 
 /**
  * Weight unit
  */
 export enum WeightUnit {
-  KG = 'Kg',
-  LBS = 'Lbs',
+    KG = 'Kg',
+    LBS = 'Lbs'
 }
 
 /**
  * Distance unit
  */
 export enum DistanceUnit {
-  KM = 'Km',
-  MI = 'Mi',
+    KM = 'Km',
+    MI = 'Mi'
 }
 
 /**
  * Height unit
  */
 export enum HeightUnit {
-  CM = 'Cm',
-  FT = 'Ft',
+    CM = 'Cm',
+    FT = 'Ft'
 }
 
 /**
  * Temperature unit
  */
 export enum TemperatureUnit {
-  C = 'C',
-  F = 'F',
+    C = 'C',
+    F = 'F'
 }
 
 /**
  * Consumed calories
  */
 export type ConsumedCalories = {
-  /**
-   * Calories consumed today
-   */
-  calories: number;
-  /**
-   * Carbs consumed today
-   */
-  carbs: number;
-  /**
-   * Protein consumed today
-   */
-  protein: number;
-  /**
-   * Fat consumed today
-   */
-  fat: number;
+    /**
+     * Calories consumed today
+     */
+    calories: number;
+    /**
+     * Carbs consumed today
+     */
+    carbs: number;
+    /**
+     * Protein consumed today
+     */
+    protein: number;
+    /**
+     * Fat consumed today
+     */
+    fat: number;
 };
 
 /**
  * Consumed calories history
  */
 export type ConsumedCaloriesHistory = {
-  /**
-   * History records
-   */
-  data: {
     /**
-     * Date of the consumed calories
+     * History records
      */
-    date: Date;
-    value: ConsumedCalories;
-  }[];
-  /**
-   * Size of the history in days
-   */
-  size: number;
+    data: {
+        /**
+         * Date of the consumed calories
+         */
+        date: Date;
+        value: ConsumedCalories;
+    }[];
+    /**
+     * Size of the history in days
+     */
+    size: number;
 };
 
 /**
  * Settings of the user
  */
 export type Settings = {
-  /**
-   * Name of the user
-   */
-  name: string;
-  /**
-   * Note of the user
-   */
-  note: string | null;
-  /**
-   * Height of the user
-   */
-  height: number;
-  /**
-   * Weight of the user
-   */
-  weight: number | null;
-  gender: Gender;
-  /**
-   * Birth date of the user
-   */
-  birthDate: Date;
-  country: Country;
-  /**
-   * Profile picture of the user
-   */
-  profilePicture: Image | null;
-  units: UnitSettings;
-  security: SecuritySettings;
+    /**
+     * Name of the user
+     */
+    name: string;
+    /**
+     * Note of the user
+     */
+    note: string | null;
+    /**
+     * Height of the user
+     */
+    height: number;
+    /**
+     * Weight of the user
+     */
+    weight: number | null;
+    gender: Gender;
+    /**
+     * Birth date of the user
+     */
+    birthDate: Date;
+    country: Country;
+    /**
+     * Profile picture of the user
+     */
+    profilePicture: Image | null;
+    units: UnitSettings;
+    security: SecuritySettings;
 };
 
 /**
  * Security settings of the user
  */
 export type SecuritySettings = {
-  /**
-   * Email of the user
-   */
-  email: string;
-  visibility: EntryVisibility;
+    /**
+     * Email of the user
+     */
+    email: string;
+    visibility: EntryVisibility;
 };
 
 /**
  * Settings update data
  */
 export type SettingsUpdateDto = {
-  /**
-   * Name of the user
-   */
-  name: string;
-  /**
-   * Note of the user
-   */
-  note: string | null;
-  /**
-   * Height of the user
-   */
-  height: number;
-  /**
-   * Weight of the user
-   */
-  weight: number | null;
-  gender: Gender;
-  /**
-   * Birth date of the user
-   */
-  birthDate: Date;
-  country: Country;
-  units: UnitSettings;
-  security: SecuritySettings;
-  /**
-   * Profile picture of the user
-   */
-  profilePicture?: ImageUpsertDto | null;
+    /**
+     * Name of the user
+     */
+    name: string;
+    /**
+     * Note of the user
+     */
+    note: string | null;
+    /**
+     * Height of the user
+     */
+    height: number;
+    /**
+     * Weight of the user
+     */
+    weight: number | null;
+    gender: Gender;
+    /**
+     * Birth date of the user
+     */
+    birthDate: Date;
+    country: Country;
+    units: UnitSettings;
+    security: SecuritySettings;
+    /**
+     * Profile picture of the user
+     */
+    profilePicture?: ImageUpsertDto | null;
 };
 
 /**
  * Manager. Managers that work with CRM
  */
 export type Manager = {
-  /**
-   * Id of the manager
-   */
-  id: number;
-  /**
-   * Name
-   */
-  name: string;
-  /**
-   * Work Email. Used for CRM login
-   */
-  email: string;
-  /**
-   * Profile picture
-   */
-  profilePicture: string | null;
-  /**
-   * Date manager was added to CRM
-   */
-  createdAt: Date;
-  /**
-   * Last time manager was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * The date manager deleted from CRM. Deleted managers don't appear on most pages
-   */
-  deletedAt: Date | null;
+    /**
+     * Id of the manager
+     */
+    id: number;
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Work Email. Used for CRM login
+     */
+    email: string;
+    /**
+     * Profile picture
+     */
+    profilePicture: string | null;
+    /**
+     * Date manager was added to CRM
+     */
+    createdAt: Date;
+    /**
+     * Last time manager was updated
+     */
+    updatedAt: Date | null;
+    /**
+     * The date manager deleted from CRM. Deleted managers don't appear on most pages
+     */
+    deletedAt: Date | null;
 };
 
 /**
  * Translation Record
  */
 export type Translation = {
-  /**
-   * Id of the manager
-   */
-  id: number;
-  /**
-   * Key that identifies the translation
-   */
-  key: string;
-  /**
-   * Technical
-   */
-  numericKey: number | null;
-  /**
-   * Translated text
-   */
-  value: string;
-  /**
-   * Type of translation. Usually identifies which object translations describe
-   */
-  type: 'ExeciseName' | 'ExeciseDescription';
-  /**
-   * Language of the translation
-   */
-  language: 'en' | 'ru';
-  /**
-   * If true, it record was translation via automated translation (google-translate) last time.
-   */
-  auto: boolean;
-  /**
-   * If true, the record will not be vaild for automated translation in future
-   */
-  locked: boolean;
-  /**
-   * Date record was added to CRM
-   */
-  createdAt: Date;
-  /**
-   * Last time record was updated
-   */
-  updatedAt: Date | null;
-  /**
-   * The date record was deleted from CRM. Deleted records don't appear on most pages
-   */
-  deletedAt: Date | null;
+    /**
+     * Id of the manager
+     */
+    id: number;
+    /**
+     * Key that identifies the translation
+     */
+    key: string;
+    /**
+     * Technical
+     */
+    numericKey: number | null;
+    /**
+     * Translated text
+     */
+    value: string;
+    /**
+     * Type of translation. Usually identifies which object translations describe
+     */
+    type: 'ExeciseName' | 'ExeciseDescription';
+    /**
+     * Language of the translation
+     */
+    language: 'en' | 'ru';
+    /**
+     * If true, it record was translation via automated translation (google-translate) last time.
+     */
+    auto: boolean;
+    /**
+     * If true, the record will not be vaild for automated translation in future
+     */
+    locked: boolean;
+    /**
+     * Date record was added to CRM
+     */
+    createdAt: Date;
+    /**
+     * Last time record was updated
+     */
+    updatedAt: Date | null;
+    /**
+     * The date record was deleted from CRM. Deleted records don't appear on most pages
+     */
+    deletedAt: Date | null;
 };
 
 /**
  * Image record
  */
 export type ManagedImage = {
-  /**
-   * Id of the image
-   */
-  id: number;
-  /**
-   * URL of the image
-   */
-  url: string;
-  imageType: ImageType;
-  /**
-   * Id of the user who uploaded it
-   */
-  userId: number | null;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion. Deleted exercises are not accessible to users.
-   */
-  deletedAt: Date | null;
+    /**
+     * Id of the image
+     */
+    id: number;
+    /**
+     * URL of the image
+     */
+    url: string;
+    imageType: ImageType;
+    /**
+     * Id of the user who uploaded it
+     */
+    userId: number | null;
+    /**
+     * Date the creation
+     */
+    createdAt: Date;
+    /**
+     * Date of last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of deletion. Deleted exercises are not accessible to users.
+     */
+    deletedAt: Date | null;
 };
 
 /**
  * Type of object this image attaches to
  */
 export enum ImageType {
-  EXERCISE = 'Exercise',
-  USER_PROFILE = 'UserProfile',
-  ENTRY = 'Entry',
-  FOOD = 'Food',
+    EXERCISE = 'Exercise',
+    USER_PROFILE = 'UserProfile',
+    ENTRY = 'Entry',
+    FOOD = 'Food'
 }
 
 export type RegisterData = {
-  body?: {
-    /**
-     * Name of the user. Displayed in the app.
-     */
-    name: string;
-    /**
-     * Email of the user. Stays hidden on public pages.
-     */
-    email: string;
-    /**
-     * Password
-     */
-    password: string;
-    /**
-     * Confirmation of password. Protection from typos
-     */
-    passwordConfirmation: string;
-    gender: Gender;
-    country: Country;
-    /**
-     * Birth date of the user
-     */
-    birthDate: Date;
-    /**
-     * Height of the user
-     */
-    height: number;
-  };
-  path?: never;
-  query?: never;
-  url: '/auth/register';
+    body?: {
+        /**
+         * Name of the user. Displayed in the app.
+         */
+        name: string;
+        /**
+         * Email of the user. Stays hidden on public pages.
+         */
+        email: string;
+        /**
+         * Password
+         */
+        password: string;
+        /**
+         * Confirmation of password. Protection from typos
+         */
+        passwordConfirmation: string;
+        gender: Gender;
+        country: Country;
+        /**
+         * Birth date of the user
+         */
+        birthDate: Date;
+        /**
+         * Height of the user
+         */
+        height: number;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth/register';
 };
 
 export type RegisterErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type RegisterError = RegisterErrors[keyof RegisterErrors];
 
 export type RegisterResponses = {
-  /**
-   * Good Response
-   */
-  200: AuthUser;
+    /**
+     * Good Response
+     */
+    200: AuthUser;
 };
 
 export type RegisterResponse = RegisterResponses[keyof RegisterResponses];
 
 export type LoginData = {
-  body?: {
-    /**
-     * Email for the user account
-     */
-    email: string;
-    /**
-     * Password for the user account
-     */
-    password: string;
-  };
-  path?: never;
-  query?: never;
-  url: '/auth/login';
+    body?: {
+        /**
+         * Email for the user account
+         */
+        email: string;
+        /**
+         * Password for the user account
+         */
+        password: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth/login';
 };
 
 export type LoginErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type LoginError = LoginErrors[keyof LoginErrors];
 
 export type LoginResponses = {
-  /**
-   * Good Response
-   */
-  200: AuthUser;
+    /**
+     * Good Response
+     */
+    200: AuthUser;
 };
 
 export type LoginResponse = LoginResponses[keyof LoginResponses];
 
 export type StartPasswordResetData = {
-  body?: {
-    /**
-     * Email of the user
-     */
-    email: string;
-  };
-  path?: never;
-  query?: never;
-  url: '/auth/password-reset';
+    body?: {
+        /**
+         * Email of the user
+         */
+        email: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth/password-reset';
 };
 
 export type StartPasswordResetErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type StartPasswordResetError =
-  StartPasswordResetErrors[keyof StartPasswordResetErrors];
+export type StartPasswordResetError = StartPasswordResetErrors[keyof StartPasswordResetErrors];
 
 export type StartPasswordResetResponses = {
-  /**
-   * Indicator of successfult operation
-   */
-  200: {
     /**
-     * Stub for response. Always true since otherwise error is thrown.
+     * Indicator of successfult operation
      */
-    success: boolean;
-  };
+    200: {
+        /**
+         * Stub for response. Always true since otherwise error is thrown.
+         */
+        success: boolean;
+    };
 };
 
-export type StartPasswordResetResponse =
-  StartPasswordResetResponses[keyof StartPasswordResetResponses];
+export type StartPasswordResetResponse = StartPasswordResetResponses[keyof StartPasswordResetResponses];
 
 export type FinishPasswordResetData = {
-  body?: {
-    /**
-     * Token provided in the password reset email
-     */
-    token: string;
-    /**
-     * Password
-     */
-    password: string;
-    /**
-     * Confirmation of password. Protection from typos
-     */
-    passwordConfirmation: string;
-  };
-  path?: never;
-  query?: never;
-  url: '/auth/password-reset-complete';
+    body?: {
+        /**
+         * Token provided in the password reset email
+         */
+        token: string;
+        /**
+         * Password
+         */
+        password: string;
+        /**
+         * Confirmation of password. Protection from typos
+         */
+        passwordConfirmation: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth/password-reset-complete';
 };
 
 export type FinishPasswordResetErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type FinishPasswordResetError =
-  FinishPasswordResetErrors[keyof FinishPasswordResetErrors];
+export type FinishPasswordResetError = FinishPasswordResetErrors[keyof FinishPasswordResetErrors];
 
 export type FinishPasswordResetResponses = {
-  /**
-   * Good Response
-   */
-  200: AuthUser;
+    /**
+     * Good Response
+     */
+    200: AuthUser;
 };
 
-export type FinishPasswordResetResponse =
-  FinishPasswordResetResponses[keyof FinishPasswordResetResponses];
+export type FinishPasswordResetResponse = FinishPasswordResetResponses[keyof FinishPasswordResetResponses];
 
 export type ChangePasswordData = {
-  body?: ChangePasswordRequest;
-  path?: never;
-  query?: never;
-  url: '/auth/change-password';
+    body?: ChangePasswordRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/change-password';
 };
 
 export type ChangePasswordErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type ChangePasswordError =
-  ChangePasswordErrors[keyof ChangePasswordErrors];
+export type ChangePasswordError = ChangePasswordErrors[keyof ChangePasswordErrors];
 
 export type ChangePasswordResponses = {
-  /**
-   * Good Response
-   */
-  200: AuthUser;
+    /**
+     * Good Response
+     */
+    200: AuthUser;
 };
 
-export type ChangePasswordResponse =
-  ChangePasswordResponses[keyof ChangePasswordResponses];
+export type ChangePasswordResponse = ChangePasswordResponses[keyof ChangePasswordResponses];
 
 export type GetExercisesData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filters exercises by name
-     */
-    filter?: string;
-    /**
-     * Filters excercises by muscles. Exercise must involve all muscles from the list.
-     */
-    muscle?:
-      | (| 'Lower Back'
-          | 'Soleus'
-          | 'Front Deltoids'
-          | 'Lats'
-          | 'Forearms'
-          | 'Pecs'
-          | 'Hamstrings'
-          | 'Wrist Flexors'
-          | 'Biceps'
-          | 'Triceps'
-          | 'Rear Deltoids'
-          | 'Rotator Cuff'
-          | 'Ankle'
-          | 'Abdominals'
-          | 'Glutes'
-          | 'Quadriceps'
-          | 'Obliques'
-          | 'Abductors'
-          | 'Gastrocnemius'
-          | 'Lateral Deltoids'
-          | 'Hip Flexors'
-          | 'Trapezius'
-          | 'Neck'
-          | 'Adductors')[]
-      | 'Lower Back'
-      | 'Soleus'
-      | 'Front Deltoids'
-      | 'Lats'
-      | 'Forearms'
-      | 'Pecs'
-      | 'Hamstrings'
-      | 'Wrist Flexors'
-      | 'Biceps'
-      | 'Triceps'
-      | 'Rear Deltoids'
-      | 'Rotator Cuff'
-      | 'Ankle'
-      | 'Abdominals'
-      | 'Glutes'
-      | 'Quadriceps'
-      | 'Obliques'
-      | 'Abductors'
-      | 'Gastrocnemius'
-      | 'Lateral Deltoids'
-      | 'Hip Flexors'
-      | 'Trapezius'
-      | 'Neck'
-      | 'Adductors';
-    /**
-     * Filters excercises by equipment
-     */
-    equipment?:
-      | 'rowing'
-      | 'swimming'
-      | 'plate loaded'
-      | 'foam roller'
-      | 'pullup bar'
-      | 'stair climber'
-      | 'selectorized'
-      | 'dip bar'
-      | 'preacher'
-      | 'hyperextension'
-      | 'sandbag'
-      | 'elliptical'
-      | 'chair'
-      | 'cable'
-      | 'captains chair'
-      | 'towel'
-      | 'water bottle'
-      | 'stability ball'
-      | 'table'
-      | 'smith'
-      | 'kettlebell'
-      | 'cycling'
-      | 'step aerobics'
-      | 'plate'
-      | 'platform'
-      | 'medicine ball'
-      | 'running'
-      | 'barbell'
-      | 'backpack'
-      | 'ez curl bar'
-      | 'walking'
-      | 'bench'
-      | 'bodyweight'
-      | 'resistance band'
-      | 'dumbbell'
-      | 'jump rope'
-      | 'treadmill'
-      | 'bosu ball';
-    /**
-     * Include built-in exercises into the response
-     */
-    includeBuiltIn?: boolean;
-    /**
-     * Include deleted exercises into the response
-     */
-    includeDeleted?: boolean;
-    /**
-     * Only return exercises updated after this date. Used for syncing.
-     */
-    updatedAfter?: Date;
-    /**
-     * Filters out exercises that are variations of other exercises.
-     */
-    parentsOnly?: boolean;
-  };
-  url: '/exercises';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filters exercises by name
+         */
+        filter?: string;
+        /**
+         * Filters excercises by muscles. Exercise must involve all muscles from the list.
+         */
+        muscle?: ('Lower Back' | 'Soleus' | 'Front Deltoids' | 'Lats' | 'Forearms' | 'Pecs' | 'Hamstrings' | 'Wrist Flexors' | 'Biceps' | 'Triceps' | 'Rear Deltoids' | 'Rotator Cuff' | 'Ankle' | 'Abdominals' | 'Glutes' | 'Quadriceps' | 'Obliques' | 'Abductors' | 'Gastrocnemius' | 'Lateral Deltoids' | 'Hip Flexors' | 'Trapezius' | 'Neck' | 'Adductors')[] | 'Lower Back' | 'Soleus' | 'Front Deltoids' | 'Lats' | 'Forearms' | 'Pecs' | 'Hamstrings' | 'Wrist Flexors' | 'Biceps' | 'Triceps' | 'Rear Deltoids' | 'Rotator Cuff' | 'Ankle' | 'Abdominals' | 'Glutes' | 'Quadriceps' | 'Obliques' | 'Abductors' | 'Gastrocnemius' | 'Lateral Deltoids' | 'Hip Flexors' | 'Trapezius' | 'Neck' | 'Adductors';
+        /**
+         * Filters excercises by equipment
+         */
+        equipment?: 'rowing' | 'swimming' | 'plate loaded' | 'foam roller' | 'pullup bar' | 'stair climber' | 'selectorized' | 'dip bar' | 'preacher' | 'hyperextension' | 'sandbag' | 'elliptical' | 'chair' | 'cable' | 'captains chair' | 'towel' | 'water bottle' | 'stability ball' | 'table' | 'smith' | 'kettlebell' | 'cycling' | 'step aerobics' | 'plate' | 'platform' | 'medicine ball' | 'running' | 'barbell' | 'backpack' | 'ez curl bar' | 'walking' | 'bench' | 'bodyweight' | 'resistance band' | 'dumbbell' | 'jump rope' | 'treadmill' | 'bosu ball';
+        /**
+         * Include built-in exercises into the response
+         */
+        includeBuiltIn?: boolean;
+        /**
+         * Include deleted exercises into the response
+         */
+        includeDeleted?: boolean;
+        /**
+         * Only return exercises updated after this date. Used for syncing.
+         */
+        updatedAfter?: Date;
+        /**
+         * Filters out exercises that are variations of other exercises.
+         */
+        parentsOnly?: boolean;
+    };
+    url: '/exercises';
 };
 
 export type GetExercisesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetExercisesError = GetExercisesErrors[keyof GetExercisesErrors];
 
 export type GetExercisesResponses = {
-  /**
-   * List of excercises
-   */
-  200: {
     /**
-     * Page or items
+     * List of excercises
      */
-    items: Exercise[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Exercise[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetExercisesResponse =
-  GetExercisesResponses[keyof GetExercisesResponses];
+export type GetExercisesResponse = GetExercisesResponses[keyof GetExercisesResponses];
 
 export type PostExercisesData = {
-  body?: {
-    /**
-     * Name of the exercise
-     */
-    name: string;
-  };
-  path?: never;
-  query?: never;
-  url: '/exercises';
+    body?: {
+        /**
+         * Name of the exercise
+         */
+        name: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/exercises';
 };
 
 export type PostExercisesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PostExercisesError = PostExercisesErrors[keyof PostExercisesErrors];
 
 export type PostExercisesResponses = {
-  /**
-   * Good Response
-   */
-  200: Exercise;
+    /**
+     * Good Response
+     */
+    200: Exercise;
 };
 
-export type PostExercisesResponse =
-  PostExercisesResponses[keyof PostExercisesResponses];
+export type PostExercisesResponse = PostExercisesResponses[keyof PostExercisesResponses];
 
 export type PutExercisesData = {
-  body?: {
-    /**
-     * List of exercises that contain updated fields
-     */
-    items: ExerciseUpsertDto[];
-  };
-  path?: never;
-  query?: never;
-  url: '/exercises';
+    body?: {
+        /**
+         * List of exercises that contain updated fields
+         */
+        items: ExerciseUpsertDto[];
+    };
+    path?: never;
+    query?: never;
+    url: '/exercises';
 };
 
 export type PutExercisesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PutExercisesError = PutExercisesErrors[keyof PutExercisesErrors];
 
 export type PutExercisesResponses = {
-  /**
-   * List of updated exercises containing internal ids to match on device's database
-   */
-  200: {
     /**
-     * List of updated exercises
+     * List of updated exercises containing internal ids to match on device's database
      */
-    items: Exercise[];
-  };
+    200: {
+        /**
+         * List of updated exercises
+         */
+        items: Exercise[];
+    };
 };
 
-export type PutExercisesResponse =
-  PutExercisesResponses[keyof PutExercisesResponses];
+export type PutExercisesResponse = PutExercisesResponses[keyof PutExercisesResponses];
 
 export type GetExercisesBuiltInData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filters exercises by name
-     */
-    filter?: string;
-    /**
-     * Filters excercises by muscles. Exercise must involve all muscles from the list.
-     */
-    muscle?:
-      | (| 'Lower Back'
-          | 'Soleus'
-          | 'Front Deltoids'
-          | 'Lats'
-          | 'Forearms'
-          | 'Pecs'
-          | 'Hamstrings'
-          | 'Wrist Flexors'
-          | 'Biceps'
-          | 'Triceps'
-          | 'Rear Deltoids'
-          | 'Rotator Cuff'
-          | 'Ankle'
-          | 'Abdominals'
-          | 'Glutes'
-          | 'Quadriceps'
-          | 'Obliques'
-          | 'Abductors'
-          | 'Gastrocnemius'
-          | 'Lateral Deltoids'
-          | 'Hip Flexors'
-          | 'Trapezius'
-          | 'Neck'
-          | 'Adductors')[]
-      | 'Lower Back'
-      | 'Soleus'
-      | 'Front Deltoids'
-      | 'Lats'
-      | 'Forearms'
-      | 'Pecs'
-      | 'Hamstrings'
-      | 'Wrist Flexors'
-      | 'Biceps'
-      | 'Triceps'
-      | 'Rear Deltoids'
-      | 'Rotator Cuff'
-      | 'Ankle'
-      | 'Abdominals'
-      | 'Glutes'
-      | 'Quadriceps'
-      | 'Obliques'
-      | 'Abductors'
-      | 'Gastrocnemius'
-      | 'Lateral Deltoids'
-      | 'Hip Flexors'
-      | 'Trapezius'
-      | 'Neck'
-      | 'Adductors';
-    /**
-     * Filters excercises by equipment
-     */
-    equipment?:
-      | 'rowing'
-      | 'swimming'
-      | 'plate loaded'
-      | 'foam roller'
-      | 'pullup bar'
-      | 'stair climber'
-      | 'selectorized'
-      | 'dip bar'
-      | 'preacher'
-      | 'hyperextension'
-      | 'sandbag'
-      | 'elliptical'
-      | 'chair'
-      | 'cable'
-      | 'captains chair'
-      | 'towel'
-      | 'water bottle'
-      | 'stability ball'
-      | 'table'
-      | 'smith'
-      | 'kettlebell'
-      | 'cycling'
-      | 'step aerobics'
-      | 'plate'
-      | 'platform'
-      | 'medicine ball'
-      | 'running'
-      | 'barbell'
-      | 'backpack'
-      | 'ez curl bar'
-      | 'walking'
-      | 'bench'
-      | 'bodyweight'
-      | 'resistance band'
-      | 'dumbbell'
-      | 'jump rope'
-      | 'treadmill'
-      | 'bosu ball';
-    /**
-     * Include deleted exercises into the response
-     */
-    includeDeleted?: boolean;
-    /**
-     * Only return exercises updated after this date. Used for syncing.
-     */
-    updatedAfter?: Date;
-    /**
-     * Filters out exercises that are variations of other exercises.
-     */
-    parentsOnly?: boolean;
-  };
-  url: '/exercises/built-in';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filters exercises by name
+         */
+        filter?: string;
+        /**
+         * Filters excercises by muscles. Exercise must involve all muscles from the list.
+         */
+        muscle?: ('Lower Back' | 'Soleus' | 'Front Deltoids' | 'Lats' | 'Forearms' | 'Pecs' | 'Hamstrings' | 'Wrist Flexors' | 'Biceps' | 'Triceps' | 'Rear Deltoids' | 'Rotator Cuff' | 'Ankle' | 'Abdominals' | 'Glutes' | 'Quadriceps' | 'Obliques' | 'Abductors' | 'Gastrocnemius' | 'Lateral Deltoids' | 'Hip Flexors' | 'Trapezius' | 'Neck' | 'Adductors')[] | 'Lower Back' | 'Soleus' | 'Front Deltoids' | 'Lats' | 'Forearms' | 'Pecs' | 'Hamstrings' | 'Wrist Flexors' | 'Biceps' | 'Triceps' | 'Rear Deltoids' | 'Rotator Cuff' | 'Ankle' | 'Abdominals' | 'Glutes' | 'Quadriceps' | 'Obliques' | 'Abductors' | 'Gastrocnemius' | 'Lateral Deltoids' | 'Hip Flexors' | 'Trapezius' | 'Neck' | 'Adductors';
+        /**
+         * Filters excercises by equipment
+         */
+        equipment?: 'rowing' | 'swimming' | 'plate loaded' | 'foam roller' | 'pullup bar' | 'stair climber' | 'selectorized' | 'dip bar' | 'preacher' | 'hyperextension' | 'sandbag' | 'elliptical' | 'chair' | 'cable' | 'captains chair' | 'towel' | 'water bottle' | 'stability ball' | 'table' | 'smith' | 'kettlebell' | 'cycling' | 'step aerobics' | 'plate' | 'platform' | 'medicine ball' | 'running' | 'barbell' | 'backpack' | 'ez curl bar' | 'walking' | 'bench' | 'bodyweight' | 'resistance band' | 'dumbbell' | 'jump rope' | 'treadmill' | 'bosu ball';
+        /**
+         * Include deleted exercises into the response
+         */
+        includeDeleted?: boolean;
+        /**
+         * Only return exercises updated after this date. Used for syncing.
+         */
+        updatedAfter?: Date;
+        /**
+         * Filters out exercises that are variations of other exercises.
+         */
+        parentsOnly?: boolean;
+    };
+    url: '/exercises/built-in';
 };
 
 export type GetExercisesBuiltInErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetExercisesBuiltInError =
-  GetExercisesBuiltInErrors[keyof GetExercisesBuiltInErrors];
+export type GetExercisesBuiltInError = GetExercisesBuiltInErrors[keyof GetExercisesBuiltInErrors];
 
 export type GetExercisesBuiltInResponses = {
-  /**
-   * List of excercises
-   */
-  200: {
     /**
-     * Page or items
+     * List of excercises
      */
-    items: Exercise[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Exercise[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetExercisesBuiltInResponse =
-  GetExercisesBuiltInResponses[keyof GetExercisesBuiltInResponses];
+export type GetExercisesBuiltInResponse = GetExercisesBuiltInResponses[keyof GetExercisesBuiltInResponses];
 
 export type DeleteExercisesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the exercise
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/exercises/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the exercise
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/exercises/{id}';
 };
 
 export type DeleteExercisesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type DeleteExercisesByIdError =
-  DeleteExercisesByIdErrors[keyof DeleteExercisesByIdErrors];
+export type DeleteExercisesByIdError = DeleteExercisesByIdErrors[keyof DeleteExercisesByIdErrors];
 
 export type DeleteExercisesByIdResponses = {
-  /**
-   * Indicator of successfult operation
-   */
-  200: {
     /**
-     * Stub for response. Always true since otherwise error is thrown.
+     * Indicator of successfult operation
      */
-    success: boolean;
-  };
+    200: {
+        /**
+         * Stub for response. Always true since otherwise error is thrown.
+         */
+        success: boolean;
+    };
 };
 
-export type DeleteExercisesByIdResponse =
-  DeleteExercisesByIdResponses[keyof DeleteExercisesByIdResponses];
+export type DeleteExercisesByIdResponse = DeleteExercisesByIdResponses[keyof DeleteExercisesByIdResponses];
 
 export type GetExercisesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the excercise
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/exercises/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the excercise
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/exercises/{id}';
 };
 
 export type GetExercisesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetExercisesByIdError =
-  GetExercisesByIdErrors[keyof GetExercisesByIdErrors];
+export type GetExercisesByIdError = GetExercisesByIdErrors[keyof GetExercisesByIdErrors];
 
 export type GetExercisesByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Exercise;
+    /**
+     * Good Response
+     */
+    200: Exercise;
 };
 
-export type GetExercisesByIdResponse =
-  GetExercisesByIdResponses[keyof GetExercisesByIdResponses];
+export type GetExercisesByIdResponse = GetExercisesByIdResponses[keyof GetExercisesByIdResponses];
 
 export type PatchExercisesByIdData = {
-  body?: {
-    /**
-     * Name of the exercise
-     */
-    name: string;
-    /**
-     * Description of the exercise
-     */
-    description: string | null;
-  };
-  path: {
-    /**
-     * Id of the excercise
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/exercises/{id}';
+    body?: {
+        /**
+         * Name of the exercise
+         */
+        name: string;
+        /**
+         * Description of the exercise
+         */
+        description: string | null;
+    };
+    path: {
+        /**
+         * Id of the excercise
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/exercises/{id}';
 };
 
 export type PatchExercisesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchExercisesByIdError =
-  PatchExercisesByIdErrors[keyof PatchExercisesByIdErrors];
+export type PatchExercisesByIdError = PatchExercisesByIdErrors[keyof PatchExercisesByIdErrors];
 
 export type PatchExercisesByIdResponses = {
-  /**
-   * Indicator of successfult operation
-   */
-  200: {
     /**
-     * Stub for response. Always true since otherwise error is thrown.
+     * Indicator of successfult operation
      */
-    success: boolean;
-  };
+    200: {
+        /**
+         * Stub for response. Always true since otherwise error is thrown.
+         */
+        success: boolean;
+    };
 };
 
-export type PatchExercisesByIdResponse =
-  PatchExercisesByIdResponses[keyof PatchExercisesByIdResponses];
+export type PatchExercisesByIdResponse = PatchExercisesByIdResponses[keyof PatchExercisesByIdResponses];
 
 export type GetWorkoutsData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Only return workouts updated after this date. Used for syncing.
-     */
-    updatedAfter?: Date;
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/workouts';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only return workouts updated after this date. Used for syncing.
+         */
+        updatedAfter?: Date;
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/workouts';
 };
 
 export type GetWorkoutsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetWorkoutsError = GetWorkoutsErrors[keyof GetWorkoutsErrors];
 
 export type GetWorkoutsResponses = {
-  /**
-   * List of workouts
-   */
-  200: {
     /**
-     * Page or items
+     * List of workouts
      */
-    items: Workout[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Workout[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetWorkoutsResponse =
-  GetWorkoutsResponses[keyof GetWorkoutsResponses];
+export type GetWorkoutsResponse = GetWorkoutsResponses[keyof GetWorkoutsResponses];
 
 export type PostWorkoutsData = {
-  body?: WorkoutUpdateDto;
-  path?: never;
-  query?: never;
-  url: '/workouts';
+    body?: WorkoutUpdateDto;
+    path?: never;
+    query?: never;
+    url: '/workouts';
 };
 
 export type PostWorkoutsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PostWorkoutsError = PostWorkoutsErrors[keyof PostWorkoutsErrors];
 
 export type PostWorkoutsResponses = {
-  /**
-   * Good Response
-   */
-  200: Workout;
+    /**
+     * Good Response
+     */
+    200: Workout;
 };
 
-export type PostWorkoutsResponse =
-  PostWorkoutsResponses[keyof PostWorkoutsResponses];
+export type PostWorkoutsResponse = PostWorkoutsResponses[keyof PostWorkoutsResponses];
 
 export type PutWorkoutsData = {
-  body?: {
-    /**
-     * List of workouts to update or insert
-     */
-    items: WorkoutUpsertDto[];
-  };
-  path?: never;
-  query?: never;
-  url: '/workouts';
+    body?: {
+        /**
+         * List of workouts to update or insert
+         */
+        items: WorkoutUpsertDto[];
+    };
+    path?: never;
+    query?: never;
+    url: '/workouts';
 };
 
 export type PutWorkoutsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PutWorkoutsError = PutWorkoutsErrors[keyof PutWorkoutsErrors];
 
 export type PutWorkoutsResponses = {
-  /**
-   * List of updated or inserted workouts
-   */
-  200: {
     /**
      * List of updated or inserted workouts
      */
-    items: Workout[];
-  };
+    200: {
+        /**
+         * List of updated or inserted workouts
+         */
+        items: Workout[];
+    };
 };
 
-export type PutWorkoutsResponse =
-  PutWorkoutsResponses[keyof PutWorkoutsResponses];
+export type PutWorkoutsResponse = PutWorkoutsResponses[keyof PutWorkoutsResponses];
 
 export type DeleteWorkoutsByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the workout
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workouts/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the workout
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workouts/{id}';
 };
 
 export type DeleteWorkoutsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type DeleteWorkoutsByIdError =
-  DeleteWorkoutsByIdErrors[keyof DeleteWorkoutsByIdErrors];
+export type DeleteWorkoutsByIdError = DeleteWorkoutsByIdErrors[keyof DeleteWorkoutsByIdErrors];
 
 export type DeleteWorkoutsByIdResponses = {
-  /**
-   * Indicator of successfult operation
-   */
-  200: {
     /**
-     * Stub for response. Always true since otherwise error is thrown.
+     * Indicator of successfult operation
      */
-    success: boolean;
-  };
+    200: {
+        /**
+         * Stub for response. Always true since otherwise error is thrown.
+         */
+        success: boolean;
+    };
 };
 
-export type DeleteWorkoutsByIdResponse =
-  DeleteWorkoutsByIdResponses[keyof DeleteWorkoutsByIdResponses];
+export type DeleteWorkoutsByIdResponse = DeleteWorkoutsByIdResponses[keyof DeleteWorkoutsByIdResponses];
 
 export type GetWorkoutsByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the workout
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workouts/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the workout
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workouts/{id}';
 };
 
 export type GetWorkoutsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetWorkoutsByIdError =
-  GetWorkoutsByIdErrors[keyof GetWorkoutsByIdErrors];
+export type GetWorkoutsByIdError = GetWorkoutsByIdErrors[keyof GetWorkoutsByIdErrors];
 
 export type GetWorkoutsByIdResponses = {
-  /**
-   * Workout
-   */
-  200: {
-    item: Workout;
-  };
+    /**
+     * Workout
+     */
+    200: {
+        item: Workout;
+    };
 };
 
-export type GetWorkoutsByIdResponse =
-  GetWorkoutsByIdResponses[keyof GetWorkoutsByIdResponses];
+export type GetWorkoutsByIdResponse = GetWorkoutsByIdResponses[keyof GetWorkoutsByIdResponses];
 
 export type PatchWorkoutsByIdData = {
-  body?: WorkoutUpdateDto;
-  path: {
-    /**
-     * Workout Id
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workouts/{id}';
+    body?: WorkoutUpdateDto;
+    path: {
+        /**
+         * Workout Id
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workouts/{id}';
 };
 
 export type PatchWorkoutsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchWorkoutsByIdError =
-  PatchWorkoutsByIdErrors[keyof PatchWorkoutsByIdErrors];
+export type PatchWorkoutsByIdError = PatchWorkoutsByIdErrors[keyof PatchWorkoutsByIdErrors];
 
 export type PatchWorkoutsByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Workout;
+    /**
+     * Good Response
+     */
+    200: Workout;
 };
 
-export type PatchWorkoutsByIdResponse =
-  PatchWorkoutsByIdResponses[keyof PatchWorkoutsByIdResponses];
+export type PatchWorkoutsByIdResponse = PatchWorkoutsByIdResponses[keyof PatchWorkoutsByIdResponses];
 
 export type GetWorkoutPlansData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Only return workouts plan updated after this date. Used for syncing.
-     */
-    updatedAfter?: Date;
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/workout-plans';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only return workouts plan updated after this date. Used for syncing.
+         */
+        updatedAfter?: Date;
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/workout-plans';
 };
 
 export type GetWorkoutPlansErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetWorkoutPlansError =
-  GetWorkoutPlansErrors[keyof GetWorkoutPlansErrors];
+export type GetWorkoutPlansError = GetWorkoutPlansErrors[keyof GetWorkoutPlansErrors];
 
 export type GetWorkoutPlansResponses = {
-  /**
-   * List of workout plans
-   */
-  200: {
     /**
-     * Page or items
+     * List of workout plans
      */
-    items: WorkoutPlan[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: WorkoutPlan[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetWorkoutPlansResponse =
-  GetWorkoutPlansResponses[keyof GetWorkoutPlansResponses];
+export type GetWorkoutPlansResponse = GetWorkoutPlansResponses[keyof GetWorkoutPlansResponses];
 
 export type PostWorkoutPlansData = {
-  /**
-   * Workout Plan. Consist of workout templates that users supposed to conduct.
-   */
-  body?: {
     /**
-     * Name of the workout plan
+     * Workout Plan. Consist of workout templates that users supposed to conduct.
      */
-    name: string | null;
-    /**
-     * Description of the workpout plan
-     */
-    description: string | null;
-  };
-  path?: never;
-  query?: never;
-  url: '/workout-plans';
+    body?: {
+        /**
+         * Name of the workout plan
+         */
+        name: string | null;
+        /**
+         * Description of the workpout plan
+         */
+        description: string | null;
+    };
+    path?: never;
+    query?: never;
+    url: '/workout-plans';
 };
 
 export type PostWorkoutPlansErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PostWorkoutPlansError =
-  PostWorkoutPlansErrors[keyof PostWorkoutPlansErrors];
+export type PostWorkoutPlansError = PostWorkoutPlansErrors[keyof PostWorkoutPlansErrors];
 
 export type PostWorkoutPlansResponses = {
-  /**
-   * Good Response
-   */
-  200: WorkoutPlan;
+    /**
+     * Good Response
+     */
+    200: WorkoutPlan;
 };
 
-export type PostWorkoutPlansResponse =
-  PostWorkoutPlansResponses[keyof PostWorkoutPlansResponses];
+export type PostWorkoutPlansResponse = PostWorkoutPlansResponses[keyof PostWorkoutPlansResponses];
 
 export type DeleteWorkoutPlansByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the workout plan
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workout-plans/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the workout plan
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workout-plans/{id}';
 };
 
 export type DeleteWorkoutPlansByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type DeleteWorkoutPlansByIdError =
-  DeleteWorkoutPlansByIdErrors[keyof DeleteWorkoutPlansByIdErrors];
+export type DeleteWorkoutPlansByIdError = DeleteWorkoutPlansByIdErrors[keyof DeleteWorkoutPlansByIdErrors];
 
 export type DeleteWorkoutPlansByIdResponses = {
-  /**
-   * Empty response on success
-   */
-  200: {
-    [key: string]: unknown;
-  };
+    /**
+     * Empty response on success
+     */
+    200: {
+        [key: string]: unknown;
+    };
 };
 
-export type DeleteWorkoutPlansByIdResponse =
-  DeleteWorkoutPlansByIdResponses[keyof DeleteWorkoutPlansByIdResponses];
+export type DeleteWorkoutPlansByIdResponse = DeleteWorkoutPlansByIdResponses[keyof DeleteWorkoutPlansByIdResponses];
 
 export type GetWorkoutPlansByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the workout plan
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workout-plans/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the workout plan
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workout-plans/{id}';
 };
 
 export type GetWorkoutPlansByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetWorkoutPlansByIdError =
-  GetWorkoutPlansByIdErrors[keyof GetWorkoutPlansByIdErrors];
+export type GetWorkoutPlansByIdError = GetWorkoutPlansByIdErrors[keyof GetWorkoutPlansByIdErrors];
 
 export type GetWorkoutPlansByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: WorkoutPlan;
+    /**
+     * Good Response
+     */
+    200: WorkoutPlan;
 };
 
-export type GetWorkoutPlansByIdResponse =
-  GetWorkoutPlansByIdResponses[keyof GetWorkoutPlansByIdResponses];
+export type GetWorkoutPlansByIdResponse = GetWorkoutPlansByIdResponses[keyof GetWorkoutPlansByIdResponses];
 
 export type PatchWorkoutPlansByIdData = {
-  /**
-   * Workout Plan. Consist of workout templates that users supposed to conduct.
-   */
-  body?: {
     /**
-     * Name of the workout plan
+     * Workout Plan. Consist of workout templates that users supposed to conduct.
      */
-    name: string | null;
-    /**
-     * Description of the workpout plan
-     */
-    description: string | null;
-  };
-  path: {
-    /**
-     * Id of the workout plan
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workout-plans/{id}';
+    body?: {
+        /**
+         * Name of the workout plan
+         */
+        name: string | null;
+        /**
+         * Description of the workpout plan
+         */
+        description: string | null;
+    };
+    path: {
+        /**
+         * Id of the workout plan
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workout-plans/{id}';
 };
 
 export type PatchWorkoutPlansByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchWorkoutPlansByIdError =
-  PatchWorkoutPlansByIdErrors[keyof PatchWorkoutPlansByIdErrors];
+export type PatchWorkoutPlansByIdError = PatchWorkoutPlansByIdErrors[keyof PatchWorkoutPlansByIdErrors];
 
 export type PatchWorkoutPlansByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: WorkoutPlan;
+    /**
+     * Good Response
+     */
+    200: WorkoutPlan;
 };
 
-export type PatchWorkoutPlansByIdResponse =
-  PatchWorkoutPlansByIdResponses[keyof PatchWorkoutPlansByIdResponses];
+export type PatchWorkoutPlansByIdResponse = PatchWorkoutPlansByIdResponses[keyof PatchWorkoutPlansByIdResponses];
 
 export type GetWorkoutTypesData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Only return workouts plan updated after this date. Used for syncing.
-     */
-    updatedAfter?: Date;
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/workout-types';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only return workouts plan updated after this date. Used for syncing.
+         */
+        updatedAfter?: Date;
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/workout-types';
 };
 
 export type GetWorkoutTypesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetWorkoutTypesError =
-  GetWorkoutTypesErrors[keyof GetWorkoutTypesErrors];
+export type GetWorkoutTypesError = GetWorkoutTypesErrors[keyof GetWorkoutTypesErrors];
 
 export type GetWorkoutTypesResponses = {
-  /**
-   * List of workout plans
-   */
-  200: {
     /**
-     * Page or items
+     * List of workout plans
      */
-    items: WorkoutType[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: WorkoutType[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetWorkoutTypesResponse =
-  GetWorkoutTypesResponses[keyof GetWorkoutTypesResponses];
+export type GetWorkoutTypesResponse = GetWorkoutTypesResponses[keyof GetWorkoutTypesResponses];
 
 export type PostWorkoutTypesData = {
-  /**
-   * Workout Type.
-   */
-  body?: {
     /**
-     * Workout Plan Id
+     * Workout Type.
      */
-    planIndex: number | null;
-    /**
-     * Position inside Workout Plan
-     */
-    planId: number | null;
-    /**
-     * Name of the workout type
-     */
-    name: string;
-    /**
-     * Description of the workpout type
-     */
-    description: string | null;
-    /**
-     * Exercises
-     */
-    exercises: WorkoutTypeExerciseUpdateDto[];
-  };
-  path?: never;
-  query?: never;
-  url: '/workout-types';
+    body?: {
+        /**
+         * Workout Plan Id
+         */
+        planIndex: number | null;
+        /**
+         * Position inside Workout Plan
+         */
+        planId: number | null;
+        /**
+         * Name of the workout type
+         */
+        name: string;
+        /**
+         * Description of the workpout type
+         */
+        description: string | null;
+        /**
+         * Exercises
+         */
+        exercises: WorkoutTypeExerciseUpdateDto[];
+    };
+    path?: never;
+    query?: never;
+    url: '/workout-types';
 };
 
 export type PostWorkoutTypesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PostWorkoutTypesError =
-  PostWorkoutTypesErrors[keyof PostWorkoutTypesErrors];
+export type PostWorkoutTypesError = PostWorkoutTypesErrors[keyof PostWorkoutTypesErrors];
 
 export type PostWorkoutTypesResponses = {
-  /**
-   * Good Response
-   */
-  200: WorkoutType;
+    /**
+     * Good Response
+     */
+    200: WorkoutType;
 };
 
-export type PostWorkoutTypesResponse =
-  PostWorkoutTypesResponses[keyof PostWorkoutTypesResponses];
+export type PostWorkoutTypesResponse = PostWorkoutTypesResponses[keyof PostWorkoutTypesResponses];
 
 export type DeleteWorkoutTypesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the workout type
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workout-types/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the workout type
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workout-types/{id}';
 };
 
 export type DeleteWorkoutTypesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type DeleteWorkoutTypesByIdError =
-  DeleteWorkoutTypesByIdErrors[keyof DeleteWorkoutTypesByIdErrors];
+export type DeleteWorkoutTypesByIdError = DeleteWorkoutTypesByIdErrors[keyof DeleteWorkoutTypesByIdErrors];
 
 export type DeleteWorkoutTypesByIdResponses = {
-  /**
-   * Empty response on success
-   */
-  200: {
-    [key: string]: unknown;
-  };
+    /**
+     * Empty response on success
+     */
+    200: {
+        [key: string]: unknown;
+    };
 };
 
-export type DeleteWorkoutTypesByIdResponse =
-  DeleteWorkoutTypesByIdResponses[keyof DeleteWorkoutTypesByIdResponses];
+export type DeleteWorkoutTypesByIdResponse = DeleteWorkoutTypesByIdResponses[keyof DeleteWorkoutTypesByIdResponses];
 
 export type GetWorkoutTypesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the workout type
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workout-types/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the workout type
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workout-types/{id}';
 };
 
 export type GetWorkoutTypesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetWorkoutTypesByIdError =
-  GetWorkoutTypesByIdErrors[keyof GetWorkoutTypesByIdErrors];
+export type GetWorkoutTypesByIdError = GetWorkoutTypesByIdErrors[keyof GetWorkoutTypesByIdErrors];
 
 export type GetWorkoutTypesByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: WorkoutType;
+    /**
+     * Good Response
+     */
+    200: WorkoutType;
 };
 
-export type GetWorkoutTypesByIdResponse =
-  GetWorkoutTypesByIdResponses[keyof GetWorkoutTypesByIdResponses];
+export type GetWorkoutTypesByIdResponse = GetWorkoutTypesByIdResponses[keyof GetWorkoutTypesByIdResponses];
 
 export type PatchWorkoutTypesByIdData = {
-  /**
-   * Workout Type.
-   */
-  body?: {
     /**
-     * Workout Plan Id
+     * Workout Type.
      */
-    planIndex: number | null;
-    /**
-     * Position inside Workout Plan
-     */
-    planId: number | null;
-    /**
-     * Name of the workout type
-     */
-    name: string;
-    /**
-     * Description of the workpout type
-     */
-    description: string | null;
-    /**
-     * Exercises
-     */
-    exercises: WorkoutTypeExerciseUpdateDto[];
-  };
-  path: {
-    /**
-     * Id of the workout type
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/workout-types/{id}';
+    body?: {
+        /**
+         * Workout Plan Id
+         */
+        planIndex: number | null;
+        /**
+         * Position inside Workout Plan
+         */
+        planId: number | null;
+        /**
+         * Name of the workout type
+         */
+        name: string;
+        /**
+         * Description of the workpout type
+         */
+        description: string | null;
+        /**
+         * Exercises
+         */
+        exercises: WorkoutTypeExerciseUpdateDto[];
+    };
+    path: {
+        /**
+         * Id of the workout type
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/workout-types/{id}';
 };
 
 export type PatchWorkoutTypesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchWorkoutTypesByIdError =
-  PatchWorkoutTypesByIdErrors[keyof PatchWorkoutTypesByIdErrors];
+export type PatchWorkoutTypesByIdError = PatchWorkoutTypesByIdErrors[keyof PatchWorkoutTypesByIdErrors];
 
 export type PatchWorkoutTypesByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: WorkoutType;
+    /**
+     * Good Response
+     */
+    200: WorkoutType;
 };
 
-export type PatchWorkoutTypesByIdResponse =
-  PatchWorkoutTypesByIdResponses[keyof PatchWorkoutTypesByIdResponses];
+export type PatchWorkoutTypesByIdResponse = PatchWorkoutTypesByIdResponses[keyof PatchWorkoutTypesByIdResponses];
 
 export type PostWeightData = {
-  body?: {
-    /**
-     * Weight value
-     */
-    weight: number;
-  };
-  path?: never;
-  query?: never;
-  url: '/weight';
+    body?: {
+        /**
+         * Weight value
+         */
+        weight: number;
+    };
+    path?: never;
+    query?: never;
+    url: '/weight';
 };
 
 export type PostWeightErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PostWeightError = PostWeightErrors[keyof PostWeightErrors];
 
 export type PostWeightResponses = {
-  /**
-   * Good Response
-   */
-  200: Weight;
+    /**
+     * Good Response
+     */
+    200: Weight;
 };
 
 export type PostWeightResponse = PostWeightResponses[keyof PostWeightResponses];
 
 export type GetWeightByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the weight record
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/weight/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the weight record
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/weight/{id}';
 };
 
 export type GetWeightByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetWeightByIdError = GetWeightByIdErrors[keyof GetWeightByIdErrors];
 
 export type GetWeightByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Weight;
+    /**
+     * Good Response
+     */
+    200: Weight;
 };
 
-export type GetWeightByIdResponse =
-  GetWeightByIdResponses[keyof GetWeightByIdResponses];
+export type GetWeightByIdResponse = GetWeightByIdResponses[keyof GetWeightByIdResponses];
 
 export type PatchWeightByIdData = {
-  body?: {
-    /**
-     * Weight value
-     */
-    weight: number;
-  };
-  path: {
-    /**
-     * Id of the weight record
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/weight/{id}';
+    body?: {
+        /**
+         * Weight value
+         */
+        weight: number;
+    };
+    path: {
+        /**
+         * Id of the weight record
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/weight/{id}';
 };
 
 export type PatchWeightByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchWeightByIdError =
-  PatchWeightByIdErrors[keyof PatchWeightByIdErrors];
+export type PatchWeightByIdError = PatchWeightByIdErrors[keyof PatchWeightByIdErrors];
 
 export type PatchWeightByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Weight;
+    /**
+     * Good Response
+     */
+    200: Weight;
 };
 
-export type PatchWeightByIdResponse =
-  PatchWeightByIdResponses[keyof PatchWeightByIdResponses];
+export type PatchWeightByIdResponse = PatchWeightByIdResponses[keyof PatchWeightByIdResponses];
 
 export type GetArgusCheckinData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filter by type of checkin
-     */
-    type?:
-      | 'steps'
-      | 'weather'
-      | 'calories'
-      | 'food'
-      | 'activity'
-      | 'weight'
-      | 'consumedcalories'
-      | 'drink'
-      | 'heartrate'
-      | 'status'
-      | 'bodymetrics'
-      | 'workout_log'
-      | 'sleepreport'
-      | 'fitnesstest';
-  };
-  url: '/argus/checkin';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filter by type of checkin
+         */
+        type?: 'steps' | 'weather' | 'calories' | 'food' | 'activity' | 'weight' | 'consumedcalories' | 'drink' | 'heartrate' | 'status' | 'bodymetrics' | 'workout_log' | 'sleepreport' | 'fitnesstest';
+    };
+    url: '/argus/checkin';
 };
 
 export type GetArgusCheckinErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetArgusCheckinError =
-  GetArgusCheckinErrors[keyof GetArgusCheckinErrors];
+export type GetArgusCheckinError = GetArgusCheckinErrors[keyof GetArgusCheckinErrors];
 
 export type GetArgusCheckinResponses = {
-  /**
-   * List of Argus checkins
-   */
-  200: {
     /**
-     * Page or items
+     * List of Argus checkins
      */
-    items: (| {
-          id: number;
-          externalId: string;
-          type: 'steps';
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-          subtype: null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'activity';
-          subtype: 'workout';
-          data: {
+    200: {
+        /**
+         * Page or items
+         */
+        items: ({
             id: number;
+            externalId: string;
+            type: 'steps';
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+            subtype: null;
+        } | {
+            id: number;
+            externalId: string;
             type: 'activity';
-            created: number;
-            user_id: number;
-            timestamp: number;
             subtype: 'workout';
-            activeDuration?: number;
-            duration?: number;
-            calories?: number;
-            TotalExercisesInWorkout?: number;
-            end: number;
-            start: number;
-            exercises?: {
-              exercise_id: string;
-              exercise_name: string;
-              exercise_type: string;
-              sets: {
-                draft?: boolean;
-                reps?: number;
-                weight?: number;
-              }[];
-            }[];
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'weather';
-          subtype: null;
-          data: {
+            data: {
+                id: number;
+                type: 'activity';
+                created: number;
+                user_id: number;
+                timestamp: number;
+                subtype: 'workout';
+                activeDuration?: number;
+                duration?: number;
+                calories?: number;
+                TotalExercisesInWorkout?: number;
+                end: number;
+                start: number;
+                exercises?: {
+                    exercise_id: string;
+                    exercise_name: string;
+                    exercise_type: string;
+                    sets: {
+                        draft?: boolean;
+                        reps?: number;
+                        weight?: number;
+                    }[];
+                }[];
+            };
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
             id: number;
+            externalId: string;
             type: 'weather';
-            created: number;
-            user_id: number;
-            timestamp: number;
-            temperature_current: number;
-            temperature_high: number;
-            temperature_low: number;
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'activity';
-          subtype: 'weightlifting';
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'weight';
-          subtype: null;
-          data: {
+            subtype: null;
+            data: {
+                id: number;
+                type: 'weather';
+                created: number;
+                user_id: number;
+                timestamp: number;
+                temperature_current: number;
+                temperature_high: number;
+                temperature_low: number;
+            };
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
             id: number;
+            externalId: string;
+            type: 'activity';
+            subtype: 'weightlifting';
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
             type: 'weight';
-            created: number;
-            user_id: number;
-            timestamp: number;
-            value: number;
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'activity';
-          subtype: 'walking';
-          data: {
-            id: string;
-            user_id: number | string;
-            client_id: string;
-            remoteid: string;
-            type: string;
+            subtype: null;
+            data: {
+                id: number;
+                type: 'weight';
+                created: number;
+                user_id: number;
+                timestamp: number;
+                value: number;
+            };
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'activity';
+            subtype: 'walking';
+            data: {
+                id: string;
+                user_id: number | string;
+                client_id: string;
+                remoteid: string;
+                type: string;
+                subtype: string;
+                version?: number;
+                note?: string;
+                paused?: boolean;
+                live?: boolean;
+                created: number;
+                modified: number;
+                start: number;
+                end: number;
+                duration: number;
+                activeDuration?: number;
+                timestamp: number;
+                timezone: number;
+                privacy: number;
+                privacy_groups: string[];
+                distance: number;
+                speed?: number;
+                averageSpeed?: number;
+                maxSpeed?: number;
+                currentSpeed?: number;
+                elevationGain?: number;
+                calories: number;
+                met?: number;
+                goal?: {
+                    duration?: number;
+                };
+                goals?: {
+                    [key: string]: unknown;
+                };
+                photos?: {
+                    id: string;
+                    href: string;
+                }[];
+                path?: [
+                    number,
+                    number,
+                    number,
+                    number,
+                    number,
+                    number
+                ][];
+                pauses?: number[];
+                cadence_profile?: [
+                    number,
+                    number
+                ][];
+                distance_profile?: [
+                    number,
+                    number
+                ][];
+                speed_profile?: [
+                    number,
+                    number
+                ][];
+                steps?: number;
+                currentCadence?: number;
+                averageCadence?: number;
+                maxCadence?: number;
+                averageHeartRate?: number;
+                maxHeartRate?: number;
+                currentHeartrate?: number;
+                heartrate_profile?: [
+                    number,
+                    number
+                ][];
+                healthKitSourceName?: string;
+                healthKitDevice?: string;
+                healthKitDeviceName?: string;
+                healthKitSource?: string;
+                healthKitAnchor?: number;
+                healthKitAnchors_3_0?: string;
+                meta?: {
+                    ip: string;
+                    client_version: string;
+                    uuid: string;
+                };
+                place?: {
+                    icon: string;
+                    name: string;
+                    location: {
+                        latitude: number;
+                        longitude: number;
+                    };
+                };
+                remote_user_id?: string;
+                userId?: string;
+                timezone_id?: string;
+            };
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'calories';
+            subtype: null;
+            data: {
+                calories: number;
+                [key: string]: unknown | number;
+            };
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'consumedcalories';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'drink';
+            subtype: 'coffee' | 'water';
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'workout_log';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'fitnesstest';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'sleepreport';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'bodymetrics';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'status';
+            subtype: null;
+            data: {
+                note: string;
+                photos?: {
+                    id: string;
+                    href: string;
+                }[];
+                [key: string]: unknown | string | {
+                    id: string;
+                    href: string;
+                }[] | undefined;
+            };
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'heartrate';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'food';
+            subtype: null;
+            data?: unknown;
+            createdAt: Date;
+            updatedAt: Date | null;
+        } | {
+            id: number;
+            externalId: string;
+            type: 'activity';
             subtype: string;
-            version?: number;
-            note?: string;
-            paused?: boolean;
-            live?: boolean;
-            created: number;
-            modified: number;
-            start: number;
-            end: number;
-            duration: number;
-            activeDuration?: number;
-            timestamp: number;
-            timezone: number;
-            privacy: number;
-            privacy_groups: string[];
-            distance: number;
-            speed?: number;
-            averageSpeed?: number;
-            maxSpeed?: number;
-            currentSpeed?: number;
-            elevationGain?: number;
-            calories: number;
-            met?: number;
-            goal?: {
-              duration?: number;
+            data: {
+                id: string;
+                user_id: number | string;
+                client_id: string;
+                remoteid: string;
+                type: string;
+                subtype: string;
+                version?: number;
+                note?: string;
+                paused?: boolean;
+                live?: boolean;
+                created: number;
+                modified: number;
+                start: number;
+                end: number;
+                duration: number;
+                activeDuration?: number;
+                timestamp: number;
+                timezone: number;
+                privacy: number;
+                privacy_groups: string[];
+                distance: number;
+                speed?: number;
+                averageSpeed?: number;
+                maxSpeed?: number;
+                currentSpeed?: number;
+                elevationGain?: number;
+                calories: number;
+                met?: number;
+                goal?: {
+                    duration?: number;
+                };
+                goals?: {
+                    [key: string]: unknown;
+                };
+                photos?: {
+                    id: string;
+                    href: string;
+                }[];
+                path?: [
+                    number,
+                    number,
+                    number,
+                    number,
+                    number,
+                    number
+                ][];
+                pauses?: number[];
+                cadence_profile?: [
+                    number,
+                    number
+                ][];
+                distance_profile?: [
+                    number,
+                    number
+                ][];
+                speed_profile?: [
+                    number,
+                    number
+                ][];
+                steps?: number;
+                currentCadence?: number;
+                averageCadence?: number;
+                maxCadence?: number;
+                averageHeartRate?: number;
+                maxHeartRate?: number;
+                currentHeartrate?: number;
+                heartrate_profile?: [
+                    number,
+                    number
+                ][];
+                healthKitSourceName?: string;
+                healthKitDevice?: string;
+                healthKitDeviceName?: string;
+                healthKitSource?: string;
+                healthKitAnchor?: number;
+                healthKitAnchors_3_0?: string;
+                meta?: {
+                    ip: string;
+                    client_version: string;
+                    uuid: string;
+                };
+                place?: {
+                    icon: string;
+                    name: string;
+                    location: {
+                        latitude: number;
+                        longitude: number;
+                    };
+                };
+                remote_user_id?: string;
+                userId?: string;
+                timezone_id?: string;
             };
-            goals?: {
-              [key: string]: unknown;
-            };
-            photos?: {
-              id: string;
-              href: string;
-            }[];
-            path?: [number, number, number, number, number, number][];
-            pauses?: number[];
-            cadence_profile?: [number, number][];
-            distance_profile?: [number, number][];
-            speed_profile?: [number, number][];
-            steps?: number;
-            currentCadence?: number;
-            averageCadence?: number;
-            maxCadence?: number;
-            averageHeartRate?: number;
-            maxHeartRate?: number;
-            currentHeartrate?: number;
-            heartrate_profile?: [number, number][];
-            healthKitSourceName?: string;
-            healthKitDevice?: string;
-            healthKitDeviceName?: string;
-            healthKitSource?: string;
-            healthKitAnchor?: number;
-            healthKitAnchors_3_0?: string;
-            meta?: {
-              ip: string;
-              client_version: string;
-              uuid: string;
-            };
-            place?: {
-              icon: string;
-              name: string;
-              location: {
-                latitude: number;
-                longitude: number;
-              };
-            };
-            remote_user_id?: string;
-            userId?: string;
-            timezone_id?: string;
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'calories';
-          subtype: null;
-          data: {
-            calories: number;
-            [key: string]: unknown | number;
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'consumedcalories';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'drink';
-          subtype: 'coffee' | 'water';
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'workout_log';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'fitnesstest';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'sleepreport';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'bodymetrics';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'status';
-          subtype: null;
-          data: {
-            note: string;
-            photos?: {
-              id: string;
-              href: string;
-            }[];
-            [key: string]:
-              | unknown
-              | string
-              | {
-                  id: string;
-                  href: string;
-                }[]
-              | undefined;
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'heartrate';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'food';
-          subtype: null;
-          data?: unknown;
-          createdAt: Date;
-          updatedAt: Date | null;
-        }
-      | {
-          id: number;
-          externalId: string;
-          type: 'activity';
-          subtype: string;
-          data: {
-            id: string;
-            user_id: number | string;
-            client_id: string;
-            remoteid: string;
-            type: string;
-            subtype: string;
-            version?: number;
-            note?: string;
-            paused?: boolean;
-            live?: boolean;
-            created: number;
-            modified: number;
-            start: number;
-            end: number;
-            duration: number;
-            activeDuration?: number;
-            timestamp: number;
-            timezone: number;
-            privacy: number;
-            privacy_groups: string[];
-            distance: number;
-            speed?: number;
-            averageSpeed?: number;
-            maxSpeed?: number;
-            currentSpeed?: number;
-            elevationGain?: number;
-            calories: number;
-            met?: number;
-            goal?: {
-              duration?: number;
-            };
-            goals?: {
-              [key: string]: unknown;
-            };
-            photos?: {
-              id: string;
-              href: string;
-            }[];
-            path?: [number, number, number, number, number, number][];
-            pauses?: number[];
-            cadence_profile?: [number, number][];
-            distance_profile?: [number, number][];
-            speed_profile?: [number, number][];
-            steps?: number;
-            currentCadence?: number;
-            averageCadence?: number;
-            maxCadence?: number;
-            averageHeartRate?: number;
-            maxHeartRate?: number;
-            currentHeartrate?: number;
-            heartrate_profile?: [number, number][];
-            healthKitSourceName?: string;
-            healthKitDevice?: string;
-            healthKitDeviceName?: string;
-            healthKitSource?: string;
-            healthKitAnchor?: number;
-            healthKitAnchors_3_0?: string;
-            meta?: {
-              ip: string;
-              client_version: string;
-              uuid: string;
-            };
-            place?: {
-              icon: string;
-              name: string;
-              location: {
-                latitude: number;
-                longitude: number;
-              };
-            };
-            remote_user_id?: string;
-            userId?: string;
-            timezone_id?: string;
-          };
-          createdAt: Date;
-          updatedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date | null;
         })[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetArgusCheckinResponse =
-  GetArgusCheckinResponses[keyof GetArgusCheckinResponses];
+export type GetArgusCheckinResponse = GetArgusCheckinResponses[keyof GetArgusCheckinResponses];
 
 export type GetArgusCheckinTypesData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/argus/checkin/types';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/argus/checkin/types';
 };
 
 export type GetArgusCheckinTypesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetArgusCheckinTypesError =
-  GetArgusCheckinTypesErrors[keyof GetArgusCheckinTypesErrors];
+export type GetArgusCheckinTypesError = GetArgusCheckinTypesErrors[keyof GetArgusCheckinTypesErrors];
 
 export type GetArgusCheckinTypesResponses = {
-  /**
-   * Possible types that Argus checkins can have.
-   */
-  200: {
     /**
      * Possible types that Argus checkins can have.
      */
-    items: ArgusCheckinType[];
-  };
+    200: {
+        /**
+         * Possible types that Argus checkins can have.
+         */
+        items: ArgusCheckinType[];
+    };
 };
 
-export type GetArgusCheckinTypesResponse =
-  GetArgusCheckinTypesResponses[keyof GetArgusCheckinTypesResponses];
+export type GetArgusCheckinTypesResponse = GetArgusCheckinTypesResponses[keyof GetArgusCheckinTypesResponses];
 
 export type GetEntriesOwnData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filters excercises by type.
-     */
-    type?:
-      | 'Workout'
-      | 'Weight'
-      | 'Post'
-      | 'OutdoorRun'
-      | 'OutdoorWalk'
-      | 'Meal'
-      | 'CalorieGoal'
-      | (| 'Workout'
-          | 'Weight'
-          | 'Post'
-          | 'OutdoorRun'
-          | 'OutdoorWalk'
-          | 'Meal'
-          | 'CalorieGoal')[];
-    /**
-     * Only return entries from this date.
-     */
-    date?: Date;
-    /**
-     * Only return entries updated after this date.
-     */
-    updatedAfter?: Date;
-    /**
-     * Include deleted entries.
-     */
-    includeDeleted?: boolean;
-  };
-  url: '/entries/own';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filters excercises by type.
+         */
+        type?: 'Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal' | ('Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal')[];
+        /**
+         * Only return entries from this date.
+         */
+        date?: Date;
+        /**
+         * Only return entries updated after this date.
+         */
+        updatedAfter?: Date;
+        /**
+         * Include deleted entries.
+         */
+        includeDeleted?: boolean;
+    };
+    url: '/entries/own';
 };
 
 export type GetEntriesOwnErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetEntriesOwnError = GetEntriesOwnErrors[keyof GetEntriesOwnErrors];
 
 export type GetEntriesOwnResponses = {
-  /**
-   * List of entries
-   */
-  200: {
     /**
-     * Page or items
+     * List of entries
      */
-    items: Entry[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Entry[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetEntriesOwnResponse =
-  GetEntriesOwnResponses[keyof GetEntriesOwnResponses];
+export type GetEntriesOwnResponse = GetEntriesOwnResponses[keyof GetEntriesOwnResponses];
 
 export type DeleteEntriesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the entry
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/entries/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the entry
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/entries/{id}';
 };
 
 export type DeleteEntriesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type DeleteEntriesByIdError =
-  DeleteEntriesByIdErrors[keyof DeleteEntriesByIdErrors];
+export type DeleteEntriesByIdError = DeleteEntriesByIdErrors[keyof DeleteEntriesByIdErrors];
 
 export type DeleteEntriesByIdResponses = {
-  /**
-   * Empty response on success
-   */
-  200: {
-    [key: string]: unknown;
-  };
+    /**
+     * Empty response on success
+     */
+    200: {
+        [key: string]: unknown;
+    };
 };
 
-export type DeleteEntriesByIdResponse =
-  DeleteEntriesByIdResponses[keyof DeleteEntriesByIdResponses];
+export type DeleteEntriesByIdResponse = DeleteEntriesByIdResponses[keyof DeleteEntriesByIdResponses];
 
 export type GetEntriesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the entry
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/entries/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the entry
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/entries/{id}';
 };
 
 export type GetEntriesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetEntriesByIdError =
-  GetEntriesByIdErrors[keyof GetEntriesByIdErrors];
+export type GetEntriesByIdError = GetEntriesByIdErrors[keyof GetEntriesByIdErrors];
 
 export type GetEntriesByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Entry;
+    /**
+     * Good Response
+     */
+    200: Entry;
 };
 
-export type GetEntriesByIdResponse =
-  GetEntriesByIdResponses[keyof GetEntriesByIdResponses];
+export type GetEntriesByIdResponse = GetEntriesByIdResponses[keyof GetEntriesByIdResponses];
 
 export type GetEntriesData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filters excercises by type.
-     */
-    type?:
-      | 'Workout'
-      | 'Weight'
-      | 'Post'
-      | 'OutdoorRun'
-      | 'OutdoorWalk'
-      | 'Meal'
-      | 'CalorieGoal'
-      | (| 'Workout'
-          | 'Weight'
-          | 'Post'
-          | 'OutdoorRun'
-          | 'OutdoorWalk'
-          | 'Meal'
-          | 'CalorieGoal')[];
-    /**
-     * Only return entries from this date.
-     */
-    date?: Date;
-    /**
-     * Only return entries updated after this date.
-     */
-    updatedAfter?: Date;
-    /**
-     * Include deleted entries.
-     */
-    includeDeleted?: boolean;
-  };
-  url: '/entries';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filters excercises by type.
+         */
+        type?: 'Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal' | ('Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal')[];
+        /**
+         * Only return entries from this date.
+         */
+        date?: Date;
+        /**
+         * Only return entries updated after this date.
+         */
+        updatedAfter?: Date;
+        /**
+         * Include deleted entries.
+         */
+        includeDeleted?: boolean;
+    };
+    url: '/entries';
 };
 
 export type GetEntriesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetEntriesError = GetEntriesErrors[keyof GetEntriesErrors];
 
 export type GetEntriesResponses = {
-  /**
-   * List of entries
-   */
-  200: {
     /**
-     * Page or items
+     * List of entries
      */
-    items: Entry[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Entry[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
 export type GetEntriesResponse = GetEntriesResponses[keyof GetEntriesResponses];
 
 export type PutEntriesData = {
-  body?: {
-    /**
-     * List of entries to update or insert
-     */
-    items: EntryUpsertDto[];
-  };
-  path?: never;
-  query?: never;
-  url: '/entries';
+    body?: {
+        /**
+         * List of entries to update or insert
+         */
+        items: EntryUpsertDto[];
+    };
+    path?: never;
+    query?: never;
+    url: '/entries';
 };
 
 export type PutEntriesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PutEntriesError = PutEntriesErrors[keyof PutEntriesErrors];
 
 export type PutEntriesResponses = {
-  /**
-   * List of updated or inserted entries
-   */
-  200: {
     /**
      * List of updated or inserted entries
      */
-    items: Entry[];
-  };
+    200: {
+        /**
+         * List of updated or inserted entries
+         */
+        items: Entry[];
+    };
 };
 
 export type PutEntriesResponse = PutEntriesResponses[keyof PutEntriesResponses];
 
 export type GetEntriesOwnDatesData = {
-  body?: never;
-  path?: never;
-  query: {
-    /**
-     * Date
-     */
-    date: Date;
-    /**
-     * Filters excercises by type.
-     */
-    type?:
-      | 'Workout'
-      | 'Weight'
-      | 'Post'
-      | 'OutdoorRun'
-      | 'OutdoorWalk'
-      | 'Meal'
-      | 'CalorieGoal'
-      | (| 'Workout'
-          | 'Weight'
-          | 'Post'
-          | 'OutdoorRun'
-          | 'OutdoorWalk'
-          | 'Meal'
-          | 'CalorieGoal')[];
-  };
-  url: '/entries/own/dates';
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Date
+         */
+        date: Date;
+        /**
+         * Filters excercises by type.
+         */
+        type?: 'Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal' | ('Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal')[];
+    };
+    url: '/entries/own/dates';
 };
 
 export type GetEntriesOwnDatesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetEntriesOwnDatesError =
-  GetEntriesOwnDatesErrors[keyof GetEntriesOwnDatesErrors];
+export type GetEntriesOwnDatesError = GetEntriesOwnDatesErrors[keyof GetEntriesOwnDatesErrors];
 
 export type GetEntriesOwnDatesResponses = {
-  /**
-   * Good Response
-   */
-  200: DateList;
+    /**
+     * Good Response
+     */
+    200: DateList;
 };
 
-export type GetEntriesOwnDatesResponse =
-  GetEntriesOwnDatesResponses[keyof GetEntriesOwnDatesResponses];
+export type GetEntriesOwnDatesResponse = GetEntriesOwnDatesResponses[keyof GetEntriesOwnDatesResponses];
 
 export type PostPostsData = {
-  body?: {
-    /**
-     * Text of the post
-     */
-    note: string | null;
-    /**
-     * Data of the image. Base64 encoded string
-     */
-    data: string | null;
-    /**
-     * Time of the post
-     */
-    time: Date;
-  };
-  path?: never;
-  query?: never;
-  url: '/posts';
+    body?: {
+        /**
+         * Text of the post
+         */
+        note: string | null;
+        /**
+         * Data of the image. Base64 encoded string
+         */
+        data: string | null;
+        /**
+         * Time of the post
+         */
+        time: Date;
+    };
+    path?: never;
+    query?: never;
+    url: '/posts';
 };
 
 export type PostPostsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type PostPostsError = PostPostsErrors[keyof PostPostsErrors];
 
 export type PostPostsResponses = {
-  /**
-   * Good Response
-   */
-  200: PostEntry;
+    /**
+     * Good Response
+     */
+    200: PostEntry;
 };
 
 export type PostPostsResponse = PostPostsResponses[keyof PostPostsResponses];
 
 export type GetPostsByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the post entry
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/posts/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the post entry
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/posts/{id}';
 };
 
 export type GetPostsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetPostsByIdError = GetPostsByIdErrors[keyof GetPostsByIdErrors];
 
 export type GetPostsByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: PostEntry;
+    /**
+     * Good Response
+     */
+    200: PostEntry;
 };
 
-export type GetPostsByIdResponse =
-  GetPostsByIdResponses[keyof GetPostsByIdResponses];
+export type GetPostsByIdResponse = GetPostsByIdResponses[keyof GetPostsByIdResponses];
 
 export type PatchPostsByIdData = {
-  body?: {
-    /**
-     * Data of the image. Base64 encoded string
-     */
-    data?: string;
-    /**
-     * Text of the post
-     */
-    note: string | null;
-    /**
-     * Time of the post
-     */
-    time: Date;
-  };
-  path: {
-    /**
-     * Id of the post entry
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/posts/{id}';
+    body?: {
+        /**
+         * Data of the image. Base64 encoded string
+         */
+        data?: string;
+        /**
+         * Text of the post
+         */
+        note: string | null;
+        /**
+         * Time of the post
+         */
+        time: Date;
+    };
+    path: {
+        /**
+         * Id of the post entry
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/posts/{id}';
 };
 
 export type PatchPostsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchPostsByIdError =
-  PatchPostsByIdErrors[keyof PatchPostsByIdErrors];
+export type PatchPostsByIdError = PatchPostsByIdErrors[keyof PatchPostsByIdErrors];
 
 export type PatchPostsByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: PostEntry;
+    /**
+     * Good Response
+     */
+    200: PostEntry;
 };
 
-export type PatchPostsByIdResponse =
-  PatchPostsByIdResponses[keyof PatchPostsByIdResponses];
+export type PatchPostsByIdResponse = PatchPostsByIdResponses[keyof PatchPostsByIdResponses];
 
 export type GetFoodListData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Search for food by name
-     */
-    search?: string;
-    /**
-     * Filter for dishes only
-     */
-    isDish?: boolean;
-    /**
-     * Only return foods updated after this date.
-     */
-    updatedAfter?: Date;
-    /**
-     * Include deleted foods.
-     */
-    includeDeleted?: boolean;
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/food';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search for food by name
+         */
+        search?: string;
+        /**
+         * Filter for dishes only
+         */
+        isDish?: boolean;
+        /**
+         * Only return foods updated after this date.
+         */
+        updatedAfter?: Date;
+        /**
+         * Include deleted foods.
+         */
+        includeDeleted?: boolean;
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/food';
 };
 
 export type GetFoodListErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetFoodListError = GetFoodListErrors[keyof GetFoodListErrors];
 
 export type GetFoodListResponses = {
-  /**
-   * List of food
-   */
-  200: {
     /**
-     * Page or items
+     * List of food
      */
-    items: Food[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Food[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetFoodListResponse =
-  GetFoodListResponses[keyof GetFoodListResponses];
+export type GetFoodListResponse = GetFoodListResponses[keyof GetFoodListResponses];
 
 export type UpsertFoodData = {
-  body?: FoodUpsertDto;
-  path?: never;
-  query?: never;
-  url: '/food';
+    body?: FoodUpsertDto;
+    path?: never;
+    query?: never;
+    url: '/food';
 };
 
 export type UpsertFoodErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type UpsertFoodError = UpsertFoodErrors[keyof UpsertFoodErrors];
 
 export type UpsertFoodResponses = {
-  /**
-   * Good Response
-   */
-  200: Food;
+    /**
+     * Good Response
+     */
+    200: Food;
 };
 
 export type UpsertFoodResponse = UpsertFoodResponses[keyof UpsertFoodResponses];
 
 export type GetFoodData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the food
-     */
-    id: string;
-  };
-  query?: {
-    /**
-     * Search for food by name
-     */
-    search?: string;
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/food/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the food
+         */
+        id: string;
+    };
+    query?: {
+        /**
+         * Search for food by name
+         */
+        search?: string;
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/food/{id}';
 };
 
 export type GetFoodErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetFoodError = GetFoodErrors[keyof GetFoodErrors];
 
 export type GetFoodResponses = {
-  /**
-   * Good Response
-   */
-  200: Food;
+    /**
+     * Good Response
+     */
+    200: Food;
 };
 
 export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
 
 export type GetOwnProfileData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/profile';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/profile';
 };
 
 export type GetOwnProfileErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetOwnProfileError = GetOwnProfileErrors[keyof GetOwnProfileErrors];
 
 export type GetOwnProfileResponses = {
-  /**
-   * Good Response
-   */
-  200: Profile;
+    /**
+     * Good Response
+     */
+    200: Profile;
 };
 
-export type GetOwnProfileResponse =
-  GetOwnProfileResponses[keyof GetOwnProfileResponses];
+export type GetOwnProfileResponse = GetOwnProfileResponses[keyof GetOwnProfileResponses];
 
 export type GetSettingsData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/settings';
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/settings';
 };
 
 export type GetSettingsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetSettingsError = GetSettingsErrors[keyof GetSettingsErrors];
 
 export type GetSettingsResponses = {
-  /**
-   * Good Response
-   */
-  200: Settings;
+    /**
+     * Good Response
+     */
+    200: Settings;
 };
 
-export type GetSettingsResponse =
-  GetSettingsResponses[keyof GetSettingsResponses];
+export type GetSettingsResponse = GetSettingsResponses[keyof GetSettingsResponses];
 
 export type UpdateSettingsData = {
-  body?: SettingsUpdateDto;
-  path?: never;
-  query?: never;
-  url: '/settings';
+    body?: SettingsUpdateDto;
+    path?: never;
+    query?: never;
+    url: '/settings';
 };
 
 export type UpdateSettingsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type UpdateSettingsError =
-  UpdateSettingsErrors[keyof UpdateSettingsErrors];
+export type UpdateSettingsError = UpdateSettingsErrors[keyof UpdateSettingsErrors];
 
 export type UpdateSettingsResponses = {
-  /**
-   * Good Response
-   */
-  200: Settings;
+    /**
+     * Good Response
+     */
+    200: Settings;
 };
 
-export type UpdateSettingsResponse =
-  UpdateSettingsResponses[keyof UpdateSettingsResponses];
+export type UpdateSettingsResponse = UpdateSettingsResponses[keyof UpdateSettingsResponses];
 
 export type GetCrmUsersData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/crm/users';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/crm/users';
 };
 
 export type GetCrmUsersErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetCrmUsersError = GetCrmUsersErrors[keyof GetCrmUsersErrors];
 
 export type GetCrmUsersResponses = {
-  /**
-   * List of users
-   */
-  200: {
     /**
-     * Page or items
+     * List of users
      */
-    items: User[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: User[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetCrmUsersResponse =
-  GetCrmUsersResponses[keyof GetCrmUsersResponses];
+export type GetCrmUsersResponse = GetCrmUsersResponses[keyof GetCrmUsersResponses];
 
 export type GetCrmManagersData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/crm/managers';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/crm/managers';
 };
 
 export type GetCrmManagersErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetCrmManagersError =
-  GetCrmManagersErrors[keyof GetCrmManagersErrors];
+export type GetCrmManagersError = GetCrmManagersErrors[keyof GetCrmManagersErrors];
 
 export type GetCrmManagersResponses = {
-  /**
-   * List of Managers
-   */
-  200: {
     /**
-     * Page or items
+     * List of Managers
      */
-    items: Manager[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Manager[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetCrmManagersResponse =
-  GetCrmManagersResponses[keyof GetCrmManagersResponses];
+export type GetCrmManagersResponse = GetCrmManagersResponses[keyof GetCrmManagersResponses];
 
 export type ManagerLoginData = {
-  body?: {
-    /**
-     * Email for the user account
-     */
-    email: string;
-    /**
-     * Password for the user account
-     */
-    password: string;
-  };
-  path?: never;
-  query?: never;
-  url: '/crm/auth/login';
+    body?: {
+        /**
+         * Email for the user account
+         */
+        email: string;
+        /**
+         * Password for the user account
+         */
+        password: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/crm/auth/login';
 };
 
 export type ManagerLoginErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Entity not found
-   */
-  404: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type ManagerLoginError = ManagerLoginErrors[keyof ManagerLoginErrors];
 
 export type ManagerLoginResponses = {
-  /**
-   * Good Response
-   */
-  200: AuthUser;
+    /**
+     * Good Response
+     */
+    200: AuthUser;
 };
 
-export type ManagerLoginResponse =
-  ManagerLoginResponses[keyof ManagerLoginResponses];
+export type ManagerLoginResponse = ManagerLoginResponses[keyof ManagerLoginResponses];
 
 export type GetCrmTranslationsByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the translation record
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/crm/translations/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the translation record
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/crm/translations/{id}';
 };
 
 export type GetCrmTranslationsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetCrmTranslationsByIdError =
-  GetCrmTranslationsByIdErrors[keyof GetCrmTranslationsByIdErrors];
+export type GetCrmTranslationsByIdError = GetCrmTranslationsByIdErrors[keyof GetCrmTranslationsByIdErrors];
 
 export type GetCrmTranslationsByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Translation;
+    /**
+     * Good Response
+     */
+    200: Translation;
 };
 
-export type GetCrmTranslationsByIdResponse =
-  GetCrmTranslationsByIdResponses[keyof GetCrmTranslationsByIdResponses];
+export type GetCrmTranslationsByIdResponse = GetCrmTranslationsByIdResponses[keyof GetCrmTranslationsByIdResponses];
 
 export type PatchCrmTranslationsByIdData = {
-  body?: {
-    /**
-     * Text of the translation
-     */
-    value: string;
-  };
-  path: {
-    /**
-     * Id of the translation
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/crm/translations/{id}';
+    body?: {
+        /**
+         * Text of the translation
+         */
+        value: string;
+    };
+    path: {
+        /**
+         * Id of the translation
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/crm/translations/{id}';
 };
 
 export type PatchCrmTranslationsByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchCrmTranslationsByIdError =
-  PatchCrmTranslationsByIdErrors[keyof PatchCrmTranslationsByIdErrors];
+export type PatchCrmTranslationsByIdError = PatchCrmTranslationsByIdErrors[keyof PatchCrmTranslationsByIdErrors];
 
 export type PatchCrmTranslationsByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Translation;
+    /**
+     * Good Response
+     */
+    200: Translation;
 };
 
-export type PatchCrmTranslationsByIdResponse =
-  PatchCrmTranslationsByIdResponses[keyof PatchCrmTranslationsByIdResponses];
+export type PatchCrmTranslationsByIdResponse = PatchCrmTranslationsByIdResponses[keyof PatchCrmTranslationsByIdResponses];
 
 export type GetCrmTranslationsData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-  };
-  url: '/crm/translations';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+    };
+    url: '/crm/translations';
 };
 
 export type GetCrmTranslationsErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetCrmTranslationsError =
-  GetCrmTranslationsErrors[keyof GetCrmTranslationsErrors];
+export type GetCrmTranslationsError = GetCrmTranslationsErrors[keyof GetCrmTranslationsErrors];
 
 export type GetCrmTranslationsResponses = {
-  /**
-   * List of translations
-   */
-  200: {
     /**
-     * Page or items
+     * List of translations
      */
-    items: Translation[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Translation[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetCrmTranslationsResponse =
-  GetCrmTranslationsResponses[keyof GetCrmTranslationsResponses];
+export type GetCrmTranslationsResponse = GetCrmTranslationsResponses[keyof GetCrmTranslationsResponses];
 
 export type GetCrmExercisesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the excercise
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/crm/exercises/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the excercise
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/crm/exercises/{id}';
 };
 
 export type GetCrmExercisesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetCrmExercisesByIdError =
-  GetCrmExercisesByIdErrors[keyof GetCrmExercisesByIdErrors];
+export type GetCrmExercisesByIdError = GetCrmExercisesByIdErrors[keyof GetCrmExercisesByIdErrors];
 
 export type GetCrmExercisesByIdResponses = {
-  /**
-   * Good Response
-   */
-  200: Exercise;
+    /**
+     * Good Response
+     */
+    200: Exercise;
 };
 
-export type GetCrmExercisesByIdResponse =
-  GetCrmExercisesByIdResponses[keyof GetCrmExercisesByIdResponses];
+export type GetCrmExercisesByIdResponse = GetCrmExercisesByIdResponses[keyof GetCrmExercisesByIdResponses];
 
 export type PatchCrmExercisesByIdData = {
-  body?: {
-    /**
-     * Exercise Name
-     */
-    name?: string;
-    /**
-     * Description and instructions on how to perform this exercise
-     */
-    description?: string | null;
-    /**
-     * Image for the exercise. Base64 encoded string
-     */
-    image?: string;
-    /**
-     * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
-     */
-    isArchived?: boolean;
-    /**
-     * List of muscles involved in this excercise
-     */
-    muscles?: {
-      /**
-       * List of primary muscles this exercise targets
-       */
-      primary: Muscle[];
-      /**
-       * List of secondary muscles this exercise targets
-       */
-      secondary: Muscle[];
+    body?: {
+        /**
+         * Exercise Name
+         */
+        name?: string;
+        /**
+         * Description and instructions on how to perform this exercise
+         */
+        description?: string | null;
+        /**
+         * Image for the exercise. Base64 encoded string
+         */
+        image?: string;
+        /**
+         * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+         */
+        isArchived?: boolean;
+        /**
+         * List of muscles involved in this excercise
+         */
+        muscles?: {
+            /**
+             * List of primary muscles this exercise targets
+             */
+            primary: Muscle[];
+            /**
+             * List of secondary muscles this exercise targets
+             */
+            secondary: Muscle[];
+        };
     };
-  };
-  path: {
-    /**
-     * Id of the excercise
-     */
-    id: string;
-  };
-  query?: never;
-  url: '/crm/exercises/{id}';
+    path: {
+        /**
+         * Id of the excercise
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/crm/exercises/{id}';
 };
 
 export type PatchCrmExercisesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type PatchCrmExercisesByIdError =
-  PatchCrmExercisesByIdErrors[keyof PatchCrmExercisesByIdErrors];
+export type PatchCrmExercisesByIdError = PatchCrmExercisesByIdErrors[keyof PatchCrmExercisesByIdErrors];
 
 export type PatchCrmExercisesByIdResponses = {
-  /**
-   * Indicator of successfult operation
-   */
-  200: {
     /**
-     * Stub for response. Always true since otherwise error is thrown.
+     * Indicator of successfult operation
      */
-    success: boolean;
-  };
+    200: {
+        /**
+         * Stub for response. Always true since otherwise error is thrown.
+         */
+        success: boolean;
+    };
 };
 
-export type PatchCrmExercisesByIdResponse =
-  PatchCrmExercisesByIdResponses[keyof PatchCrmExercisesByIdResponses];
+export type PatchCrmExercisesByIdResponse = PatchCrmExercisesByIdResponses[keyof PatchCrmExercisesByIdResponses];
 
 export type GetCrmExercisesData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filters exercises by name
-     */
-    filter?: string;
-    /**
-     * Filters excercises by muscles. Exercise must involve all muscles from the list.
-     */
-    muscle?:
-      | (| 'Lower Back'
-          | 'Soleus'
-          | 'Front Deltoids'
-          | 'Lats'
-          | 'Forearms'
-          | 'Pecs'
-          | 'Hamstrings'
-          | 'Wrist Flexors'
-          | 'Biceps'
-          | 'Triceps'
-          | 'Rear Deltoids'
-          | 'Rotator Cuff'
-          | 'Ankle'
-          | 'Abdominals'
-          | 'Glutes'
-          | 'Quadriceps'
-          | 'Obliques'
-          | 'Abductors'
-          | 'Gastrocnemius'
-          | 'Lateral Deltoids'
-          | 'Hip Flexors'
-          | 'Trapezius'
-          | 'Neck'
-          | 'Adductors')[]
-      | 'Lower Back'
-      | 'Soleus'
-      | 'Front Deltoids'
-      | 'Lats'
-      | 'Forearms'
-      | 'Pecs'
-      | 'Hamstrings'
-      | 'Wrist Flexors'
-      | 'Biceps'
-      | 'Triceps'
-      | 'Rear Deltoids'
-      | 'Rotator Cuff'
-      | 'Ankle'
-      | 'Abdominals'
-      | 'Glutes'
-      | 'Quadriceps'
-      | 'Obliques'
-      | 'Abductors'
-      | 'Gastrocnemius'
-      | 'Lateral Deltoids'
-      | 'Hip Flexors'
-      | 'Trapezius'
-      | 'Neck'
-      | 'Adductors';
-    /**
-     * Filters excercises by equipment
-     */
-    equipment?:
-      | 'rowing'
-      | 'swimming'
-      | 'plate loaded'
-      | 'foam roller'
-      | 'pullup bar'
-      | 'stair climber'
-      | 'selectorized'
-      | 'dip bar'
-      | 'preacher'
-      | 'hyperextension'
-      | 'sandbag'
-      | 'elliptical'
-      | 'chair'
-      | 'cable'
-      | 'captains chair'
-      | 'towel'
-      | 'water bottle'
-      | 'stability ball'
-      | 'table'
-      | 'smith'
-      | 'kettlebell'
-      | 'cycling'
-      | 'step aerobics'
-      | 'plate'
-      | 'platform'
-      | 'medicine ball'
-      | 'running'
-      | 'barbell'
-      | 'backpack'
-      | 'ez curl bar'
-      | 'walking'
-      | 'bench'
-      | 'bodyweight'
-      | 'resistance band'
-      | 'dumbbell'
-      | 'jump rope'
-      | 'treadmill'
-      | 'bosu ball';
-    /**
-     * Include built-in exercises into the response
-     */
-    includeBuiltIn?: boolean;
-    /**
-     * Include deleted exercises into the response
-     */
-    includeDeleted?: boolean;
-    /**
-     * Only return exercises updated after this date. Used for syncing.
-     */
-    updatedAfter?: Date;
-    /**
-     * Filters out exercises that are variations of other exercises.
-     */
-    parentsOnly?: boolean;
-    /**
-     * User ID
-     */
-    userId?: number;
-  };
-  url: '/crm/exercises';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filters exercises by name
+         */
+        filter?: string;
+        /**
+         * Filters excercises by muscles. Exercise must involve all muscles from the list.
+         */
+        muscle?: ('Lower Back' | 'Soleus' | 'Front Deltoids' | 'Lats' | 'Forearms' | 'Pecs' | 'Hamstrings' | 'Wrist Flexors' | 'Biceps' | 'Triceps' | 'Rear Deltoids' | 'Rotator Cuff' | 'Ankle' | 'Abdominals' | 'Glutes' | 'Quadriceps' | 'Obliques' | 'Abductors' | 'Gastrocnemius' | 'Lateral Deltoids' | 'Hip Flexors' | 'Trapezius' | 'Neck' | 'Adductors')[] | 'Lower Back' | 'Soleus' | 'Front Deltoids' | 'Lats' | 'Forearms' | 'Pecs' | 'Hamstrings' | 'Wrist Flexors' | 'Biceps' | 'Triceps' | 'Rear Deltoids' | 'Rotator Cuff' | 'Ankle' | 'Abdominals' | 'Glutes' | 'Quadriceps' | 'Obliques' | 'Abductors' | 'Gastrocnemius' | 'Lateral Deltoids' | 'Hip Flexors' | 'Trapezius' | 'Neck' | 'Adductors';
+        /**
+         * Filters excercises by equipment
+         */
+        equipment?: 'rowing' | 'swimming' | 'plate loaded' | 'foam roller' | 'pullup bar' | 'stair climber' | 'selectorized' | 'dip bar' | 'preacher' | 'hyperextension' | 'sandbag' | 'elliptical' | 'chair' | 'cable' | 'captains chair' | 'towel' | 'water bottle' | 'stability ball' | 'table' | 'smith' | 'kettlebell' | 'cycling' | 'step aerobics' | 'plate' | 'platform' | 'medicine ball' | 'running' | 'barbell' | 'backpack' | 'ez curl bar' | 'walking' | 'bench' | 'bodyweight' | 'resistance band' | 'dumbbell' | 'jump rope' | 'treadmill' | 'bosu ball';
+        /**
+         * Include built-in exercises into the response
+         */
+        includeBuiltIn?: boolean;
+        /**
+         * Include deleted exercises into the response
+         */
+        includeDeleted?: boolean;
+        /**
+         * Only return exercises updated after this date. Used for syncing.
+         */
+        updatedAfter?: Date;
+        /**
+         * Filters out exercises that are variations of other exercises.
+         */
+        parentsOnly?: boolean;
+        /**
+         * User ID
+         */
+        userId?: number;
+    };
+    url: '/crm/exercises';
 };
 
 export type GetCrmExercisesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type GetCrmExercisesError =
-  GetCrmExercisesErrors[keyof GetCrmExercisesErrors];
+export type GetCrmExercisesError = GetCrmExercisesErrors[keyof GetCrmExercisesErrors];
 
 export type GetCrmExercisesResponses = {
-  /**
-   * List of excercises
-   */
-  200: {
     /**
-     * Page or items
+     * List of excercises
      */
-    items: Exercise[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: Exercise[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetCrmExercisesResponse =
-  GetCrmExercisesResponses[keyof GetCrmExercisesResponses];
+export type GetCrmExercisesResponse = GetCrmExercisesResponses[keyof GetCrmExercisesResponses];
 
 export type GetCrmImagesData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Filters exercises by name
-     */
-    search?: string;
-  };
-  url: '/crm/images';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         */
+        page?: number;
+        /**
+         * Filters exercises by name
+         */
+        search?: string;
+    };
+    url: '/crm/images';
 };
 
 export type GetCrmImagesErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
 export type GetCrmImagesError = GetCrmImagesErrors[keyof GetCrmImagesErrors];
 
 export type GetCrmImagesResponses = {
-  /**
-   * List of images
-   */
-  200: {
     /**
-     * Page or items
+     * List of images
      */
-    items: ManagedImage[];
-    /**
-     * Pagination details
-     */
-    info: {
-      /**
-       * Total number of items
-       */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+    200: {
+        /**
+         * Page or items
+         */
+        items: ManagedImage[];
+        /**
+         * Pagination details
+         */
+        info: {
+            /**
+             * Total number of items
+             */
+            count: number;
+            /**
+             * Current page
+             */
+            page: number;
+            /**
+             * Number of itemss per page
+             */
+            pageSize: number;
+        };
     };
-  };
 };
 
-export type GetCrmImagesResponse =
-  GetCrmImagesResponses[keyof GetCrmImagesResponses];
+export type GetCrmImagesResponse = GetCrmImagesResponses[keyof GetCrmImagesResponses];
 
 export type DeleteCrmImagesByIdData = {
-  body?: never;
-  path: {
-    /**
-     * Id of the image
-     */
-    id: number;
-  };
-  query?: never;
-  url: '/crm/images/{id}';
+    body?: never;
+    path: {
+        /**
+         * Id of the image
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/crm/images/{id}';
 };
 
 export type DeleteCrmImagesByIdErrors = {
-  /**
-   * Validation Failed or Action Error
-   */
-  400:
-    | {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
         /**
          * Error response
          */
         error: {
-          /**
-           * Code to handle on the frontend
-           */
-          code: 'ValidationFailed';
-          fieldErrors: {
             /**
-             * Name of the field
+             * Code to handle on the frontend
              */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: {
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
             }[];
-          }[];
-          location: 'Query' | 'Path' | 'Body' | 'Response';
+            location: 'Query' | 'Path' | 'Body' | 'Response';
         };
-      }
-    | {
+    } | {
         error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: 'ActionError';
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode:
-            | 'InvalidPassword'
-            | 'EmailAlreadyExists'
-            | 'PasswordConfirmationMismatch'
-            | 'WorkoutNotFound'
-            | 'ExerciseNotFound'
-            | 'NoOwnerShip'
-            | 'PasswordResetTokenExpired'
-            | 'PasswordResetTokenMailformed'
-            | 'EmptyMeal'
-            | 'UserNotFound';
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
         };
-      };
-  /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'Unauthorized';
     };
-  };
-  /**
-   * Entity not found
-   */
-  404: {
     /**
-     * Error response
+     * Unauthorized
      */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: 'NotFound';
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
     };
-  };
-  /**
-   * Unknown Error
-   */
-  500: UnknownErrorResponse;
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
 };
 
-export type DeleteCrmImagesByIdError =
-  DeleteCrmImagesByIdErrors[keyof DeleteCrmImagesByIdErrors];
+export type DeleteCrmImagesByIdError = DeleteCrmImagesByIdErrors[keyof DeleteCrmImagesByIdErrors];
 
 export type DeleteCrmImagesByIdResponses = {
-  /**
-   * Indicator of successfult operation
-   */
-  200: {
     /**
-     * Stub for response. Always true since otherwise error is thrown.
+     * Indicator of successfult operation
      */
-    success: boolean;
-  };
+    200: {
+        /**
+         * Stub for response. Always true since otherwise error is thrown.
+         */
+        success: boolean;
+    };
 };
 
-export type DeleteCrmImagesByIdResponse =
-  DeleteCrmImagesByIdResponses[keyof DeleteCrmImagesByIdResponses];
+export type DeleteCrmImagesByIdResponse = DeleteCrmImagesByIdResponses[keyof DeleteCrmImagesByIdResponses];
 
 export type ClientOptions = {
-  baseURL: `${string}://${string}/api` | (string & {});
+    baseURL: `${string}://${string}/api` | (string & {});
 };
