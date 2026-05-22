@@ -16,6 +16,7 @@ import {speedToPace} from '../../../../../../utils/speedToPace';
 export interface RoutedWorkoutContentProps {
   entry: AppEntry;
   workout: OutdoorRun | OutdoorWalk;
+  onUpdate: (entry: AppEntry) => void;
 }
 
 export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
@@ -34,7 +35,7 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
       {props.entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(props.entry.time)}
       </ThemedText>
       <ThemedText>Pace: {paceToString(props.workout.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
-      <EntrySyncButton entry={props.entry} readonly/>
+      <EntrySyncButton entry={props.entry} readonly onUpdate={props.onUpdate}/>
     </View>
     </View>
     <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start'}}>

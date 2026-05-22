@@ -15,9 +15,10 @@ import {useColorScheme, View} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import {ThemedText} from '../components/blocks/ThemedText/ThemedText';
 import {ScreenContainer} from '../components/blocks/ScreenContainer/ScreenContainer';
+import {ServiceProvider} from '../components/providers/ServiceProvider/ServiceProvider';
 
 // console.log = () => null // uncomment for prod / preview
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
@@ -69,12 +70,14 @@ export default function RootLayout() {
   return (
   <SQLiteProvider databaseName="db.db">
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Slot screenOptions={{}}/>
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </AuthProvider>
+      <ServiceProvider>
+        <AuthProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Slot screenOptions={{}}/>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </AuthProvider>
+      </ServiceProvider>
     </QueryClientProvider>
   </SQLiteProvider>
   );

@@ -1,0 +1,95 @@
+import {atom, PrimitiveAtom, SetStateAction, useAtomValue, useSetAtom} from 'jotai';
+import {FC} from 'react';
+import {AppEntry, PostAppEntry, WeightAppEntry, WorkoutAppEntry} from '../../../../../../types/models/AppEntry';
+import {EntryType} from '../../../../../../openapi-client';
+import {OutdoorRunBlock} from '../OutdoorRunBlock/OutdoorRunBlock';
+import {UknownEntryBlock} from '../UknownEntryBlock/UknownEntryBlock';
+import {OutdoorWalkBlock} from '../OutdoorWalkBlock/OutdoorWalkBlock';
+import {PostBlock} from '../PostBlock/PostBlock';
+import {WeightBlock} from '../WeightBlock/WeightBlock';
+import {WorkoutBlock} from '../WorkoutBlock/WorkoutBlock';
+import {useRouter} from 'expo-router';
+import {weightAtom} from '../../../WeightEditScreen/utils/weightAtom';
+import {postAtom} from '../../../PostEditScreen/utils/postAtom';
+import {workoutAtom} from '../../../WorkoutScreen/utils/workoutAtom';
+
+/**
+ * Creates an specific entry atom that updates the original entry atom when mutated.
+ * @param value Any specific type of entry
+ * @param entryAtom Entry atom
+ * @returns
+ */
+export const entryLens = <T extends AppEntry>(
+  value: T,
+  entryAtom: PrimitiveAtom<AppEntry>
+): PrimitiveAtom<T> => {
+  const valueAtom = atom(value);
+  const lens = atom<T, [SetStateAction<T>], void>(
+    (get): T => {
+      return get(valueAtom);
+    },
+    (_, set, update) => {
+      set(valueAtom, update);
+      set(entryAtom, (prev) => ({
+        ...prev,
+        ...update,
+      }));
+    }
+  );
+  return lens;
+};
+
+export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
+  const entry = useAtomValue(props.entry);
+  const router = useRouter();
+  const setWeightEntry = useSetAtom(weightAtom);
+  const setPostEntry = useSetAtom(postAtom);
+  const setWorkoutEntry = useSetAtom(workoutAtom);
+  const openWorkout = (workout: WorkoutAppEntry) => {
+    const entryAtom = entryLens(workout, props.entry);
+    setWorkoutEntry(entryAtom);
+    router.navigate({
+      pathname: './editWorkout',
+      params: {
+        workoutId: workout.id,
+      },
+    });
+  };
+  const openWeight = (entry: WeightAppEntry) => {
+    const entryAtom = entryLens(entry, props.entry);
+    setWeightEntry(entryAtom);
+
+    router.navigate({
+      pathname: './editWeight',
+      params: {
+        entryId: entry.id,
+      },
+    });
+  };
+  const openPost = (entry: PostAppEntry) => {
+    const entryAtom = entryLens(entry, props.entry);
+    setPostEntry(entryAtom);
+    router.navigate({
+      pathname: './editPost',
+      params: {
+        entryId: entry.id,
+      },
+    });
+  };
+  console.log('render entry');
+  switch (entry.type) {
+    case EntryType.WORKOUT:
+      return <WorkoutBlock onPress={openWorkout} entryAtom={entryLens(entry, props.entry)} />;
+    case EntryType.WEIGHT:
+      return <WeightBlock onPress={openWeight} entryAtom={entryLens(entry, props.entry)} />;
+    case EntryType.POST:
+      return <PostBlock onPress={openPost} entryAtom={entryLens(entry, props.entry)} />;
+    case EntryType.OUTDOOR_RUN:
+      return <OutdoorRunBlock entryAtom={entryLens(entry, props.entry)} />;
+    case EntryType.OUTDOOR_WALK:
+      return <OutdoorWalkBlock entryAtom={entryLens(entry, props.entry)} />;
+    default:
+      return <UknownEntryBlock entry={entry} />;
+  }
+};
+

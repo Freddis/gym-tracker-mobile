@@ -5,19 +5,21 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {WeightAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {PrimitiveAtom, useAtom} from 'jotai';
 
-export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntry)=> void}> = (props) => {
-  const weight = props.entry.weight;
+export const WeightBlock: FC<{entryAtom: PrimitiveAtom<WeightAppEntry>, onPress?: (x: WeightAppEntry)=> void}> = (props) => {
+  const [entry, setEntry] = useAtom(props.entryAtom);
+  const weight = entry.weight;
   const theme = useAppTheme();
   const onPress = () => {
     if (props.onPress) {
-      props.onPress(props.entry);
+      props.onPress(entry);
     }
   };
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
-  const date = props.entry.time;
+  const date = entry.time;
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
@@ -32,12 +34,12 @@ export const WeightBlock: FC<{entry: WeightAppEntry, onPress?: (x: WeightAppEntr
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={props.entry} readonly/>
+            <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} readonly/>
           </View>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <ThemedText style={{fontWeight: 'semibold'}}>
-            <ThemedText style={{fontSize: 40, lineHeight: 40}}>{weight.weight}</ThemedText>
+            <ThemedText style={{fontSize: 40, lineHeight: 40}}>{weight.weight.toFixed(2)}</ThemedText>
             {weight.units}
           </ThemedText>
         </View>

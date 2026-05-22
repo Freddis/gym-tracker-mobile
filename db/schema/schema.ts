@@ -153,7 +153,10 @@ export const entries = sqliteTable('entries', {
   healthkitSourceName: text(),
   healthkitDevice: text(),
   healthkitDeviceName: text(),
-});
+}, (table) => [
+  index('entries_type_deleted_time_id_idx').on(table.deletedAt, table.type, table.time),
+  index('entries_deleted_time_id_idx').on(table.deletedAt, table.time),
+]);
 
 export const images = sqliteTable('images', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),

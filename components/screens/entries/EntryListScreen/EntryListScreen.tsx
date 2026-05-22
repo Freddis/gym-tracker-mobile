@@ -1,88 +1,60 @@
-import {View, Pressable, RefreshControl, Alert} from 'react-native';
+import {View, Pressable, RefreshControl, Alert, ActivityIndicator, FlatList} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {Link, Stack, useFocusEffect, useRouter} from 'expo-router';
+import {Link, Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useDrizzle} from '@/utils/drizzle';
-import {FC, Fragment, useCallback, useState} from 'react';
-import {AppWorkout} from '@/types/models/AppWorkout';
-import {WorkoutBlock} from './components/WorkoutBlock/WorkoutBlock';
+import {FC, memo, useEffect, useState} from 'react';
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
-import {WeightBlock} from './components/WeightBlock/WeightBlock';
-import {AppEntry, PostAppEntry, WeightAppEntry} from '../../../../types/models/AppEntry';
 import {EntryType} from '../../../../openapi-client';
-import {UknownEntryBlock} from './components/UknownEntryBlock/UknownEntryBlock';
-import {PostBlock} from './components/PostBlock/PostBlock';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
-import {OutdoorRunBlock} from './components/OutdoorRunBlock/OutdoorRunBlock';
 import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
-import {OutdoorWalkBlock} from './components/OutdoorWalkBlock/OutdoorWalkBlock';
-import {useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery} from '@tanstack/react-query';
 import {useEntryService} from '../../../../utils/EntryService/useEntryService';
-import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {useSyncService} from '../../../../utils/SyncService/useSyncService';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
+import {useAtomValue} from 'jotai';
+import {EntryBlock} from './components/EntryBlock/EntryBlock';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+
+const MemoEntryBlock = memo(EntryBlock);
 
 export const EntryListScreen: FC = () => {
   const theme = useAppTheme();
-  useFocusEffect(
-    useCallback(() => {
-      query.refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-  );
+  const {entryListService} = useServices();
+  const entryAtoms = useAtomValue(entryListService.getEntryAtoms());
   const {user} = useAuth();
   const [syncService] = useSyncService();
   const [refreshing, setRefreshing] = useState(false);
   const [entryService] = useEntryService();
   const [showFilterModal, setShowFilterModal] = useState(false);
-  const router = useRouter();
   const [db] = useDrizzle();
   const [types, setTypes] = useState<EntryType[]| null>(null);
   const [date, setDate] = useState<Date | null>(null);
-
-  const query = useQuery({
-    queryKey: ['entries'],
-    queryFn: () => {
+  console.log('here');
+  const query = useInfiniteQuery({
+    queryKey: ['entries', types, date],
+    queryFn: ({pageParam}) => {
       return entryService.getEntries(db, {
         types: types ?? undefined,
         date: date ?? undefined,
         includeDeleted: false,
-        limit: 50,
+        limit: 30,
+        page: pageParam,
       });
     },
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.length > 0 ? pages.length + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
 
-  if (!query.data) {
-    return <LoadingBlock />;
-  }
-  const entries: AppEntry[] = query.data as any;
-  const openWorkout = (workout: AppWorkout) => {
-    router.navigate({
-      pathname: './editWorkout',
-      params: {
-        workoutId: workout.id,
-      },
-    });
-  };
-  const openWeight = (entry: WeightAppEntry) => {
-    router.navigate({
-      pathname: './editWeight',
-      params: {
-        entryId: entry.id,
-      },
-    });
-  };
-  const openPost = (entry: PostAppEntry) => {
-    router.navigate({
-      pathname: './editPost',
-      params: {
-        entryId: entry.id,
-      },
-    });
-  };
+  useEffect(() => {
+    entryListService.setEntries(query.data?.pages.flat() ?? []);
+  }, [entryListService, query.data, query.data?.pages]);
+
   const onFilterChange: EntryFilterModalProps['onChange'] = (e) => {
     setTypes(e.types);
     setDate(e.date);
@@ -94,7 +66,7 @@ export const EntryListScreen: FC = () => {
     try {
       setRefreshing(true);
       await syncService.syncWithServer(db, user.id);
-      query.refetch();
+      await query.refetch();
       setRefreshing(false);
     } catch (e: unknown) {
       console.log(e);
@@ -103,37 +75,105 @@ export const EntryListScreen: FC = () => {
       setRefreshing(false);
     }
   };
+  const fetchNextPage = () => {
+    if (query.hasNextPage && !query.isFetchingNextPage) {
+      query.fetchNextPage();
+    }
+  };
+  console.log('rerender list');
   return (
     <ScreenContainer style={{paddingHorizontal: 0}}>
       <Stack.Screen options={{title: '', headerShown: false}} />
-      <ThemedScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>} style={{paddingHorizontal: theme.paddingM}}>
-        <ThemedButtonList items={[['Workout Types', '/app/entries/workoutTypeList'], ['Food', '/app/entries/food/list']]} />
-        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-          <Pressable onPress={() => setShowFilterModal(true)} style={{flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
-            <ThemedText style={{color: theme.accent}}>Entries</ThemedText>
-            <IconSymbol name={'line.3.horizontal.decrease'} color={theme.accent} size={20}/>
-          </Pressable>
-          <Link href={'./addEntry'} asChild>
-            <Pressable style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
-              <ThemedText style={{color: theme.accent}}>Add</ThemedText>
-              <IconSymbol name={'plus'} color={theme.accent} size={20}/>
-            </Pressable>
-          </Link>
-        </View>
-        <View style={{flexDirection: 'column', gap: theme.marginM, marginTop: theme.marginS, marginBottom: 50}}>
-          {entries.map((entry) => (
-            <Fragment key={entry.id}>
-            {entry.type === EntryType.WORKOUT && <WorkoutBlock key={entry.id} onPress={openWorkout} entry={entry}/>}
-            {entry.type === EntryType.WEIGHT && <WeightBlock key={entry.id} onPress={openWeight} entry={entry}/>}
-            {entry.type === EntryType.POST && <PostBlock key={entry.id} onPress={openPost} entry={entry}/>}
-            {entry.type === EntryType.OUTDOOR_RUN && <OutdoorRunBlock key={entry.id} onPress={() => {}} entry={entry}/>}
-            {entry.type === EntryType.OUTDOOR_WALK && <OutdoorWalkBlock key={entry.id} onPress={() => {}} entry={entry}/>}
-            {!Object.values(EntryType).includes(entry.type) && <UknownEntryBlock key={entry.id} entry={entry}/>}
-            </Fragment>
-          ))}
-        </View>
-        <EntryFilterModal onChange={onFilterChange} visible={showFilterModal} onClose={() => setShowFilterModal(false)}/>
-     </ThemedScrollView>
+      <FlatList
+        removeClippedSubviews
+        // maxToRenderPerBatch={10}
+        // windowSize={5}
+        data={entryAtoms}
+        keyExtractor={(item) => item.toString()}
+        renderItem={({item}) => <MemoEntryBlock entry={item} />}
+        onEndReached={fetchNextPage}
+        onEndReachedThreshold={2}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+        contentContainerStyle={{
+          paddingHorizontal: theme.paddingM,
+          gap: theme.marginM,
+          paddingBottom: 50,
+        }}
+        ListHeaderComponent={
+          <>
+            <ThemedButtonList
+              items={[
+                ['Workout Types', '/app/entries/workoutTypeList'],
+                ['Food', '/app/entries/food/list'],
+              ]}
+            />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 20,
+              }}
+            >
+              <Pressable
+                onPress={() => setShowFilterModal(true)}
+                style={{
+                  flexGrow: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: theme.marginS,
+                }}
+              >
+                <ThemedText style={{color: theme.accent}}>
+                  Entries
+                </ThemedText>
+
+                <IconSymbol
+                  name={'line.3.horizontal.decrease'}
+                  color={theme.accent}
+                  size={20}
+                />
+              </Pressable>
+
+              <Link href={'./addEntry'} asChild>
+                <Pressable
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: theme.marginS,
+                  }}
+                >
+                  <ThemedText style={{color: theme.accent}}>
+                    Add
+                  </ThemedText>
+                  <IconSymbol
+                    name={'plus'}
+                    color={theme.accent}
+                    size={20}
+                  />
+                </Pressable>
+              </Link>
+            </View>
+            {query.isFetching && !query.data && <LoadingBlock />}
+          </>
+        }
+        ListFooterComponent={
+          query.isFetchingNextPage ? (
+            <ActivityIndicator size="small" />
+          ) : null
+        }
+      />
+
+      <EntryFilterModal
+        onChange={onFilterChange}
+        visible={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+      />
     </ScreenContainer>
   );
 };

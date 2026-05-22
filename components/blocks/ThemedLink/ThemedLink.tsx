@@ -21,7 +21,7 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
   const pathname = usePathname();
   const hrefHandler = (href: Exclude<ThemedLnkProps['href'], undefined>) => {
     if (href && pathname !== href) {
-      router.push(href);
+      router.navigate(href);
     }
   };
 

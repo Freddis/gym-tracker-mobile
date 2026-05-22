@@ -12,7 +12,7 @@ export class QueryLogger implements Logger {
     this.dbType = dbType;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   logQuery(query: string, parameters?: any[]): void {
     if (this.isProductionLike) {
       return;

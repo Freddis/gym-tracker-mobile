@@ -77,9 +77,12 @@ export const SettingsScreen: FC = () => {
       setProgressState({...data}),
     );
     const title = result.error ? 'Error' : 'Done';
-    Alert.alert(title, result.message);
-    queryClient.clear();
+    console.log('invalidating entries');
+    queryClient.invalidateQueries();
     setShowSyncModal(false);
+    setTimeout(() => {
+      Alert.alert(title, result.message);
+    }, 500);
   };
   const wipeLocalData = async () => {
     const result = await syncService.wipeLocalData(db, userId, (data) =>
@@ -87,7 +90,7 @@ export const SettingsScreen: FC = () => {
     );
     const title = result.error ? 'Error' : 'Done';
     Alert.alert(title, result.message);
-    queryClient.clear();
+    queryClient.invalidateQueries();
   };
   const wipeLocalDataButtonPress = async () => {
     Alert.alert('Warning', 'Are you sure you want to delete local data?', [
@@ -148,10 +151,12 @@ export const SettingsScreen: FC = () => {
       }
       setShowImportModal(false);
       Alert.alert('Success', 'Data imported successfully');
+      queryClient.invalidateQueries();
     } catch (error) {
       Alert.alert('Error', 'Error importing data from Health Kit');
       console.error(error);
       setShowImportModal(false);
+      queryClient.invalidateQueries();
     }
   };
 

@@ -1,9 +1,8 @@
 import {StyleSheet, View, KeyboardAvoidingView, Platform, Modal} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
-import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
-import React, {FC, useEffect, useState} from 'react';
-import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
+import {Stack, useRouter} from 'expo-router';
+import React, {FC, useState} from 'react';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
@@ -15,7 +14,10 @@ import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/Ent
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
-import {string} from 'zod';
+import {useAtom} from 'jotai';
+import {weightAtom} from './utils/weightAtom';
+import {WeightAppEntry} from '../../../../types/models/AppEntry';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
@@ -28,47 +30,21 @@ for (let i = 0; i <= 99; i++) {
 
 export const WeightEditScreen: FC = () => {
   const theme = useAppTheme();
+  const [entryAtom] = useAtom(weightAtom);
+  const [entry, setEntry] = useAtom(entryAtom);
   const [entryService] = useEntryService();
   const styles = getStyles(theme);
   const auth = useAuth();
   const user = auth.user;
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [weightModalVisible, setWeightModalVisible] = useState(false);
+  const {entryAtomService} = useServices();
   if (!user) {
     throw new Error('No user');
   }
-  const [weightValue, setWeight] = useState(0.0);
-  const [dateValue, setDate] = useState(new Date());
-  const params = useLocalSearchParams();
+  const [weightValue, setWeight] = useState(entry.weight.weight);
+  const [dateValue, setDate] = useState(entry.time);
   const router = useRouter();
-  const validated = string().safeParse(params.entryId);
-  const entryId = validated.success ? validated.data : '';
-  const queryResult = entryService.useWeightEntry(entryId, [entryId]);
-  const entry = queryResult.data;
-  useEffect(() => {
-    if (params.entryId) {
-      return;
-    }
-    entryService.addWeightEntry(user.id).then((result) => {
-      router.setParams({
-        entryId: result.id,
-      });
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.entryId]);
-
-  useEffect(() => {
-    if (!entry) {
-      return;
-    }
-    setDate(entry.time);
-    setWeight(entry.weight.weight);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entry?.id]);
-
-  if (!queryResult.data || !entry) {
-    return <LoadingBlock />;
-  }
   const weight = entry.weight;
   const initialKilos = weightValue.toString().split('.')[0];
   const initalGrams = (weightValue.toString().split('.')[1] ?? '0').padEnd(2, '0');
@@ -82,21 +58,20 @@ export const WeightEditScreen: FC = () => {
     setWeight(Number(newValue));
     updateWeight(Number(newValue));
   };
-  const updateDate = (date: Date) => {
+  const updateDate = async (date: Date) => {
     setDate(date);
-    entryService.saveEntry({
-      ...entry,
-      time: date,
-    });
+    await entryAtomService.updateTime(entry, date);
   };
-  const updateWeight = (weight: number) => {
-    entryService.saveEntry({
+  const updateWeight = async (weight: number) => {
+    const updatedEntry: WeightAppEntry = {
       ...entry,
       weight: {
         ...entry.weight,
         weight: weight,
       },
-    });
+    };
+    const result = await entryService.saveEntry(updatedEntry);
+    setEntry(result);
   };
   const dateToString = (date: Date):string => {
     return [
@@ -115,7 +90,7 @@ export const WeightEditScreen: FC = () => {
   };
 
   const deleteEntry = async () => {
-    await entryService.deleteEntry(entryId);
+    await entryAtomService.deleteEntry(entry);
     router.back();
   };
 
@@ -137,7 +112,7 @@ export const WeightEditScreen: FC = () => {
             <Separator/>
             <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
               <ThemedText style={{flexGrow: 1}}>Synced</ThemedText>
-              <EntrySyncButton entry={queryResult.data} />
+              <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
             </View>
             <Separator />
                 <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>

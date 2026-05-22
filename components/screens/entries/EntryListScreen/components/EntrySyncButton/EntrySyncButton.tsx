@@ -1,12 +1,11 @@
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
-import {useEffect, useState} from 'react';
 import {Pressable} from 'react-native';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
 import {useEntryService} from '../../../../../../utils/EntryService/useEntryService';
 
 
-export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) => {
+export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean, onUpdate: (entry: AppEntry) => void}) => {
   // const lastSyncDate = props.workout.lastPulledAt ?? props.workout.lastPushedAt
   const lastSyncDate = props.entry.lastPushedAt;
   const lastUpdate = props.entry.updatedAt;
@@ -22,14 +21,16 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) =>
     const synced = lastSyncDate.getTime() > lastUpdate.getTime();
     return synced;
   })();
-  const [synced, setSynced] = useState(considerSynced);
-  useEffect(() => {
-    if (synced === considerSynced) {
-      return;
-    }
-    setSynced(considerSynced);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [considerSynced]);
+  // console.log('considerSynced', {considerSynced, lastSyncDate, lastUpdate});
+  const synced = considerSynced;
+  // useEffect(() => {
+  //   console.log('effect', {entry: props.entry});
+  //   if (synced === considerSynced) {
+  //     return;
+  //   }
+  //   setSynced(considerSynced);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [considerSynced, props.entry.updatedAt]);
   const [service] = useEntryService();
   const sync = async () => {
     // if (props.readonly) {
@@ -40,8 +41,12 @@ export const EntrySyncButton = (props: {entry: AppEntry, readonly?: boolean}) =>
     const successMessage = 'Successfully synced';
     const errorMessage = 'Something went wrong';
     const msg = result ? successMessage : errorMessage;
+    if (props.onUpdate) {
+      const updatedEntry = await service.getEntry(props.entry.id);
+      props.onUpdate(updatedEntry);
+    }
     alert(msg);
-    setSynced(result);
+    // setSynced(result);
   };
   // console.log({lastSyncDate, lastUpdate, synced});
   return (<>

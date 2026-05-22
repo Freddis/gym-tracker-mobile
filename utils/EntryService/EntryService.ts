@@ -79,7 +79,7 @@ export class EntryService implements ISyncedEntityService {
     let page = 1;
     let processedItems = 0;
     const types: EntryType[] = Object.values(EntryType).filter((x) => x !== EntryType.MEAL && x !== EntryType.CALORIE_GOAL);
-    // eslint-disable-next-line no-constant-condition
+
     while (true) {
       const response = await this.api.client().getEntriesOwn({
         query: {
@@ -277,8 +277,9 @@ export class EntryService implements ISyncedEntityService {
     return dto;
   }
 
-  async saveEntry(entry: AppEntry, image?: string | null) {
-    await this.db.transaction(async (db) => {
+  async saveEntry<T extends AppEntry>(entry: T, image?: string | null): Promise<T> {
+    const db = await asyncDrizzle();
+    return await transactionAsync(db, async (db) => {
       if (image !== undefined) {
         await this.updateEntryImage(db, entry, image);
       }
@@ -299,17 +300,18 @@ export class EntryService implements ISyncedEntityService {
         eq(schema.workouts.id, entry.workout.id)
       );
       }
+      entry.updatedAt = new Date();
       await db.update(schema.entries).set({
         note: entry.note,
         imageId: entry.imageId,
         title: entry.title,
         visibility: entry.visibility,
         time: entry.time,
-        updatedAt: new Date(),
+        updatedAt: entry.updatedAt,
       }).where(
       eq(schema.entries.id, entry.id)
       );
-
+      return entry;
     });
   }
 
@@ -478,42 +480,46 @@ export class EntryService implements ISyncedEntityService {
       includeDeleted?: boolean,
       types?: EntryType[],
       date?: Date,
+      page?: number,
     }
   ): Promise<AppEntry[]> {
+    const page = params?.page ?? 1;
+    const limit = params?.limit ?? 10;
+    const offset = (page - 1) * limit;
     const sqlQuery = db.query.entries.findMany({
-      with: {
-        image: true,
-        workout: {
-          with: {
-            exercises: {
-              with: {
-                exercise: true,
-                sets: {
-                  orderBy: (t, op) => [
-                    op.asc(t.createdAt),
-                  ],
-                },
-              },
-              orderBy: (t, op) => [
-                op.asc(t.createdAt),
-              ],
-            },
-          },
-        },
-        weight: true,
-        outdoorRun: {
-          with: {
-            geoData: true,
-            heartRateData: true,
-          },
-        },
-        outdoorWalk: {
-          with: {
-            geoData: true,
-            heartRateData: true,
-          },
-        },
-      },
+      // with: {
+      //   image: true,
+      //   workout: {
+      //     with: {
+      //       exercises: {
+      //         with: {
+      //           exercise: true,
+      //           sets: {
+      //             orderBy: (t, op) => [
+      //               op.asc(t.createdAt),
+      //             ],
+      //           },
+      //         },
+      //         orderBy: (t, op) => [
+      //           op.asc(t.createdAt),
+      //         ],
+      //       },
+      //     },
+      //   },
+      //   weight: true,
+      //   outdoorRun: {
+      //     with: {
+      //       geoData: true,
+      //       heartRateData: true,
+      //     },
+      //   },
+      //   outdoorWalk: {
+      //     with: {
+      //       geoData: true,
+      //       heartRateData: true,
+      //     },
+      //   },
+      // },
       where: (t, op) => op.and(
         params?.ids ? op.inArray(t.id, params.ids) : undefined,
         params?.externalIds ? op.inArray(t.externalId, params.externalIds) : undefined,
@@ -523,6 +529,7 @@ export class EntryService implements ISyncedEntityService {
       ),
       orderBy: (t, op) => op.desc(t.time),
       limit: params?.limit,
+      offset: offset,
     });
 
     const entries = await sqlQuery;
@@ -540,6 +547,9 @@ export class EntryService implements ISyncedEntityService {
         return new Map();
       }
       const ids = rows.map((x) => x[key]).filter((x) => x !== null);
+      if (ids.length === 0) {
+        return new Map();
+      }
       return await entryService.service.loadMap(ids);
     };
 
@@ -583,12 +593,12 @@ export class EntryService implements ISyncedEntityService {
     return result;
   }
 
-  async getEntry(id: string): Promise<AppEntry> {
-    const entries = await this.getEntries(this.db, {ids: [id]});
+  async getEntry<T extends EntryType>(id: string, type?: EntryType): Promise<AppEntry & {type: T}> {
+    const entries = await this.getEntries(this.db, {ids: [id], types: type ? [type] : undefined});
     if (!entries[0]) {
       throw new Error('Entry not found');
     }
-    return entries[0];
+    return entries[0] as AppEntry & {type: T};
   }
 
   async getEntryByExternalId(externalId: string): Promise<AppEntry | null> {

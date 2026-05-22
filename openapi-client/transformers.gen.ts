@@ -44,7 +44,7 @@ import type {
   GetCrmExercisesByIdResponse,
   GetCrmExercisesResponse,
   GetCrmImagesResponse,
-} from "./types.gen";
+} from './types.gen';
 
 const exerciseSchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);

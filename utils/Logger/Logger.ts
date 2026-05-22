@@ -79,7 +79,7 @@ export class Logger {
     // todo: for some reason this is slow
     // update: this reason is DOM objects, which are much deeeper than backend objects
     const seen = new Set();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const recurse = (obj: Record<string, any>, path: string[] = []) => {
       const result: Record<string, unknown> = {};
       for (const key of Object.keys(obj)) {

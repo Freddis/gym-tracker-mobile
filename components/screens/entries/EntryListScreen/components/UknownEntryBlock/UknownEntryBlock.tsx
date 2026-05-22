@@ -5,13 +5,15 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {PrimitiveAtom, useAtom} from 'jotai';
 
-export const UknownEntryBlock: FC<{entry: AppEntry}> = (props) => {
+export const UknownEntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
+  const [entry] = useAtom(props.entry);
   const theme = useAppTheme();
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
-  const date = props.entry.time;
+  const date = entry.time;
   return (
     <Pressable>
       <ThemedBlock style={{display: 'flex'}}>
@@ -26,7 +28,7 @@ export const UknownEntryBlock: FC<{entry: AppEntry}> = (props) => {
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={props.entry} readonly/>
+            <EntrySyncButton entry={entry} readonly onUpdate={() => {}}/>
           </View>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>

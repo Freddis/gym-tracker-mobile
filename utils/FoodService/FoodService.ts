@@ -105,7 +105,7 @@ export class FoodService implements ISyncedEntityService {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(trx);
     let page = 1;
     let processedItems = 0;
-    // eslint-disable-next-line no-constant-condition
+
     while (true) {
       const response = await this.api.client().getFoodList({
         query: {

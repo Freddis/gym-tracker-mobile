@@ -2,13 +2,11 @@ import {StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView} from 'reac
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
-import {FC, useEffect, useRef, useState} from 'react';
+import {FC, useEffect, useMemo, useRef, useState} from 'react';
 import {useDrizzle} from '@/utils/drizzle';
 import {CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {NewModel} from '@/types/NewModel';
-import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
-import {ZodHelper} from '@/utils/ZodHelper/ZodHelper';
 import {eq} from 'drizzle-orm';
 import {AppWorkoutExercise, CompleteAppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
@@ -19,17 +17,41 @@ import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {string} from 'zod';
+import {workoutAtom} from './utils/workoutAtom';
+import {atom, useAtom, useAtomValue} from 'jotai';
+import {splitAtom} from 'jotai/utils';
+import {EntryType} from '../../../../openapi-client';
+import {WorkoutAppEntry} from '../../../../types/models/AppEntry';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const WorkoutScreen: FC = () => {
   const theme = useAppTheme();
   const [dateModalVisible, setDateModalVisible] = useState(false);
-  const [entryService] = useEntryService();
+  const [entryAtom, setEntryAtom] = useAtom(workoutAtom);
+  const [entry, setEntry] = useAtom(entryAtom);
+  const {entryAtomService, entryService} = useServices();
+  const exercisesSplitAtom = useMemo(() => {
+    const exercisesAtom = atom(
+      (get) => get(entryAtom).workout.exercises,
+      (get, set, exercises: CompleteAppWorkoutExercise[]) => set(
+        entryAtom,
+        {
+          ...get(entryAtom),
+          workout: {
+            ...get(entryAtom).workout,
+            exercises,
+          },
+        }
+      )
+    );
+    return splitAtom(exercisesAtom, (x) => x.id);
+  }, [entryAtom]);
+  const exercisesAtoms = useAtomValue(exercisesSplitAtom);
   const styles = getStyles(theme);
-  const [refreshCounter, setRefreshCounter] = useState(0);
+
   const scrollViewRef = useRef<ScrollView>(null);
   const auth = useAuth();
   const user = auth.user;
@@ -39,40 +61,7 @@ export const WorkoutScreen: FC = () => {
   const params = useLocalSearchParams();
   const router = useRouter();
   const [db, schema] = useDrizzle();
-  useEffect(() => {
-    if (params.workoutId) {
-      return;
-    }
-    entryService.addWorkoutEntry(user.id).then((result) => {
-      router.setParams({
-        workoutId: result.workout.id,
-      });
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.workoutId]);
-  const validated = ZodHelper.validators.numberOrStringNumber.safeParse(params.workoutId);
-  const workoutId = validated.success ? validated.data : 0;
-
-  const queryResult = entryService.useWorkoutEntry(workoutId, [workoutId, params.exerciseId, refreshCounter]);
-  // const query = db.query.workouts.findFirst({
-  //   where: (t, op) => op.eq(t.id, workoutId),
-  //   with: {
-  //     exercises: {
-  //       with: {
-  //         exercise: true,
-  //         sets: true,
-  //       },
-  //     },
-  //     sets: {
-  //       with: {
-  //         exercise: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // const queryResult = useLiveQuery(query, [workoutId, params.exerciseId, refreshCounter]);
-  const entry = queryResult.data;
-  const workout = entry?.workout;
+  const workout = entry.workout;
   useEffect(() => {
     const validatedExerciseId = string().safeParse(params.exerciseId);
     if (!workout || !validatedExerciseId.success) {
@@ -82,9 +71,6 @@ export const WorkoutScreen: FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.exerciseId, workout]);
 
-  if (!queryResult.data || !workout) {
-    return <LoadingBlock />;
-  }
   const addExerciseToWorkout = async (workout: CompleteAppWorkout, exerciseId: string) => {
     const workoutExercise: NewModel<AppWorkoutExercise> = {
       workoutId: workout.id,
@@ -103,26 +89,21 @@ export const WorkoutScreen: FC = () => {
     await db.update(schema.workouts).set({
       updatedAt: new Date(),
     }).where(eq(schema.workouts.id, workout.id));
-    setRefreshCounter(refreshCounter + 1);
+    const updated: WorkoutAppEntry = await entryService.getEntry(entry.id, EntryType.WORKOUT);
+    setEntry(updated);
   };
 
   const addExercise = async () => {
-    router.push({
+    router.navigate({
       pathname: './selectExercise',
       params,
     });
   };
   const deleteWorkout = async () => {
-    const now = new Date();
-    await db.update(schema.entries).set({
-      deletedAt: now,
-      updatedAt: now,
-    })
-    .where(
-      eq(schema.entries.workoutId, workout.id)
-    );
+    await entryAtomService.deleteEntry(entry);
     router.back();
   };
+
   const deleteExercise = async (exercise: CompleteAppWorkoutExercise) => {
     await db.delete(schema.workoutExerciseSets).where(
       eq(schema.workoutExerciseSets.workoutExerciseId, exercise.id)
@@ -137,7 +118,19 @@ export const WorkoutScreen: FC = () => {
     .where(
       eq(schema.workouts.id, workout.id)
     );
-    setRefreshCounter(refreshCounter + 1);
+    // setRefreshCounter(refreshCounter + 1);
+    // const updated: WorkoutAppEntry = await entryService.getEntry(entry.id, EntryType.WORKOUT);
+    // setEntry(updated);
+    const newEntry: WorkoutAppEntry = {
+      ...entry,
+      updatedAt: now,
+      workout: {
+        ...entry.workout,
+        exercises: entry.workout.exercises.filter((x) => x.id !== exercise.id),
+      },
+    };
+    setEntry(newEntry);
+    entryService.saveEntry(newEntry);
   };
   const finishWorkout = async () => {
     const now = new Date();
@@ -148,21 +141,24 @@ export const WorkoutScreen: FC = () => {
       eq(schema.workouts.id, workout.id)
     );
     router.back();
+    const updated: WorkoutAppEntry = {
+      ...entry,
+      updatedAt: now,
+      workout: {
+        ...entry.workout,
+        end: now,
+      },
+    };
+    setEntry(updated);
   };
   const copyWorkout = async () => {
     const workoutEntry = await entryService.copyWorkout(workout);
-
-    scrollViewRef.current?.scrollTo(0, 0);
-    router.setParams({
-      workoutId: workoutEntry.workout.id,
-    });
+    setEntryAtom(atom(workoutEntry));
+    entryAtomService.reset();
   };
-  const updateDate = (date: Date) => {
-    entryService.saveEntry({
-      ...entry,
-      time: date,
-    });
-    setRefreshCounter(refreshCounter + 1);
+  const updateDate = async (date: Date) => {
+    await entryAtomService.updateTime(entry, date);
+    setEntry({...entry, time: date});
   };
   const dateToString = (date: Date):string => {
     return [
@@ -174,11 +170,12 @@ export const WorkoutScreen: FC = () => {
     ].join(' ');
   };
   const workoutFinished = workout.end !== null;
+  console.log('workout', entry);
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ThemedScrollView ref={scrollViewRef} style={{minHeight: '100%'}}>
         <ThemedView style={styles.container}>
-          <Stack.Screen options={{title: `Workout ${workout.id}`, headerShown: true}} />
+          <Stack.Screen options={{title: 'Workout', headerShown: true}} />
           <ThemedBlock>
             <View style={{flexDirection: 'row'}}>
               <ThemedText style={{flexGrow: 1}}>Time:</ThemedText>
@@ -192,7 +189,7 @@ export const WorkoutScreen: FC = () => {
             <Separator />
             <View style={{flexDirection: 'row'}}>
               <ThemedText style={{flexGrow: 1}}>Synced:</ThemedText>
-              <EntrySyncButton entry={queryResult.data} />
+              <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
             </View>
             {!!workoutFinished && (
                <>
@@ -204,8 +201,8 @@ export const WorkoutScreen: FC = () => {
               </>
             )}
           </ThemedBlock>
-          {workout.exercises.map((x) => (
-            <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.id} exercise={x} />
+          {exercisesAtoms.map((x) => (
+            <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.toString()} exercise={x} />
           ))}
           <View style={{flexDirection: 'column', alignItems: 'center', marginTop: 10, marginBottom: 30, gap: 50}}>
             <ThemedLink onPress={addExercise}>Add Exercise</ThemedLink>

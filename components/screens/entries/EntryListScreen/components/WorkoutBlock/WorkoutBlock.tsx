@@ -1,6 +1,5 @@
 import {FC, Fragment} from 'react';
 import {View, Pressable} from 'react-native';
-import {AppWorkout} from '@/types/models/AppWorkout';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
@@ -10,20 +9,22 @@ import {ThemedImage} from '@/components/blocks/ThemedImage/ThemedImage';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {WorkoutAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {PrimitiveAtom, useAtom} from 'jotai';
 
-export const WorkoutBlock: FC<{entry: WorkoutAppEntry, onPress?: (x: AppWorkout)=> void}> = (props) => {
-  const workout = props.entry.workout;
+export const WorkoutBlock: FC<{entryAtom: PrimitiveAtom<WorkoutAppEntry>, onPress?: (x: WorkoutAppEntry)=> void}> = (props) => {
+  const [entry, setEntry] = useAtom(props.entryAtom);
+  const workout = entry.workout;
   const exercises = workout.exercises;
   const theme = useAppTheme();
   const onPress = () => {
     if (props.onPress) {
-      props.onPress(workout);
+      props.onPress(entry);
     }
   };
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
-  const date = props.entry.time;
+  const date = entry.time;
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock style={{display: 'flex'}}>
@@ -45,7 +46,7 @@ export const WorkoutBlock: FC<{entry: WorkoutAppEntry, onPress?: (x: AppWorkout)
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={props.entry} readonly/>
+            <EntrySyncButton entry={entry} readonly onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
           </View>
         </View>
         <View>

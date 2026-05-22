@@ -1,11 +1,15 @@
+//@ts-ignore
+import expo from 'eslint-config-expo/flat';
+import {defineConfig} from 'eslint/config';
+
 // https://docs.expo.dev/guides/using-eslint/
-module.exports = {
-  extends: 'expo',
-  ignorePatterns: ['/dist/*', '/openapi-client/*', '/ios/*', '/android/*'],
-  env: {
-    browser: true,
-    jest: true,
-  },
+module.exports = defineConfig([expo, {
+  // extends: 'expo',
+  // ignorePatterns: ['/dist/*', '/openapi-client/*', '/ios/*', '/android/*'],
+  // env: {
+  //   browser: true,
+  //   jest: true,
+  // },
   rules: {
     'array-bracket-spacing': [2, 'never'],
     'arrow-spacing': 2,
@@ -162,4 +166,4 @@ module.exports = {
     'react/jsx-uses-react': 'error',
     'react/jsx-indent-props': 'off',
   },
-};
+}]);

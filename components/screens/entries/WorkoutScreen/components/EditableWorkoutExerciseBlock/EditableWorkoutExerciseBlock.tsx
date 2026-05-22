@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {EditableWorkoutExerciseBlockProps} from './types/EditableWorkoutExerciseBlockProps';
 import {useDrizzle} from '@/utils/drizzle';
@@ -12,12 +12,34 @@ import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {ThemedImage} from '@/components/blocks/ThemedImage/ThemedImage';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
+import {atom, useAtom, useAtomValue} from 'jotai';
+import {splitAtom} from 'jotai/utils';
 
 export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps> = (props) => {
-  const workoutExercise = props.exercise;
+  const [workoutExercise, setExercise] = useAtom(props.exercise);
+  // const workoutExercise = props.exercise;
   const exercise = workoutExercise.exercise;
   const auth = useAuth();
-  const [sets, setSets] = useState(workoutExercise.sets);
+  const setsAtom = useMemo(() => {
+    const setsAtom = atom(
+        (get) => get(props.exercise).sets,
+        (get, set, sets: AppWorkoutExerciseSet[]) => set(
+          props.exercise,
+          {
+            ...get(props.exercise),
+            sets,
+          }
+        )
+      );
+    const setSplit = splitAtom(setsAtom, (x) => x.id);
+    return setSplit;
+
+  }, [props.exercise]);
+
+  const sets = workoutExercise.sets;
+  const setsAtoms = useAtomValue(setsAtom);
+
+  // const [sets, setSets] = useState(workoutExercise.sets);
   const [db, schema] = useDrizzle();
   const [prevSets, setPrevSets] = useState<AppWorkoutExerciseSet[]>([]);
   useEffect(() => {
@@ -53,12 +75,12 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
     const weight = [prevSets[sets.length]?.weight, sets[sets.length - 1]?.weight].find((x) => !!x) ?? 0;
     const newSet: NewModel<AppWorkoutExerciseSet> = {
       // externalId: null,
-      workoutId: props.exercise.workoutId,
-      exerciseId: props.exercise.exerciseId,
-      userId: props.exercise.userId,
+      workoutId: workoutExercise.workoutId,
+      exerciseId: workoutExercise.exerciseId,
+      userId: workoutExercise.userId,
       createdAt: new Date(),
       updatedAt: null,
-      workoutExerciseId: props.exercise.id,
+      workoutExerciseId: workoutExercise.id,
       start: new Date(),
       end: new Date(),
       finished: false,
@@ -70,7 +92,11 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
       ...newSet,
       id: result.lastInsertRowId,
     };
-    setSets([...sets, set]);
+    // setSets([...sets, set]);
+    setExercise({
+      ...workoutExercise,
+      sets: [...sets, set],
+    });
   };
   const deleteSet = async (set: AppWorkoutExerciseSet) => {
     await db.delete(schema.workoutExerciseSets).where(
@@ -84,20 +110,24 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
       eq(schema.workouts.id, set.workoutId)
     );
     const newsets = sets.filter((x) => x.id !== set.id);
-    setSets(newsets);
+    // setSets(newsets);
+    setExercise({
+      ...workoutExercise,
+      sets: newsets,
+    });
   };
   return (
      <ThemedBlock>
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
         <ThemedText>{exercise.name}</ThemedText>
-        <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onDelete(props.exercise)}/>
+        <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onDelete(workoutExercise)}/>
       </View>
       <Separator/>
       <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 10}}>
         <ThemedImage src={exercise.images[0]}/>
         <View style={{marginLeft: 10, flexGrow: 1}}>
-          {sets.map((set, i) => (
-            <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.id} set={set} index={i} />
+          {setsAtoms.map((set, i) => (
+            <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.toString()} set={set} index={i} />
           ))}
         </View>
       </View>

@@ -6,19 +6,21 @@ import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {PostAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
 import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
+import {PrimitiveAtom, useAtom} from 'jotai';
 
-export const PostBlock: FC<{entry: PostAppEntry, onPress?: (x: PostAppEntry)=> void}> = (props) => {
-  const image = props.entry.image;
+export const PostBlock: FC<{entryAtom: PrimitiveAtom<PostAppEntry>, onPress?: (x: PostAppEntry)=> void}> = (props) => {
+  const [entry, setEntry] = useAtom(props.entryAtom);
+  const image = entry.image;
   const theme = useAppTheme();
   const onPress = () => {
     if (props.onPress) {
-      props.onPress(props.entry);
+      props.onPress(entry);
     }
   };
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
-  const date = props.entry.time;
+  const date = entry.time;
   const imageSrc = image?.image ? `data:image/jpeg;base64,${image.image}` : undefined;
   return (
     <Pressable onPress={onPress}>
@@ -34,17 +36,17 @@ export const PostBlock: FC<{entry: PostAppEntry, onPress?: (x: PostAppEntry)=> v
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={props.entry} readonly/>
+            <EntrySyncButton entry={entry} readonly onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})}/>
           </View>
         </View>
         <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
-          {props.entry.title && (
+          {entry.title && (
             <ThemedText style={{fontWeight: 'semibold'}}>
-              {props.entry.title}
+              {entry.title}
             </ThemedText>
           )}
-          {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
-          {props.entry.image && <ThemedImage source={{uri: image?.url ?? imageSrc}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>}
+          {entry.note && <ThemedText>{entry.note}</ThemedText>}
+          {entry.image && <ThemedImage source={{uri: image?.url ?? imageSrc}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>}
         </View>
       </ThemedBlock>
     </Pressable>

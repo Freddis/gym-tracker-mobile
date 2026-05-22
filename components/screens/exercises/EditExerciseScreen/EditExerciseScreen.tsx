@@ -72,7 +72,7 @@ export const EditExerciseScreen: FC = () => {
   };
 
   const copy = () => {
-    router.push({
+    router.navigate({
       pathname: '/app/exercises/selectExercise',
       params: {
         value: 1,

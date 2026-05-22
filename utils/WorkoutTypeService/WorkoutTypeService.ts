@@ -102,7 +102,7 @@ export class WorkoutTypeService implements ISyncedEntityService {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
     const result = await transactionAsync(db, async (db) => {
       let page = 1;
-      // eslint-disable-next-line no-constant-condition
+
       while (true) {
         const response = await getWorkoutTypes({
           query: {

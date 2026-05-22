@@ -11,6 +11,7 @@ import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Theme} from '@/types/Colors';
 import {useAppTheme} from '@/hooks/useAppTheme';
+import {useAtom} from 'jotai';
 
 const getStyles = (theme: Theme) => StyleSheet.create({
   container: {
@@ -35,7 +36,8 @@ const getStyles = (theme: Theme) => StyleSheet.create({
 });
 
 export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlockProps> = (props) => {
-  const set = props.set;
+  const [set, setSet] = useAtom(props.set);
+  // const set = props.set;
   const theme = useAppTheme();
   const [db, schema] = useDrizzle();
   const [weight, setWeight] = useState(set.weight?.toString() ?? '');
@@ -71,6 +73,9 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
     }).where(
       eq(schema.workouts.id, set.workoutId)
     );
+    setSet({
+      ...set,
+    });
     setWeightError(false);
     setRepsError(false);
     setFinished(!finished);

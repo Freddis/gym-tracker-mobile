@@ -5,16 +5,18 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {OutdoorWalkAppEntry} from '../../../../../../types/models/AppEntry';
 import {RoutedWorkoutContent} from '../RoutedWorkoutContent/RoutedWorkoutContent';
+import {PrimitiveAtom, useAtom} from 'jotai';
 
-export const OutdoorWalkBlock: FC<{entry: OutdoorWalkAppEntry, onPress?: (x: OutdoorWalkAppEntry)=> void}> = (props) => {
-  const outdoorWalk = props.entry.outdoorWalk;
+export const OutdoorWalkBlock: FC<{entryAtom: PrimitiveAtom<OutdoorWalkAppEntry>, onPress?: (x: OutdoorWalkAppEntry)=> void}> = (props) => {
+  const [entry, setEntry] = useAtom(props.entryAtom);
+  const outdoorWalk = entry.outdoorWalk;
   const theme = useAppTheme();
   const onPress = () => {
     if (props.onPress) {
-      props.onPress(props.entry);
+      props.onPress(entry);
     }
   };
-  const date = props.entry.time;
+  const date = entry.time;
 
   return (
     <Pressable onPress={onPress}>
@@ -25,7 +27,7 @@ export const OutdoorWalkBlock: FC<{entry: OutdoorWalkAppEntry, onPress?: (x: Out
             {date.toLocaleDateString()}
           </ThemedText>
         </View>
-        <RoutedWorkoutContent entry={props.entry} workout={outdoorWalk} />
+        <RoutedWorkoutContent entry={entry} workout={outdoorWalk} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
       </ThemedBlock>
     </Pressable>
   );

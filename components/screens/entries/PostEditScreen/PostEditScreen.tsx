@@ -1,26 +1,28 @@
 import {StyleSheet, View, KeyboardAvoidingView, Platform, Modal} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
-import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
-import React, {FC, useEffect, useState} from 'react';
-import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
+import {Stack, useRouter} from 'expo-router';
+import React, {FC, useState} from 'react';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {ImageUploadButton} from '../../../blocks/ImageUploadButton/ImageUploadButton';
 import {TextArea} from 'react-native-ui-lib';
-import {string} from 'zod';
+import {useAtom} from 'jotai';
+import {postAtom} from './utils/postAtom';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const PostEditScreen: FC = () => {
   const theme = useAppTheme();
-  const [entryService] = useEntryService();
+  const [entryAtom] = useAtom(postAtom);
+  const [entry, setEntry] = useAtom(entryAtom);
+  const {entryAtomService, entryService} = useServices();
   const styles = getStyles(theme);
   const auth = useAuth();
   const user = auth.user;
@@ -29,54 +31,30 @@ export const PostEditScreen: FC = () => {
   if (!user) {
     throw new Error('No user');
   }
-  const [note, setNote] = useState('');
-  const [image, setImage] = useState<string | null>(null);
+  const [note, setNote] = useState(entry.note);
+  let imageSrc = entry.image?.image ? `data:image/jpeg;base64,${entry.image.image}` : null;
+  const [image, setImage] = useState<string | null>(entry.image?.url ?? imageSrc);
   const [dateValue, setDate] = useState(new Date());
-  const params = useLocalSearchParams();
   const router = useRouter();
-  const validated = string().safeParse(params.entryId);
-  const entryId = validated.success ? validated.data : '';
-  const queryResult = entryService.usePostEntry(entryId, [entryId]);
-  const entry = queryResult.data;
 
-  useEffect(() => {
-    if (!entry) {
-      return;
-    }
-    setDate(entry.time);
-    setNote(entry.note ?? '');
-    if (entry.image?.url) {
-      setImage(entry.image.url);
-    }
-    if (entry.image?.image) {
-      setImage(`data:image/jpeg;base64,${entry.image.image}`);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entry?.id]);
-
-  if (!queryResult.data || !entry) {
-    return <LoadingBlock />;
-  }
-
-  const updateDate = (date: Date) => {
+  const updateDate = async (date: Date) => {
     setDate(date);
-    entryService.saveEntry({
-      ...entry,
-      time: date,
-    });
+    await entryAtomService.updateTime(entry, date);
   };
-  const updateImage = (image: string | null) => {
+  const updateImage = async (image: string | null) => {
     setImage(image);
-    entryService.saveEntry({
+    const result = await entryService.saveEntry({
       ...entry,
     }, image);
+    setEntry(result);
   };
-  const updateNote = (text: string) => {
+  const updateNote = async (text: string) => {
     setNote(text);
-    entryService.saveEntry({
+    const result = await entryService.saveEntry({
       ...entry,
       note: text,
     });
+    setEntry(result);
   };
   const dateToString = (date: Date):string => {
     return [
@@ -89,7 +67,7 @@ export const PostEditScreen: FC = () => {
   };
 
   const deleteEntry = async () => {
-    await entryService.deleteEntry(entryId);
+    await entryAtomService.deleteEntry(entry);
     router.back();
   };
 
@@ -107,7 +85,7 @@ export const PostEditScreen: FC = () => {
             <Separator/>
             <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
               <ThemedText style={{flexGrow: 1}}>Synced</ThemedText>
-              <EntrySyncButton entry={queryResult.data} />
+              <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
             </View>
             <Separator />
             <View style={{flexDirection: 'column', gap: theme.marginS, marginBottom: theme.marginS}}>

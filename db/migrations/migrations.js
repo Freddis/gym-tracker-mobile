@@ -27,6 +27,7 @@ import m0022 from './0022_outdoor_walk_entries.sql';
 import m0023 from './0023_outdoor_run_entries_restructuring.sql';
 import m0024 from './0024_switching_from_id_to_uuid.sql';
 import m0025 from './0025_food_entries.sql';
+import m0026 from './0026_entry_list_indices.sql';
 
 export default {
   journal,
@@ -57,5 +58,6 @@ export default {
     m0023,
     m0024,
     m0025,
+    m0026,
   },
 };

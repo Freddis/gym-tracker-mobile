@@ -83,7 +83,7 @@ export class ExerciseService implements ISyncedEntityService {
     const primaryMuscles = new Map<string, Muscle[]>();
     const secondaryMuscles = new Map<string, Muscle[]>();
     for (const muscleRow of muscles) {
-      // eslint-disable-next-line max-len
+
       if (muscleRow.isPrimary) {
         const arr = primaryMuscles.get(muscleRow.exerciseId) ?? [];
         arr.push(muscleRow.muscle);
@@ -257,7 +257,7 @@ export class ExerciseService implements ISyncedEntityService {
     let page = 1;
     let processedItems = 0;
     const res = await transactionAsync(db, async (trx) => {
-    // eslint-disable-next-line no-constant-condition
+
       while (true) {
         const response = await getExercises({
           query: {

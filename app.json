@@ -4,18 +4,15 @@
     "slug": "discipline",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/icon-light.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "jsEngine": "hermes",
     "ios": {
       "icon": {
         "dark": "./assets/images/icon-dark.png",
         "light": "./assets/images/icon-light.png"
       },
       "supportsTablet": true,
-      "jsEngine": "jsc",
       "bundleIdentifier": "com.anonymous.gymtracker2",
       "appleTeamId": "SGDX27QAU8",
       "infoPlist": {
@@ -38,7 +35,9 @@
       "package": "com.anonymous.gymtracker"
     },
     "plugins": [
-      ["react-native-maps"],
+      [
+        "react-native-maps"
+      ],
       [
         "expo-image-picker",
         {
@@ -89,12 +88,17 @@
         }
       ],
       "expo-secure-store",
-      ["@kingstinct/react-native-healthkit",{
-        "NSHealthShareUsageDescription": "Read and understand health data.",
-        "NSHealthUpdateUsageDescription": "Share workout data with other apps.",
-        "NSHealthClinicalHealthRecordsShareUsageDescription": "Read and understand clinical health data.",
-        "background": true
-      }]
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Read and understand health data.",
+          "NSHealthUpdateUsageDescription": "Share workout data with other apps.",
+          "NSHealthClinicalHealthRecordsShareUsageDescription": "Read and understand clinical health data.",
+          "background": true
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

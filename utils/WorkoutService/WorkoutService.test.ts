@@ -4,6 +4,7 @@ import {NewModel} from '@/types/NewModel';
 import {migrate} from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../../db/migrations/migrations';
 import {WorkoutService} from './WorkoutService';
+import {describe, test, expect} from '@jest/globals';
 
 describe(WorkoutService.name, () => {
   test('Wipes workout data', async () => {

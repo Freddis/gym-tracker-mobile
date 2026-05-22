@@ -25,7 +25,7 @@ export const ThemedSearchInput: FC<ThemedSearchInputProps> = (props) => {
       const timeout = setTimeout(() => {
         onSearch(null);
       }, debounce);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       setTimeoutHandle(timeout as any);
       return;
     }
@@ -33,7 +33,7 @@ export const ThemedSearchInput: FC<ThemedSearchInputProps> = (props) => {
     const timeout = setTimeout(() => {
       onSearch(trimmed);
     }, debounce);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     setTimeoutHandle(timeout as any);
   };
 

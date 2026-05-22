@@ -7,17 +7,17 @@ import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrol
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
-import {useEntryService} from '../../../../utils/EntryService/useEntryService';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {TextArea} from 'react-native-ui-lib';
 import {ImageUploadButton} from '../../../blocks/ImageUploadButton/ImageUploadButton';
 import {Separator} from '../../../blocks/Separator/Separator';
 import {ThemedText} from '../../../blocks/ThemedText/ThemedText';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 
 export const PostCreateScreen: FC = () => {
   const theme = useAppTheme();
-  const [entryService] = useEntryService();
+  const {entryAtomService, entryService} = useServices();
   const styles = getStyles(theme);
   const auth = useAuth();
   const user = auth.user;
@@ -30,6 +30,7 @@ export const PostCreateScreen: FC = () => {
   const onSavePress = async () => {
     const noteValue = note.trim() === '' ? null : note.trim();
     await entryService.addPostEntry(user.id, noteValue, image);
+    entryAtomService.reset();
     router.navigate({
       pathname: '/app/entries/list',
     });

@@ -9,7 +9,7 @@ import {Separator} from '../Separator/Separator';
 import {ThemedBlock} from '../ThemedBlock/ThemedBlock';
 
 interface ThemedButtonListProps {
-  items: [string, RoutePath][];
+  items: [string, RoutePath | (() => void)][];
   replace?: boolean;
 }
 
@@ -17,11 +17,15 @@ export const ThemedButtonList: FC<ThemedButtonListProps> = ({items, replace = fa
   const router = useRouter();
   const theme = useAppTheme();
 
-  const onPress = (path: RoutePath) => {
+  const onPress = (path: RoutePath | (() => void)) => {
+    if (typeof path === 'function') {
+      path();
+      return;
+    }
     if (replace) {
       router.replace(path);
     } else {
-      router.push(path);
+      router.navigate(path);
     }
   };
   return (
