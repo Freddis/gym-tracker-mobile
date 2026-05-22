@@ -80,8 +80,10 @@ export const EntryListScreen: FC = () => {
       <Stack.Screen options={{title: '', headerShown: false}} />
       <FlatList
         removeClippedSubviews
-        // maxToRenderPerBatch={10}
+        // maxToRenderPerBatch={3}
         // windowSize={5}
+        // initialNumToRender={3}
+        // updateCellsBatchingPeriod={50}
         data={entryAtoms}
         keyExtractor={(item) => item.toString()}
         renderItem={({item}) => <MemoEntryBlock entry={item} />}
