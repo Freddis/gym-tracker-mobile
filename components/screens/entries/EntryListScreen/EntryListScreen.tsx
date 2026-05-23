@@ -77,7 +77,7 @@ export const EntryListScreen: FC = () => {
   };
   return (
     <ScreenContainer safeTop={true}>
-      <Stack.Screen options={{title: '', headerShown: false}} />
+      <Stack.Screen options={{headerShown: false}} />
       <FlatList
         removeClippedSubviews
         // maxToRenderPerBatch={3}
@@ -95,7 +95,7 @@ export const EntryListScreen: FC = () => {
             onRefresh={onRefresh}
           />
         }
-        contentContainerClassName="px-s gap-s"
+        contentContainerClassName="px-m pt-l gap-m"
         ListHeaderComponent={
           <>
             <ThemedButtonList

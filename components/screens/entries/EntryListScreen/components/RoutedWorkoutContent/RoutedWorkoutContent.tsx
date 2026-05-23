@@ -7,7 +7,6 @@ import {AppWorkoutMap} from '../../../../../blocks/AppWorkoutMap/AppWorkoutMap';
 import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
-import {useAppTheme} from '../../../../../../hooks/useAppTheme';
 import {FC} from 'react';
 import {getTimeString} from '../../../../../../utils/getTimeString';
 import {usePathDataProcessing} from '../../../../../../utils/usePathDataProcessing';
@@ -20,17 +19,16 @@ export interface RoutedWorkoutContentProps {
 }
 
 export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
-  const theme = useAppTheme();
   const path = usePathDataProcessing(props.workout.geoData ?? [], props.workout.start, [props.workout]);
   return (
    <>
-    <View style={{marginBottom: theme.marginS, flexDirection: 'row'}}>
-    <View style={{flexDirection: 'column', alignItems: 'flex-start', gap: theme.marginS, flexGrow: 1}}>
+    <View className="flex-row justify-between">
+    <View className="flex-col items-start gap-s grow">
       <ThemedText>Distance: {(props.workout.distance / 1000).toFixed(3)} km</ThemedText>
       <ThemedText>Duration: {durationToTimeString(props.workout.duration)}</ThemedText>
       <ThemedText>Calories: {props.workout.calories.toFixed(0)}</ThemedText>
     </View>
-    <View style={{alignItems: 'flex-end'}}>
+    <View className="items-end">
       <ThemedText>
       {props.entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(props.entry.time)}
       </ThemedText>
@@ -38,18 +36,18 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
       <EntrySyncButton entry={props.entry} readonly onUpdate={props.onUpdate}/>
     </View>
     </View>
-    <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
+    <View className="flex-col items-start justify-start">
       {props.entry.title && (
-        <ThemedText style={{fontWeight: 'semibold'}}>
+        <ThemedText className="font-semibold">
           {props.entry.title}
         </ThemedText>
       )}
       {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
       {props.entry.image && (
-        <ThemedImage source={{uri: props.entry.image?.url ?? undefined}} style={{width: '100%', height: 300, marginTop: theme.marginS}}/>
+        <ThemedImage source={{uri: props.entry.image?.url ?? undefined}} className="w-full h-80 mt-s"/>
       )}
       {props.workout.geoData && props.workout.geoData.length > 0 && (
-        <View style={{width: '100%', height: 300, overflow: 'hidden', borderRadius: theme.borderRadiusM, marginTop: theme.marginS}}>
+        <View className="w-full h-80 overflow-hidden rounded-md mt-s">
           <AppWorkoutMap
             data={path}
           />

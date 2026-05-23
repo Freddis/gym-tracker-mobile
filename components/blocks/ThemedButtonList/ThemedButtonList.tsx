@@ -36,7 +36,7 @@ export const ThemedButtonList: FC<ThemedButtonListProps> = ({items, replace = fa
           <Pressable
             onPress={() => onPress(item[1])}
             style={({pressed}) => [styles.button, pressed && styles.buttonPressed]}
-            className="items-center flex-row"
+            className="items-center flex-row py-2"
           >
             <ThemedText className="grow">{item[0]}</ThemedText>
             <IconSymbol name="chevron.right" color={theme.accent} size={16} />
