@@ -16,6 +16,7 @@ import {Colors} from 'react-native-ui-lib';
 import {ThemedText} from '../components/blocks/ThemedText/ThemedText';
 import {ScreenContainer} from '../components/blocks/ScreenContainer/ScreenContainer';
 import {ServiceProvider} from '../components/providers/ServiceProvider/ServiceProvider';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import '../utils/global.css';
 
 // console.log = () => null // uncomment for prod / preview
@@ -34,7 +35,7 @@ export default function RootLayout() {
       // you have to enjoy the logo
       setTimeout(() => {
         SplashScreen.hideAsync();
-      }, 2000);
+      }, 100);
     }
   }, [loaded]);
 
@@ -69,17 +70,19 @@ export default function RootLayout() {
 
 
   return (
-  <SQLiteProvider databaseName="db.db">
-    <QueryClientProvider client={queryClient}>
-      <ServiceProvider>
-        <AuthProvider>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Slot screenOptions={{}}/>
-            <StatusBar style="auto" />
-          </ThemeProvider>
-        </AuthProvider>
-      </ServiceProvider>
-    </QueryClientProvider>
-  </SQLiteProvider>
+  <SafeAreaProvider>
+    <SQLiteProvider databaseName="db.db">
+      <QueryClientProvider client={queryClient}>
+        <ServiceProvider>
+          <AuthProvider>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <Slot screenOptions={{}}/>
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </AuthProvider>
+        </ServiceProvider>
+      </QueryClientProvider>
+    </SQLiteProvider>
+  </SafeAreaProvider>
   );
 }

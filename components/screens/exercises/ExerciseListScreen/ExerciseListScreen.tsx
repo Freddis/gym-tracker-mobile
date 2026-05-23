@@ -1,19 +1,8 @@
-import {StyleSheet} from 'react-native';
-import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {FC} from 'react';
 import {Stack, useRouter} from 'expo-router';
 import {SelectExercisePresenter} from '../common/SelectExercisePresenter';
 import {Exercise} from '../../../../openapi-client';
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: 70,
-    paddingHorizontal: 0,
-    flex: 1,
-  },
-});
+import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 
 export const ExerciseListScreen: FC = () => {
   const router = useRouter();
@@ -26,9 +15,9 @@ export const ExerciseListScreen: FC = () => {
     });
   };
   return (
-      <ThemedView style={styles.titleContainer}>
-          <Stack.Screen options={{title: 'Exercise Library', headerShown: false}} />
-          <SelectExercisePresenter onPress={onExercisePress}/>
-      </ThemedView>
+  <ScreenContainer safeTop={true}>
+    <Stack.Screen options={{title: 'Exercise Library', headerShown: false}} />
+    <SelectExercisePresenter onPress={onExercisePress}/>
+  </ScreenContainer>
   );
 };

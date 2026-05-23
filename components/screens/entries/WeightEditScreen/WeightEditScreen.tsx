@@ -1,4 +1,4 @@
-import {StyleSheet, View, KeyboardAvoidingView, Platform, Modal} from 'react-native';
+import {View, KeyboardAvoidingView, Platform, Modal} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useRouter} from 'expo-router';
@@ -8,7 +8,6 @@ import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrol
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useAppTheme} from '@/hooks/useAppTheme';
-import {Theme} from '@/types/Colors';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
@@ -17,6 +16,7 @@ import {useAtom} from 'jotai';
 import {weightAtom} from './utils/weightAtom';
 import {WeightAppEntry} from '../../../../types/models/AppEntry';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
@@ -32,7 +32,7 @@ export const WeightEditScreen: FC = () => {
   const [entryAtom] = useAtom(weightAtom);
   const [entry, setEntry] = useAtom(entryAtom);
   const {entryService} = useServices();
-  const styles = getStyles(theme);
+  // const styles = getStyles(theme);
   const auth = useAuth();
   const user = auth.user;
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -94,58 +94,59 @@ export const WeightEditScreen: FC = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ThemedScrollView style={{minHeight: '100%'}}>
-        <ThemedView style={styles.container}>
-          <Stack.Screen options={{title: `Weight Entry ${weight.id}`, headerShown: true}} />
-          <ThemedBlock>
-            <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
-              <ThemedText style={{flexGrow: 1}}>Body Weight</ThemedText>
-              <ThemedText onPress={() => setWeightModalVisible(true)}>{weightString(weightValue)} {weight.units}</ThemedText>
-            </View>
-            <Separator/>
-            <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
-              <ThemedText style={{flexGrow: 1}}>Date</ThemedText>
-              <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(dateValue)}</ThemedText>
-            </View>
-            <Separator/>
-            <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
-              <ThemedText style={{flexGrow: 1}}>Synced</ThemedText>
-              <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
-            </View>
-            <Separator />
-                <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
-
-                  <ThemedLink onPress={deleteEntry}>Delete</ThemedLink>
+    <ScreenContainer>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ThemedScrollView className="h-full p-m">
+          <ThemedView>
+            <Stack.Screen options={{title: 'Weight Entry', headerShown: true}} />
+            <ThemedBlock>
+              <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
+                <ThemedText style={{flexGrow: 1}}>Body Weight</ThemedText>
+                <ThemedText onPress={() => setWeightModalVisible(true)}>{weightString(weightValue)} {weight.units}</ThemedText>
+              </View>
+              <Separator/>
+              <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
+                <ThemedText style={{flexGrow: 1}}>Date</ThemedText>
+                <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(dateValue)}</ThemedText>
+              </View>
+              <Separator/>
+              <View style={{flexDirection: 'row', height: 30, alignItems: 'center'}}>
+                <ThemedText style={{flexGrow: 1}}>Synced</ThemedText>
+                <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
+              </View>
+              <Separator />
+                  <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
+                    <ThemedLink onPress={deleteEntry}>Delete</ThemedLink>
+                  </View>
+            </ThemedBlock>
+          </ThemedView>
+          <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
+          <Modal visible={weightModalVisible} transparent animationType="none">
+            <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
+              <View style={{backgroundColor: theme.surface}}>
+                <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                  <ThemedLink style={{fontSize: 16, margin: theme.marginS}} onPress={() => setWeightModalVisible(false)}>Done</ThemedLink>
                 </View>
-          </ThemedBlock>
-        </ThemedView>
-        <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
-        <Modal visible={weightModalVisible} transparent animationType="none">
-          <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
-            <View style={{backgroundColor: theme.surface}}>
-              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <ThemedLink style={{fontSize: 16, margin: theme.marginS}} onPress={() => setWeightModalVisible(false)}>Done</ThemedLink>
-              </View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <WheelPicker items={kilograms} initialValue={initialKilos} onChange={(item) => setKilos(item)} style={{flexGrow: 1}} />
-                <WheelPicker items={grams} initialValue={initalGrams} onChange={(item) => setGrams(item)} style={{flexGrow: 1}} />
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                  <WheelPicker items={kilograms} initialValue={initialKilos} onChange={(item) => setKilos(item)} style={{flexGrow: 1}} />
+                  <WheelPicker items={grams} initialValue={initalGrams} onChange={(item) => setGrams(item)} style={{flexGrow: 1}} />
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
-      </ThemedScrollView>
-    </KeyboardAvoidingView>
+          </Modal>
+        </ThemedScrollView>
+      </KeyboardAvoidingView>
+    </ScreenContainer>
   );
 };
 
-const getStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    padding: theme.paddingM,
-    marginBottom: 80,
-    gap: theme.marginL,
-    flex: 1,
-    flexGrow: 1,
-  },
-});
+// const getStyles = (theme: Theme) => StyleSheet.create({
+//   container: {
+//     flexDirection: 'column',
+//     padding: theme.paddingM,
+//     marginBottom: 80,
+//     gap: theme.marginL,
+//     flex: 1,
+//     flexGrow: 1,
+//   },
+// });

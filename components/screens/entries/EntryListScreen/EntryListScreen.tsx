@@ -1,4 +1,4 @@
-import {View, Pressable, RefreshControl, Alert, ActivityIndicator, FlatList} from 'react-native';
+import {View, Pressable, RefreshControl, Alert, FlatList} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {Link, Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
@@ -76,7 +76,7 @@ export const EntryListScreen: FC = () => {
     }
   };
   return (
-    <ScreenContainer style={{paddingHorizontal: 0}}>
+    <ScreenContainer safeTop={true}>
       <Stack.Screen options={{title: '', headerShown: false}} />
       <FlatList
         removeClippedSubviews
@@ -95,11 +95,7 @@ export const EntryListScreen: FC = () => {
             onRefresh={onRefresh}
           />
         }
-        contentContainerStyle={{
-          paddingHorizontal: theme.paddingM,
-          gap: theme.marginM,
-          paddingBottom: 50,
-        }}
+        contentContainerClassName="px-s gap-s"
         ListHeaderComponent={
           <>
             <ThemedButtonList
@@ -110,22 +106,13 @@ export const EntryListScreen: FC = () => {
             />
 
             <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 20,
-              }}
+             className="flex-row items-center mt-5"
             >
               <Pressable
                 onPress={() => setShowFilterModal(true)}
-                style={{
-                  flexGrow: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: theme.marginS,
-                }}
+                className="grow flex-row items-center gap-s"
               >
-                <ThemedText style={{color: theme.accent}}>
+                <ThemedText className="text-accent">
                   Entries
                 </ThemedText>
 
@@ -137,14 +124,8 @@ export const EntryListScreen: FC = () => {
               </Pressable>
 
               <Link href={'./addEntry'} asChild>
-                <Pressable
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: theme.marginS,
-                  }}
-                >
-                  <ThemedText style={{color: theme.accent}}>
+                <Pressable className="flex-row items-center gap-s">
+                  <ThemedText className="text-accent">
                     Add
                   </ThemedText>
                   <IconSymbol
@@ -158,13 +139,7 @@ export const EntryListScreen: FC = () => {
             {query.isFetching && !query.data && <LoadingBlock />}
           </>
         }
-        ListFooterComponent={
-          query.isFetchingNextPage ? (
-            <ActivityIndicator size="small" />
-          ) : null
-        }
       />
-
       <EntryFilterModal
         onChange={onFilterChange}
         visible={showFilterModal}

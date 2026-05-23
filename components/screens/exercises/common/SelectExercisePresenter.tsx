@@ -6,7 +6,6 @@ import {SegmentedControlItem, ThemedSegmentedControl} from '../../../blocks/Them
 import {FC, useMemo, useState} from 'react';
 import {ThemedSearchInput} from '../../../blocks/ThemedSearchInput/ThemedSearchInput';
 import {useQuery} from '@tanstack/react-query';
-import {useAppTheme} from '../../../../hooks/useAppTheme';
 import {Exercise} from '../../../../openapi-client';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
@@ -15,7 +14,6 @@ interface SelectExercisePresenterProps {
 }
 
 export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props) => {
-  const theme = useAppTheme();
   const [searchName, setSearchName] = useState<string|null>(null);
   const [library, setLibrary] = useState<'personal' | 'built-in'>('personal');
   const {exerciseService} = useServices();
@@ -38,38 +36,37 @@ export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props)
   };
 
   return (
-    <View style={{height: '100%'}}>
-      <View style={{padding: theme.paddingM}}>
+    <View className="h-full">
+      <View className="p-m">
         <ThemedSearchInput
           onSearch={setSearchName}
-          style={{backgroundColor: theme.surface}}
+          className="bg-surface"
           placeholder="Search"
         />
-        <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
-          <View style={{flexDirection: 'row', flexGrow: 1}}>
+        <View className="flex-row items-center mt-s">
+          <View className="flex-row grow">
             <ThemedSegmentedControl values={segments} onChange={onLibraryChange}/>
           </View>
           <ThemedLink href="/app/exercises/addExercise" iconName="plus">Add</ThemedLink>
         </View>
       </View>
       {useMemo(() => (
-        <View style={{paddingBottom: 80, flex: 1}}>
-        {response.isFetching && <LoadingBlock/>}
-        {!response.isFetching && response.data && (
-          <FlatList
-          initialNumToRender={30}
-          maxToRenderPerBatch={10}
-          windowSize={5}
-          removeClippedSubviews={true}
-          contentContainerStyle={{gap: theme.marginM}}
-          keyExtractor={(x) => x.id.toString()}
-          data={items}
-          renderItem={(ctx) => <ExerciseBlock item={ctx.item} onPress={props.onPress} />}
-          style={{paddingHorizontal: theme.paddingM, paddingBottom: 50}}
-          />
-        )}
+        <View>
+          {response.isFetching && <LoadingBlock/>}
+          {!response.isFetching && response.data && (
+            <FlatList
+            initialNumToRender={30}
+            maxToRenderPerBatch={10}
+            windowSize={5}
+            removeClippedSubviews={true}
+            keyExtractor={(x) => x.id}
+            data={items}
+            renderItem={(ctx) => <ExerciseBlock item={ctx.item} onPress={props.onPress} />}
+            contentContainerClassName="px-m gap-m"
+            />
+          )}
       </View>
-    ), [items, response.isFetching, response.data, theme, props.onPress])}
+    ), [items, response.isFetching, response.data, props.onPress])}
     </View>
   );
 };

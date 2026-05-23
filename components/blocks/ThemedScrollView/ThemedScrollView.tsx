@@ -1,15 +1,10 @@
 import {ScrollView, ScrollViewProps} from 'react-native';
-import {ColorType, useThemeColor} from '@/hooks/useThemeColor';
 import {forwardRef, Ref} from 'react';
 
-export type ThemedViewProps = ScrollViewProps & {
-  type?: ColorType
-};
+type ThemedScrollViewProps = ScrollViewProps
 
 export const ThemedScrollView = forwardRef(
-  function ThemedScrollViewBase({style, type, ...otherProps}: ThemedViewProps, ref: Ref<ScrollView>) {
-    const selectedType = type ?? 'background';
-    const backgroundColor = useThemeColor({}, selectedType);
-    return <ScrollView ref={ref} style={[{backgroundColor}, style]} {...otherProps} />;
+  function ThemedScrollViewBase({className, ...otherProps}: ThemedScrollViewProps, ref: Ref<ScrollView>) {
+    return <ScrollView ref={ref} className={className} {...otherProps} />;
   }
 );

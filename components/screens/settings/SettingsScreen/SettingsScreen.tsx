@@ -159,8 +159,8 @@ export const SettingsScreen: FC = () => {
   };
 
   return (
-    <ThemedScrollView>
-      <ScreenContainer>
+      <ScreenContainer safeTop={true}>
+        <ThemedScrollView className="h-screen p-m">
         <ThemedBlock>
           <View style={styles.row}>
             <ThemedText style={styles.flexGrow}>Name:</ThemedText>
@@ -217,7 +217,7 @@ export const SettingsScreen: FC = () => {
             </ThemedBlock>
           </View>
         </Modal>
+        </ThemedScrollView>
       </ScreenContainer>
-    </ThemedScrollView>
   );
 };

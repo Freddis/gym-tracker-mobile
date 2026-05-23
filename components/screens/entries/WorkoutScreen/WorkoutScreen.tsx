@@ -1,4 +1,4 @@
-import {StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
+import {View, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
@@ -15,8 +15,6 @@ import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExercise
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
-import {useAppTheme} from '@/hooks/useAppTheme';
-import {Theme} from '@/types/Colors';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {string} from 'zod';
@@ -26,9 +24,9 @@ import {splitAtom} from 'jotai/utils';
 import {EntryType} from '../../../../openapi-client';
 import {WorkoutAppEntry} from '../../../../types/models/AppEntry';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 
 export const WorkoutScreen: FC = () => {
-  const theme = useAppTheme();
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [entryAtom, setEntryAtom] = useAtom(workoutAtom);
   const [entry, setEntry] = useAtom(entryAtom);
@@ -50,7 +48,6 @@ export const WorkoutScreen: FC = () => {
     return splitAtom(exercisesAtom, (x) => x.id);
   }, [entryAtom]);
   const exercisesAtoms = useAtomValue(exercisesSplitAtom);
-  const styles = getStyles(theme);
 
   const scrollViewRef = useRef<ScrollView>(null);
   const auth = useAuth();
@@ -172,58 +169,49 @@ export const WorkoutScreen: FC = () => {
   const workoutFinished = workout.end !== null;
   console.log('workout', entry);
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ThemedScrollView ref={scrollViewRef} style={{minHeight: '100%'}}>
-        <ThemedView style={styles.container}>
-          <Stack.Screen options={{title: 'Workout', headerShown: true}} />
-          <ThemedBlock>
-            <View style={{flexDirection: 'row'}}>
-              <ThemedText style={{flexGrow: 1}}>Time:</ThemedText>
-              <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
+    <ScreenContainer>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ThemedScrollView ref={scrollViewRef}>
+          <ThemedView className="h-full gap-m p-m">
+            <Stack.Screen options={{title: 'Workout', headerShown: true}} />
+            <ThemedBlock>
+              <View className="flex-row">
+                <ThemedText className="grow">Time:</ThemedText>
+                <TimerBlock key={workout.id} start={workout.start} end={workout.end ?? undefined}/>
+              </View>
+              <Separator />
+              <View className="flex-row">
+                <ThemedText className="grow">Date:</ThemedText>
+                <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(entry.time)}</ThemedText>
+              </View>
+              <Separator />
+              <View className="flex-row">
+                <ThemedText className="grow">Synced:</ThemedText>
+                <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
+              </View>
+              {!!workoutFinished && (
+                <>
+                  <Separator />
+                  <View className="flex-row justify-center gap-30">
+                    <ThemedLink onPress={copyWorkout}>Copy</ThemedLink>
+                    <ThemedLink onPress={deleteWorkout}>Delete</ThemedLink>
+                  </View>
+                </>
+              )}
+            </ThemedBlock>
+            {exercisesAtoms.map((x) => (
+              <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.toString()} exercise={x} />
+            ))}
+            <View className="flex-col items-center mt-s gap-30">
+              <ThemedLink onPress={addExercise}>Add Exercise</ThemedLink>
+              {!workoutFinished && (
+                <ThemedLink onPress={finishWorkout}>Finish Workout</ThemedLink>
+              )}
             </View>
-            <Separator />
-            <View style={{flexDirection: 'row'}}>
-              <ThemedText style={{flexGrow: 1}}>Date:</ThemedText>
-              <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(entry.time)}</ThemedText>
-            </View>
-            <Separator />
-            <View style={{flexDirection: 'row'}}>
-              <ThemedText style={{flexGrow: 1}}>Synced:</ThemedText>
-              <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
-            </View>
-            {!!workoutFinished && (
-               <>
-                <Separator />
-                <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
-                  <ThemedLink onPress={copyWorkout}>Copy</ThemedLink>
-                  <ThemedLink onPress={deleteWorkout}>Delete</ThemedLink>
-                </View>
-              </>
-            )}
-          </ThemedBlock>
-          {exercisesAtoms.map((x) => (
-            <EditableWorkoutExerciseBlock onDelete={deleteExercise} key={x.toString()} exercise={x} />
-          ))}
-          <View style={{flexDirection: 'column', alignItems: 'center', marginTop: 10, marginBottom: 30, gap: 50}}>
-            <ThemedLink onPress={addExercise}>Add Exercise</ThemedLink>
-            {!workoutFinished && (
-              <ThemedLink onPress={finishWorkout}>Finish Workout</ThemedLink>
-            )}
-          </View>
-        </ThemedView>
-        <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={entry.time} visible={dateModalVisible} onUpdate={updateDate} />
-      </ThemedScrollView>
-    </KeyboardAvoidingView>
+          </ThemedView>
+          <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={entry.time} visible={dateModalVisible} onUpdate={updateDate} />
+        </ThemedScrollView>
+      </KeyboardAvoidingView>
+    </ScreenContainer>
   );
 };
-
-const getStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    padding: theme.paddingM,
-    marginBottom: 80,
-    gap: theme.marginL,
-    flex: 1,
-    flexGrow: 1,
-  },
-});

@@ -2,3 +2,18 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css";
 @import "nativewind/theme";
+
+ 
+:root {
+  --color-main: #3b82f6;
+  --color-on-main: #8b5cf6;
+  --color-accent: #e7000b;
+}
+@theme inline {
+  --spacing-s: 10;
+  --spacing-m: 15;
+  --spacing-l: 20;
+  --color-accent: var(--color-accent);
+  --color-main: var(--color-main);
+  --color-on-main: var(--color-on-main);
+}

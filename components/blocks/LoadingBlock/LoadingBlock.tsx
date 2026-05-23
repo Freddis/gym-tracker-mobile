@@ -6,7 +6,7 @@ import {useAppTheme} from '../../../hooks/useAppTheme';
 export const LoadingBlock: FC = () => {
   const theme = useAppTheme();
   return (
-    <ThemedView style={{paddingTop: 70, flexDirection: 'column', height: '100%', width: '100%'}}>
+    <ThemedView className="w-full flex-col items-center justify-center">
       <ActivityIndicator size="large" color={theme.accent} />
     </ThemedView>
   );
