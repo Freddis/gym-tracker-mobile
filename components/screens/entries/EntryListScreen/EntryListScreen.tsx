@@ -31,6 +31,7 @@ export const EntryListScreen: FC = () => {
   const [date, setDate] = useState<Date | null>(null);
   const query = useInfiniteQuery({
     queryKey: ['entries', types, date],
+    retry: false,
     queryFn: ({pageParam}) => {
       return entryService.getEntries(db, {
         types: types ?? undefined,
@@ -95,7 +96,7 @@ export const EntryListScreen: FC = () => {
             onRefresh={onRefresh}
           />
         }
-        contentContainerClassName="px-m pt-l gap-m"
+        contentContainerClassName="px-m pt-l gap-m min-h-full"
         ListHeaderComponent={
           <>
             <ThemedButtonList

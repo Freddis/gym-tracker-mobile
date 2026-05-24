@@ -135,7 +135,7 @@ export class FoodService implements ISyncedEntityService {
       const image: [string, Image] = [x.id, x.image];
       return image;
     }).filter((x) => x !== null);
-    const imageMap = await this.imageService.processedPulledItems(userId, trx, images, ImageType.FOOD);
+    const imageMap = await this.imageService.processPulledItems(userId, trx, images, ImageType.FOOD);
     console.log('Processing food');
     for (const item of items) {
       const imageId = imageMap.get(item.id);

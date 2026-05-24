@@ -164,7 +164,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     return result;
   }
 
-  async processedPulledItems(db: DrizzleDb, items: [string, OutdoorWalk][]): Promise<Map<string, number>> {
+  async processPulledItems(db: DrizzleDb, items: [string, OutdoorWalk][]): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (items.length === 0) {
       return map;

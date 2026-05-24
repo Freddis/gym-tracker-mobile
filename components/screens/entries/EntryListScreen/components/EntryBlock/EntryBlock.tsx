@@ -12,6 +12,7 @@ import {useRouter} from 'expo-router';
 import {weightAtom} from '../../../WeightEditScreen/utils/weightAtom';
 import {postAtom} from '../../../PostEditScreen/utils/postAtom';
 import {workoutAtom} from '../../../WorkoutScreen/utils/workoutAtom';
+import {MealBlock} from '../MealBlock/MealBlock';
 
 /**
  * Creates an specific entry atom that updates the original entry atom when mutated.
@@ -88,8 +89,10 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
       return <OutdoorRunBlock entryAtom={entryLens(entry, props.entry)} />;
     case EntryType.OUTDOOR_WALK:
       return <OutdoorWalkBlock entryAtom={entryLens(entry, props.entry)} />;
+    case EntryType.MEAL:
+      return <MealBlock entryAtom={entryLens(entry, props.entry)} />;
     default:
-      return <UknownEntryBlock entry={entry} />;
+      return <UknownEntryBlock entry={props.entry} />;
   }
 };
 

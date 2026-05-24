@@ -42,6 +42,8 @@ export const createNewWeightEntryAtom = (): PrimitiveAtom<WeightAppEntry> => {
       deletedAt: null,
     },
     time: new Date(),
+    mealId: null,
+    calorieGoalId: null,
   };
   return atom(initialEntry);
 };

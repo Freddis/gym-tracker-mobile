@@ -31,6 +31,8 @@ const initialEntry: PostAppEntry = {
   outdoorWalkId: null,
   type: EntryType.POST,
   time: new Date(),
+  mealId: null,
+  calorieGoalId: null,
 };
 
 

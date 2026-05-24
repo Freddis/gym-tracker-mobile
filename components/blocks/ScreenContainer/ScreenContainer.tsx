@@ -47,10 +47,14 @@ const themes = {
   light: vars({
     '--color-main': '#f8f8f8',
     '--color-on-main': '#222222',
+    '--color-cavity': '#e5e5e5',
+    '--color-on-cavity': 'black',
   }),
   dark: vars({
     '--color-main': '#262626',
     '--color-on-main': '#f5f5f5',
+    '--color-cavity': '#262626',
+    '--color-on-cavity': '#f5f5f5',
   }),
 };
 

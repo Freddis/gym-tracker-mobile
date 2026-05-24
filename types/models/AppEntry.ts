@@ -1,5 +1,7 @@
 import {schema} from '../../db/schema';
 import {EntryType} from '../../openapi-client';
+import {AppCalorieGoal} from '../../utils/CalorieGoalService/types/AppCalorieGoal';
+import {AppMeal} from '../../utils/MealService/types/AppMeal';
 import {AppImage} from './AppImage';
 import {AppOutdoorRun} from './AppOutdoorRun';
 import {AppOutdoorWalk} from './AppOutdoorWalk';
@@ -34,4 +36,14 @@ export interface OutdoorWalkAppEntry extends BaseEntry {
   outdoorWalk: AppOutdoorWalk;
 }
 
-export type AppEntry = WorkoutAppEntry | WeightAppEntry | PostAppEntry | OutdoorRunAppEntry | OutdoorWalkAppEntry;
+export interface MealAppEntry extends BaseEntry {
+  type: typeof EntryType.MEAL;
+  meal: AppMeal;
+}
+
+export interface CalorieGoalAppEntry extends BaseEntry {
+  type: typeof EntryType.CALORIE_GOAL;
+  calorieGoal: AppCalorieGoal;
+}
+export type AppEntry = WorkoutAppEntry | WeightAppEntry | PostAppEntry | OutdoorRunAppEntry
+| OutdoorWalkAppEntry | MealAppEntry | CalorieGoalAppEntry;

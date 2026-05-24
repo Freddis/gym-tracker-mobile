@@ -38,7 +38,7 @@ export const EntryFilterModal: FC<EntryFilterModalProps> = (props) => {
   };
   return (
     <AppModal visible={props.visible} onClose={props.onClose}>
-      <View style={{flexDirection: 'column', height: 350, gap: theme.marginM}}>
+      <View style={{flexDirection: 'column', height: 500, gap: theme.marginM}}>
         <View style={{flexDirection: 'row', alignItems: 'center', flexGrow: 0, gap: theme.marginM}}>
           <ThemedText style={{flexGrow: 1}}>Date from:</ThemedText>
           <Button title="Clear" color={theme.accent} onPress={onClear} />

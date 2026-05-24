@@ -14,6 +14,8 @@ import {EntryListService} from '../../../utils/EntryListService/EntryListService
 import {getDefaultStore} from 'jotai';
 import {WorkoutTypeService} from '../../../utils/WorkoutTypeService/WorkoutTypeService';
 import {SyncService} from '../../../utils/SyncService/SyncService';
+import {CalorieGoalService} from '../../../utils/CalorieGoalService/CalorieGoalService';
+import {MealService} from '../../../utils/MealService/MealService';
 
 const apiService = new ApiService();
 const weightService = new WeightService(apiService, db);
@@ -21,6 +23,9 @@ const workoutService = new WorkoutService(db);
 const imageService = new ImageService(apiService, db);
 const outdoorRunService = new OutdoorRunService(apiService, db);
 const outdoorWalkService = new OutdoorWalkService(apiService, db);
+const foodService = new FoodService(apiService, db, imageService);
+const mealService = new MealService(db, foodService);
+const calorieGoalService = new CalorieGoalService(db);
 const entryService = new EntryService(
   apiService,
   weightService,
@@ -28,12 +33,13 @@ const entryService = new EntryService(
   imageService,
   outdoorRunService,
   outdoorWalkService,
+  mealService,
+  calorieGoalService,
   db,
 );
 const entryListService = new EntryListService(getDefaultStore());
 const entryAtomService = new EntryAtomService(entryService, entryListService);
 const exerciseService = new ExerciseService();
-const foodService = new FoodService(apiService, db, imageService);
 const workoutTypeService = new WorkoutTypeService(exerciseService);
 const syncService = new SyncService(workoutService, exerciseService, workoutTypeService, weightService, entryService, foodService);
 

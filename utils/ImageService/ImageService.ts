@@ -12,7 +12,7 @@ export class ImageService {
     this.logger = new Logger(ImageService.name);
   }
 
-  async processedPulledItems(userId: number, db: DrizzleDb, images: [string, Image][], type: ImageType): Promise<Map<string, number>> {
+  async processPulledItems(userId: number, db: DrizzleDb, images: [string, Image][], type: ImageType): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (images.length === 0) {
       return map;

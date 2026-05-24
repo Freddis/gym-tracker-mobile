@@ -1,4 +1,4 @@
-import {EntryType, EntryVisibility, Equipment, ExternalSource, FoodAmountUnit, ImageType, Muscle, ServingSizeUnit} from '@/openapi-client';
+import {EntryType, EntryVisibility, Equipment, ExternalSource, FoodAmountUnit, ImageType, MealType, Muscle, ServingSizeUnit} from '@/openapi-client';
 import {index, integer, real, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const exercises = sqliteTable('exercises', {
@@ -137,6 +137,8 @@ export const entries = sqliteTable('entries', {
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
   outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
   outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
+  mealId: integer().references(() => meals.id, {onDelete: 'cascade'}),
+  calorieGoalId: integer().references(() => calorieGoals.id, {onDelete: 'cascade'}),
   visibility: text().notNull().$type<EntryVisibility>(),
   time: integer({mode: 'timestamp'}).notNull(),
   createdAt: integer({mode: 'timestamp'}).notNull(),
@@ -273,4 +275,27 @@ export const foodComponents = sqliteTable('food_components', {
   componentId: text().notNull().references(() => food.id, {onDelete: 'restrict'}),
   amount: real().notNull(),
   unit: text().notNull().$type<FoodAmountUnit>(),
+});
+
+export const meals = sqliteTable('meals', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  type: text().notNull().$type<MealType>(),
+});
+
+export const mealFoodComponents = sqliteTable('meal_food', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  mealId: integer().notNull().references(() => meals.id, {onDelete: 'cascade'}),
+  foodId: text().notNull().references(() => food.id, {onDelete: 'cascade'}),
+  amount: real().notNull(),
+  unit: text().notNull().$type<FoodAmountUnit>(),
+});
+
+export const calorieGoals = sqliteTable('calorie_goals', {
+  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  calories: real().notNull(),
+  carbs: real(),
+  protein: real(),
+  fat: real(),
+  start: integer({mode: 'timestamp'}).notNull(),
+  end: integer({mode: 'timestamp'}),
 });

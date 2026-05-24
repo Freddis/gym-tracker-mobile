@@ -1512,15 +1512,15 @@ export type CalorieGoal = {
     /**
      * Carbs of the calorie goal
      */
-    carbs: number;
+    carbs: number | null;
     /**
      * Protein of the calorie goal
      */
-    protein: number;
+    protein: number | null;
     /**
      * Fat of the calorie goal
      */
-    fat: number;
+    fat: number | null;
     /**
      * Start date of the calorie goal
      */
@@ -2389,15 +2389,15 @@ export type CalorieGoalUpsertDto = {
     /**
      * Carbs of the calorie goal
      */
-    carbs: number;
+    carbs: number | null;
     /**
      * Protein of the calorie goal
      */
-    protein: number;
+    protein: number | null;
     /**
      * Fat of the calorie goal
      */
-    fat: number;
+    fat: number | null;
     /**
      * Start date of the calorie goal
      */

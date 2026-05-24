@@ -28,6 +28,7 @@ import m0023 from './0023_outdoor_run_entries_restructuring.sql';
 import m0024 from './0024_switching_from_id_to_uuid.sql';
 import m0025 from './0025_food_entries.sql';
 import m0026 from './0026_entry_list_indices.sql';
+import m0027 from './0027_meal_and_calorie_goal_entries.sql';
 
 export default {
   journal,
@@ -59,5 +60,6 @@ export default {
     m0024,
     m0025,
     m0026,
+    m0027,
   },
 };

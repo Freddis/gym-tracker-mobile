@@ -47,7 +47,7 @@ export class WeightService implements IEntryService<EntryType.WEIGHT> {
     await db.delete(schema.weight).where(eq(schema.weight.id, id));
   }
 
-  async processedPulledItems(db: DrizzleDb, items: [string, Weight][]): Promise<Map<string, number>> {
+  async processPulledItems(db: DrizzleDb, items: [string, Weight][]): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (items.length === 0) {
       return map;

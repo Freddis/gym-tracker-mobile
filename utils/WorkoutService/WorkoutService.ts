@@ -110,7 +110,7 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
     return entry.workout ?? null;
   }
 
-  async processedPulledItems(db: DrizzleDb, items: [string, Workout][]): Promise<Map<string, number>> {
+  async processPulledItems(db: DrizzleDb, items: [string, Workout][]): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (items.length === 0) {
       return map;

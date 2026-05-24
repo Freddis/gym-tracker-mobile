@@ -5,6 +5,8 @@ import {
   food,
   foodComponents,
   images,
+  mealFoodComponents,
+  meals,
   outdoorRunGeoData,
   outdoorRunHeartrateData,
   outdoorRuns,
@@ -82,4 +84,13 @@ export const foodRelations = relations(food, (relations) => ({
 export const foodComponentRelations = relations(foodComponents, (relations) => ({
   food: relations.one(food, {fields: [foodComponents.foodId], references: [food.id]}),
   // component: relations.one(food, {fields: [foodComponents.componentId], references: [food.id]}),
+}));
+
+export const mealRelations = relations(meals, (relations) => ({
+  food: relations.many(mealFoodComponents),
+}));
+
+export const mealFoodComponentRelations = relations(mealFoodComponents, (relations) => ({
+  meal: relations.one(meals, {fields: [mealFoodComponents.mealId], references: [meals.id]}),
+  food: relations.one(food, {fields: [mealFoodComponents.foodId], references: [food.id]}),
 }));

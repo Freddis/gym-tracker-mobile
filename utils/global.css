@@ -8,6 +8,8 @@
   --color-main: #3b82f6;
   --color-on-main: #8b5cf6;
   --color-accent: #e7000b;
+  --color-cavity: #e5e5e5;
+  --color-on-cavity: #d9d9d9;
 }
 @theme inline {
   --spacing-s: 10;
@@ -16,4 +18,6 @@
   --color-accent: var(--color-accent);
   --color-main: var(--color-main);
   --color-on-main: var(--color-on-main);
+  --color-cavity: var(--color-cavity);
+  --color-on-cavity: var(--color-on-cavity);
 }

@@ -1,7 +1,6 @@
 import {FC} from 'react';
 import {View, Pressable} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
@@ -9,30 +8,29 @@ import {PrimitiveAtom, useAtom} from 'jotai';
 
 export const UknownEntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
   const [entry] = useAtom(props.entry);
-  const theme = useAppTheme();
   const getTime = (date: Date) => {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
   const date = entry.time;
   return (
     <Pressable>
-      <ThemedBlock style={{display: 'flex'}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: theme.marginS}}>
-          <ThemedText style={{fontSize: 16, fontWeight: 'bold', color: theme.accent, flexGrow: 1}}>Unknown</ThemedText>
+      <ThemedBlock>
+        <View className="flex-row justify-between gap-s">
+          <ThemedText className="font-bold text-lg">Unknown</ThemedText>
           <ThemedText>
             {date.toLocaleDateString()}
           </ThemedText>
         </View>
-        <View style={{marginBottom: theme.marginM, flexDirection: 'row-reverse'}}>
-          <View style={{alignItems: 'flex-end'}}>
+        <View className="flex-row justify-end">
+          <View className="items-end">
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
             <EntrySyncButton entry={entry} readonly onUpdate={() => {}}/>
           </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <ThemedText style={{fontWeight: 'semibold'}}>
+        <View className="flex-row items-center justify-center">
+          <ThemedText>
             Unknown entry type
           </ThemedText>
         </View>

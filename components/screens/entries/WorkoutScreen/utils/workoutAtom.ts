@@ -46,6 +46,8 @@ const initialEntry: WorkoutAppEntry = {
     end: null,
     exercises: [],
   },
+  mealId: null,
+  calorieGoalId: null,
 };
 
 

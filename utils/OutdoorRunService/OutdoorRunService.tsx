@@ -56,7 +56,7 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
     await db.delete(schema.outdoorRuns).where(eq(schema.outdoorRuns.id, id));
   }
 
-  async processedPulledItems(db: DrizzleDb, items: [string, OutdoorRun][]): Promise<Map<string, number>> {
+  async processPulledItems(db: DrizzleDb, items: [string, OutdoorRun][]): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (items.length === 0) {
       return map;

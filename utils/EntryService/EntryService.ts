@@ -39,6 +39,8 @@ import {EntryServiceMap} from './types/EntryServiceMap';
 import {NumericEntryKeys} from './types/NumericEntryKeys';
 import {transactionAsync} from '../runTransaction';
 import {EntryObjectMapMap} from './types/EntryObjectMapMap';
+import {MealService} from '../MealService/MealService';
+import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 
 export class EntryService implements ISyncedEntityService {
   protected logger: Logger = new Logger(EntryService.name);
@@ -51,6 +53,8 @@ export class EntryService implements ISyncedEntityService {
     private readonly imageService: ImageService,
     private readonly outdoorRunService: OutdoorRunService,
     private readonly outdoorWalkService: OutdoorWalkService,
+    mealService: MealService,
+    calorieGoalService: CalorieGoalService,
     private readonly db: DrizzleDb,
   ) {
     this.logger = new Logger(EntryService.name);
@@ -71,6 +75,14 @@ export class EntryService implements ISyncedEntityService {
         key: 'outdoorWalkId',
         service: outdoorWalkService,
       },
+      [EntryType.MEAL]: {
+        key: 'mealId',
+        service: mealService,
+      },
+      [EntryType.CALORIE_GOAL]: {
+        key: 'calorieGoalId',
+        service: calorieGoalService,
+      },
     };
   }
 
@@ -78,7 +90,7 @@ export class EntryService implements ISyncedEntityService {
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
     let page = 1;
     let processedItems = 0;
-    const types: EntryType[] = Object.values(EntryType).filter((x) => x !== EntryType.MEAL && x !== EntryType.CALORIE_GOAL);
+    const types: EntryType[] = Object.values(EntryType);
 
     while (true) {
       const response = await this.api.client().getEntriesOwn({
@@ -94,20 +106,23 @@ export class EntryService implements ISyncedEntityService {
       }
       progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
       processedItems += response.data.items.length;
-      await this.processedPulledItem(db, response.data.items);
+      await this.processPulledItem(db, response.data.items);
       if (response.data.items.length < response.data.info.pageSize) {
         return true;
       }
     }
   }
 
-  protected async processedPulledItem(db: DrizzleDb, items: Entry[]): Promise<void> {
+  protected async processPulledItem(db: DrizzleDb, items: Entry[]): Promise<void> {
     const firstItem = items[0];
     if (!firstItem) {
       return;
     }
     const images: [string, Image][] = [];
-    function pushMappedEntry<T extends Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>>(
+    /**
+     * Typescript helper
+     */
+    function pushMappedEntry<T extends Exclude<EntryType, EntryType.POST>>(
       map: EntryObjectArrayMap,
       type: T,
       id: string,
@@ -120,12 +135,15 @@ export class EntryService implements ISyncedEntityService {
       [EntryType.WEIGHT]: [],
       [EntryType.OUTDOOR_RUN]: [],
       [EntryType.OUTDOOR_WALK]: [],
+      [EntryType.POST]: [],
+      [EntryType.MEAL]: [],
+      [EntryType.CALORIE_GOAL]: [],
     };
     for (const item of items) {
       if (item.image) {
         images.push([item.id, item.image]);
       }
-      if (item.type === EntryType.POST || item.type === EntryType.MEAL || item.type === EntryType.CALORIE_GOAL) {
+      if (item.type === EntryType.POST) {
         continue;
       }
       const object: EntryObjectMap[typeof item.type] | null = this.entryServices[item.type].service.getObject(item);
@@ -134,26 +152,32 @@ export class EntryService implements ISyncedEntityService {
         continue;
       }
     }
-    const imageMap = await this.imageService.processedPulledItems(firstItem.user.id, db, images, ImageType.ENTRY);
-    const objectMapMap: Record<
-    Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>,
-    {key: NumericEntryKeys, map: Map<string, number>}
+    const imageMap = await this.imageService.processPulledItems(firstItem.user.id, db, images, ImageType.ENTRY);
+    const objectMapMap: Record<Exclude<EntryType, EntryType.POST>, {key: NumericEntryKeys, map: Map<string, number>}
     > = {
       [EntryType.WORKOUT]: {
         key: 'workoutId',
-        map: await this.entryServices[EntryType.WORKOUT].service.processedPulledItems(db, map[EntryType.WORKOUT]),
+        map: await this.entryServices[EntryType.WORKOUT].service.processPulledItems(db, map[EntryType.WORKOUT]),
       },
       [EntryType.WEIGHT]: {
         key: 'weightId',
-        map: await this.entryServices[EntryType.WEIGHT].service.processedPulledItems(db, map[EntryType.WEIGHT]),
+        map: await this.entryServices[EntryType.WEIGHT].service.processPulledItems(db, map[EntryType.WEIGHT]),
       },
       [EntryType.OUTDOOR_RUN]: {
         key: 'outdoorRunId',
-        map: await this.entryServices[EntryType.OUTDOOR_RUN].service.processedPulledItems(db, map[EntryType.OUTDOOR_RUN]),
+        map: await this.entryServices[EntryType.OUTDOOR_RUN].service.processPulledItems(db, map[EntryType.OUTDOOR_RUN]),
       },
       [EntryType.OUTDOOR_WALK]: {
         key: 'outdoorWalkId',
-        map: await this.entryServices[EntryType.OUTDOOR_WALK].service.processedPulledItems(db, map[EntryType.OUTDOOR_WALK]),
+        map: await this.entryServices[EntryType.OUTDOOR_WALK].service.processPulledItems(db, map[EntryType.OUTDOOR_WALK]),
+      },
+      [EntryType.MEAL]: {
+        key: 'mealId',
+        map: await this.entryServices[EntryType.MEAL].service.processPulledItems(db, map[EntryType.MEAL]),
+      },
+      [EntryType.CALORIE_GOAL]: {
+        key: 'calorieGoalId',
+        map: await this.entryServices[EntryType.CALORIE_GOAL].service.processPulledItems(db, map[EntryType.CALORIE_GOAL]),
       },
     };
     for (const x of items) {
@@ -174,11 +198,11 @@ export class EntryService implements ISyncedEntityService {
         deletedAt: x.deletedAt,
         updatedAt: x.updatedAt,
       };
-      if (x.type !== EntryType.POST && x.type !== EntryType.MEAL && x.type !== EntryType.CALORIE_GOAL) {
+      if (x.type !== EntryType.POST) {
         const objectMap = objectMapMap[x.type];
         const objectId = objectMap.map.get(x.id);
         if (!objectId) {
-          throw new Error(`Object id not found for entry ${x.id}`);
+          throw new Error(`Object id not found for entry ${x.type}:${x.id}`);
         }
         entry[objectMap.key] = objectId;
       }
@@ -223,6 +247,8 @@ export class EntryService implements ISyncedEntityService {
 
   async wipeLocalData(userId: number, db: DrizzleDb): Promise<boolean> {
     await db.delete(schema.entries);
+    await this.entryServices.Meal.service.wipeLocalData(db);
+    await this.entryServices.CalorieGoal.service.wipeLocalData(db);
     await this.weightService.wipeLocalData(db);
     await this.workoutService.wipeLocalData(db);
     await this.outdoorRunService.wipeLocalData(db);
@@ -487,39 +513,6 @@ export class EntryService implements ISyncedEntityService {
     const limit = params?.limit ?? 10;
     const offset = (page - 1) * limit;
     const sqlQuery = db.query.entries.findMany({
-      // with: {
-      //   image: true,
-      //   workout: {
-      //     with: {
-      //       exercises: {
-      //         with: {
-      //           exercise: true,
-      //           sets: {
-      //             orderBy: (t, op) => [
-      //               op.asc(t.createdAt),
-      //             ],
-      //           },
-      //         },
-      //         orderBy: (t, op) => [
-      //           op.asc(t.createdAt),
-      //         ],
-      //       },
-      //     },
-      //   },
-      //   weight: true,
-      //   outdoorRun: {
-      //     with: {
-      //       geoData: true,
-      //       heartRateData: true,
-      //     },
-      //   },
-      //   outdoorWalk: {
-      //     with: {
-      //       geoData: true,
-      //       heartRateData: true,
-      //     },
-      //   },
-      // },
       where: (t, op) => op.and(
         params?.ids ? op.inArray(t.id, params.ids) : undefined,
         params?.externalIds ? op.inArray(t.externalId, params.externalIds) : undefined,
@@ -534,7 +527,7 @@ export class EntryService implements ISyncedEntityService {
 
     const entries = await sqlQuery;
 
-    const createMap = async <T extends Exclude<EntryType, EntryType.POST | EntryType.MEAL | EntryType.CALORIE_GOAL>>(
+    const createMap = async <T extends Exclude<EntryType, EntryType.POST>>(
       type: T,
       rows: typeof schema.entries.$inferSelect[]
     ): Promise<Map<number, EntryAppObjectMap[T]>> => {
@@ -546,6 +539,8 @@ export class EntryService implements ISyncedEntityService {
       if (!key) {
         return new Map();
       }
+      // todo: if migrations are not done, drizzle puts the key name into field that doesn't exist in db
+      // let's we added key mealId, then ids= ['mealId','mealId','mealId',...] that's not gonna work properly
       const ids = rows.map((x) => x[key]).filter((x) => x !== null);
       if (ids.length === 0) {
         return new Map();
@@ -558,10 +553,12 @@ export class EntryService implements ISyncedEntityService {
       [EntryType.WEIGHT]: await createMap(EntryType.WEIGHT, entries),
       [EntryType.OUTDOOR_RUN]: await createMap(EntryType.OUTDOOR_RUN, entries),
       [EntryType.OUTDOOR_WALK]: await createMap(EntryType.OUTDOOR_WALK, entries),
+      [EntryType.POST]: new Map(),
+      [EntryType.MEAL]: await createMap(EntryType.MEAL, entries),
+      [EntryType.CALORIE_GOAL]: await createMap(EntryType.CALORIE_GOAL, entries),
     };
     const imageIds: number[] = entries.map((x) => x.imageId).filter((x) => x !== null);
-    const imageMap = await this.imageService.loadMap(imageIds);
-
+    const imageMap = imageIds.length > 0 ? await this.imageService.loadMap(imageIds) : new Map();
     // const result: AppEntry[] = [];
     const result: AppEntry[] = entries.map((item) => {
       const image = imageMap.get(item.imageId ?? 0);
@@ -570,7 +567,7 @@ export class EntryService implements ISyncedEntityService {
         image: image ?? null,
       };
 
-      if (item.type === EntryType.POST || item.type === EntryType.MEAL || item.type === EntryType.CALORIE_GOAL) {
+      if (item.type === EntryType.POST) {
         return {
           ...base,
           type: EntryType.POST,
@@ -580,7 +577,7 @@ export class EntryService implements ISyncedEntityService {
       const entryService: IEntryService<typeof item.type> = this.entryServices[item.type].service;
       const id = item[key];
       if (!id) {
-        throw new Error(`Object id not found for entry ${item.id}`);
+        throw new Error(`Object id not found for entry ${item.type}:${item.id}`);
       }
       const data: EntryAppObjectMap[typeof item.type] | undefined = objectMapMap[item.type].get(id);
       if (!data) {
@@ -870,6 +867,8 @@ export class EntryService implements ISyncedEntityService {
         externalSource: null,
         outdoorRunId: null,
         outdoorWalkId: null,
+        mealId: null,
+        calorieGoalId: null,
       };
       this.logger.info('Inserting entry', entry);
       await db.insert(schema.entries).values(entry);
