@@ -47,6 +47,8 @@ export const FoodSelectScreen: FC = () => {
       <View className="h-full">
         <View className="p-m">
           <ThemedSearchInput
+            autoFocus
+            returnKeyType="done"
             onSearch={setSearchName}
             className="bg-surface"
             placeholder="Search"
