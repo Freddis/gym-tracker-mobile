@@ -109,12 +109,16 @@ export class FoodService implements ISyncedEntityService {
 
   async updateFood(userId: number, food: AppFood, image?: string | null): Promise<AppFood> {
     const db = await asyncDrizzle();
-    await transactionAsync(db, async (trx) => {
+    const result = await transactionAsync(db, async (trx) => {
       const appImage = image ? await this.imageService.createImage(userId, image, ImageType.FOOD, trx) : null;
       const imageMap = appImage ? new Map([[food.id, appImage.id]]) : new Map();
       await this.upsertFood(trx, userId, [food], imageMap);
+      return {
+        ...food,
+        image: appImage,
+      };
     });
-    return food;
+    return result;
   }
 
   async getFood(query?: FoodFilter): Promise<AppFood[]> {
@@ -222,6 +226,11 @@ export class FoodService implements ISyncedEntityService {
         where: (t, op) => op.eq(t.id, item.id),
       });
       if (existing) {
+        const lastUpdateStampOwn = Math.max(existing.createdAt.getTime(), existing.updatedAt?.getTime() ?? 0, existing.deletedAt?.getTime() ?? 0);
+        const lastUpdateStampServer = Math.max(item.createdAt.getTime(), item.updatedAt?.getTime() ?? 0, item.deletedAt?.getTime() ?? 0);
+        if (lastUpdateStampOwn >= lastUpdateStampServer) {
+          continue;
+        }
         await trx.update(schema.food).set(row).where(eq(schema.food.id, item.id));
       } else {
         await trx.insert(schema.food).values(row).returning();

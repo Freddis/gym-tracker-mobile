@@ -17,7 +17,7 @@ import {AppFood} from '../../../../utils/FoodService/types/AppFood';
 import {useQuery} from '@tanstack/react-query';
 
 const foodListAtom = atom<AppFood[]>([]);
-const foodSplitAtom = splitAtom(foodListAtom);
+const foodSplitAtom = splitAtom(foodListAtom, (x) => x.id);
 
 export const FoodListScreen = () => {
   const setFoodList = useSetAtom(foodListAtom);
@@ -37,10 +37,7 @@ export const FoodListScreen = () => {
     setFoodList(food);
     setRefreshing(false);
   };
-  // useEffect(() => {
-  //   loadFood();
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+
   const query = useQuery({
     queryKey: ['food'],
     retry: false,
@@ -54,11 +51,6 @@ export const FoodListScreen = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.data]);
 
-  // const loadFood = async () => {
-  //   const food = await foodService.getFood();
-  //   setFoodList(food);
-  //   setLoading(false);
-  // };
 
   const headerLeft = () => <BackHeaderButton />;
   const headerRight = () => <ThemedLink onPress={() => router.navigate('/app/entries/food/foodAdd')}>Add</ThemedLink>;
