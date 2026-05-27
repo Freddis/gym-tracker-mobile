@@ -84,9 +84,16 @@ export const MealEntryBlockFoodComponent: FC< {item: AppFoodComponent, own?: boo
             <ThemedText>{amount}</ThemedText>
         </View>
       </View>
-      <View className={cn(item.food.servingSize === null ? 'invisible' : '', 'flex-row gap-0 items-center')}>
-        <ThemedText>Serving Size: {item.food.servingSize?.toFixed(0)} {item.food.servingSizeUnit}</ThemedText>
-        <ThemedText>, Servings: {servings}</ThemedText>
+      <View className={cn(item.food.servingSize === null && !item.food.isMeal ? 'invisible' : '', 'flex-row gap-0 items-center')}>
+        {!item.food.isMeal && (
+          <>
+            <ThemedText>Serving Size: {item.food.servingSize?.toFixed(0)} {item.food.servingSizeUnit}</ThemedText>
+            <ThemedText>, Servings: {servings}</ThemedText>
+          </>
+        )}
+        {item.food.isMeal && (
+          <ThemedText>Servings: {servings}</ThemedText>
+        )}
       </View>
     </View>
   </View>
