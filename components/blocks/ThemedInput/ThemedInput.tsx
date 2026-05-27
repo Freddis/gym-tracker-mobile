@@ -28,8 +28,13 @@ export const ThemedTextInput: FC<ThemedTextInputProps> = (props) => {
   const {children, style, type, ...rest} = props;
   const theme = useAppTheme();
   const styles = getStyles(theme, props.variant, props.hasError);
+  const onChangeText: TextInputProps['onChangeText'] = (text) => {
+    const isNumericKeyboard = props.keyboardType === 'numeric' || props.keyboardType === 'decimal-pad' || props.keyboardType === 'number-pad';
+    const value = isNumericKeyboard && text.includes(',') ? text.replace(/,/g, '.') : text;
+    props.onChangeText?.(value);
+  };
   return (
-    <TextInput {...rest} style={[styles.default, style]}>{children}</TextInput>
+    <TextInput {...rest} onChangeText={onChangeText} style={[styles.default, style]}>{children}</TextInput>
   );
 };
 
