@@ -140,7 +140,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
         </View>
       </View>
       <View className="flex-row gap-m items-center flex-1 min-w-0 overflow-hidden ">
-        <View className="overflow-hidden">
+        <View className={cn(food.isMeal ? 'hidden' : '', 'overflow-hidden')}>
           <ThemedText>{t.p((x) => x.create.labels.grams)}</ThemedText>
           <View>
             <ThemedTextInput
@@ -153,7 +153,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
             />
           </View>
         </View>
-        <View className={cn(!servedInServings ? 'invisible' : '', 'overflow-hidden')}>
+        <View className={cn(!servedInServings ? 'hidden' : '', 'overflow-hidden')}>
           <ThemedText>{t.p((x) => x.create.labels.servings)}</ThemedText>
           <View>
             <ThemedTextInput
