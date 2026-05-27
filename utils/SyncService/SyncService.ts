@@ -141,6 +141,11 @@ export class SyncService {
         errorMsg: "Couldn't push exercises",
       },
       {
+        name: 'Pushing Food',
+        action: this.foodService.pushToServer.bind(this.foodService),
+        errorMsg: "Couldn't push food",
+      },
+      {
         name: 'Pushing Entries',
         action: this.entryService.pushToServer.bind(this.entryService),
         errorMsg: "Couldn't push entries",
