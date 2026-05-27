@@ -17,6 +17,7 @@ import {weightAtom} from './utils/weightAtom';
 import {WeightAppEntry} from '../../../../types/models/AppEntry';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {dateToString} from '../../../../utils/dateToString';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
@@ -72,15 +73,7 @@ export const WeightEditScreen: FC = () => {
     const result = await entryService.saveEntry(updatedEntry);
     setEntry(result);
   };
-  const dateToString = (date: Date):string => {
-    return [
-      date.toLocaleDateString(),
-      [
-        date.getHours().toString().padStart(2, '0'),
-        date.getMinutes().toString().padStart(2, '0'),
-      ].join(':'),
-    ].join(' ');
-  };
+
   const weightString = (weight: number) => {
     const parts = weight.toString().split('.');
     const integerPart = parts[0];

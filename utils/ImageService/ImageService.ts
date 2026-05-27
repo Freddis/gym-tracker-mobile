@@ -1,5 +1,5 @@
 import {schema} from '../../db/schema';
-import {Image, ImageType} from '../../openapi-client';
+import {Image, ImageType, ImageUpsertDto} from '../../openapi-client';
 import {AppImage} from '../../types/models/AppImage';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
@@ -12,6 +12,49 @@ export class ImageService {
     this.logger = new Logger(ImageService.name);
   }
 
+  getImageUrl(image: AppImage | null) {
+    if (!image) {
+      return null;
+    }
+    if (image.image) {
+      return `data:image/jpeg;base64,${image.image}`;
+    }
+    return image.url;
+  }
+
+  createImageUpsertDto(image: AppImage | null): ImageUpsertDto | undefined | null {
+    if (!image) {
+      return null;
+    }
+    if (!image.image) {
+      return undefined;
+    }
+    const dto: ImageUpsertDto = {
+      data: image.image,
+    };
+    return dto;
+  }
+
+  async createImage(userId: number, image: string, type: ImageType, trx: DrizzleDb): Promise<AppImage> {
+    const newImage: typeof schema.images.$inferInsert = {
+      userId: userId,
+      image: image,
+      type: type,
+    };
+    const imageRows = await trx.insert(schema.images).values(newImage).returning();
+    let imageRow = imageRows[0];
+    if (!imageRow) {
+      throw new Error('Failed to insert image');
+    }
+    const result: AppImage = {
+      id: imageRow.id,
+      userId: imageRow.userId,
+      image: imageRow.image,
+      type: imageRow.type,
+      url: null,
+    };
+    return result;
+  }
   async processPulledItems(userId: number, db: DrizzleDb, images: [string, Image][], type: ImageType): Promise<Map<string, number>> {
     const map = new Map<string, number>();
     if (images.length === 0) {

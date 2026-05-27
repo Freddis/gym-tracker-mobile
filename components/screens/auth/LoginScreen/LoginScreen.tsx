@@ -25,7 +25,7 @@ export const LoginScreen: FC = () => {
   const auth = useContext(AuthContext);
   const router = useRouter();
   const theme = useAppTheme();
-  const [errorMessage, setErrors] = useResponseErrors();
+  const {getError, setErrors} = useResponseErrors();
 
   useEffect(() => {
     AsyncStorage.getItem(ASYNC_STORAGE_KEY).then((result) => {
@@ -75,7 +75,7 @@ export const LoginScreen: FC = () => {
           value={email}
           placeholder="your@email.com"
         />
-        <ThemedInputError error={errorMessage('email')} />
+        <ThemedInputError error={getError('email')} />
         <ThemedText style={styles.passwordLabel}>Password:</ThemedText>
         <ThemedTextInput
           textContentType="password"
@@ -85,7 +85,7 @@ export const LoginScreen: FC = () => {
           value={password}
           placeholder="******"
         />
-        <ThemedInputError error={errorMessage('password')} />
+        <ThemedInputError error={getError('password')} />
         <View style={styles.forgotPassword}>
           <ThemedLink href={'/auth/passwordRestore'}>I forgot my password</ThemedLink>
         </View>

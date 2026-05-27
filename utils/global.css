@@ -10,8 +10,11 @@
   --color-accent: #e7000b;
   --color-cavity: #e5e5e5;
   --color-on-cavity: #d9d9d9;
+  --color-surface: #ffffff;
+  --color-surface-text: #444444;
 }
 @theme inline {
+  --spacing-xs: 5;
   --spacing-s: 10;
   --spacing-m: 15;
   --spacing-l: 20;
@@ -20,4 +23,6 @@
   --color-on-main: var(--color-on-main);
   --color-cavity: var(--color-cavity);
   --color-on-cavity: var(--color-on-cavity);
+  --color-surface: var(--color-surface);
+  --color-surface-text: var(--color-surface-text);
 }

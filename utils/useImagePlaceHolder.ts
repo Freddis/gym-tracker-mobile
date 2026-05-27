@@ -1,5 +1,3 @@
-
-
 export const useImagePlaceHolder = (square?: boolean): string => {
   const noImageLabel = 'No Image'.replaceAll(' ', '+');
   const size = square ? '600x600' : '600x400';

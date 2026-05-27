@@ -16,6 +16,12 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorRunService.name);
   }
+  async create(outdoorRun: AppOutdoorRun, db: DrizzleDb): Promise<number> {
+    throw new Error('Not implemented');
+  }
+  update(entry: OutdoorRunAppEntry & {type: EntryType.OUTDOOR_RUN;}, db: DrizzleDb): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 
   async loadMap(ids: number[]): Promise<Map<number, AppOutdoorRun>> {
     const outdoorRuns: AppOutdoorRun[] = await this.db.query.outdoorRuns.findMany({

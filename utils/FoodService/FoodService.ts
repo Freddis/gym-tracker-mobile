@@ -1,15 +1,24 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {Food, FoodComponent, Image, ImageType} from '../../openapi-client';
+import {Food, FoodUpsertDto, Image, ImageType} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
-import {DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {ImageService} from '../ImageService/ImageService';
 import {avoidLet} from '../avoidLet';
-
-
+import {AppImage} from '../../types/models/AppImage';
+import {AppFood} from './types/AppFood';
+import {AppFoodComponent} from './types/AppFoodComponent';
+import {transactionAsync} from '../runTransaction';
+export interface FoodFilter {
+  ids?: string[];
+  search?: string;
+  isDish?: boolean;
+  personalLibrary?: boolean;
+  includeDeleted?: boolean;
+}
 export class FoodService implements ISyncedEntityService {
   protected logger: Logger;
   private readonly db: DrizzleDb;
@@ -23,9 +32,9 @@ export class FoodService implements ISyncedEntityService {
     this.imageService = imageService;
   }
 
-  async loadFood(ids: Set<string>): Promise<Map<string, Food>> {
+  async loadFood(ids: Set<string>): Promise<Map<string, AppFood>> {
     if (ids.size === 0) {
-      return new Map<string, Food>();
+      return new Map();
     }
     const foodRows = await this.db.query.food.findMany({
       where: (t, op) => op.inArray(t.id, Array.from(ids)),
@@ -37,7 +46,7 @@ export class FoodService implements ISyncedEntityService {
     const componentIds: Set<string> = foodRows.flatMap((x) => x.components).reduce((acc, x) => acc.add(x.componentId), new Set<string>());
     const components = await this.loadFood(componentIds);
     const foodArray = foodRows.map((x) => {
-      const image: Image | null = avoidLet(() => {
+      const image: AppImage | null = avoidLet(() => {
         if (!x.image) {
           return null;
         }
@@ -48,9 +57,12 @@ export class FoodService implements ISyncedEntityService {
         return {
           id: x.image.id,
           url: url,
+          userId: x.userId,
+          image: x.image.image,
+          type: ImageType.FOOD,
         };
       });
-      const food: Food = {
+      const food: AppFood = {
         id: x.id,
         name: x.name,
         description: x.description,
@@ -63,6 +75,8 @@ export class FoodService implements ISyncedEntityService {
         createdAt: x.createdAt,
         updatedAt: x.updatedAt,
         deletedAt: x.deletedAt,
+        lastPushedAt: x.lastPushedAt,
+        lastPulledAt: x.lastPulledAt,
         image: image,
         calories: x.protein * 4 + x.carbs * 4 + x.fat * 9,
         components: x.components.map((x) => {
@@ -70,7 +84,7 @@ export class FoodService implements ISyncedEntityService {
           if (!food) {
             throw new Error(`Food component ${x.componentId} not found`);
           }
-          const component: FoodComponent = {
+          const component: AppFoodComponent = {
             amount: x.amount,
             unit: x.unit,
             food: food,
@@ -83,13 +97,41 @@ export class FoodService implements ISyncedEntityService {
     return new Map(foodArray.map((x) => [x.id, x]));
   }
 
-  async getFood(): Promise<Food[]> {
+  async deleteFood(id: string) {
+    await this.db.update(schema.food).set({
+      deletedAt: new Date(),
+    }).where(eq(schema.food.id, id));
+  }
+
+  async createFood(userId: number, food: AppFood, image?: string | null): Promise<AppFood> {
+    return this.updateFood(userId, food, image);
+  }
+
+  async updateFood(userId: number, food: AppFood, image?: string | null): Promise<AppFood> {
+    const db = await asyncDrizzle();
+    await transactionAsync(db, async (trx) => {
+      const appImage = image ? await this.imageService.createImage(userId, image, ImageType.FOOD, trx) : null;
+      const imageMap = appImage ? new Map([[food.id, appImage.id]]) : new Map();
+      await this.upsertFood(trx, userId, [food], imageMap);
+    });
+    return food;
+  }
+
+  async getFood(query?: FoodFilter): Promise<AppFood[]> {
+    if (query?.personalLibrary === false) {
+      return [];
+    }
     const foodRows = await this.db.query.food.findMany({
+      where: (t, op) => op.and(
+        query?.search ? op.like(t.name, `%${query.search}%`) : undefined,
+        query?.includeDeleted ? undefined : op.isNull(t.deletedAt),
+        query?.ids ? op.inArray(t.id, query.ids) : undefined,
+      ),
       orderBy: (t, op) => [op.desc(t.createdAt)],
     });
 
     const foodMap = await this.loadFood(new Set(foodRows.map((x) => x.id)));
-    const reordered:Food[] = [];
+    const reordered:AppFood[] = [];
     for (const x of foodRows) {
       const food = foodMap.get(x.id);
       if (!food) {
@@ -136,7 +178,26 @@ export class FoodService implements ISyncedEntityService {
       return image;
     }).filter((x) => x !== null);
     const imageMap = await this.imageService.processPulledItems(userId, trx, images, ImageType.FOOD);
-    console.log('Processing food');
+
+    const foodToAppFood = (food: Food): AppFood => {
+      return {
+        ...food,
+        lastPushedAt: new Date(),
+        lastPulledAt: new Date(),
+        image: null,
+        components: food.components.map((x) => {
+          return {
+            ...x,
+            food: foodToAppFood(x.food),
+          };
+        }),
+      };
+    };
+    await this.upsertFood(trx, userId, items.map(foodToAppFood), imageMap);
+  }
+
+  //todo: refactor this: remove imageMap and simply use AppFood[]
+  async upsertFood(trx: DrizzleDb, userId: number, items: AppFood[], imageMap: Map<string, number>) {
     for (const item of items) {
       const imageId = imageMap.get(item.id);
       const row: typeof schema.food.$inferInsert = {
@@ -152,8 +213,8 @@ export class FoodService implements ISyncedEntityService {
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
         deletedAt: item.deletedAt,
-        lastPulledAt: new Date(),
-        lastPushedAt: new Date(),
+        lastPulledAt: item.lastPulledAt,
+        lastPushedAt: item.lastPushedAt,
         userId: userId,
         imageId: imageId,
       };
@@ -166,7 +227,6 @@ export class FoodService implements ISyncedEntityService {
         await trx.insert(schema.food).values(row).returning();
       }
     }
-    console.log('Processing food components');
     for (const item of items) {
       await trx.delete(schema.foodComponents).where(eq(schema.foodComponents.foodId, item.id));
       for (const component of item.components) {
@@ -193,8 +253,87 @@ export class FoodService implements ISyncedEntityService {
     return row.lastPulledAt;
   }
 
-  pushToServer(userId: number, trx: DrizzleDb = this.db): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  protected async getLatestPushSyncDate(db: DrizzleDb): Promise<Date | null> {
+    const row = await db.query.food.findFirst({
+      columns: {
+        lastPushedAt: true,
+      },
+      orderBy: (t, op) => [op.desc(t.lastPushedAt)],
+    });
+    if (!row) {
+      return null;
+    }
+    return row.lastPushedAt;
+  }
+
+  async pushToServer(userId: number, trx: DrizzleDb = this.db): Promise<boolean> {
+    this.logger.info('Pushing food to server', {userId});
+    const lastPullSyncDate = await this.getLatestPushSyncDate(trx);
+    this.logger.info('Last pull sync date', {lastPullSyncDate});
+    const idRows = await trx.query.food.findMany({
+      columns: {
+        id: true,
+      },
+      where: (t, op) => op.and(
+        eq(t.userId, userId),
+        lastPullSyncDate ? op.or(
+          op.gt(t.updatedAt, lastPullSyncDate),
+          op.gt(t.createdAt, lastPullSyncDate),
+          op.gt(t.deletedAt, lastPullSyncDate),
+          op.isNull(t.lastPushedAt),
+        ) : undefined
+      ),
+    });
+    if (idRows.length === 0) {
+      this.logger.info('No food to push');
+      return true;
+    }
+    return await this.pushFood(trx, idRows.map((x) => x.id));
+  }
+  protected async pushFood(db: DrizzleDb, ids: string[]): Promise<boolean> {
+    this.logger.info('Getting entries to upsert', {ids: ids});
+    const entriesToUpsert: AppFood[] = await this.getFood({
+      ids: ids,
+      includeDeleted: true,
+    });
+    const data: FoodUpsertDto[] = entriesToUpsert.map((x) => this.createUpsertDto(x));
+    console.log('Sending entries to server', data);
+    const response = await this.api.client().upsertFoods({
+      body: data,
+    });
+
+    if (response.error) {
+      return false;
+    }
+    for (const [i, entry] of response.data.entries()) {
+      if (!entriesToUpsert[i]) {
+        throw new Error('Matching upserted entity not found');
+      }
+      await db.update(schema.food).set({
+        lastPushedAt: new Date(),
+        // remoteId: entry.id,
+      }).where(
+        eq(schema.food.id, entriesToUpsert[i].id)
+      );
+      // update image url if it was changed
+      if (entriesToUpsert[i].image && entry.image) {
+        await db.update(schema.images).set({
+          url: entry.image.url,
+          image: null,
+        }).where(
+          eq(schema.images.id, entriesToUpsert[i].image.id)
+        );
+      }
+    }
+    return true;
+  }
+
+  protected createUpsertDto(food: AppFood): FoodUpsertDto {
+    const imageDto = this.imageService.createImageUpsertDto(food.image);
+    return {
+      ...food,
+      image: imageDto,
+    };
   }
 
   async wipeLocalData(userId: number, trx: DrizzleDb): Promise<boolean> {

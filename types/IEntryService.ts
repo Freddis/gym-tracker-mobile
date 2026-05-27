@@ -35,4 +35,6 @@ export interface IEntryService<TType extends EntryType> {
   processPulledItems(db: DrizzleDb, items: [string, EntryObjectMap[TType]][]): Promise<Map<string, number>>
   loadMap(ids: number[]): Promise<Map<number, EntryAppObjectMap[TType]>>
   construct(row: BaseEntry, value: EntryAppObjectMap[TType]): AppEntry & {type: TType};
+  update(entry: AppEntry & {type: TType}, db: DrizzleDb): Promise<void>
+  create(entry: EntryAppObjectMap[TType], db: DrizzleDb): Promise<number>
 }

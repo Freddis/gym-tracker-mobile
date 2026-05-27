@@ -65,7 +65,7 @@ export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props)
             contentContainerClassName="px-m gap-m"
             />
           )}
-      </View>
+        </View>
     ), [items, response.isFetching, response.data, props.onPress])}
     </View>
   );

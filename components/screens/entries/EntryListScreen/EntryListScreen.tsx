@@ -102,7 +102,7 @@ export const EntryListScreen: FC = () => {
             <ThemedButtonList
               items={[
                 ['Workout Types', '/app/entries/workoutTypeList'],
-                ['Food', '/app/entries/food/list'],
+                ['Food', '/app/entries/food/foodList'],
               ]}
             />
 

@@ -41,6 +41,7 @@ import {transactionAsync} from '../runTransaction';
 import {EntryObjectMapMap} from './types/EntryObjectMapMap';
 import {MealService} from '../MealService/MealService';
 import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
+import {AppMeal} from '../MealService/types/AppMeal';
 
 export class EntryService implements ISyncedEntityService {
   protected logger: Logger = new Logger(EntryService.name);
@@ -309,22 +310,9 @@ export class EntryService implements ISyncedEntityService {
       if (image !== undefined) {
         await this.updateEntryImage(db, entry, image);
       }
-
-      if (entry.type === EntryType.WEIGHT) {
-        await db.update(schema.weight).set({
-          ...entry.weight,
-          updatedAt: new Date(),
-        }).where(
-        eq(schema.weight.id, entry.weight.id)
-      );
-      }
-      if (entry.type === EntryType.WORKOUT) {
-        await db.update(schema.workouts).set({
-          ...entry.workout,
-          updatedAt: new Date(),
-        }).where(
-        eq(schema.workouts.id, entry.workout.id)
-      );
+      if (entry.type !== EntryType.POST) {
+        const service: IEntryService<typeof entry.type> = this.entryServices[entry.type].service;
+        await service.update(entry, db);
       }
       entry.updatedAt = new Date();
       await db.update(schema.entries).set({
@@ -337,7 +325,9 @@ export class EntryService implements ISyncedEntityService {
       }).where(
       eq(schema.entries.id, entry.id)
       );
-      return entry;
+      return {
+        ...entry,
+      };
     });
   }
 
@@ -769,6 +759,50 @@ export class EntryService implements ISyncedEntityService {
     });
   }
 
+  async createMealEntry(
+    userId: number,
+    title: string | null,
+    note: string | null,
+    image: string | null,
+    meal: AppMeal): Promise<void> {
+    const db = await asyncDrizzle();
+    await transactionAsync(db, async (trx) => {
+      const type = EntryType.MEAL;
+      const service = this.entryServices[type].service;
+      const id = uuid.v4();
+      const objectId = await service.create(meal, trx);
+      const entry: typeof schema.entries.$inferInsert = {
+        id: id,
+        userId: userId,
+        type: type,
+        time: new Date(),
+        createdAt: new Date(),
+        visibility: EntryVisibility.PUBLIC,
+        imageId: null,
+        note: note,
+        title: title,
+      };
+
+      if (image) {
+        const newImage: typeof schema.images.$inferInsert = {
+          userId: userId,
+          image: image,
+          type: ImageType.ENTRY,
+        };
+        const imageRows = await trx.insert(schema.images).values(newImage).returning();
+        let imageRow = imageRows[0];
+        if (!imageRow) {
+          throw new Error('Failed to insert image');
+        }
+        entry.imageId = imageRow.id;
+      }
+
+      const key = this.entryServices.Meal.key;
+      entry[key] = objectId;
+      await trx.insert(schema.entries).values(entry);
+    });
+  }
+
   async addPostEntry(userId: number, note: string | null, image: string | null): Promise<PostAppEntry> {
     const result = await this.db.transaction(async (db) => {
       const newPost: typeof schema.entries.$inferInsert = {
@@ -795,9 +829,6 @@ export class EntryService implements ISyncedEntityService {
           throw new Error('Failed to insert image');
         }
         newPost.imageId = imageRow.id;
-        imageRow = {
-          ...imageRow,
-        };
       }
 
       const entryResult = await db.insert(schema.entries).values(newPost).returning();

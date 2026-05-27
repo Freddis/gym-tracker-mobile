@@ -17,6 +17,20 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
     this.logger = new Logger(WorkoutService.name);
   }
 
+  async create(workout: CompleteAppWorkout, db: DrizzleDb): Promise<number> {
+    throw new Error('Not implemented');
+  }
+
+  async update(entry: WorkoutAppEntry, db: DrizzleDb): Promise<void> {
+    await db.update(schema.workouts).set({
+      ...entry.workout,
+      updatedAt: new Date(),
+    })
+    .where(
+      eq(schema.workouts.id, entry.workout.id)
+    );
+  }
+
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
     try {
       await db.delete(schema.workoutExerciseSets);

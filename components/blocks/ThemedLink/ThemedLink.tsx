@@ -12,6 +12,8 @@ interface ThemedLnkProps {
   href?: Parameters<ReturnType<typeof useRouter>['push']>[0];
   onPress?: (event: GestureResponderEvent) => void
   style?: TextStyle
+  accented?: boolean
+  className?: string;
 }
 export const ThemedLink: FC<ThemedLnkProps> = (props) => {
   const theme = useAppTheme();
@@ -32,6 +34,7 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
 
   return (
       <Pressable
+          hitSlop={10}
           onPress={onPress}
           style={({pressed}) => [
             {
@@ -42,8 +45,9 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
               flexShrink: 1,
             },
           ]}
+          className={props.className}
         >
-          <ThemedText style={{color: theme.accent, ...props.style}}>{children}</ThemedText>
+          <ThemedText style={{color: props.accented ? theme.accent : theme.text, ...props.style}}>{children}</ThemedText>
           {iconName && <IconSymbol name={iconName} color={theme.accent} size={iconSize} />}
         </Pressable>
   );

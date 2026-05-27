@@ -1,12 +1,13 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {Entry, EntryType, Meal, MealEntryUpsertDto, MealFoodComponent, PostEntryUpsertDto} from '../../openapi-client';
+import {Entry, EntryType, Meal, MealEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, MealAppEntry} from '../../types/models/AppEntry';
 import {DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {AppMeal} from './types/AppMeal';
 import {FoodService} from '../FoodService/FoodService';
+import {AppFoodComponent} from '../FoodService/types/AppFoodComponent';
 
 export class MealService implements IEntryService<EntryType.MEAL> {
   protected logger: Logger;
@@ -17,6 +18,50 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     this.db = db;
     this.foodService = foodService;
     this.logger = new Logger(MealService.name);
+  }
+
+  async create(meal: AppMeal, db: DrizzleDb): Promise<number> {
+    const newMealRow: typeof schema.meals.$inferInsert = {
+      type: meal.type,
+    };
+    const rows = await db.insert(schema.meals).values(newMealRow).returning({
+      id: schema.meals.id,
+    });
+    const row = rows[0];
+    if (!row) {
+      throw new Error('Meal not found');
+    }
+    const newMealFoodRows: typeof schema.mealFoodComponents.$inferInsert[] = meal.food.map((food) => ({
+      mealId: row.id,
+      foodId: food.food.id,
+      amount: food.amount,
+      unit: food.unit,
+    }));
+    if (newMealFoodRows.length === 0) {
+      return row.id;
+    }
+    await db.insert(schema.mealFoodComponents).values(newMealFoodRows);
+    return row.id;
+  }
+
+  async update(entry: MealAppEntry, db: DrizzleDb): Promise<void> {
+    await db.update(schema.meals).set({
+      type: entry.meal.type,
+    })
+    .where(
+      eq(schema.meals.id, entry.meal.id)
+    );
+    await db.delete(schema.mealFoodComponents).where(eq(schema.mealFoodComponents.mealId, entry.meal.id));
+    const newMealFoodRows: typeof schema.mealFoodComponents.$inferInsert[] = entry.meal.food.map((food) => ({
+      mealId: entry.meal.id,
+      foodId: food.food.id,
+      amount: food.amount,
+      unit: food.unit,
+    }));
+    if (newMealFoodRows.length === 0) {
+      return;
+    }
+    await db.insert(schema.mealFoodComponents).values(newMealFoodRows);
   }
 
   getObject(entry: Entry): Meal | null {
@@ -57,6 +102,10 @@ export class MealService implements IEntryService<EntryType.MEAL> {
       if (!row) {
         throw new Error('Meal not found');
       }
+      map.set(id, row.id);
+      if (item.food.length === 0) {
+        continue;
+      }
       const newMealFoodRows: typeof schema.mealFoodComponents.$inferInsert[] = item.food.map((food) => ({
         mealId: row.id,
         foodId: food.food.id,
@@ -64,7 +113,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
         unit: food.unit,
       }));
       await db.insert(schema.mealFoodComponents).values(newMealFoodRows);
-      map.set(id, row.id);
+
     }
     return map;
   }
@@ -87,7 +136,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
           if (!food) {
             throw new Error(`Food ${y.foodId} not found`);
           }
-          const component: MealFoodComponent = {
+          const component: AppFoodComponent = {
             food: food,
             amount: y.amount,
             unit: y.unit,

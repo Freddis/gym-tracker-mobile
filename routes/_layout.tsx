@@ -18,6 +18,7 @@ import {ScreenContainer} from '../components/blocks/ScreenContainer/ScreenContai
 import {ServiceProvider} from '../components/providers/ServiceProvider/ServiceProvider';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import '../utils/global.css';
+import {LanguageProvider} from '../components/providers/LanguageProvider/LanguageProvider';
 
 // console.log = () => null // uncomment for prod / preview
 export const queryClient = new QueryClient();
@@ -71,18 +72,20 @@ export default function RootLayout() {
 
   return (
   <SafeAreaProvider>
-    <SQLiteProvider databaseName="db.db">
-      <QueryClientProvider client={queryClient}>
-        <ServiceProvider>
-          <AuthProvider>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <Slot screenOptions={{}}/>
-              <StatusBar style="auto" />
-            </ThemeProvider>
-          </AuthProvider>
-        </ServiceProvider>
-      </QueryClientProvider>
-    </SQLiteProvider>
+    <LanguageProvider>
+      <SQLiteProvider databaseName="db.db">
+        <QueryClientProvider client={queryClient}>
+          <ServiceProvider>
+            <AuthProvider>
+              <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <Slot screenOptions={{}}/>
+                <StatusBar style="auto" />
+              </ThemeProvider>
+            </AuthProvider>
+          </ServiceProvider>
+        </QueryClientProvider>
+      </SQLiteProvider>
+    </LanguageProvider>
   </SafeAreaProvider>
   );
 }

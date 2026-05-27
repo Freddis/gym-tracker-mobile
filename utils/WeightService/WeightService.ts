@@ -14,6 +14,34 @@ export class WeightService implements IEntryService<EntryType.WEIGHT> {
     this.logger = new Logger(WeightService.name);
   }
 
+  async create(weight: AppWeight, db: DrizzleDb): Promise<number> {
+    const newWeightRow: typeof schema.weight.$inferInsert = {
+      externalId: weight.externalId,
+      userId: weight.userId,
+      weight: weight.weight,
+      units: weight.units,
+      createdAt: weight.createdAt,
+    };
+    const rows = await db.insert(schema.weight).values(newWeightRow).returning({
+      id: schema.weight.id,
+    });
+    const row = rows[0];
+    if (!row) {
+      throw new Error('Weight not found');
+    }
+    return row.id;
+  }
+
+  async update(entry: WeightAppEntry, db: DrizzleDb): Promise<void> {
+    await db.update(schema.weight).set({
+      ...entry.weight,
+      updatedAt: new Date(),
+    })
+    .where(
+      eq(schema.weight.id, entry.weight.id)
+    );
+  }
+
   async loadMap(ids: number[]): Promise<Map<number, AppWeight>> {
     const weights: AppWeight[] = await this.db.query.weight.findMany({
       where: (t, op) => op.inArray(t.id, ids),

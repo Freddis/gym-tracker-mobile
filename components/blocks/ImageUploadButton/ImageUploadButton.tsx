@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {useAppTheme} from '../../../hooks/useAppTheme';
 import {IconSymbol} from '../IconSymbol/IconSymbol';
 import {ThemedView} from '../ThemedView/ThemedView';
@@ -23,6 +23,7 @@ const getStyles = (theme: Theme) => StyleSheet.create({
 export const ImageUploadButton: FC<ImageUploadButtonProps> = (props) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const [src, setSrc] = useState<string | null>(props.value);
   const onPress = async () => {
     const permissionResult = await requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -37,24 +38,26 @@ export const ImageUploadButton: FC<ImageUploadButtonProps> = (props) => {
     });
     if (!result.canceled && result.assets[0]?.base64) {
       props.onChange?.(result.assets[0].base64);
+      setSrc(`data:image/jpeg;base64,${result.assets[0].base64}`);
     }
   };
   const onRemovePress = () => {
     if (!props.onRemove) {
       return;
     }
+    setSrc(null);
     props.onRemove();
   };
   return (
     <>
-      <Pressable onPress={onPress} style={[props.style]}>
+      <Pressable onPress={onPress} style={[props.style]} className={props.className}>
         <ThemedView style={styles.container}>
         {!props.value && (
           <View style={{padding: theme.paddingM, width: '50%', height: '50%', alignItems: 'center', justifyContent: 'center'}}>
             <IconSymbol name="photo.badge.plus" size={50} color={theme.surfaceText} />
           </View>
           )}
-        {props.value && <Image src={props.value} style={{height: '100%', width: '100%', resizeMode: 'cover'}} />}
+        {src && <Image src={src} style={{height: '100%', width: '100%', resizeMode: 'cover'}} />}
         {props.value && props.onRemove && <ThemedButton style={{position: 'absolute', bottom: 10}} onPress={onRemovePress}>Remove</ThemedButton>}
         </ThemedView>
       </Pressable>

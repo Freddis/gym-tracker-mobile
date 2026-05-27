@@ -13,6 +13,13 @@ export class CalorieGoalService implements IEntryService<EntryType.CALORIE_GOAL>
     this.logger = new Logger(CalorieGoalService.name);
   }
 
+  async create(calorieGoal: AppCalorieGoal, db: DrizzleDb): Promise<number> {
+    throw new Error('Not implemented');
+  }
+  update(entry: CalorieGoalAppEntry & {type: EntryType.CALORIE_GOAL;}, db: DrizzleDb): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
   getObject(entry: Entry): CalorieGoal | null {
     return entry.calorieGoal ?? null;
   }

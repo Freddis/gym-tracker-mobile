@@ -14,7 +14,7 @@ import {useAppTheme} from '../../../../hooks/useAppTheme';
 export const RegistrationScreen: FC = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage] = useResponseErrors();
+  const {getError} = useResponseErrors();
   const theme = useAppTheme();
   const performRegistration = () => {
     // TODO: implement registration logic
@@ -29,19 +29,19 @@ export const RegistrationScreen: FC = () => {
       <ThemedView style={styles.form}>
         <ThemedText style={styles.label}>Name</ThemedText>
         <ThemedTextInput onChangeText={setLogin} value={login} placeholder="John Snow" />
-        <ThemedInputError error={errorMessage('password')} />
+        <ThemedInputError error={getError('password')} />
 
         <ThemedText style={styles.label}>Email</ThemedText>
         <ThemedTextInput onChangeText={setLogin} value={login} placeholder="your@email.com" />
-        <ThemedInputError error={errorMessage('password')} />
+        <ThemedInputError error={getError('password')} />
 
         <ThemedText style={styles.label}>Password</ThemedText>
         <ThemedTextInput onChangeText={setPassword} value={password} placeholder="******" />
-        <ThemedInputError error={errorMessage('password')} />
+        <ThemedInputError error={getError('password')} />
 
         <ThemedText style={styles.label}>Password Confirmation</ThemedText>
         <ThemedTextInput onChangeText={setPassword} value={password} placeholder="******" />
-        <ThemedInputError error={errorMessage('password')} />
+        <ThemedInputError error={getError('password')} />
 
         <ThemedButton onPress={performRegistration} style={styles.submitButton}>
           Sign Up
