@@ -39,7 +39,7 @@ export const ThemedButtonList: FC<ThemedButtonListProps> = ({items, replace = fa
             className="items-center flex-row py-2"
           >
             <ThemedText className="grow">{item[0]}</ThemedText>
-            <IconSymbol name="chevron.right" color={theme.accent} size={16} />
+            <IconSymbol name="chevron.right" color={theme.text} size={16} />
           </Pressable>
         </Fragment>
       ))}
