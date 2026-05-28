@@ -44,6 +44,9 @@ import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 import {AppMeal} from '../MealService/types/AppMeal';
 
 export class EntryService implements ISyncedEntityService {
+  getEntriesByType() {
+    throw new Error('Method not implemented.');
+  }
   protected logger: Logger = new Logger(EntryService.name);
   protected entryServices: EntryServiceMap;
 
@@ -486,7 +489,7 @@ export class EntryService implements ISyncedEntityService {
     return wrappedResult;
   }
 
-  async getEntries(
+  async getEntries<T extends EntryType>(
     db: DrizzleDb,
     params?: {
       externalIds?: string[],
@@ -494,11 +497,11 @@ export class EntryService implements ISyncedEntityService {
       limit?: number,
       updatedAt?: Date,
       includeDeleted?: boolean,
-      types?: EntryType[],
+      types?: T[],
       date?: Date,
       page?: number,
     }
-  ): Promise<AppEntry[]> {
+  ): Promise<(AppEntry & {type: T})[]> {
     const page = params?.page ?? 1;
     const limit = params?.limit ?? 10;
     const offset = (page - 1) * limit;
@@ -577,7 +580,7 @@ export class EntryService implements ISyncedEntityService {
       return object;
 
     });
-    return result;
+    return result as (AppEntry & {type: T})[];
   }
 
   async getEntry<T extends EntryType>(id: string, type?: EntryType): Promise<AppEntry & {type: T}> {

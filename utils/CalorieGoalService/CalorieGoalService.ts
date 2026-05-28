@@ -13,6 +13,24 @@ export class CalorieGoalService implements IEntryService<EntryType.CALORIE_GOAL>
     this.logger = new Logger(CalorieGoalService.name);
   }
 
+  async getCalorieGoal(): Promise<CalorieGoal | null> {
+    const row = await this.db.query.calorieGoals.findFirst({
+      orderBy: (t, op) => op.desc(t.start),
+    });
+    if (!row) {
+      return null;
+    }
+    const goal: CalorieGoal = {
+      calories: row.calories,
+      protein: row.protein,
+      fat: row.fat,
+      carbs: row.carbs,
+      start: row.start,
+      end: row.end,
+    };
+    return goal;
+  }
+
   async create(calorieGoal: AppCalorieGoal, db: DrizzleDb): Promise<number> {
     throw new Error('Not implemented');
   }

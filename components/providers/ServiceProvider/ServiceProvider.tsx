@@ -16,6 +16,7 @@ import {WorkoutTypeService} from '../../../utils/WorkoutTypeService/WorkoutTypeS
 import {SyncService} from '../../../utils/SyncService/SyncService';
 import {CalorieGoalService} from '../../../utils/CalorieGoalService/CalorieGoalService';
 import {MealService} from '../../../utils/MealService/MealService';
+import {DashboardService} from '../../../utils/DashboardService/DashboardService';
 
 const apiService = new ApiService();
 const weightService = new WeightService(apiService, db);
@@ -42,7 +43,7 @@ const entryAtomService = new EntryAtomService(entryService, entryListService);
 const exerciseService = new ExerciseService();
 const workoutTypeService = new WorkoutTypeService(exerciseService);
 const syncService = new SyncService(workoutService, exerciseService, workoutTypeService, weightService, entryService, foodService);
-
+const dashboardService = new DashboardService(calorieGoalService, entryService, db);
 export const services = {
   entryAtomService: entryAtomService,
   exerciseService: exerciseService,
@@ -52,6 +53,8 @@ export const services = {
   entryService: entryService,
   syncService: syncService,
   workoutTypeService: workoutTypeService,
+  calorieGoalService: calorieGoalService,
+  dashboardService: dashboardService,
 };
 export const ServiceContext = createContext(services);
 

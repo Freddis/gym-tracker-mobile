@@ -13,6 +13,7 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'dumbbell.fill': 'sports-score',
+  'chart.bar.xaxis.ascending': 'bar-chart',
 } as Partial<
   Record<
   SFSymbol,
