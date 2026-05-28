@@ -1,4 +1,4 @@
-import {View, KeyboardAvoidingView, Platform, Modal} from 'react-native';
+import {View, KeyboardAvoidingView, Platform} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useRouter} from 'expo-router';
@@ -9,7 +9,6 @@ import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
-import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {useAtom} from 'jotai';
@@ -18,6 +17,10 @@ import {WeightAppEntry} from '../../../../types/models/AppEntry';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {dateToString} from '../../../../utils/dateToString';
+import {Modal} from 'react-native-reanimated-modal';
+import WheelPicker from '@quidone/react-native-wheel-picker';
+import {WheelPickerItemProps} from 'react-native-ui-lib';
+import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
 
 const kilograms: WheelPickerItemProps<string>[] = [];
 for (let i = 1; i <= 500; i++) {
@@ -47,14 +50,14 @@ export const WeightEditScreen: FC = () => {
   const router = useRouter();
   const weight = entry.weight;
   const initialKilos = weightValue.toString().split('.')[0];
-  const initalGrams = (weightValue.toString().split('.')[1] ?? '0').padEnd(2, '0');
+  const initalGrams = Number(weightValue.toString().split('.')[1] ?? '0').toString(); //dealing with leading zeros
   const setKilos = (value: string) => {
     const newValue = value + '.' + initalGrams;
     setWeight(Number(newValue));
     updateWeight(Number(newValue));
   };
   const setGrams = (value: string) => {
-    const newValue = initialKilos + '.' + value;
+    const newValue = initialKilos + '.' + value.padStart(2, '0');
     setWeight(Number(newValue));
     updateWeight(Number(newValue));
   };
@@ -89,7 +92,7 @@ export const WeightEditScreen: FC = () => {
   return (
     <ScreenContainer>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ThemedScrollView className="h-full p-m">
+        <ThemedScrollView className="h-full p-m" nestedScrollEnabled={false}>
           <ThemedView>
             <Stack.Screen options={{title: 'Weight Entry', headerShown: true}} />
             <ThemedBlock>
@@ -114,15 +117,27 @@ export const WeightEditScreen: FC = () => {
             </ThemedBlock>
           </ThemedView>
           <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
-          <Modal visible={weightModalVisible} transparent animationType="none">
-            <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
-              <View style={{backgroundColor: theme.surface}}>
+          <Modal visible={weightModalVisible} onBackdropPress={() => setWeightModalVisible(false)}
+           animation={{type: 'slide', duration: 300}}
+           backdrop={{enabled: true, color: '#000000', opacity: 0.5}}
+           style={{flex: 1, justifyContent: 'flex-end'}}>
+            <View style={{width: '100%'}}>
+              <View style={{paddingBottom: 60, backgroundColor: theme.surface, width: '100%'}}>
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                   <ThemedLink style={{fontSize: 16, margin: theme.marginS}} onPress={() => setWeightModalVisible(false)}>Done</ThemedLink>
                 </View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                  <WheelPicker items={kilograms} initialValue={initialKilos} onChange={(item) => setKilos(item)} style={{flexGrow: 1}} />
-                  <WheelPicker items={grams} initialValue={initalGrams} onChange={(item) => setGrams(item)} style={{flexGrow: 1}} />
+                <View style={{paddingHorizontal: 20, flexDirection: 'row', overflow: 'hidden', justifyContent: 'space-evenly', gap: 20}}>
+                  <WheelPicker data={kilograms}
+                  enableScrollByTapOnItem
+                  onValueChanging={() => WheelPickerFeedback.triggerSoundAndImpact()}
+                   value={initialKilos ?? '50'} onValueChanged={(item) => setKilos(item.item.value)} style={{flexGrow: 1}}
+                   itemTextStyle={{color: theme.text}}
+                   />
+                  <WheelPicker
+                  enableScrollByTapOnItem
+                  itemTextStyle={{color: theme.text}}
+                  onValueChanging={() => WheelPickerFeedback.triggerSoundAndImpact()}
+                  data={grams} value={initalGrams} onValueChanged={(item) => setGrams(item.item.value)} style={{flexGrow: 1}} />
                 </View>
               </View>
             </View>
@@ -132,14 +147,3 @@ export const WeightEditScreen: FC = () => {
     </ScreenContainer>
   );
 };
-
-// const getStyles = (theme: Theme) => StyleSheet.create({
-//   container: {
-//     flexDirection: 'column',
-//     padding: theme.paddingM,
-//     marginBottom: 80,
-//     gap: theme.marginL,
-//     flex: 1,
-//     flexGrow: 1,
-//   },
-// });

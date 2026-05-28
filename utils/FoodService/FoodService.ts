@@ -115,7 +115,7 @@ export class FoodService implements ISyncedEntityService {
       await this.upsertFood(trx, userId, [food], imageMap);
       return {
         ...food,
-        image: appImage,
+        image: image !== undefined ? appImage : food.image,
       };
     });
     return result;
