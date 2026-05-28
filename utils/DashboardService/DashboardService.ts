@@ -1,4 +1,5 @@
 import {CalorieGoal, ConsumedCalories, EntryType} from '../../openapi-client';
+import {WeightAppEntry} from '../../types/models/AppEntry';
 import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 import {DrizzleDb} from '../drizzle';
 import {EntryService} from '../EntryService/EntryService';
@@ -26,6 +27,16 @@ export class DashboardService {
     return {
       consumedCalories,
       goal: calorieGoal,
+    };
+  }
+
+  async getWeightGoal(): Promise<{history: WeightAppEntry[]} | null> {
+    const daysAgo = 30;
+    const day = 1000 * 60 * 60 * 24;
+    const from = new Date(Date.now() - daysAgo * day);
+    const weightHistory: WeightAppEntry[] = await this.entryService.getEntries(this.db, {types: [EntryType.WEIGHT], date: from});
+    return {
+      history: weightHistory,
     };
   }
 }
