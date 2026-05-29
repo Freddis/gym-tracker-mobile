@@ -122,7 +122,7 @@ export const CalorieGoalBlock:FC<CalorieGoalProps> = (props) => {
   const customLabel = (val: string, last?: boolean) => {
     return (
         <View className={cn('w-13', last ? '-ml-4' : '-ml-4')}>
-            <ThemedText style={{color: 'white', fontWeight: 'bold', fontSize: 10}}>{val}</ThemedText>
+            <ThemedText style={{color: 'white', fontWeight: 'bold', opacity: 0.5, fontSize: 10}}>{val}</ThemedText>
         </View>
     );
   };
@@ -192,43 +192,44 @@ export const CalorieGoalBlock:FC<CalorieGoalProps> = (props) => {
           stackData={stackData}
           height={height - xAxisHeight}
           width={width - yAxisWidth}
-
           spacing={1}
           initialSpacing={0}
           endSpacing={10}
-          barWidth={(width - yAxisWidth - (spacing * stackData.length - 1) - endSpacing) / stackData.length}
-
+          barWidth={(width - yAxisWidth - (spacing * (stackData.length - 1)) - endSpacing) / stackData.length}
           xAxisLabelsHeight={xAxisHeight}
-          yAxisColor={theme.text}
-          xAxisColor={theme.text}
+          yAxisColor="transparent"
+          xAxisColor="transparent"
           rulesColor={theme.text + '09'}
-
+          rulesType="solid"
           maxValue={chartMaxValue}
           stepValue={chartYStep}
-
           showReferenceLine1
           referenceLine1Position={goal.calories}
           referenceLine1Config={{
             color: customColors.calories,
+            type: 'dashed',
             thickness: 1,
             dashWidth: 6,
             dashGap: 4,
           }}
-
           yAxisTextStyle={{
             color: theme.text,
-            fontSize: 12,
+            fontSize: 10,
+            opacity: 0.5,
             fontWeight: '500',
+            textAlign: 'right',
           }}
-
           xAxisLabelTextStyle={{
             color: theme.text,
             fontSize: 12,
+            opacity: 0.5,
             fontWeight: '500',
           }}
         />
       </View>
-      <ThemedText>Deviation: {deviation.toFixed(0)} ({deviationPercentage}%)</ThemedText>
+      <View className="mt-s">
+        <ThemedText>Deviation: {deviation.toFixed(0)} ({deviationPercentage}%)</ThemedText>
+      </View>
     </View>
   </ThemedBlock>
   );

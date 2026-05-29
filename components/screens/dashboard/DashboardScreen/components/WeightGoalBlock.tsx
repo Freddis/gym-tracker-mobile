@@ -31,7 +31,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
   const customLabel = (val: string, last?: boolean) => {
     return (
         <View className={cn('w-13', last ? '-ml-4' : '-ml-4')}>
-            <ThemedText style={{color: 'white', fontWeight: 'bold', fontSize: 10}}>{val}</ThemedText>
+            <ThemedText style={{color: 'white', opacity: 0.5, fontWeight: 'bold', fontSize: 10}}>{val}</ThemedText>
         </View>
     );
   };
@@ -94,7 +94,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
     if (last) {
       result.dataPointLabelComponent = () => {
         return (
-            <View className="w-10 bg-black p-1 text-center">
+            <View className="w-10 bg-black p-1 text-center rounded-md">
             <ThemedText className="text-sm text-white">{val}</ThemedText>
             </View>
         );
@@ -118,7 +118,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
   for (const item of data) {
     item.label = undefined;
   }
-  const padPercentage = 0.05;
+  const padPercentage = 0.08;
   const pad = Math.ceil(data.length * padPercentage);
   for (let i = 0; i < pad; i++) {
     data.push({
@@ -181,18 +181,20 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
         color={lineColor}
         dataPointsColor={lineColor}
         textColor={theme.text}
-        yAxisColor={theme.text}
-        xAxisColor={theme.text}
+        yAxisColor="transparent"
+        xAxisColor="transparent"
         rulesColor={theme.text + '09'}
         rulesType="solid"
         yAxisTextStyle={{
           color: theme.text,
-          fontSize: 12,
+          fontSize: 10,
           fontWeight: '500',
+          opacity: 0.5,
         }}
         xAxisLabelTextStyle={{
           color: theme.text,
-          fontSize: 12,
+          opacity: 0.5,
+          fontSize: 10,
           fontWeight: '500',
         }}
         noOfSections={8}
