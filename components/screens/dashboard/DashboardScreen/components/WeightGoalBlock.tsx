@@ -6,7 +6,7 @@ import {CSSProperties, FC, Fragment, useState} from 'react';
 import {useAppTheme} from '../../../../../hooks/useAppTheme';
 import {WeightAppEntry} from '../../../../../types/models/AppEntry';
 import {cn} from '../../../../../cn';
-import {AppWeightGoal} from '../../../../../utils/DashboardService/types/AppWeightGoal';
+import {AppWeightGoalStats} from '../../../../../utils/DashboardService/types/AppWeightGoalStats';
 import {WeightHistoryPeriod} from '../../../../../utils/DashboardService/types/WeightHistoryPeriod';
 import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 function getFirstLastAndMiddleIndexes(length: number, x: number) {
@@ -35,7 +35,7 @@ export const customColors = {
 } as const satisfies Record<string, Exclude<CSSProperties['color'], undefined>>;
 
 interface WeightGoalBlockProps {
-  goal: AppWeightGoal;
+  goal: AppWeightGoalStats;
   onChangePeriod: (period: WeightHistoryPeriod) => void;
 }
 export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
@@ -134,7 +134,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
   for (const item of data) {
     item.label = undefined;
   }
-  const padPercentage = 0.03;
+  const padPercentage = 0.05;
   const pad = Math.ceil(data.length * padPercentage);
   for (let i = 0; i < pad; i++) {
     data.push({

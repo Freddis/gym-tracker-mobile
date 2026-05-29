@@ -1,10 +1,11 @@
-import {CalorieGoal, ConsumedCalories, EntryType} from '../../openapi-client';
+import {EntryType} from '../../openapi-client';
 import {WeightAppEntry} from '../../types/models/AppEntry';
 import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 import {DrizzleDb} from '../drizzle';
 import {EntryService} from '../EntryService/EntryService';
 import {FoodUtility} from '../FoodUtility/FoodUtility';
-import {AppWeightGoal} from './types/AppWeightGoal';
+import {AppCalorieGoalStats} from './types/AppCalorieGoalStats';
+import {AppWeightGoalStats} from './types/AppWeightGoalStats';
 import {WeightHistoryPeriod} from './types/WeightHistoryPeriod';
 
 
@@ -17,7 +18,7 @@ export class DashboardService {
   ) {
   }
 
-  async getCalorieGoal(): Promise<{consumedCalories: ConsumedCalories; goal: CalorieGoal;} | null> {
+  async getCalorieGoal(): Promise<AppCalorieGoalStats | null> {
     const calorieGoal = await this.calorieGoalService.getCalorieGoal();
     if (!calorieGoal) {
       return null;
@@ -26,13 +27,15 @@ export class DashboardService {
     today.setHours(0, 0, 0, 0);
     const meals = await this.entryService.getEntries(this.db, {types: [EntryType.MEAL], date: today});
     const consumedCalories = this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.meal.food));
-    return {
+    const result: AppCalorieGoalStats = {
       consumedCalories,
       goal: calorieGoal,
+      history: [],
     };
+    return result;
   }
 
-  async getWeightGoal(type: WeightHistoryPeriod = WeightHistoryPeriod.month): Promise<AppWeightGoal | null> {
+  async getWeightGoal(type: WeightHistoryPeriod = WeightHistoryPeriod.month): Promise<AppWeightGoalStats | null> {
     const daysMap: Record<WeightHistoryPeriod, number> = {
       [WeightHistoryPeriod.month]: 30,
       [WeightHistoryPeriod.halfYear]: 182,
@@ -41,11 +44,13 @@ export class DashboardService {
     const daysAgo = daysMap[type];
     const day = 1000 * 60 * 60 * 24;
     const from = new Date(Date.now() - daysAgo * day);
+    from.setHours(0, 0, 0, 0);
     const weightHistory: WeightAppEntry[] = await this.entryService.getEntries(this.db, {types: [EntryType.WEIGHT], date: from, limit: 10000});
-    return {
+    const result: AppWeightGoalStats = {
       history: weightHistory,
       size: daysAgo,
-      type,
+      type: type,
     };
+    return result;
   }
 }

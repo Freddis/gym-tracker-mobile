@@ -1,7 +1,7 @@
 import {WeightAppEntry} from '../../../types/models/AppEntry';
 import {WeightHistoryPeriod} from './WeightHistoryPeriod';
 
-export interface AppWeightGoal {
+export interface AppWeightGoalStats {
   history: WeightAppEntry[];
   size: number;
   type: WeightHistoryPeriod;

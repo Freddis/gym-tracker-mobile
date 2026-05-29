@@ -4,7 +4,7 @@ import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {PieChart} from 'react-native-gifted-charts';
 import {CSSProperties, FC, useState} from 'react';
 import {useAppTheme} from '../../../../../hooks/useAppTheme';
-import {CalorieGoal, ConsumedCalories} from '../../../../../openapi-client';
+import {AppCalorieGoalStats} from '../../../../../utils/DashboardService/types/AppCalorieGoalStats';
 
 export const customColors = {
   carbs: '#22c55e',
@@ -14,12 +14,11 @@ export const customColors = {
 } as const satisfies Record<string, Exclude<CSSProperties['color'], undefined>>;
 
 interface CalorieGoalProps {
-  consumedCalories: ConsumedCalories;
-  goal: CalorieGoal;
+  goal: AppCalorieGoalStats;
 }
 
 export const CalorieGoalBlock:FC<CalorieGoalProps> = (props) => {
-  const {consumedCalories, goal} = props;
+  const {consumedCalories, goal} = props.goal;
   const theme = useAppTheme();
   const mode = useColorScheme();
   const [radius, setRadius] = useState(25);
