@@ -38,12 +38,17 @@ export const EntryAddScreen = () => {
       pathname: '/app/entries/editWorkout',
     });
   };
-
+  const addWalk = () => {
+    router.replace({
+      pathname: '/app/entries/walk/createWalk',
+    });
+  };
   const items: [string, RoutePath | (() => void)][] = [
     ['Workout', addWorkout],
     ['Weight', addWeight],
     ['Post', '/app/entries/createPost'],
     ['Meal', '/app/entries/meal/createMeal'],
+    ['Walk', addWalk],
   ];
   return (
     <ScreenContainer>

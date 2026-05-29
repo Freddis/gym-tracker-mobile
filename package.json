@@ -32,6 +32,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "@futurejj/react-native-visibility-sensor": "^1.4.13",
+    "@gabriel-sisjr/react-native-background-location": "^0.17.0",
     "@hey-api/client-axios": "^0.7.0",
     "@kingstinct/react-native-healthkit": "^14.0.0",
     "@quidone/react-native-wheel-picker": "^1.7.0",
@@ -50,6 +51,7 @@
     "drizzle-orm": "^0.41.0",
     "expo": "~55.0.26",
     "expo-blur": "~55.0.14",
+    "expo-build-properties": "~55.0.14",
     "expo-constants": "~55.0.16",
     "expo-dev-client": "~55.0.35",
     "expo-font": "~55.0.8",
