@@ -1,5 +1,5 @@
 import {EntryType} from '../../openapi-client';
-import {WeightAppEntry} from '../../types/models/AppEntry';
+import {MealAppEntry, WeightAppEntry} from '../../types/models/AppEntry';
 import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 import {DrizzleDb} from '../drizzle';
 import {EntryService} from '../EntryService/EntryService';
@@ -23,14 +23,29 @@ export class DashboardService {
     if (!calorieGoal) {
       return null;
     }
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const meals = await this.entryService.getEntries(this.db, {types: [EntryType.MEAL], date: today});
-    const consumedCalories = this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.meal.food));
+    const historySize = 30;
+    const from = new Date(Date.now() - historySize * 24 * 60 * 60 * 1000);
+    from.setHours(0, 0, 0, 0);
+    const meals = await this.entryService.getEntries(this.db, {types: [EntryType.MEAL], date: from, limit: 10000});
+    const todayText = new Date().toDateString();
+    const todayMeals = meals.filter((x) => x.time.toDateString() === todayText).flatMap((x) => x.meal.food);
+    const consumedCalories = this.foodUtility.getNutritionFacts(todayMeals);
+    const map = new Map<string, MealAppEntry[]>();
+    for (const meal of meals) {
+      const date = meal.time.toDateString();
+      const rows = map.get(date) ?? [];
+      rows.push(meal);
+      map.set(date, rows);
+    }
+    const history = Array.from(map.entries()).map(([date, meals]) => ({
+      date: new Date(date),
+      value: this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.meal.food)),
+    }));
     const result: AppCalorieGoalStats = {
       consumedCalories,
       goal: calorieGoal,
-      history: [],
+      history: history,
+      size: historySize,
     };
     return result;
   }
