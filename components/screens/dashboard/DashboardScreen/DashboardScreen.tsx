@@ -1,6 +1,6 @@
 import {Stack} from 'expo-router';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {LoadingBlock} from '../../../blocks/LoadingBlock/LoadingBlock';
@@ -9,14 +9,16 @@ import {queryClient} from '../../../../routes/_layout';
 import {CalorieGoalBlock} from './components/CalorieGoalBlock';
 import {useFocusOnce} from '../../../../hooks/useFocusOnce';
 import {WeightGoalBlock} from './components/WeightGoalBlock';
+import {WeightHistoryPeriod} from '../../../../utils/DashboardService/types/WeightHistoryPeriod';
 
 export const DashboardScreen: FC = () => {
   const {dashboardService} = useServices();
+  const [period, setPeriod] = useState<WeightHistoryPeriod>(WeightHistoryPeriod.month);
   const response = useQuery({
-    queryKey: ['dashboard'],
+    queryKey: ['dashboard', period],
     queryFn: async () => {
       const calorieGoalPromise = dashboardService.getCalorieGoal();
-      const weightGoalPromise = dashboardService.getWeightGoal();
+      const weightGoalPromise = dashboardService.getWeightGoal(period);
       const [calorieGoal, weightGoal] = await Promise.all([calorieGoalPromise, weightGoalPromise]);
       return {
         calorieGoal,
@@ -45,7 +47,7 @@ export const DashboardScreen: FC = () => {
       <ScrollView className="h-full">
         <View className="h-full p-s gap-m">
         {calorieGoal && <CalorieGoalBlock consumedCalories={calorieGoal.consumedCalories} goal={calorieGoal.goal} />}
-        {weightGoal && <WeightGoalBlock history={weightGoal.history} />}
+        {weightGoal && <WeightGoalBlock goal={weightGoal} onChangePeriod={setPeriod} />}
         </View>
       </ScrollView>
     </ScreenContainer>

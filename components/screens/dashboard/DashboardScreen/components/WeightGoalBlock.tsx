@@ -2,10 +2,13 @@ import {LayoutChangeEvent, View} from 'react-native';
 import {ThemedBlock} from '../../../../blocks/ThemedBlock/ThemedBlock';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {LineChart, lineDataItem} from 'react-native-gifted-charts';
-import {CSSProperties, FC, useState} from 'react';
+import {CSSProperties, FC, Fragment, useState} from 'react';
 import {useAppTheme} from '../../../../../hooks/useAppTheme';
 import {WeightAppEntry} from '../../../../../types/models/AppEntry';
 import {cn} from '../../../../../cn';
+import {AppWeightGoal} from '../../../../../utils/DashboardService/types/AppWeightGoal';
+import {WeightHistoryPeriod} from '../../../../../utils/DashboardService/types/WeightHistoryPeriod';
+import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 function getFirstLastAndMiddleIndexes(length: number, x: number) {
   if (length <= 0) return [];
   if (length === 1) return [0];
@@ -32,17 +35,18 @@ export const customColors = {
 } as const satisfies Record<string, Exclude<CSSProperties['color'], undefined>>;
 
 interface WeightGoalBlockProps {
-  history: WeightAppEntry[];
+  goal: AppWeightGoal;
+  onChangePeriod: (period: WeightHistoryPeriod) => void;
 }
 export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
-  const {history} = props;
+  const {history, size, type} = props.goal;
   const theme = useAppTheme();
   const [width, setWidth] = useState(50);
   const [height, setHeight] = useState(100);
 
   const customLabel = (val: string, last?: boolean) => {
     return (
-        <View className={cn('w-10', last ? '-ml-4' : '-ml-4')}>
+        <View className={cn('w-13', last ? '-ml-4' : '-ml-4')}>
             <ThemedText style={{color: 'white', fontWeight: 'bold', fontSize: 10}}>{val}</ThemedText>
         </View>
     );
@@ -79,7 +83,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
       // Show label only once per day
       const day = currentDate.getDate().toString().padStart(2, '0');
       const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-      const label = `${day}/${month}`;
+      const label = type === WeightHistoryPeriod.year ? `${month}/${currentDate.getFullYear()}` : `${day}/${month}`;
       if (!currentWeight) {
         continue;
       }
@@ -114,8 +118,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
     }
     return result;
   };
-
-  const data = buildWeightChartData(history, 30);
+  const data = buildWeightChartData(history, size);
   const keyIndexes = getFirstLastAndMiddleIndexes(data.length, 3);
   for (const index of keyIndexes) {
     const entry = data[index];
@@ -131,7 +134,8 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
   for (const item of data) {
     item.label = undefined;
   }
-  const pad = 2;
+  const padPercentage = 0.03;
+  const pad = Math.ceil(data.length * padPercentage);
   for (let i = 0; i < pad; i++) {
     data.push({
       value: undefined,
@@ -152,11 +156,25 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
   const yAxisWidth = 30;
   const xAxisHeight = 20;
 
+  const labels: Record<WeightHistoryPeriod, string> = {
+    [WeightHistoryPeriod.month]: 'Month',
+    [WeightHistoryPeriod.halfYear]: '6 Months',
+    [WeightHistoryPeriod.year]: '5 Years',
+  };
   return (
     <ThemedBlock>
     <View className="gap-m">
       <View className="flex-row gap-s items-center justify-between">
-        <ThemedText>Weight Goal</ThemedText>
+        <ThemedText className="grow">Weight Goal</ThemedText>
+        <View className="flex-row gap-s">
+        {Object.values(WeightHistoryPeriod).map((period) => (
+          <Fragment key={period}>
+            <ThemedLink key={period} accented={period === type} onPress={() => props.onChangePeriod(period)}>
+              {labels[period]}
+            </ThemedLink>
+          </Fragment>
+        ))}
+        </View>
       </View>
       <View className="flex-row h-60 justify-between" onLayout={onLayout}>
         <LineChart
@@ -169,7 +187,7 @@ export const WeightGoalBlock:FC<WeightGoalBlockProps> = (props) => {
         yAxisOffset={yAxisOffset}
         maxValue={yAxisMaxOffset - yAxisOffset}
         thickness={3}
-        dataPointsRadius={4}
+        dataPointsRadius={type === WeightHistoryPeriod.month ? 4 : 0}
         data = {data}
         height={height - xAxisHeight}
         width={width - yAxisWidth}
