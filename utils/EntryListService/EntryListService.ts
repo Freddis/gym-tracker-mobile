@@ -22,6 +22,17 @@ export class EntryListService {
     return this.entryListSplit;
   }
 
+  addEntry(entry: AppEntry): PrimitiveAtom<AppEntry> {
+    const entries = this.store.get(this.entryListAtom);
+    this.store.set(this.entryListAtom, [entry, ...entries]);
+    const split = this.store.get(this.entryListSplit);
+    const result = split[0];
+    if (!result) {
+      throw new Error('Entry not found');
+    }
+    return result;
+  }
+
   updateAndReorder(entry: AppEntry): void {
     const entries = this.store.get(this.entryListAtom);
     const current = entries.find((e) => e.id === entry.id);

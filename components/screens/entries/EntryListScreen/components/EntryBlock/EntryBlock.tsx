@@ -51,7 +51,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     const entryAtom = entryLens(workout, props.entry);
     setWorkoutEntry(entryAtom);
     router.navigate({
-      pathname: './editWorkout',
+      pathname: '/app/entries/workout/editWorkout',
       params: {
         workoutId: workout.id,
       },
@@ -62,7 +62,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     setWeightEntry(entryAtom);
 
     router.navigate({
-      pathname: './editWeight',
+      pathname: '/app/entries/weight/editWeight',
       params: {
         entryId: entry.id,
       },
@@ -72,7 +72,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     const entryAtom = entryLens(entry, props.entry);
     setPostEntry(entryAtom);
     router.navigate({
-      pathname: './editPost',
+      pathname: '/app/entries/editPost',
       params: {
         entryId: entry.id,
       },

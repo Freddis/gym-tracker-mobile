@@ -4,38 +4,39 @@ import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollVie
 import {ThemedButtonList} from '../../../blocks/ThemedButtonList/ThemedButtonList';
 import {RoutePath} from '../../../../types/RoutePath';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
-import {atom, useSetAtom} from 'jotai';
+import {useSetAtom} from 'jotai';
 import {weightAtom} from '../WeightEditScreen/utils/weightAtom';
-import {useQueryClient} from '@tanstack/react-query';
 import {workoutAtom} from '../WorkoutScreen/utils/workoutAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {entryLens} from '../EntryListScreen/components/EntryBlock/EntryBlock';
 
 export const EntryAddScreen = () => {
   const setWeightEntry = useSetAtom(weightAtom);
   const setWorkoutEntry = useSetAtom(workoutAtom);
   const router = useRouter();
-  const queryClient = useQueryClient();
-  const {entryService} = useServices();
+  const {entryService, entryListService} = useServices();
   const auth = useAuth();
   const user = auth.user;
   if (!user) {
     throw new Error('No user');
   }
   const addWeight = async () => {
-    const entry = await entryService.addWeightEntry(user.id);
-    setWeightEntry(atom(entry));
-    queryClient.invalidateQueries({queryKey: ['entries']});
+    const weightEntry = await entryService.addWeightEntry(user.id);
+    const entryAtom = entryListService.addEntry(weightEntry);
+    const weightAtom = entryLens(weightEntry, entryAtom);
+    setWeightEntry(weightAtom);
     router.replace({
-      pathname: '/app/entries/editWeight',
+      pathname: '/app/entries/weight/editWeight',
     });
   };
   const addWorkout = async () => {
-    const entry = await entryService.addWorkoutEntry(user.id);
-    setWorkoutEntry(atom(entry));
-    queryClient.invalidateQueries({queryKey: ['entries']});
+    const workoutEntry = await entryService.addWorkoutEntry(user.id);
+    const entryAtom = entryListService.addEntry(workoutEntry);
+    const workoutAtom = entryLens(workoutEntry, entryAtom);
+    setWorkoutEntry(workoutAtom);
     router.replace({
-      pathname: '/app/entries/editWorkout',
+      pathname: '/app/entries/workout/editWorkout',
     });
   };
   const addWalk = () => {

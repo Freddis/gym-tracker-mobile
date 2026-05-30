@@ -20,6 +20,7 @@ export class EntryAtomService {
     await this.entryService.saveEntry(newEntry);
     this.entryListService.updateAndReorder(newEntry);
   }
+
   async deleteEntry(entry: AppEntry): Promise<void> {
     await this.entryService.deleteEntry(entry.id);
     this.entryListService.deleteEntry(entry);
