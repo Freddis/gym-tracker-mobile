@@ -6,11 +6,13 @@ import {AppEntry} from '../../types/models/AppEntry';
 export class EntryListService {
   private entryListAtom: PrimitiveAtom<AppEntry[]>;
   private entryListSplit: Atom<PrimitiveAtom<AppEntry>[]>;
+  private lastAddedEntryAtom: PrimitiveAtom<PrimitiveAtom<AppEntry>| null>;
   private store: Store;
 
   constructor(store: Store) {
     this.entryListAtom = atom<AppEntry[]>([]);
     this.entryListSplit = splitAtom(this.entryListAtom, (x) => x.id);
+    this.lastAddedEntryAtom = atom<PrimitiveAtom<AppEntry>| null>(null);
     this.store = store;
   }
 
@@ -21,6 +23,9 @@ export class EntryListService {
   getEntryAtoms(): Atom<PrimitiveAtom<AppEntry>[]> {
     return this.entryListSplit;
   }
+  getLastAddedEntryAtom(): PrimitiveAtom<PrimitiveAtom<AppEntry>| null> {
+    return this.lastAddedEntryAtom;
+  }
 
   addEntry(entry: AppEntry): PrimitiveAtom<AppEntry> {
     const entries = this.store.get(this.entryListAtom);
@@ -30,6 +35,7 @@ export class EntryListService {
     if (!result) {
       throw new Error('Entry not found');
     }
+    this.store.set(this.lastAddedEntryAtom, result ?? null);
     return result;
   }
 

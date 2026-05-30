@@ -150,9 +150,10 @@ export const WorkoutScreen: FC = () => {
   };
   const copyWorkout = async () => {
     const workoutEntry = await entryService.copyWorkout(workout);
-    setEntryAtom(atom(workoutEntry));
-    entryAtomService.reset();
+    const workoutAtom = entryAtomService.addEntry(workoutEntry);
+    setEntryAtom(workoutAtom);
   };
+
   const updateDate = async (date: Date) => {
     await entryAtomService.updateTime(entry, date);
     setEntry({...entry, time: date});

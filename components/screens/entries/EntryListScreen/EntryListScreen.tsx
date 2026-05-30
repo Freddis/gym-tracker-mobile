@@ -3,7 +3,7 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {Link, Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useDrizzle} from '@/utils/drizzle';
-import {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
@@ -21,7 +21,9 @@ export const EntryListScreen: FC = () => {
   // console.log('render list'); //debug
   const theme = useAppTheme();
   const {entryListService} = useServices();
+  const lastAddedEntryAtom = useAtomValue(entryListService.getLastAddedEntryAtom());
   const entryAtoms = useAtomValue(entryListService.getEntryAtoms());
+  const listRef = useRef<FlatList>(null);
   const {user} = useAuth();
   const {syncService, entryService} = useServices();
   const [refreshing, setRefreshing] = useState(false);
@@ -47,11 +49,17 @@ export const EntryListScreen: FC = () => {
     },
     initialPageParam: 1,
   });
-
   useEffect(() => {
-    console.log('set entries', query.data?.pages.flat());
     entryListService.setEntries(query.data?.pages.flat() ?? []);
   }, [entryListService, query.data, query.data?.pages]);
+  useEffect(() => {
+    if (lastAddedEntryAtom) {
+      listRef.current?.scrollToOffset({
+        offset: 0,
+        animated: false,
+      });
+    }
+  }, [lastAddedEntryAtom]);
 
   const onFilterChange: EntryFilterModalProps['onChange'] = (e) => {
     setTypes(e.types);
@@ -82,6 +90,7 @@ export const EntryListScreen: FC = () => {
     <ScreenContainer safeTop={true}>
       <Stack.Screen options={{headerShown: false}} />
       <FlatList
+        ref={listRef}
         removeClippedSubviews
         // maxToRenderPerBatch={3}
         // windowSize={5}
