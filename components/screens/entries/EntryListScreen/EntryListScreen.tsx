@@ -41,6 +41,7 @@ export const EntryListScreen: FC = () => {
         page: pageParam,
       });
     },
+    throwOnError: true,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.length > 0 ? pages.length + 1 : undefined;
     },
@@ -48,6 +49,7 @@ export const EntryListScreen: FC = () => {
   });
 
   useEffect(() => {
+    console.log('set entries', query.data?.pages.flat());
     entryListService.setEntries(query.data?.pages.flat() ?? []);
   }, [entryListService, query.data, query.data?.pages]);
 

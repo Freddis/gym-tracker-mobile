@@ -20,6 +20,8 @@ import {
 import {getItemAsync, setItemAsync} from 'expo-secure-store';
 import {coerce, object, string} from 'zod';
 import uuid from 'react-native-uuid';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {useUser} from '../../../providers/AuthProvider/useUser';
 
 const storageKey = 'lastTrip';
 const validator = object({
@@ -35,6 +37,8 @@ export const WalkCreateScreen = () => {
   const {permissionStatus, requestPermissions} = useLocationPermissions();
   const bgLocation = useBackgroundLocation();
   const {locations, lastLocation} = useLocationUpdates();
+  const {outdoorWalkService, entryListService} = useServices();
+  const user = useUser();
   useEffect(() => {
     const recoverSession = async () => {
       try {
@@ -88,7 +92,8 @@ export const WalkCreateScreen = () => {
   };
   const stopWalk = async () => {
     await bgLocation.stopTracking();
-    setFinished(new Date());
+    const stopDate = new Date();
+    setFinished(stopDate);
     const newPath: PathPoint[] = locations.map((location) => {
       const point: PathPoint = {
         latitude: parseFloat(location.latitude),
@@ -105,6 +110,8 @@ export const WalkCreateScreen = () => {
       return point;
     });
     setPath(newPath);
+    const outdoorWalk = await outdoorWalkService.createEntry(user, started ?? new Date(), stopDate, newPath);
+    entryListService.addEntry(outdoorWalk);
   };
   const data = usePathDataProcessing(path, started ?? new Date(), [path]);
 

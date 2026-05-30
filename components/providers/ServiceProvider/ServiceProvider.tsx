@@ -55,6 +55,8 @@ export const services = {
   workoutTypeService: workoutTypeService,
   calorieGoalService: calorieGoalService,
   dashboardService: dashboardService,
+  outdoorRunService: outdoorRunService,
+  outdoorWalkService: outdoorWalkService,
 };
 export const ServiceContext = createContext(services);
 

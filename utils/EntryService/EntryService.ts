@@ -44,9 +44,6 @@ import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 import {AppMeal} from '../MealService/types/AppMeal';
 
 export class EntryService implements ISyncedEntityService {
-  getEntriesByType() {
-    throw new Error('Method not implemented.');
-  }
   protected logger: Logger = new Logger(EntryService.name);
   protected entryServices: EntryServiceMap;
 
@@ -110,14 +107,14 @@ export class EntryService implements ISyncedEntityService {
       }
       progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
       processedItems += response.data.items.length;
-      await this.processPulledItem(db, response.data.items);
+      await this.processPulledItems(db, response.data.items);
       if (response.data.items.length < response.data.info.pageSize) {
         return true;
       }
     }
   }
 
-  protected async processPulledItem(db: DrizzleDb, items: Entry[]): Promise<void> {
+  protected async processPulledItems(db: DrizzleDb, items: Entry[]): Promise<void> {
     const firstItem = items[0];
     if (!firstItem) {
       return;

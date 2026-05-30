@@ -2,7 +2,7 @@ import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
-import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
+import {asyncDrizzle, conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {QuantitySampleTyped, WorkoutActivityType, WorkoutProxyTyped, WorkoutRouteLocation} from '@kingstinct/react-native-healthkit';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
@@ -10,9 +10,16 @@ import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {batch} from '../batch';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, OutdoorWalkAppEntry} from '../../types/models/AppEntry';
+import {AppPathDataPoint} from '../../types/models/AppPathDataPoint';
+import {transactionAsync} from '../runTransaction';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
+import {EntryCreateParams} from '../EntryRepositoryService/types/EntryCreateParams';
+import {PathUtility} from '../PathUtility/PathUtility';
 
 export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK> {
   protected logger: Logger;
+  protected entryRepositoryService = new EntryRepositoryService();
+  protected pathUtility = new PathUtility();
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorWalkService.name);
@@ -24,8 +31,9 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     throw new Error('Method not implemented.');
   }
 
-  async loadMap(ids: number[]): Promise<Map<number, AppOutdoorWalk>> {
-    const outdoorWalks: AppOutdoorWalk[] = await this.db.query.outdoorWalks.findMany({
+  async loadMap(ids: number[], db?: DrizzleDb): Promise<Map<number, AppOutdoorWalk>> {
+    const trx = db ?? this.db;
+    const outdoorWalks: AppOutdoorWalk[] = await trx.query.outdoorWalks.findMany({
       where: (t, op) => op.inArray(t.id, ids),
       with: {
         geoData: true,
@@ -52,6 +60,46 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
       },
     };
     return data;
+  }
+
+  async createEntry(user: AuthUser, start: Date, end: Date, path: AppPathDataPoint[], entryParams?: EntryCreateParams): Promise<OutdoorWalkAppEntry> {
+    const db = await asyncDrizzle();
+    return await transactionAsync(db, async (trx) => {
+      const duration = Math.round((end.getTime() - start.getTime()) / 1000);
+      const distance = this.pathUtility.totalDistance(path);
+      const pace = distance / duration;
+      const outdoorWalk: OutdoorWalk = {
+        duration: duration,
+        distance: distance,
+        pace: pace,
+        maxPace: 0,
+        calories: duration * 0.05,
+        start: start,
+        end: end,
+        id: 0,
+        userId: user.id,
+        cadence: null,
+        maxCadence: null,
+        heartRate: null,
+        maxHeartRate: null,
+        elevationGain: null,
+        heartRateData: null,
+        geoData: path,
+      };
+      const recordMap = await this.processPulledItems(trx, [['noMatter', outdoorWalk]]);
+      const map = await this.loadMap(Array.from(recordMap.values()), trx);
+      const values = Array.from(map.values());
+      const walk = values[0];
+      if (!walk) {
+        throw new Error('Outdoor walk not found');
+      }
+      const entry = await this.entryRepositoryService.create(trx, user, EntryType.OUTDOOR_WALK, 'outdoorWalkId', walk.id, {
+        ...entryParams,
+        time: start,
+      });
+      const result = this.construct(entry, walk);
+      return result;
+    });
   }
 
   async deleteById(id: number, db: DrizzleDb): Promise<void> {
