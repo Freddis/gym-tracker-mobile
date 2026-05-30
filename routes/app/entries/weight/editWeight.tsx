@@ -1,3 +1,3 @@
-import {WeightEditScreen} from '@/components/screens/entries/WeightEditScreen/WeightEditScreen';
+import {WeightEditScreen} from '@/components/screens/entries/WeightUpdateScreen/WeightUpdateScreen';
 
 export default WeightEditScreen;

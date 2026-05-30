@@ -9,7 +9,7 @@ import {PostBlock} from '../PostBlock/PostBlock';
 import {WeightBlock} from '../WeightBlock/WeightBlock';
 import {WorkoutBlock} from '../WorkoutBlock/WorkoutBlock';
 import {useRouter} from 'expo-router';
-import {weightAtom} from '../../../WeightEditScreen/utils/weightAtom';
+import {weightAtom} from '../../../WeightUpdateScreen/utils/weightAtom';
 import {postAtom} from '../../../PostEditScreen/utils/postAtom';
 import {workoutAtom} from '../../../WorkoutScreen/utils/workoutAtom';
 import {MealBlock} from '../MealBlock/MealBlock';

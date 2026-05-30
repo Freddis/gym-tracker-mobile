@@ -5,7 +5,7 @@ import {ThemedButtonList} from '../../../blocks/ThemedButtonList/ThemedButtonLis
 import {RoutePath} from '../../../../types/RoutePath';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useSetAtom} from 'jotai';
-import {weightAtom} from '../WeightEditScreen/utils/weightAtom';
+import {weightAtom} from '../WeightUpdateScreen/utils/weightAtom';
 import {workoutAtom} from '../WorkoutScreen/utils/workoutAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
