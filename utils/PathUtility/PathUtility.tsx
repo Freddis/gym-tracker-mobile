@@ -1,5 +1,4 @@
 import {PathPoint} from '../../openapi-client';
-import {AppPathDataPoint} from '../../types/models/AppPathDataPoint';
 
 export class PathUtility {
   totalDistance(points: PathPoint[]): number {
