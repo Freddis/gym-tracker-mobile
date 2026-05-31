@@ -39,7 +39,7 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
     <View className="flex-col items-start justify-start">
      <PostContent entry={props.entry} />
       {props.workout.geoData && props.workout.geoData.length > 0 && (
-        <View className="w-full h-80 overflow-hidden rounded-md mt-s">
+        <View className="w-full h-80 overflow-hidden rounded-md mt-s" onStartShouldSetResponder={() => true}>
           <AppWorkoutMap
             data={path}
           />
