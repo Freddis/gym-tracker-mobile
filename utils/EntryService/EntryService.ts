@@ -1,4 +1,3 @@
-import {useLiveQuery} from 'drizzle-orm/expo-sqlite';
 import {schema} from '../../db/schema';
 import {
   Entry,
@@ -33,7 +32,6 @@ import uuid from 'react-native-uuid';
 import {EntryAppObjectMap, EntryObjectMap, IEntryService} from '../../types/IEntryService';
 import {avoidLet} from '../avoidLet';
 import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
-import {LiveQueryQueryResult} from '../LiveQueryQueryResult';
 import {EntryObjectArrayMap} from './types/EntryObjectArrayMap';
 import {EntryServiceMap} from './types/EntryServiceMap';
 import {NumericEntryKeys} from './types/NumericEntryKeys';
@@ -377,113 +375,6 @@ export class EntryService implements ISyncedEntityService {
       // lastPushedAt: null,
       url: null,
     };
-  }
-
-  useWorkoutEntry(workoutId: number, args: unknown[]) {
-    const query = this.db.query.entries.findFirst({
-      where: (t, op) => op.eq(t.workoutId, workoutId),
-      with: {
-        image: true,
-        workout: {
-          with: {
-            exercises: {
-              with: {
-                exercise: true,
-                sets: true,
-              },
-            },
-            sets: {
-              with: {
-                exercise: true,
-              },
-            },
-          },
-        },
-      },
-    });
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const queryResult = useLiveQuery(query, args);
-
-    if (!queryResult.data) {
-      return {
-        data: undefined,
-        error: queryResult.error,
-        updatedAt: queryResult.updatedAt,
-      };
-    }
-
-    if (!queryResult.data.workout) {
-      throw new Error('Workout not found');
-    }
-    const wrappedResult: LiveQueryQueryResult<WorkoutAppEntry> = {
-      ...queryResult,
-      data: {
-        ...queryResult.data,
-        type: EntryType.WORKOUT,
-        workout: queryResult.data.workout,
-      },
-    };
-    return wrappedResult;
-  }
-
-  useWeightEntry(entryId: string, queryKey: (string | number | string[] | undefined)[]) {
-    const query = this.db.query.entries.findFirst({
-      where: (t, op) => op.eq(t.id, entryId),
-      with: {
-        image: true,
-        weight: true,
-      },
-    });
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const queryResult = useLiveQuery(query, queryKey);
-    if (!queryResult.data) {
-      return {
-        data: undefined,
-        error: queryResult.error,
-        updatedAt: queryResult.updatedAt,
-      };
-    }
-
-    if (!queryResult.data.weight) {
-      throw new Error('Workout not found');
-    }
-    const wrappedResult: LiveQueryQueryResult<WeightAppEntry> = {
-      ...queryResult,
-      data: {
-        ...queryResult.data,
-        type: EntryType.WEIGHT,
-        weight: queryResult.data.weight,
-      },
-    };
-    return wrappedResult;
-  }
-
-  usePostEntry(entryId: string, queryKey: (string | number | string[] | undefined)[]) {
-    const query = this.db.query.entries.findFirst({
-      where: (t, op) => op.eq(t.id, entryId),
-      with: {
-        image: true,
-        weight: true,
-      },
-    });
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const queryResult = useLiveQuery(query, queryKey);
-    if (!queryResult.data) {
-      return {
-        data: undefined,
-        error: queryResult.error,
-        updatedAt: queryResult.updatedAt,
-      };
-    }
-
-    const wrappedResult: LiveQueryQueryResult<PostAppEntry> = {
-      ...queryResult,
-      data: {
-        ...queryResult.data,
-        type: EntryType.POST,
-      },
-    };
-    return wrappedResult;
   }
 
   async getEntries<T extends EntryType>(
