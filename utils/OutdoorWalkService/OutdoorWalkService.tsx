@@ -2,7 +2,7 @@ import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
-import {asyncDrizzle, conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {QuantitySampleTyped, WorkoutActivityType, WorkoutProxyTyped, WorkoutRouteLocation} from '@kingstinct/react-native-healthkit';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
@@ -228,7 +228,6 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
 
     for (const [id, item] of items) {
       const input: typeof schema.outdoorWalks.$inferInsert = {
-        externalId: item.id,
         duration: item.duration,
         userId: item.userId,
         distance: item.distance,
@@ -238,10 +237,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
         start: item.start,
         end: item.end,
       };
-      const rows = await db.insert(schema.outdoorWalks).values(input).onConflictDoUpdate({
-        target: schema.outdoorWalks.externalId,
-        set: conflictUpdateSetAllColumns(schema.outdoorWalks),
-      }).returning();
+      const rows = await db.insert(schema.outdoorWalks).values(input).returning();
       const row = rows[0];
       if (!row) {
         throw new Error('Outdoor walk not found');

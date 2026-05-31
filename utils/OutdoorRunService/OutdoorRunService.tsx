@@ -2,7 +2,7 @@ import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, OutdoorRun, OutdoorRunEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
-import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
+import {DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {WorkoutProxyTyped, QuantitySampleTyped, WorkoutActivityType, WorkoutRouteLocation} from '@kingstinct/react-native-healthkit';
 import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
@@ -70,7 +70,6 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
     }
     for (const [id, item] of items) {
       const input: typeof schema.outdoorRuns.$inferInsert = {
-        externalId: item.id,
         duration: item.duration,
         userId: item.userId,
         distance: item.distance,
@@ -80,10 +79,7 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
         start: item.start,
         end: item.end,
       };
-      const rows = await db.insert(schema.outdoorRuns).values(input).onConflictDoUpdate({
-        target: schema.outdoorRuns.externalId,
-        set: conflictUpdateSetAllColumns(schema.outdoorRuns),
-      }).returning();
+      const rows = await db.insert(schema.outdoorRuns).values(input).returning();
       const row = rows[0];
       if (!row) {
         throw new Error('Outdoor run not found');
