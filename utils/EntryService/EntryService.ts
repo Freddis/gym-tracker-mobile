@@ -117,6 +117,25 @@ export class EntryService implements ISyncedEntityService {
     if (!firstItem) {
       return;
     }
+
+    // removing items that don't need to be updated
+    // this relevant because we pull by last pull date, while update on the server is set by last pushed date
+    // meaning we will receive that we pushed on the next pull
+    // todo: this is half measure - resolve this algorith once and for all
+    const existing = await db.query.entries.findMany({
+      where: (t, op) => op.inArray(t.id, items.map((x) => x.id)),
+    });
+    const existingMap = new Map<string, typeof schema.entries.$inferSelect>(existing.map((x) => [x.id, x]));
+    const itemsToUpdate = items.filter((x) => {
+      const existing = existingMap.get(x.id);
+      if (!existing) {
+        return true;
+      }
+      const lastUpdateStampOwn = Math.max(existing.createdAt.getTime(), existing.updatedAt?.getTime() ?? 0, existing.deletedAt?.getTime() ?? 0);
+      const lastUpdateStampServer = Math.max(x.createdAt.getTime(), x.updatedAt?.getTime() ?? 0, x.deletedAt?.getTime() ?? 0);
+      return lastUpdateStampOwn < lastUpdateStampServer;
+    });
+
     const images: [string, Image][] = [];
     /**
      * Typescript helper
@@ -138,7 +157,7 @@ export class EntryService implements ISyncedEntityService {
       [EntryType.MEAL]: [],
       [EntryType.CALORIE_GOAL]: [],
     };
-    for (const item of items) {
+    for (const item of itemsToUpdate) {
       if (item.image) {
         images.push([item.id, item.image]);
       }
@@ -179,7 +198,7 @@ export class EntryService implements ISyncedEntityService {
         map: await this.entryServices[EntryType.CALORIE_GOAL].service.processPulledItems(db, map[EntryType.CALORIE_GOAL]),
       },
     };
-    for (const x of items) {
+    for (const x of itemsToUpdate) {
       const imageId = imageMap.get(x.id);
       const entry: typeof schema.entries.$inferInsert = {
         id: x.id,
@@ -206,17 +225,10 @@ export class EntryService implements ISyncedEntityService {
         entry[objectMap.key] = objectId;
       }
 
-      // todo: this needs to be on top and we should pull all entries from db and create map, then only process good records
-      const existing = await db.query.entries.findFirst({
-        where: (t, op) => op.eq(t.id, x.id),
-      });
+      //todo: we can optimize it a little bit more by inserting and updating in bulk
+      const existing = existingMap.get(x.id);
       if (!existing) {
         await db.insert(schema.entries).values(entry);
-        continue;
-      }
-      const lastUpdateStampOwn = Math.max(existing.createdAt.getTime(), existing.updatedAt?.getTime() ?? 0, existing.deletedAt?.getTime() ?? 0);
-      const lastUpdateStampServer = Math.max(x.createdAt.getTime(), x.updatedAt?.getTime() ?? 0, x.deletedAt?.getTime() ?? 0);
-      if (lastUpdateStampOwn >= lastUpdateStampServer) {
         continue;
       }
       await db.update(schema.entries).set(entry).where(eq(schema.entries.id, existing.id));
