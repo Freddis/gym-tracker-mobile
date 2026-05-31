@@ -1,10 +1,21 @@
 import {FC} from 'react';
-import {ImageProps, Image} from 'react-native';
+import FastImage from '@d11/react-native-fast-image';
 import {cn} from '../../../cn';
+import {NwFastImage, NwFastImageProps} from '../NwFastImage/NwFastImage';
 
-export const ThemedImage: FC<ImageProps> = (props) => {
-  const {style, ...rest} = props;
+
+export const ThemedImage: FC<NwFastImageProps> = (props) => {
+  const {className, source, ...rest} = props;
   return (
-    <Image className={cn('h-20 w-20 rounded-md object-cover', props.className)} {...rest} />
+    <NwFastImage
+    className={cn('w-20 h-20 rounded-md object-cover', className)}
+    source={{
+      uri: typeof props.source === 'object' && 'uri' in props.source ? props.source.uri : undefined,
+      priority: FastImage.priority.high,
+      cache: FastImage.cacheControl.immutable,
+    }}
+    resizeMode={FastImage.resizeMode.cover}
+    {...rest}
+  />
   );
 };

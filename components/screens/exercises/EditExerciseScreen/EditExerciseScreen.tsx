@@ -1,4 +1,4 @@
-import {StyleSheet, Button, Image} from 'react-native';
+import {StyleSheet, Button} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useNavigation, useRouter} from 'expo-router';
@@ -9,6 +9,7 @@ import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {string} from 'zod';
 import uuid from 'react-native-uuid';
+import {ThemedImage} from '../../../blocks/ThemedImage/ThemedImage';
 
 export const EditExerciseScreen: FC = () => {
   const navigation = useNavigation();
@@ -90,7 +91,7 @@ export const EditExerciseScreen: FC = () => {
         <ThemedText>Description</ThemedText>
         <ThemedTextInput onChangeText={setDescription} value={description} style={styles.textArea} multiline />
         <ThemedText>Image</ThemedText>
-        <Image source={placeHolderImage} src={image ?? undefined} style={{width: 50, height: 50}}></Image>
+        <ThemedImage source={{uri: image ?? placeHolderImage}} />
         <Button onPress={addExercise} title="Add"/>
       </ThemedView>
     </ThemedView>

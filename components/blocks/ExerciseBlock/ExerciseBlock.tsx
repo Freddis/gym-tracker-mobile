@@ -35,7 +35,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
             <ThemedText style={{color: theme.accent}} numberOfLines={1}>{item.name}</ThemedText>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: theme.marginM}}>
-            <ThemedImage src={item.images[0]} />
+            <ThemedImage source={{uri: item.images[0]}} />
             <View>
               <ThemedText style={{fontWeight: 'bold', flexDirection: 'row', gap: 5}}>
                 <ThemedText>Equipment: </ThemedText>

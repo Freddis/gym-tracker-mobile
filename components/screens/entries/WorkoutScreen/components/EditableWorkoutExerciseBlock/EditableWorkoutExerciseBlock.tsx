@@ -124,7 +124,7 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
       </View>
       <Separator/>
       <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 10}}>
-        <ThemedImage src={exercise.images[0]}/>
+        <ThemedImage source={{uri: exercise.images[0]}}/>
         <View style={{marginLeft: 10, flexGrow: 1}}>
           {setsAtoms.map((set, i) => (
             <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.toString()} set={set} index={i} />

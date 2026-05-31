@@ -57,7 +57,7 @@ export const WorkoutBlock: FC<{entryAtom: PrimitiveAtom<WorkoutAppEntry>, onPres
                 <ThemedText className="font-semibold">{item.exercise.name}</ThemedText>
                 <View className="flex-row items-start mb-s">
                   <View className="mt-s grow">
-                    <ThemedImage src={item.exercise.images[0]} />
+                    <ThemedImage source={{uri: item.exercise.images[0]}} />
                   </View>
                   <View className="ml-m overflow-hidden">
                     {item.sets.filter((x) => x.finished).map((set, i) => (

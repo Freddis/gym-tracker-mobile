@@ -1,7 +1,8 @@
-import {View, type ViewProps, StyleSheet, Image} from 'react-native';
+import {View, type ViewProps, StyleSheet} from 'react-native';
 import {FC} from 'react';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
+import {ThemedImage} from '../ThemedImage/ThemedImage';
 
 const styled = (theme: Theme, image?: string, imageHeight?: number) => StyleSheet.create({
   container: {
@@ -25,8 +26,7 @@ export const ThemedBlock: FC<ViewProps & {image?: string, imageHeight?: number}>
   const styles = styled(theme, props.image, props.imageHeight);
   return <View style={[styles.container, style]} {...rest}>
     {props.image && (
-      // <AutoAspectImage source={{uri: props.image}} style={{width: '100%', height: 100}} />
-      <Image src={props.image} style={styles.image} />
+      <ThemedImage source={{uri: props.image}} className={'w-full'} style={{height: props.imageHeight}} />
     )}
     <View style={{padding: props.image ? theme.paddingM : 0}}>
     {children}
