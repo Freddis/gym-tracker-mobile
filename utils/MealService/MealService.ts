@@ -3,16 +3,20 @@ import {schema} from '../../db/schema';
 import {Entry, EntryType, Meal, MealEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, MealAppEntry} from '../../types/models/AppEntry';
-import {DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {AppMeal} from './types/AppMeal';
 import {FoodService} from '../FoodService/FoodService';
 import {AppFoodComponent} from '../FoodService/types/AppFoodComponent';
+import {transactionAsync} from '../runTransaction';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
+import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 
 export class MealService implements IEntryService<EntryType.MEAL> {
   protected logger: Logger;
   protected readonly foodService: FoodService;
   protected readonly db: DrizzleDb;
+  protected readonly entryRepositoryService = new EntryRepositoryService();
 
   constructor(db: DrizzleDb, foodService: FoodService) {
     this.db = db;
@@ -62,6 +66,25 @@ export class MealService implements IEntryService<EntryType.MEAL> {
       return;
     }
     await db.insert(schema.mealFoodComponents).values(newMealFoodRows);
+  }
+
+  async copy(entry: MealAppEntry, user: AuthUser) {
+    //todo: need to make image copy as well, but first need to finish the endpoint for that and switch to uuid.
+    const db = await asyncDrizzle();
+    const copy = await transactionAsync(db, async (trx) => {
+      const newMeal: AppMeal = {
+        ...entry.meal,
+      };
+      const mealId = await this.create(newMeal, trx);
+      const newEntry = await this.entryRepositoryService.create(trx, user, EntryType.MEAL, 'mealId', mealId, {
+        time: new Date(),
+      });
+      return this.construct(newEntry, {
+        ...newMeal,
+        id: mealId,
+      });
+    });
+    return copy;
   }
 
   getObject(entry: Entry): Meal | null {

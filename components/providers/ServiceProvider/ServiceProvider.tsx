@@ -38,8 +38,9 @@ const entryService = new EntryService(
   calorieGoalService,
   db,
 );
-const entryListService = new EntryListService(getDefaultStore());
-const entryAtomService = new EntryAtomService(entryService, entryListService);
+const store = getDefaultStore();
+const entryListService = new EntryListService(store);
+const entryAtomService = new EntryAtomService(entryService, entryListService, store);
 const exerciseService = new ExerciseService();
 const workoutTypeService = new WorkoutTypeService(exerciseService);
 const syncService = new SyncService(workoutService, exerciseService, workoutTypeService, weightService, entryService, foodService);
@@ -57,6 +58,7 @@ export const services = {
   dashboardService: dashboardService,
   outdoorRunService: outdoorRunService,
   outdoorWalkService: outdoorWalkService,
+  mealService: mealService,
 };
 export const ServiceContext = createContext(services);
 

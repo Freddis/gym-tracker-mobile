@@ -4,14 +4,17 @@ import {EntryListService} from '../EntryListService/EntryListService';
 import {queryClient} from '../../routes/_layout';
 import {entryLens} from '../../components/screens/entries/EntryListScreen/components/EntryBlock/EntryBlock';
 import {PrimitiveAtom} from 'jotai';
+import {Store} from 'jotai/vanilla/store';
 
 export class EntryAtomService {
-  private entryService: EntryService;
+  protected entryService: EntryService;
   protected entryListService: EntryListService;
+  protected store: Store;
 
-  constructor(entryService: EntryService, entryListService: EntryListService) {
+  constructor(entryService: EntryService, entryListService: EntryListService, store: Store) {
     this.entryService = entryService;
     this.entryListService = entryListService;
+    this.store = store;
   }
 
   getImageSource(entry: AppEntry): string | null {
@@ -19,6 +22,12 @@ export class EntryAtomService {
       return `data:image/jpeg;base64,${entry.image.image}`;
     }
     return entry.image?.url ?? null;
+  }
+
+  async updateEntryAtom<T extends AppEntry>(entryAtom: PrimitiveAtom<T>, result: T, image?: string | null) {
+    const updated = await this.entryService.saveEntry(result, image);
+    this.store.set(entryAtom, updated);
+    this.entryListService.updateAndReorder(result);
   }
 
   async updateImage(entry: AppEntry, image: string | null): Promise<void> {

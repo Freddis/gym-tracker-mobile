@@ -28,6 +28,7 @@ interface MealUpdateFormProps {
   entry: MealAppEntry;
   onChange: (entry: MealAppEntry, image?: string | null) => void;
   onDelete?: () => void;
+  onCopy?: () => void;
 }
 const mealTypes: WheelPickerItemProps<MealType>[] = Object.values(MealType).map((type) => ({label: type, value: type}));
 export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
@@ -71,13 +72,6 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFood]);
 
-  const deleteEntry = async () => {
-    // await entryAtomService.deleteEntry(entry);
-    if (!props.onDelete) {
-      return;
-    }
-    props.onDelete();
-  };
   const updateMealType = (type: MealType) => {
     setMealType(type);
     const updatedEntry: MealAppEntry = {
@@ -168,12 +162,13 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
               <ThemedText>Synced</ThemedText>
               <EntrySyncButton entry={entry} onUpdate={onSync} />
             </View>
-            {props.onDelete && (
+            {(props.onDelete || props.onCopy) && (
               <>
                 <AppSeparator />
-                <View className="flex-row justify-center">
-                  <ThemedLink accented onPress={deleteEntry}>Delete</ThemedLink>
-                </View>
+                <View className="flex-row justify-center gap-30">
+                    {props.onDelete && <ThemedLink accented onPress={props.onDelete}>Delete</ThemedLink>}
+                    {props.onCopy && <ThemedLink onPress={props.onCopy}>Copy</ThemedLink>}
+                  </View>
               </>
             )}
           </View>
