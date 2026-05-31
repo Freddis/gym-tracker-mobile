@@ -4,12 +4,11 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {PostAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
-import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
 import {PrimitiveAtom, useAtom} from 'jotai';
+import {PostContent} from '../PostContent/PostContent';
 
 export const PostBlock: FC<{entryAtom: PrimitiveAtom<PostAppEntry>, onPress?: (x: PostAppEntry)=> void}> = (props) => {
   const [entry, setEntry] = useAtom(props.entryAtom);
-  const image = entry.image;
   const onPress = () => {
     if (props.onPress) {
       props.onPress(entry);
@@ -19,7 +18,6 @@ export const PostBlock: FC<{entryAtom: PrimitiveAtom<PostAppEntry>, onPress?: (x
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
   const date = entry.time;
-  const imageSrc = image?.image ? `data:image/jpeg;base64,${image.image}` : undefined;
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock>
@@ -38,13 +36,7 @@ export const PostBlock: FC<{entryAtom: PrimitiveAtom<PostAppEntry>, onPress?: (x
           </View>
         </View>
         <View className="flex-col items-start justify-start">
-          {entry.title && (
-            <ThemedText className="font-semibold">
-              {entry.title}
-            </ThemedText>
-          )}
-          {entry.note && <ThemedText>{entry.note}</ThemedText>}
-          {entry.image && <ThemedImage source={{uri: image?.url ?? imageSrc}} className="w-full h-80 rounded-md mt-s"/>}
+          <PostContent entry={entry} />
         </View>
       </ThemedBlock>
     </Pressable>

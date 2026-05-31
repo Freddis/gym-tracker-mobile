@@ -50,5 +50,23 @@ export const asyncDrizzle = async () => {
   });
   return db;
 };
-
 export type AsyncDrizzleDb = Awaited<ReturnType<typeof asyncDrizzle>>;
+
+// singleton implementaton
+// const connectAsync = async () => {
+//   const expo = await openDatabaseAsync('db.db', {});
+//   const db = drizzle(expo, {
+//     schema: {...schema, ...relations},
+//     logger: createLogger(),
+//   });
+//   return db;
+// };
+// export type AsyncDrizzleDb = Awaited<ReturnType<typeof connectAsync>>;
+// let dbPromise: Promise<AsyncDrizzleDb> | null = null;
+// export const asyncDrizzle = async (): Promise<AsyncDrizzleDb> => {
+//   if (dbPromise) {
+//     return dbPromise;
+//   }
+//   dbPromise = connectAsync();
+//   return dbPromise;
+// };

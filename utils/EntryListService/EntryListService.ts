@@ -49,6 +49,15 @@ export class EntryListService {
     }
   }
 
+  update(entry: AppEntry) {
+    const entries = this.store.get(this.entryListAtom);
+    const current = entries.find((e) => e.id === entry.id);
+    if (current) {
+      const newlist = entries.map((e) => e.id === entry.id ? entry : e);
+      this.store.set(this.entryListAtom, newlist);
+    }
+  }
+
   deleteEntry(entry: AppEntry) {
     const entries = this.store.get(this.entryListAtom);
     const newlist = entries.filter((e) => e.id !== entry.id);

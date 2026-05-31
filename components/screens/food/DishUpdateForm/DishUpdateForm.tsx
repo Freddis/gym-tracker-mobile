@@ -12,7 +12,6 @@ import {ThemedBlock} from '../../../blocks/ThemedBlock/ThemedBlock';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedText} from '../../../blocks/ThemedText/ThemedText';
-import {FoodComponentBlock} from '../../entries/meal/MealUpdateScreen/FoodComponentBlock';
 import {wrap, Wrapped} from '../../entries/meal/MealUpdateScreen/wrap';
 import {FoodUpdateFormProps} from '../FoodUpdateForm/types/FoodUpdateFormProps';
 import {useRouter} from 'expo-router';
@@ -21,6 +20,7 @@ import {useAtom} from 'jotai';
 import {FoodAmountUnit} from '../../../../openapi-client';
 import {AppFood} from '../../../../utils/FoodService/types/AppFood';
 import {ThemedTextInput} from '../../../blocks/ThemedInput/ThemedInput';
+import {FoodComponentBlock} from '../../entries/meal/MealUpdateForm/components/FoodComponentBlock';
 
 export const DishUpdateForm: FC<FoodUpdateFormProps> = (props) => {
   const foodUtility = new FoodUtility();

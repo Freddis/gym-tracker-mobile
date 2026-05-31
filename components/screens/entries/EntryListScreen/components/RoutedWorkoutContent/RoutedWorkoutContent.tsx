@@ -4,13 +4,13 @@ import {AppEntry} from '../../../../../../types/models/AppEntry';
 import {durationToTimeString} from '../../../../../../utils/durationToTimeString';
 import {paceToString} from '../../../../../../utils/paceToString';
 import {AppWorkoutMap} from '../../../../../blocks/AppWorkoutMap/AppWorkoutMap';
-import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
 import {FC} from 'react';
 import {getTimeString} from '../../../../../../utils/getTimeString';
 import {usePathDataProcessing} from '../../../../../../utils/usePathDataProcessing';
 import {speedToPace} from '../../../../../../utils/speedToPace';
+import {PostContent} from '../PostContent/PostContent';
 
 export interface RoutedWorkoutContentProps {
   entry: AppEntry;
@@ -37,15 +37,7 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
     </View>
     </View>
     <View className="flex-col items-start justify-start">
-      {props.entry.title && (
-        <ThemedText className="font-semibold">
-          {props.entry.title}
-        </ThemedText>
-      )}
-      {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
-      {props.entry.image && (
-        <ThemedImage source={{uri: props.entry.image?.url ?? undefined}} className="w-full h-80 mt-s"/>
-      )}
+     <PostContent entry={props.entry} />
       {props.workout.geoData && props.workout.geoData.length > 0 && (
         <View className="w-full h-80 overflow-hidden rounded-md mt-s">
           <AppWorkoutMap

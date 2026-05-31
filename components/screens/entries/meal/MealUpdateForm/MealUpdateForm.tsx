@@ -18,7 +18,7 @@ import {ThemedScrollView} from '../../../../blocks/ThemedScrollView/ThemedScroll
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {selectedFoodAtom} from '../../../food/FoodSelectScreen/selectedFoodAtom';
 import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
-import {FoodComponentBlock} from '../MealUpdateScreen/FoodComponentBlock';
+import {FoodComponentBlock} from './components/FoodComponentBlock';
 import {wrap, Wrapped} from '../MealUpdateScreen/wrap';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
 import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploadButton';

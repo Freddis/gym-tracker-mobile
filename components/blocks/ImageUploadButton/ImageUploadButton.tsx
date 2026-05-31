@@ -8,15 +8,14 @@ import {
   Pressable,
   View,
   Alert,
-  Image,
 } from 'react-native';
-import {ThemedButton} from '../ThemedButton/ThemedButton';
 import {
   requestCameraPermissionsAsync,
   requestMediaLibraryPermissionsAsync,
 } from 'expo-image-picker';
 import {ImageUploadButtonProps} from './types/ImageUploadButtonProps';
 import {openPicker, openCamera, Options} from 'react-native-image-crop-picker';
+import {ThemedImage} from '../ThemedImage/ThemedImage';
 
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
@@ -27,7 +26,6 @@ const getStyles = (theme: Theme) =>
       alignSelf: 'flex-start',
       width: '100%',
       height: '100%',
-      overflow: 'hidden',
     },
   });
 
@@ -156,22 +154,23 @@ export const ImageUploadButton: FC<ImageUploadButtonProps> = (props) => {
           )}
 
           {src && (
-            <Image
+            <ThemedImage
               source={{uri: src}}
               style={{
                 height: '100%',
                 width: '100%',
-                resizeMode: 'cover',
+                // resizeMode: 'cover',
+                borderRadius: theme.borderRadiusS,
               }}
             />
           )}
 
           {src && props.onRemove && (
-            <ThemedButton
-              style={{position: 'absolute', bottom: 10}}
-              onPress={onRemovePress}>
-              Remove
-            </ThemedButton>
+            <Pressable onPress={onRemovePress} className="absolute -top-2 -right-2">
+              <View style={{backgroundColor: theme.accent, padding: 4, borderRadius: 1000}}>
+                <IconSymbol name="xmark" size={15} color={'white'} />
+              </View>
+            </Pressable>
           )}
         </ThemedView>
       </Pressable>

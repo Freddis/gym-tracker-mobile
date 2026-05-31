@@ -5,13 +5,13 @@ import {Pressable, View} from 'react-native';
 import {ThemedBlock} from '../../../../../blocks/ThemedBlock/ThemedBlock';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
 import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
-import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
 import {MealEntryBlockFoodComponent} from './components/MealEntryBlockFoodComponent';
 import {FoodUtility} from '../../../../../../utils/FoodUtility/FoodUtility';
 import {AppSeparator} from '../../../../../blocks/AppSeparator/AppSeparator';
 import {useRouter} from 'expo-router';
 import {mealAtom} from '../../../meal/MealUpdateScreen/mealAtom';
 import {wrap} from '../../../meal/MealUpdateScreen/wrap';
+import {PostContent} from '../PostContent/PostContent';
 
 export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) => {
   const [entry, setEntry] = useAtom(props.entryAtom);
@@ -34,8 +34,6 @@ export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) =
     });
   };
   const food = entry.meal.food.map(wrap);
-  const image = entry.image;
-  const imageSrc = image?.image ? `data:image/jpeg;base64,${image.image}` : undefined;
   return (
     <Pressable onPress={onPress}>
     <ThemedBlock>
@@ -57,27 +55,19 @@ export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) =
         </View>
       </View>
       <View>
-        {entry.title && (
-          <ThemedText className="font-semibold">
-            {entry.title}
-          </ThemedText>
-        )}
-        {entry.note && <ThemedText>{entry.note}</ThemedText>}
-        {entry.image && (
-          <ThemedImage source={{uri: imageSrc ?? image?.url ?? undefined}} className="w-full h-80 mt-s rounded-md"/>
-        )}
-      <View className="mt-s gap-s">
-        {food.map((food) => (
-          <MealEntryBlockFoodComponent key={food.key} item={food.item} own={false} />
-        ))}
-      <AppSeparator noMargin/>
-        <View className="flex flex-row gap-s items-start">
-          <ThemedText>Calories: {totalCalories.toFixed(0)}</ThemedText>
-          <ThemedText>Protein: {totalProtein.toFixed(1)}</ThemedText>
-          <ThemedText>Fat: {totalFat.toFixed(1)}</ThemedText>
-          <ThemedText>Carbs: {totalCarbs.toFixed(1)}</ThemedText>
+        <PostContent entry={entry} />
+        <View className="mt-s gap-s">
+          {food.map((food) => (
+            <MealEntryBlockFoodComponent key={food.key} item={food.item} own={false} />
+          ))}
+        <AppSeparator noMargin/>
+          <View className="flex flex-row gap-s items-start">
+            <ThemedText>Calories: {totalCalories.toFixed(0)}</ThemedText>
+            <ThemedText>Protein: {totalProtein.toFixed(1)}</ThemedText>
+            <ThemedText>Fat: {totalFat.toFixed(1)}</ThemedText>
+            <ThemedText>Carbs: {totalCarbs.toFixed(1)}</ThemedText>
+          </View>
         </View>
-      </View>
       </View>
     </ThemedBlock>
   </Pressable>

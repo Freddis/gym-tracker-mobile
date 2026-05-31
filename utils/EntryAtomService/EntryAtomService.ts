@@ -14,6 +14,27 @@ export class EntryAtomService {
     this.entryListService = entryListService;
   }
 
+  getImageSource(entry: AppEntry): string | null {
+    if (entry.image?.image) {
+      return `data:image/jpeg;base64,${entry.image.image}`;
+    }
+    return entry.image?.url ?? null;
+  }
+
+  async updateImage(entry: AppEntry, image: string | null): Promise<void> {
+    const newEntry = await this.entryService.saveEntry(entry, image);
+    this.entryListService.update(newEntry);
+  }
+
+  async updateNote(entry: AppEntry, note: string): Promise<void> {
+    const updatedEntry: AppEntry = {
+      ...entry,
+      note: note.trim() === '' ? null : note.trim(),
+    };
+    const newEntry = await this.entryService.saveEntry(updatedEntry);
+    this.entryListService.update(newEntry);
+  }
+
   addEntry<T extends AppEntry>(entry: T): PrimitiveAtom<T> {
     const atom = this.entryListService.addEntry(entry);
     const entryAtom = entryLens(entry, atom);

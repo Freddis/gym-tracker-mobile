@@ -1,20 +1,21 @@
 import {FC, useState} from 'react';
-import {FoodAmountUnit} from '../../../../../openapi-client';
-import {FoodUtility} from '../../../../../utils/FoodUtility/FoodUtility';
-import {floorToMax3Decimals} from '../../../../../utils/floorToMax3Decimals';
-import {avoidLet} from '../../../../../utils/avoidLet';
-import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
-import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
-import {cn} from '../../../../../cn';
-import {ThemedTextInput} from '../../../../blocks/ThemedInput/ThemedInput';
 import {View} from 'react-native';
-import {useResponseErrors} from '../../../../../hooks/useResponseErrors';
-import {Wrapped} from './wrap';
-import {ThemedImage} from '../../../../blocks/ThemedImage/ThemedImage';
-import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
-import {useImagePlaceHolder} from '../../../../../utils/useImagePlaceHolder';
-import {FoodMacros} from '../../../../../utils/FoodUtility/types/FoodMacros';
-import {AppFoodComponent} from '../../../../../utils/FoodService/types/AppFoodComponent';
+import {cn} from '../../../../../../cn';
+import {useResponseErrors} from '../../../../../../hooks/useResponseErrors';
+import {FoodAmountUnit} from '../../../../../../openapi-client';
+import {avoidLet} from '../../../../../../utils/avoidLet';
+import {floorToMax3Decimals} from '../../../../../../utils/floorToMax3Decimals';
+import {AppFoodComponent} from '../../../../../../utils/FoodService/types/AppFoodComponent';
+import {FoodUtility} from '../../../../../../utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../utils/FoodUtility/types/FoodMacros';
+import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppPartialTranslation';
+import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
+import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
+import {ThemedTextInput} from '../../../../../blocks/ThemedInput/ThemedInput';
+import {ThemedLink} from '../../../../../blocks/ThemedLink/ThemedLink';
+import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
+import {useServices} from '../../../../../providers/ServiceProvider/ServiceProvider';
+import {Wrapped} from '../../MealUpdateScreen/wrap';
 
 interface FoodComponentBlockProps {
   item: Wrapped<AppFoodComponent>;
@@ -30,6 +31,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
   const initialAmount = props.item.item.amount ?? defaultAmount;
   const servingSize = food.servingSize ?? 100;
   const initialServings = food.isMeal ? props.item.item.amount : (initialAmount / servingSize);
+  const {imageService} = useServices();
   const placeholder = useImagePlaceHolder();
   const [amount, setAmount] = useState(initialAmount.toFixed(0));
   const [servings, setServings] = useState(floorToMax3Decimals(initialServings).toString());
@@ -106,7 +108,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
     className="flex h-auto flex-row items-start p-2 rounded-md cursor-pointer gap-5 bg-cavity/50 overflow-hidden"
   >
     <View className="w-20 h-20 self-stretch">
-      <ThemedImage source={{uri: item.item.food.image?.url ?? placeholder}} className="w-full h-full  object-cover rounded-md" />
+      <ThemedImage source={{uri: imageService.getImageUrl(item.item.food.image) ?? placeholder}} className="w-full h-full  object-cover rounded-md" />
     </View>
     <View className="basis-0 grow gap-s overflow-hidde">
       <View className="flex flex-row gap-S items-center justify-between">

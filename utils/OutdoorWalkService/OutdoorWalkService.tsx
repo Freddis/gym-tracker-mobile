@@ -27,8 +27,9 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
   async create(outdoorWalk: AppOutdoorWalk, db: DrizzleDb): Promise<number> {
     throw new Error('Not implemented');
   }
-  update(entry: OutdoorWalkAppEntry & {type: EntryType.OUTDOOR_WALK;}, db: DrizzleDb): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async update(entry: OutdoorWalkAppEntry, trx: DrizzleDb): Promise<void> {
+
   }
 
   async loadMap(ids: number[], db?: DrizzleDb): Promise<Map<number, AppOutdoorWalk>> {
