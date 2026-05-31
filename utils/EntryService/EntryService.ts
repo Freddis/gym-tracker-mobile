@@ -689,7 +689,11 @@ export class EntryService implements ISyncedEntityService {
     workout: WorkoutProxyTyped,
     hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[]
   ): Promise<void> {
-    const existing = await this.getEntryByExternalId(workout.uuid);
+    const existing: AppEntry | null = await this.getEntryByExternalId(workout.uuid);
+    const skipOnexisting = true;
+    if (existing && skipOnexisting) {
+      return;
+    }
     const db = await asyncDrizzle();
     await transactionAsync(db, async (trx) => {
       this.logger.info('Getting existing entry by external id', {externalId: workout.uuid});
