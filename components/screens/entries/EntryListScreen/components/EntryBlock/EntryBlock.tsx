@@ -97,7 +97,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     case EntryType.OUTDOOR_RUN:
       return <OutdoorRunBlock onPress={openDefaultEntry} entryAtom={entryLens(entry, props.entry)} />;
     case EntryType.OUTDOOR_WALK:
-      return <OutdoorWalkBlock onPress={openDefaultEntry} entryAtom={entryLens(entry, props.entry)} />;
+      return <OutdoorWalkBlock entryAtom={entryLens(entry, props.entry)} />;
     case EntryType.MEAL:
       return <MealBlock entryAtom={entryLens(entry, props.entry)} />;
     default:

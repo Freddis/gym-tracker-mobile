@@ -4,18 +4,22 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {OutdoorWalkAppEntry} from '../../../../../../types/models/AppEntry';
 import {RoutedWorkoutContent} from '../RoutedWorkoutContent/RoutedWorkoutContent';
-import {PrimitiveAtom, useAtom} from 'jotai';
+import {PrimitiveAtom, useAtom, useSetAtom} from 'jotai';
+import {useRouter} from 'expo-router';
+import {outdoorWalkAtom} from '../../../walk/OutdoorWalkUpdateScreen/utils/outdoorWalkAtom';
 
-export const OutdoorWalkBlock: FC<{entryAtom: PrimitiveAtom<OutdoorWalkAppEntry>, onPress?: (x: OutdoorWalkAppEntry)=> void}> = (props) => {
+export const OutdoorWalkBlock: FC<{entryAtom: PrimitiveAtom<OutdoorWalkAppEntry>}> = (props) => {
   const [entry, setEntry] = useAtom(props.entryAtom);
+  const setOutdoorWalkAtom = useSetAtom(outdoorWalkAtom);
   const outdoorWalk = entry.outdoorWalk;
+  const router = useRouter();
   const onPress = () => {
-    if (props.onPress) {
-      props.onPress(entry);
-    }
+    setOutdoorWalkAtom(props.entryAtom);
+    router.navigate({
+      pathname: '/app/entries/outdoorWalk/outdoorWalkUpdate',
+    });
   };
   const date = entry.time;
-
   return (
     <Pressable onPress={onPress}>
       <ThemedBlock>

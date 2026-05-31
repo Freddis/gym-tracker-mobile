@@ -23,18 +23,18 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
   return (
    <>
     <View className="flex-row justify-between">
-    <View className="flex-col items-start gap-s grow">
-      <ThemedText>Distance: {(props.workout.distance / 1000).toFixed(3)} km</ThemedText>
-      <ThemedText>Duration: {durationToTimeString(props.workout.duration)}</ThemedText>
-      <ThemedText>Calories: {props.workout.calories.toFixed(0)}</ThemedText>
-    </View>
-    <View className="items-end">
-      <ThemedText>
-      {props.entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(props.entry.time)}
-      </ThemedText>
-      <ThemedText>Pace: {paceToString(props.workout.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
-      <EntrySyncButton entry={props.entry} readonly onUpdate={props.onUpdate}/>
-    </View>
+      <View className="flex-col items-start gap-s grow">
+        <ThemedText>Distance: {(props.workout.distance / 1000).toFixed(3)} km</ThemedText>
+        <ThemedText>Duration: {durationToTimeString(props.workout.duration)}</ThemedText>
+        <ThemedText>Calories: {props.workout.calories.toFixed(0)}</ThemedText>
+      </View>
+      <View className="items-end">
+        <ThemedText>
+        {props.entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(props.entry.time)}
+        </ThemedText>
+        <ThemedText>Pace: {paceToString(props.workout.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
+        <EntrySyncButton entry={props.entry} readonly onUpdate={props.onUpdate}/>
+      </View>
     </View>
     <View className="flex-col items-start justify-start">
      <PostContent entry={props.entry} />

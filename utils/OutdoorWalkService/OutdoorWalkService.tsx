@@ -66,8 +66,9 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
   async createEntry(user: AuthUser, start: Date, end: Date, path: AppPathDataPoint[], entryParams?: EntryCreateParams): Promise<OutdoorWalkAppEntry> {
     const db = await asyncDrizzle();
     return await transactionAsync(db, async (trx) => {
+      const smoothed = await this.normalizePath(path);
       const duration = Math.round((end.getTime() - start.getTime()) / 1000);
-      const distance = this.pathUtility.totalDistance(path);
+      const distance = this.pathUtility.totalDistance(smoothed);
       const pace = distance / duration;
       const outdoorWalk: OutdoorWalk = {
         duration: duration,
@@ -85,7 +86,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
         maxHeartRate: null,
         elevationGain: null,
         heartRateData: null,
-        geoData: path,
+        geoData: smoothed,
       };
       const recordMap = await this.processPulledItems(trx, [['noMatter', outdoorWalk]]);
       const map = await this.loadMap(Array.from(recordMap.values()), trx);
@@ -290,5 +291,137 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     await db.delete(schema.outdoorWalkHeartrateData);
     await db.delete(schema.outdoorWalks);
     return true;
+  }
+
+  async normalizeEntry(outdoorWalk: AppOutdoorWalk): Promise<AppOutdoorWalk> {
+    const smoothed = await this.normalizePath(outdoorWalk.geoData ?? []);
+    const duration = Math.round((outdoorWalk.end.getTime() - outdoorWalk.start.getTime()) / 1000);
+    const distance = this.pathUtility.totalDistance(smoothed);
+    const pace = duration * 1000 / distance;
+    const result: AppOutdoorWalk = {
+      ...outdoorWalk,
+      duration: duration,
+      distance: distance,
+      pace: pace,
+      maxPace: 0,
+      calories: duration * 0.05,
+      cadence: null,
+      maxCadence: null,
+      heartRate: null,
+      maxHeartRate: null,
+      elevationGain: null,
+      heartRateData: null,
+      geoData: smoothed,
+    };
+    return result;
+  }
+  async normalizePath(geoData: AppPathDataPoint[]): Promise<AppPathDataPoint[]> {
+    if (geoData.length === 0) {
+      return [];
+    }
+
+    const MAX_ACCURACY = 25; // meters (tune: 25–50)
+    const MAX_SPEED = 10; // m/s (~36 km/h walking buffer)
+    const OUTLIER_FACTOR = 3;
+
+    // 1. sort by time
+    const points = [...geoData].sort(
+      (a, b) => a.timestamp - b.timestamp
+    );
+
+    // 2. filter bad accuracy points early
+    const filtered: AppPathDataPoint[] = [];
+    for (const p of points) {
+      if (
+        p.horizontalAccuracy != null &&
+        p.horizontalAccuracy > MAX_ACCURACY
+      ) {
+        continue;
+      }
+      filtered.push(p);
+    }
+
+    if (!filtered[0]) {
+      return [];
+    }
+
+    const cleaned: AppPathDataPoint[] = [filtered[0]];
+    // 3. outlier + speed filtering
+    for (let i = 1; i < filtered.length; i++) {
+      const prev = cleaned[cleaned.length - 1];
+      if (!prev) {
+        continue;
+      }
+      const curr = filtered[i];
+      if (!curr) {
+        continue;
+      }
+      const dist = this.pathUtility.haversine(prev, curr);
+      const speed = this.pathUtility.computeSpeed(prev, curr, dist);
+
+      // speed spike filter (stairs / jumps / GPS glitches)
+      if (speed > MAX_SPEED) {
+        continue;
+      }
+
+      // geometric outlier check (optional but very effective)
+      if (cleaned.length >= 2) {
+        const prevPrev = cleaned[cleaned.length - 2];
+        if (!prevPrev) {
+          continue;
+        }
+        const ab = this.pathUtility.haversine(prevPrev, curr);
+        const ax = this.pathUtility.haversine(prevPrev, prev);
+        const xb = dist;
+
+        if (ax + xb > ab * OUTLIER_FACTOR) {
+          // prev is likely a spike → remove it instead of adding curr
+          cleaned.pop();
+          continue;
+        }
+      }
+
+      cleaned.push(curr);
+    }
+
+    if (cleaned.length < 2) {
+      return [];
+    }
+
+    // 4. smoothing (EMA on lat/lon only)
+    const alpha = 0.25;
+
+    const smoothed: AppPathDataPoint[] = [];
+    let prev = cleaned[0];
+    if (!prev) {
+      return [];
+    }
+    smoothed.push({...prev, distance: 0});
+
+    let totalDistance = 0;
+
+    for (let i = 1; i < cleaned.length; i++) {
+      const curr = cleaned[i];
+      if (!curr) {
+        continue;
+      }
+
+      const smoothPoint: AppPathDataPoint = {
+        ...curr,
+        latitude: alpha * curr.latitude + (1 - alpha) * prev.latitude,
+        longitude: alpha * curr.longitude + (1 - alpha) * prev.longitude,
+      };
+
+      const dist = this.pathUtility.haversine(prev, smoothPoint);
+      totalDistance += dist;
+
+      smoothed.push({
+        ...smoothPoint,
+        distance: totalDistance,
+      });
+
+      prev = smoothPoint;
+    }
+    return smoothed;
   }
 }
