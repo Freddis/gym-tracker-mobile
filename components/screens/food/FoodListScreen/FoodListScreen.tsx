@@ -15,6 +15,7 @@ import {atom, useAtomValue, useSetAtom} from 'jotai';
 import {splitAtom} from 'jotai/utils';
 import {AppFood} from '../../../../utils/FoodService/types/AppFood';
 import {useQuery} from '@tanstack/react-query';
+import {safeListRefresh} from '../../../../utils/safeListRefresh';
 
 const foodListAtom = atom<AppFood[]>([]);
 const foodSplitAtom = splitAtom(foodListAtom, (x) => x.id);
@@ -30,12 +31,16 @@ export const FoodListScreen = () => {
     if (!user) {
       return;
     }
-    setRefreshing(true);
-    await foodService.pullFromServer(user.id);
-    await foodService.pushToServer(user.id);
-    const food = await foodService.getFood();
-    setFoodList(food);
-    setRefreshing(false);
+    await safeListRefresh(setRefreshing, 'Failed to refresh food', async () => {
+      if (!await foodService.pullFromServer(user.id)) {
+        throw new Error('Failed to pull food');
+      }
+      if (!await foodService.pushToServer(user.id)) {
+        throw new Error('Failed to push food');
+      }
+      const food = await foodService.getFood();
+      setFoodList(food);
+    });
   };
 
   const query = useQuery({

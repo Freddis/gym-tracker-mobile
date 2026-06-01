@@ -1,4 +1,4 @@
-import {View, Pressable, RefreshControl, Alert, FlatList} from 'react-native';
+import {View, Pressable, RefreshControl, FlatList} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {Link, Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
@@ -16,9 +16,9 @@ import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useAtomValue} from 'jotai';
 import {MemoEntryBlock} from './components/EntryBlock/MemoEntryBlock';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {safeListRefresh} from '../../../../utils/safeListRefresh';
 
 export const EntryListScreen: FC = () => {
-  // console.log('render list'); //debug
   const theme = useAppTheme();
   const {entryListService} = useServices();
   const lastAddedEntryAtom = useAtomValue(entryListService.getLastAddedEntryAtom());
@@ -69,18 +69,12 @@ export const EntryListScreen: FC = () => {
     if (!user) {
       return;
     }
-    try {
-      setRefreshing(true);
-      await syncService.syncWithServer(db, user.id);
+    await safeListRefresh(setRefreshing, 'Failed to refresh entries', async () => {
+      await syncService.syncWithServerOrThrow(db, user.id);
       await query.refetch();
-      setRefreshing(false);
-    } catch (e: unknown) {
-      console.log(e);
-      Alert.alert('Error', 'Failed to refresh entries');
-    } finally {
-      setRefreshing(false);
-    }
+    });
   };
+
   const fetchNextPage = () => {
     if (query.hasNextPage && !query.isFetchingNextPage) {
       query.fetchNextPage();

@@ -159,6 +159,7 @@ export class FoodService implements ISyncedEntityService {
           includeDeleted: true,
           page: page++,
         },
+        timeout: 10000,
       });
       if (response.error) {
         return false;

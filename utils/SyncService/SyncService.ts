@@ -43,6 +43,13 @@ export class SyncService {
     return this.runActions(db, userId, this.getSyncStages(), callback, 'Successfully synced with server');
   }
 
+  async syncWithServerOrThrow(db: DrizzleDb, userId: number): Promise<void> {
+    const result = await this.syncWithServer(db, userId);
+    if (result.error) {
+      throw new Error(result.message);
+    }
+  }
+
   async wipeLocalData(db: DrizzleDb, userId: number, callback: (x: Progress) => void): Promise<Progress> {
     return this.runActions(db, userId, this.getWipeStages(), callback, 'Successfully wiped data');
   }
