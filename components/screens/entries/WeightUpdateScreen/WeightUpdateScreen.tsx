@@ -18,7 +18,7 @@ import {dateToString} from '../../../../utils/dateToString';
 import {WheelPickerItemProps} from 'react-native-ui-lib';
 import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
-import {AppModal} from '../../../blocks/AppModal/AppModel';
+import {AppModal} from '../../../blocks/AppModal/AppModal';
 import {AppWheelPicker} from '../../../blocks/AppWheelPicker/AppWheelPicker';
 
 export const WeightEditScreen: FC = () => {

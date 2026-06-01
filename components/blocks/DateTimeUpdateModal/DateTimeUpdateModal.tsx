@@ -1,7 +1,7 @@
 import {FC, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
-import {AppModal} from '../AppModal/AppModel';
+import {AppModal} from '../AppModal/AppModal';
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

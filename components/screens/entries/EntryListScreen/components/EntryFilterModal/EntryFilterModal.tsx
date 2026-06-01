@@ -1,7 +1,7 @@
 import {FC, useState} from 'react';
 import {View, Pressable, Switch, Button} from 'react-native';
 import {EntryType} from '../../../../../../openapi-client';
-import {AppModal} from '../../../../../blocks/AppModal/AppModel';
+import {AppModal} from '../../../../../blocks/AppModal/AppModal';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
 import {useAppTheme} from '../../../../../../hooks/useAppTheme';
 import {EntryFilterModalProps} from './types/EntryFilterModalProps';
