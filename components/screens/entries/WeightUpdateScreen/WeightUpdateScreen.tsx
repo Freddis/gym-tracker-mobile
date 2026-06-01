@@ -48,15 +48,14 @@ export const WeightEditScreen: FC = () => {
 
   const weight = entry.weight;
   const initialKilos = weightValue.toString().split('.')[0];
-  const initalGrams = Number(weightValue.toFixed(2).split('.')[1] ?? '0').toString(); //dealing with leading zeros
+  const initalGrams = Number(weightValue.toFixed(2).split('.')[1] ?? '0').toString(); //dealing with trailing zeros
   const setKilos = (value: string) => {
     const newValue = value + '.' + initalGrams;
     setWeight(Number(newValue));
     updateWeight(Number(newValue));
   };
   const setGrams = (value: string) => {
-    const newValue = initialKilos + '.' + value.padStart(2, '0');
-    console.log('newValue', {newValue, number: Number(newValue)});
+    const newValue = initialKilos + '.' + value.padStart(2, '0'); //dealing with leading zeros
     setWeight(Number(newValue));
     updateWeight(Number(newValue));
   };
