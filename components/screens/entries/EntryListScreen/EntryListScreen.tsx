@@ -20,7 +20,7 @@ import {safeListRefresh} from '../../../../utils/safeListRefresh';
 
 export const EntryListScreen: FC = () => {
   const theme = useAppTheme();
-  const {entryListService} = useServices();
+  const {entryListService, healthKitService} = useServices();
   const lastAddedEntryAtom = useAtomValue(entryListService.getLastAddedEntryAtom());
   const entryAtoms = useAtomValue(entryListService.getEntryAtoms());
   const listRef = useRef<FlatList>(null);
@@ -70,6 +70,8 @@ export const EntryListScreen: FC = () => {
       return;
     }
     await safeListRefresh(setRefreshing, 'Failed to refresh entries', async () => {
+      await healthKitService.importFromHealhkitIfPossible(user);
+      await query.refetch(); //todo: remove this when in prod
       await syncService.syncWithServerOrThrow(db, user.id);
       await query.refetch();
     });

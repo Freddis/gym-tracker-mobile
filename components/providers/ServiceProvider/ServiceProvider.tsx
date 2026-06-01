@@ -17,6 +17,7 @@ import {SyncService} from '../../../utils/SyncService/SyncService';
 import {CalorieGoalService} from '../../../utils/CalorieGoalService/CalorieGoalService';
 import {MealService} from '../../../utils/MealService/MealService';
 import {DashboardService} from '../../../utils/DashboardService/DashboardService';
+import {HealthKitService} from '../../../utils/HealthKitService/HealthKitService';
 
 const apiService = new ApiService();
 const weightService = new WeightService(apiService, db);
@@ -38,6 +39,7 @@ const entryService = new EntryService(
   calorieGoalService,
   db,
 );
+const healthKitService = new HealthKitService(entryService);
 const store = getDefaultStore();
 const entryListService = new EntryListService(store);
 const entryAtomService = new EntryAtomService(entryService, entryListService, store);
@@ -59,6 +61,7 @@ export const services = {
   outdoorRunService: outdoorRunService,
   outdoorWalkService: outdoorWalkService,
   mealService: mealService,
+  healthKitService: healthKitService,
 };
 export const ServiceContext = createContext(services);
 
