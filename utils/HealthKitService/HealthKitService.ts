@@ -1,6 +1,6 @@
 import {
-  AuthorizationStatus,
-  authorizationStatusFor,
+  AuthorizationRequestStatus,
+  getRequestStatusForAuthorization,
   queryQuantitySamples,
   queryWorkoutSamples,
   WorkoutActivityType,
@@ -19,16 +19,21 @@ export class HealthKitService {
     if (Platform.OS === 'android') {
       return;
     }
-    const workoutTypeStatus = authorizationStatusFor('HKWorkoutTypeIdentifier');
-    const workoutRouteTypeStatus = authorizationStatusFor('HKWorkoutRouteTypeIdentifier');
-    const heartRateStatus = authorizationStatusFor('HKQuantityTypeIdentifierHeartRate');
-    const authorized = workoutTypeStatus === AuthorizationStatus.sharingAuthorized
-    && workoutRouteTypeStatus === AuthorizationStatus.sharingAuthorized
-    && heartRateStatus === AuthorizationStatus.sharingAuthorized;
-    if (!authorized) {
+    const status = await getRequestStatusForAuthorization({toRead: [
+      'HKWorkoutTypeIdentifier',
+      'HKWorkoutRouteTypeIdentifier',
+      'HKQuantityTypeIdentifierHeartRate',
+    ]});
+    const authorizationPreviouslyHandled = status === AuthorizationRequestStatus.unnecessary;
+    if (!authorizationPreviouslyHandled) {
       return;
     }
-    await this.importFromHealthKit(user);
+    try {
+      await this.importFromHealthKit(user);
+    } catch (error: unknown) {
+      console.error('Error importing from HealthKit', error);
+      return;
+    }
   }
 
   async importFromHealthKit(user: AuthUser) {
