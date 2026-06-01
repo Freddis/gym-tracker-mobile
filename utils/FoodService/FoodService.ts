@@ -111,7 +111,7 @@ export class FoodService implements ISyncedEntityService {
     const db = await asyncDrizzle();
     const result = await transactionAsync(db, async (trx) => {
       const appImage = image ? await this.imageService.createImage(userId, image, ImageType.FOOD, trx) : null;
-      const imageMap = appImage ? new Map([[food.id, appImage.id]]) : new Map();
+      const imageMap: Map<string, number> = appImage ? new Map([[food.id, appImage.id]]) : new Map();
       await this.upsertFood(trx, userId, [food], imageMap);
       return {
         ...food,

@@ -47,7 +47,9 @@ export const FoodCreateScreen = () => {
   const headerLeft = () => <BackHeaderButton />;
   const onChange = (food: AppFood, image?: string | null) => {
     setFood(food);
-    setImage(image ?? null);
+    if (image !== undefined) {
+      setImage(image);
+    }
   };
   return (
     <ScreenContainer>
