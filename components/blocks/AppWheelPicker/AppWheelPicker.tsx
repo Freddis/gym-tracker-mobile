@@ -1,9 +1,10 @@
 import {styled} from 'nativewind';
-import WheelPicker from '@quidone/react-native-wheel-picker';
+import WheelPicker, {withVirtualized} from '@quidone/react-native-wheel-picker';
 import {PickerItem, PickerProps} from '@quidone/react-native-wheel-picker/dest/typescript/base';
 import {FC} from 'react';
 
-const NativeWindWheelPicker = styled(WheelPicker, {
+const VirtualizedWheelPicker = withVirtualized(WheelPicker);
+const NativeWindWheelPicker = styled(VirtualizedWheelPicker, {
   className: 'style',
   overlayItemClassName: 'overlayItemStyle',
   itemTextClassName: 'itemTextStyle',
@@ -14,7 +15,6 @@ interface AppWheelPickerProps extends Omit<PickerProps<PickerItem<string>>, 'sty
   overlayItemClassName?: string;
   itemTextClassName?: string;
   contentContainerClassName?: string;
-
 }
 export const AppWheelPicker: FC<AppWheelPickerProps> = (props) => {
   return <NativeWindWheelPicker {...props} />;
