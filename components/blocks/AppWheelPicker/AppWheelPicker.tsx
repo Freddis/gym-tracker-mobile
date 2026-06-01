@@ -1,7 +1,8 @@
 import {styled} from 'nativewind';
 import WheelPicker, {withVirtualized} from '@quidone/react-native-wheel-picker';
-import {PickerItem, ValueChangedEvent} from '@quidone/react-native-wheel-picker/dest/typescript/base';
+import {ValueChangedEvent} from '@quidone/react-native-wheel-picker/dest/typescript/base';
 import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
+import {AppPickerItem} from './type/AppPickerItem';
 
 const VirtualizedWheelPicker = withVirtualized(WheelPicker);
 const NativeWindWheelPicker = styled(VirtualizedWheelPicker, {
@@ -11,15 +12,15 @@ const NativeWindWheelPicker = styled(VirtualizedWheelPicker, {
   contentContainerClassName: 'contentContainerStyle',
 });
 interface AppWheelPickerProps<T, > {
-  data: PickerItem<T>[];
+  data: AppPickerItem<T>[];
   value: T;
-  onValueChanged: (event: ValueChangedEvent<PickerItem<T>>) => void;
+  onValueChanged: (event: ValueChangedEvent<AppPickerItem<T>>) => void;
 }
 
 export const AppWheelPicker = <T, >(props: AppWheelPickerProps<T>) => {
   return (
   <NativeWindWheelPicker
-    className="grow"
+    className="w-full"
     itemTextClassName="text-on-main"
     overlayItemClassName="bg-accent"
     data={props.data}

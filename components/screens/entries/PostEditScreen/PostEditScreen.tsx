@@ -17,6 +17,7 @@ import {TextArea} from 'react-native-ui-lib';
 import {useAtom} from 'jotai';
 import {postAtom} from './utils/postAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {dateToString} from '../../../../utils/dateToString';
 
 export const PostEditScreen: FC = () => {
   const theme = useAppTheme();
@@ -32,8 +33,8 @@ export const PostEditScreen: FC = () => {
     throw new Error('No user');
   }
   const [note, setNote] = useState(entry.note);
-  let imageSrc = entry.image?.image ? `data:image/jpeg;base64,${entry.image.image}` : null;
-  const [image, setImage] = useState<string | null>(entry.image?.url ?? imageSrc);
+  const imageSrc = entryAtomService.getImageSource(entry);
+  const [image, setImage] = useState<string | null>(imageSrc);
   const [dateValue, setDate] = useState(new Date());
   const router = useRouter();
 
@@ -56,15 +57,7 @@ export const PostEditScreen: FC = () => {
     });
     setEntry(result);
   };
-  const dateToString = (date: Date):string => {
-    return [
-      date.toLocaleDateString(),
-      [
-        date.getHours().toString().padStart(2, '0'),
-        date.getMinutes().toString().padStart(2, '0'),
-      ].join(':'),
-    ].join(' ');
-  };
+
 
   const deleteEntry = async () => {
     await entryAtomService.deleteEntry(entry);

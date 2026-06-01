@@ -25,6 +25,7 @@ import {EntryType} from '../../../../openapi-client';
 import {WorkoutAppEntry} from '../../../../types/models/AppEntry';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {dateToString} from '../../../../utils/dateToString';
 
 export const WorkoutScreen: FC = () => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -158,17 +159,7 @@ export const WorkoutScreen: FC = () => {
     await entryAtomService.updateTime(entry, date);
     setEntry({...entry, time: date});
   };
-  const dateToString = (date: Date):string => {
-    return [
-      date.toLocaleDateString(),
-      [
-        date.getHours().toString().padStart(2, '0'),
-        date.getMinutes().toString().padStart(2, '0'),
-      ].join(':'),
-    ].join(' ');
-  };
   const workoutFinished = workout.end !== null;
-  console.log('workout', entry);
   return (
     <ScreenContainer>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

@@ -24,7 +24,7 @@ import {WheelPickerItemProps} from 'react-native-ui-lib';
 import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploadButton';
 import {AppFoodComponent} from '../../../../../utils/FoodService/types/AppFoodComponent';
 import {AppWheelPicker} from '../../../../blocks/AppWheelPicker/AppWheelPicker';
-import {AppModal} from '../../../../blocks/AppModal/AppModal';
+import {AppWheelPickerModal} from '../../../../blocks/AppWheelPickerModal/AppWheelPickerModal';
 
 interface MealUpdateFormProps {
   entry: MealAppEntry;
@@ -202,11 +202,9 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
       </View>
       <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
     </ThemedScrollView>
-    <AppModal visible={typeModalVisible} onClose={() => setTypeModalVisible(false)}>
-      <View className="pb-20 w-full overflow-hidden">
-        <AppWheelPicker data={mealTypes} value={mealType} onValueChanged={(item) => updateMealType(item.item.value)} />
-      </View>
-    </AppModal>
+    <AppWheelPickerModal visible={typeModalVisible} onClose={() => setTypeModalVisible(false)}>
+      <AppWheelPicker data={mealTypes} value={mealType} onValueChanged={(item) => updateMealType(item.item.value)} />
+    </AppWheelPickerModal>
   </KeyboardAvoidingView>
   );
 };
