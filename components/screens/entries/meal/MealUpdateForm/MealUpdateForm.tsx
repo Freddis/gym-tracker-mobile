@@ -1,7 +1,7 @@
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import {FC, useState, useEffect} from 'react';
-import {KeyboardAvoidingView, Platform, View, Pressable, Modal} from 'react-native';
+import {KeyboardAvoidingView, Platform, View, Pressable} from 'react-native';
 import {useAppTheme} from '../../../../../hooks/useAppTheme';
 import {FoodAmountUnit, MealType} from '../../../../../openapi-client';
 import {MealAppEntry, AppEntry} from '../../../../../types/models/AppEntry';
@@ -20,9 +20,11 @@ import {selectedFoodAtom} from '../../../food/FoodSelectScreen/selectedFoodAtom'
 import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {FoodComponentBlock} from './components/FoodComponentBlock';
 import {wrap, Wrapped} from '../MealUpdateScreen/wrap';
-import {WheelPicker, WheelPickerItemProps} from 'react-native-ui-lib';
+import {WheelPickerItemProps} from 'react-native-ui-lib';
 import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploadButton';
 import {AppFoodComponent} from '../../../../../utils/FoodService/types/AppFoodComponent';
+import {AppWheelPicker} from '../../../../blocks/AppWheelPicker/AppWheelPicker';
+import {AppModal} from '../../../../blocks/AppModal/AppModal';
 
 interface MealUpdateFormProps {
   entry: MealAppEntry;
@@ -200,18 +202,11 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
       </View>
       <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
     </ThemedScrollView>
-    <Modal visible={typeModalVisible} transparent animationType="none">
-      <View style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000090'}}>
-        <View style={{backgroundColor: theme.surface}}>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <ThemedLink style={{fontSize: 16, margin: theme.marginS}} onPress={() => setTypeModalVisible(false)}>Done</ThemedLink>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <WheelPicker items={mealTypes} initialValue={mealType} onChange={(item) => updateMealType(item)} style={{flexGrow: 1}} />
-          </View>
-        </View>
+    <AppModal visible={typeModalVisible} onClose={() => setTypeModalVisible(false)}>
+      <View className="pb-20 w-full overflow-hidden">
+        <AppWheelPicker data={mealTypes} value={mealType} onValueChanged={(item) => updateMealType(item.item.value)} />
       </View>
-    </Modal>
+    </AppModal>
   </KeyboardAvoidingView>
   );
 };

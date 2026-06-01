@@ -16,7 +16,6 @@ import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {dateToString} from '../../../../utils/dateToString';
 import {WheelPickerItemProps} from 'react-native-ui-lib';
-import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
 import {AppModal} from '../../../blocks/AppModal/AppModal';
 import {AppWheelPicker} from '../../../blocks/AppWheelPicker/AppWheelPicker';
@@ -119,25 +118,8 @@ export const WeightEditScreen: FC = () => {
             <View className="w-full">
               <View className="pb-20 bg-surface w-full">
                 <View className="px-m flex-row overflow-hidden justify-evenly gap-l">
-                  <AppWheelPicker data={kilograms}
-                    enableScrollByTapOnItem
-                    onValueChanging={() => WheelPickerFeedback.triggerSoundAndImpact()}
-                    value={initialKilos ?? '50'}
-                    onValueChanged={(item) => setKilos(item.item.value)}
-                    itemTextClassName="text-on-main"
-                    className="grow"
-                    overlayItemClassName="bg-accent"
-                   />
-                  <AppWheelPicker
-                    enableScrollByTapOnItem
-                    className="grow"
-                    itemTextClassName="text-on-main"
-                    overlayItemClassName="bg-accent"
-                    onValueChanging={() => WheelPickerFeedback.triggerSoundAndImpact()}
-                    data={grams}
-                    value={initalGrams}
-                    onValueChanged={(item) => setGrams(item.item.value)}
-                   />
+                  <AppWheelPicker data={kilograms} value={initialKilos ?? '50'} onValueChanged={(item) => setKilos(item.item.value)} />
+                  <AppWheelPicker data={grams} value={initalGrams} onValueChanged={(item) => setGrams(item.item.value)}/>
                 </View>
               </View>
             </View>
