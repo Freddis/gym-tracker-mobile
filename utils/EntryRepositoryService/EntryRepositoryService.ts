@@ -9,6 +9,24 @@ import {EntryCreateParams} from './types/EntryCreateParams';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 
 export class EntryRepositoryService {
+  async findOne(db: DrizzleDb, filter: {userId: number; before: Date; type: EntryType;}): Promise<BaseEntry| null> {
+    const entry = await db.query.entries.findFirst({
+      where: (t, op) => op.and(
+        op.eq(t.userId, filter.userId),
+        op.eq(t.type, filter.type),
+        filter.before ? op.lt(t.time, filter.before) : undefined,
+      ),
+    });
+    if (!entry) {
+      return null;
+    }
+    const baseEntry: BaseEntry = {
+      ...entry,
+      image: null,
+    };
+    return baseEntry;
+  }
+
   async create(
     db: DrizzleDb,
     user: AuthUser,

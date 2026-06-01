@@ -7,11 +7,14 @@ import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {AppWeight} from '../../types/models/AppWeight';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
 export class WeightService implements IEntryService<EntryType.WEIGHT> {
   protected logger: Logger;
+  protected entryRepositoryService: EntryRepositoryService;
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(WeightService.name);
+    this.entryRepositoryService = new EntryRepositoryService();
   }
 
   async create(weight: AppWeight, db: DrizzleDb): Promise<number> {
@@ -107,5 +110,21 @@ export class WeightService implements IEntryService<EntryType.WEIGHT> {
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
     await db.delete(schema.weight);
     return true;
+  }
+
+  async getLastWeight(userId: number, date: Date): Promise<WeightAppEntry | null> {
+    const entry = await this.entryRepositoryService.findOne(this.db, {
+      userId: userId,
+      before: date,
+      type: EntryType.WEIGHT,
+    });
+    const weightId = entry?.weightId;
+    if (!weightId) {
+      return null;
+    }
+    const weight = await this.loadMap([weightId]);
+    const weightObject = weight.get(weightId);
+    const result = weightObject ? this.construct(entry, weightObject) : null;
+    return result;
   }
 }

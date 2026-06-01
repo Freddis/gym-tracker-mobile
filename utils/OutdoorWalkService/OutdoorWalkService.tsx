@@ -15,14 +15,18 @@ import {transactionAsync} from '../runTransaction';
 import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
 import {EntryCreateParams} from '../EntryRepositoryService/types/EntryCreateParams';
 import {PathUtility} from '../PathUtility/PathUtility';
+import {WeightService} from '../WeightService/WeightService';
 
 export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK> {
   protected logger: Logger;
-  protected entryRepositoryService = new EntryRepositoryService();
+  protected entryRepositoryService: EntryRepositoryService;
+  protected weightService: WeightService;
   protected pathUtility = new PathUtility();
 
-  constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
+  constructor(private readonly api: ApiService, private readonly db: DrizzleDb, weightService: WeightService) {
     this.logger = new Logger(OutdoorWalkService.name);
+    this.entryRepositoryService = new EntryRepositoryService();
+    this.weightService = weightService;
   }
   async create(outdoorWalk: AppOutdoorWalk, db: DrizzleDb): Promise<number> {
     throw new Error('Not implemented');
@@ -70,12 +74,14 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
       const duration = Math.round((end.getTime() - start.getTime()) / 1000);
       const distance = this.pathUtility.totalDistance(smoothed);
       const pace = distance / duration;
+      const weightKg = await this.getWeightKg(user.id, start);
+      const calories = this.calculateCalories(distance, duration, weightKg);
       const outdoorWalk: OutdoorWalk = {
         duration: duration,
         distance: distance,
         pace: pace,
         maxPace: 0,
-        calories: duration * 0.05,
+        calories,
         start: start,
         end: end,
         id: 0,
@@ -294,13 +300,15 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     const duration = Math.round((outdoorWalk.end.getTime() - outdoorWalk.start.getTime()) / 1000);
     const distance = this.pathUtility.totalDistance(smoothed);
     const pace = duration * 1000 / distance;
+    const weightKg = await this.getWeightKg(outdoorWalk.userId, outdoorWalk.start);
+    const calories = this.calculateCalories(distance, duration, weightKg);
     const result: AppOutdoorWalk = {
       ...outdoorWalk,
       duration: duration,
       distance: distance,
       pace: pace,
       maxPace: 0,
-      calories: duration * 0.05,
+      calories,
       cadence: null,
       maxCadence: null,
       heartRate: null,
@@ -311,6 +319,19 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     };
     return result;
   }
+  async getWeightKg(userId: number, date: Date): Promise<number> {
+    const weight = await this.weightService.getLastWeight(userId, date);
+    return weight?.weight?.weight ?? 70;
+  }
+
+  calculateCalories(distanceMeters: number, durationSec: number, weightKg: number): number {
+    const speedMPerMin = distanceMeters / (durationSec / 60);
+    const met = 1 + speedMPerMin / 35;
+    const hours = durationSec / 3600;
+    const calories = met * weightKg * hours;
+    return calories;
+  }
+
   async normalizePath(geoData: AppPathDataPoint[]): Promise<AppPathDataPoint[]> {
     if (geoData.length === 0) {
       return [];
