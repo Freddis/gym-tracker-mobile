@@ -36,35 +36,37 @@ export const OutdoorWalkUpdateScreen: FC = () => {
   return (
     <ScreenContainer>
       <Stack.Screen options={{title: 'Entry', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
-      <ThemedScrollView className="h-full p-m" nestedScrollEnabled={false}>
-        <EntryEditingBlock entry={entry}>
-          <Separator/>
-          <View className="flex-row justify-between">
-            <View className="flex-col items-start gap-s grow">
-              <ThemedText>Distance: {(outdoorWalk.distance / 1000).toFixed(3)} km</ThemedText>
-              <ThemedText>Duration: {durationToTimeString(outdoorWalk.duration)}</ThemedText>
-              <ThemedText>Calories: {outdoorWalk.calories.toFixed(0)}</ThemedText>
+      <ThemedScrollView className="h-full" nestedScrollEnabled={false}>
+        <View className="p-m">
+          <EntryEditingBlock entry={entry}>
+            <Separator/>
+            <View className="flex-row justify-between">
+              <View className="flex-col items-start gap-s grow">
+                <ThemedText>Distance: {(outdoorWalk.distance / 1000).toFixed(3)} km</ThemedText>
+                <ThemedText>Duration: {durationToTimeString(outdoorWalk.duration)}</ThemedText>
+                <ThemedText>Calories: {outdoorWalk.calories.toFixed(0)}</ThemedText>
+              </View>
+              <View className="items-end">
+                <ThemedText>
+                {entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(entry.time)}
+                </ThemedText>
+                <ThemedText>Pace: {paceToString(outdoorWalk.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
+                <EntrySyncButton entry={entry} readonly onUpdate={() => {}}/>
+              </View>
             </View>
-            <View className="items-end">
-              <ThemedText>
-              {entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(entry.time)}
-              </ThemedText>
-              <ThemedText>Pace: {paceToString(outdoorWalk.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
-              <EntrySyncButton entry={entry} readonly onUpdate={() => {}}/>
+            {outdoorWalk.geoData && outdoorWalk.geoData.length > 0 && (
+              <View className="w-full h-80 overflow-hidden rounded-md mt-s" onStartShouldSetResponder={() => true}>
+                <AppWorkoutMap
+                  data={path}
+                />
             </View>
-          </View>
-          {outdoorWalk.geoData && outdoorWalk.geoData.length > 0 && (
-            <View className="w-full h-80 overflow-hidden rounded-md mt-s" onStartShouldSetResponder={() => true}>
-              <AppWorkoutMap
-                data={path}
-              />
-          </View>
-          )}
-          <Separator/>
-          <View className="flex-row justify-center gap-40">
-            <ThemedLink accented onPress={normalizePath}>Normalize Path</ThemedLink>
-          </View>
-        </EntryEditingBlock>
+            )}
+            <Separator/>
+            <View className="flex-row justify-center gap-40">
+              <ThemedLink accented onPress={normalizePath}>Normalize Path</ThemedLink>
+            </View>
+          </EntryEditingBlock>
+        </View>
       </ThemedScrollView>
     </ScreenContainer>
   );
