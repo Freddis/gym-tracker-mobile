@@ -1,81 +1,86 @@
-import {StyleSheet, View, KeyboardAvoidingView, Platform} from 'react-native';
+import {View, KeyboardAvoidingView, Platform} from 'react-native';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useRouter} from 'expo-router';
 import React, {FC, useState} from 'react';
-import {useAuth} from '@/components/providers/AuthProvider/useAuth';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
-import {useAppTheme} from '@/hooks/useAppTheme';
-import {Theme} from '@/types/Colors';
-import {TextArea} from 'react-native-ui-lib';
 import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploadButton';
 import {Separator} from '../../../../blocks/Separator/Separator';
 import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
+import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {ThemedTextInput} from '../../../../blocks/ThemedInput/ThemedInput';
+import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderButton';
+import {dateToString} from '../../../../../utils/dateToString';
+import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
+import {useUser} from '../../../../providers/AuthProvider/useUser';
 
 export const PostCreateScreen: FC = () => {
-  const theme = useAppTheme();
   const {entryAtomService, entryService} = useServices();
-  const styles = getStyles(theme);
-  const auth = useAuth();
-  const user = auth.user;
+  const [saving, setSaving] = useState(false);
+  const user = useUser();
   if (!user) {
     throw new Error('No user');
   }
+  const [date, setDate] = useState(new Date());
+  const [dateModalVisible, setDateModalVisible] = useState(false);
   const [note, setNote] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const router = useRouter();
   const onSavePress = async () => {
+    if (saving) {
+      return;
+    }
+    setSaving(true);
     const noteValue = note.trim() === '' ? null : note.trim();
-    await entryService.addPostEntry(user.id, noteValue, image);
+    await entryService.addPostEntry(user.id, date, noteValue, image);
     entryAtomService.reset();
     router.navigate({
       pathname: '/app/entries/list',
     });
   };
-
   const updateImage = (image: string) => {
     setImage(image);
   };
-  const imageSrc = image ? `data:image/jpeg;base64,${image}` : null;
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ThemedScrollView style={{minHeight: '100%'}}>
-        <ThemedView style={styles.container}>
-          <Stack.Screen options={{title: 'New Post', headerShown: true, headerRight: () => <ThemedLink onPress={onSavePress}>Save</ThemedLink>}} />
-          <ThemedBlock style={{flexDirection: 'column', gap: theme.marginL}}>
-            <View style={{flexDirection: 'column', gap: theme.marginS}}>
-              <ThemedText>Note</ThemedText>
-               <TextArea
-               color={theme.text}
-               borderRadius={theme.borderRadiusS}
-               height={100}
-               padding={theme.paddingS}
-               onChangeText={setNote}
-               width="100%"
-               value={note}
-               backgroundColor={theme.background} placeholder="Leave a note" multiline numberOfLines={10} />
-            </View>
-            <Separator/>
-            <View style={{flexDirection: 'column', gap: theme.marginS}}>
-              <ThemedText>Image</ThemedText>
-              <ImageUploadButton onChange={updateImage} onRemove={() => setImage(null)} value={imageSrc} style={{width: '100%', height: 300}}/>
-            </View>
-          </ThemedBlock>
-        </ThemedView>
-      </ThemedScrollView>
-    </KeyboardAvoidingView>
+    <ScreenContainer>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ThemedScrollView contentContainerClassName="h-full p-m">
+          <ThemedView className="gap-m">
+            <Stack.Screen
+              options={{title: 'New Post', headerShown: true,
+                headerLeft: () => <BackHeaderButton />,
+                headerRight: () => <ThemedLink onPress={onSavePress}>Save</ThemedLink>}}
+            />
+            <ThemedBlock className="gap-l">
+            <View className="flex-row items-center">
+                <ThemedText className="grow">Date</ThemedText>
+                <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(date)}</ThemedText>
+              </View>
+              <Separator/>
+              <View className="gap-s">
+                <ThemedText>Note</ThemedText>
+                <ThemedTextInput
+                  value={note}
+                  onChangeText={setNote}
+                  placeholder="Leave a note"
+                  multiline
+                  numberOfLines={10}
+                  variant="on-surface"
+                  className="h-40"
+                />
+              </View>
+              <Separator/>
+              <View className="gap-s">
+                <ThemedText>Image</ThemedText>
+                <ImageUploadButton onChange={updateImage} onRemove={() => setImage(null)} value={null} className="w-full h-80"/>
+              </View>
+            </ThemedBlock>
+          </ThemedView>
+          <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={date} visible={dateModalVisible} onUpdate={setDate} />
+        </ThemedScrollView>
+      </KeyboardAvoidingView>
+    </ScreenContainer>
   );
 };
-
-const getStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    padding: theme.paddingM,
-    marginBottom: 80,
-    gap: theme.marginL,
-    flex: 1,
-    flexGrow: 1,
-  },
-});

@@ -16,7 +16,7 @@ const getStyles = (theme: Theme, variant?: 'on-surface', hasError?: boolean) => 
   default: {
     borderRadius: theme.borderRadiusS,
     padding: theme.paddingS,
-    height: 40,
+    // height: 40,
     backgroundColor: variant === 'on-surface' ? theme.background : theme.cavity,
     borderColor: hasError ? theme.dangerText : theme.cavity,
     borderWidth: 1,

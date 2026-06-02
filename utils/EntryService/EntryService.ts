@@ -710,13 +710,13 @@ export class EntryService implements ISyncedEntityService {
     });
   }
 
-  async addPostEntry(userId: number, note: string | null, image: string | null): Promise<PostAppEntry> {
+  async addPostEntry(userId: number, time: Date, note: string | null, image: string | null): Promise<PostAppEntry> {
     const result = await this.db.transaction(async (db) => {
       const newPost: typeof schema.entries.$inferInsert = {
         id: uuid.v4(),
         userId: userId,
         type: EntryType.POST,
-        time: new Date(),
+        time: time,
         createdAt: new Date(),
         visibility: EntryVisibility.PUBLIC,
         imageId: null,

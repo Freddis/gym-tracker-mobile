@@ -50,13 +50,14 @@ export class EntryAtomService {
     return entryAtom;
   }
 
-  async updateTime(entry: AppEntry, time: Date): Promise<void> {
-    const newEntry: AppEntry = {
+  async updateTime<T extends AppEntry>(entry: T, time: Date): Promise<T> {
+    const newEntry: T = {
       ...entry,
       time: time,
     };
-    await this.entryService.saveEntry(newEntry);
-    this.entryListService.updateAndReorder(newEntry);
+    const updatedEntry = await this.entryService.saveEntry(newEntry);
+    this.entryListService.updateAndReorder(updatedEntry);
+    return updatedEntry;
   }
 
   async deleteEntry(entry: AppEntry): Promise<void> {
