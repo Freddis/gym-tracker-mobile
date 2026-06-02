@@ -1,5 +1,5 @@
 import {Stack} from 'expo-router';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {FC, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
@@ -43,15 +43,15 @@ export const DashboardScreen: FC = () => {
 
   if (!response.data || response.isLoading) {
     return (
-    <ScreenContainer safeTop={true}>
+    <AppScreenContainer safeTop={true}>
       <LoadingBlock />
-    </ScreenContainer>
+    </AppScreenContainer>
     );
   }
   const calorieGoal = response.data.calorieGoal;
   const weightGoals = response.data.weightGoals;
   return (
-    <ScreenContainer safeTop={true}>
+    <AppScreenContainer safeTop={true}>
       <Stack.Screen options={{title: 'Dashboard', headerShown: false}} />
       <ScrollView className="h-full">
         <View className="h-full p-s gap-m">
@@ -59,6 +59,6 @@ export const DashboardScreen: FC = () => {
         {weightGoals[period] && <WeightGoalBlock goal={weightGoals[period]} onChangePeriod={setPeriod} />}
         </View>
       </ScrollView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

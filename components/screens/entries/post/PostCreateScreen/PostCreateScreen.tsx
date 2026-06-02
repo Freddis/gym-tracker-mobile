@@ -9,7 +9,7 @@ import {Separator} from '../../../../blocks/Separator/Separator';
 import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedTextInput} from '../../../../blocks/ThemedInput/ThemedInput';
 import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderButton';
 import {dateToString} from '../../../../../utils/dateToString';
@@ -44,7 +44,7 @@ export const PostCreateScreen: FC = () => {
     setImage(image);
   };
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ThemedScrollView contentContainerClassName="h-full p-m">
           <ThemedView className="gap-m">
@@ -81,6 +81,6 @@ export const PostCreateScreen: FC = () => {
           <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={date} visible={dateModalVisible} onUpdate={setDate} />
         </ThemedScrollView>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

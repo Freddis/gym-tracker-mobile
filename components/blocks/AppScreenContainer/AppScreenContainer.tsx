@@ -62,12 +62,12 @@ const themes = {
   }),
 };
 
-interface ScreenContainerProps extends ViewProps {
+interface AppScreenContainerProps extends ViewProps {
   className?: string;
   safeTop?: boolean;
 }
 
-export const ScreenContainer: FC<ScreenContainerProps> = (props) => {
+export const AppScreenContainer: FC<AppScreenContainerProps> = (props) => {
   const colorScheme = useColorScheme();
   const ptSafe = props.safeTop ? 'pt-safe' : '';
   return (

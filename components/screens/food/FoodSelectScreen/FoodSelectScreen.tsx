@@ -1,5 +1,5 @@
 import {FC, useState} from 'react';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {FlatList, View} from 'react-native';
 import {Stack, useRouter} from 'expo-router';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
@@ -42,7 +42,7 @@ export const FoodSelectScreen: FC = () => {
   };
 
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Food Select', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       <View className="h-full">
         <View className="p-m">
@@ -74,6 +74,6 @@ export const FoodSelectScreen: FC = () => {
           )}
         </View>
       </View>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

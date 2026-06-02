@@ -1,5 +1,5 @@
 import {Stack} from 'expo-router';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {Alert, ScrollView, View} from 'react-native';
 import {ThemedView} from '../../../../blocks/ThemedView/ThemedView';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
@@ -116,7 +116,7 @@ export const OutdoorWalkCreateScreen = () => {
   const data = usePathDataProcessing(path, started ?? new Date(), [path]);
 
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Walk'}} />
       <ScrollView className="h-full">
         <ThemedView className="p-m h-full">
@@ -151,6 +151,6 @@ export const OutdoorWalkCreateScreen = () => {
           )}
         </ThemedView>
       </ScrollView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

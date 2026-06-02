@@ -22,7 +22,7 @@ import {ThemedPicker} from '../../../blocks/ThemedPicker/ThemedPicker';
 import {StringHelper} from '../../../../utils/StringHelper/StringHelper';
 import {ThemedPickerButton} from '../../../blocks/ThemedPickerButton/ThemedPickerButton';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import uuid from 'react-native-uuid';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
@@ -135,7 +135,7 @@ export const CreateExerciseScreen: FC = () => {
 
   return (
     <ThemedScrollView style={{minHeight: '100%'}}>
-      <ScreenContainer style={{paddingTop: 20, paddingBottom: 100}}>
+      <AppScreenContainer style={{paddingTop: 20, paddingBottom: 100}}>
         <Stack.Screen
           options={{
             title: 'Add CustomExercise',
@@ -244,7 +244,7 @@ export const CreateExerciseScreen: FC = () => {
             </ThemedText>
           )}
         </ThemedView>
-      </ScreenContainer>
+      </AppScreenContainer>
     </ThemedScrollView>
   );
 };

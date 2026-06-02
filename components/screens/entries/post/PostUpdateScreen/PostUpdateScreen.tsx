@@ -14,7 +14,7 @@ import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {postAtom} from './utils/postAtom';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedTextInput} from '../../../../blocks/ThemedInput/ThemedInput';
 import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderButton';
 import {useUser} from '../../../../providers/AuthProvider/useUser';
@@ -62,7 +62,7 @@ export const PostUpdateScreen: FC = () => {
   };
 
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ThemedScrollView contentContainerClassName="h-full p-m">
           <ThemedView className="gap-m">
@@ -104,6 +104,6 @@ export const PostUpdateScreen: FC = () => {
           <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={entry.time} visible={dateModalVisible} onUpdate={updateDate} />
         </ThemedScrollView>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

@@ -24,7 +24,7 @@ import {splitAtom} from 'jotai/utils';
 import {EntryType} from '../../../../../openapi-client';
 import {WorkoutAppEntry} from '../../../../../types/models/AppEntry';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {dateToString} from '../../../../../utils/dateToString';
 
 export const WorkoutScreen: FC = () => {
@@ -161,7 +161,7 @@ export const WorkoutScreen: FC = () => {
   };
   const workoutFinished = workout.end !== null;
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ThemedScrollView ref={scrollViewRef}>
           <ThemedView className="h-full gap-m p-m">
@@ -204,6 +204,6 @@ export const WorkoutScreen: FC = () => {
           <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={entry.time} visible={dateModalVisible} onUpdate={updateDate} />
         </ThemedScrollView>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

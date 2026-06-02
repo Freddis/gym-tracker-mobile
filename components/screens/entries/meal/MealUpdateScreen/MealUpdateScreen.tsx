@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {Stack, useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import {mealAtom} from './mealAtom';
@@ -29,9 +29,9 @@ export const MealUpdateScreen: FC = () => {
     setEntryAtom(newAtom);
   };
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Meal', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       <MealUpdateForm key={entry.id} entry={entry} onChange={onChange} onDelete={onDelete} onCopy={onCopy} />
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

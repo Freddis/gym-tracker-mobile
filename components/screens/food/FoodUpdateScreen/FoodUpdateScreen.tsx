@@ -1,6 +1,6 @@
 import {Stack, useRouter} from 'expo-router';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {useAtom} from 'jotai';
 import {foodAtom} from '../foodAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
@@ -32,10 +32,10 @@ export const FoodUpdateScreen = () => {
   };
 
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Food Update', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       {food.isMeal && <DishUpdateForm food={food} onChange={onChange} onDelete={onDelete} />}
       {!food.isMeal && <FoodUpdateForm food={food} onChange={onChange} onDelete={onDelete} />}
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

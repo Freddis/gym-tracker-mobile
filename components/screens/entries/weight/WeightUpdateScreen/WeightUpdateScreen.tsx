@@ -7,7 +7,6 @@ import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrol
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useAtom} from 'jotai';
-import {ScreenContainer} from 'react-native-screens';
 import {WheelPickerItemProps} from 'react-native-ui-lib';
 import {WeightAppEntry} from '../../../../../types/models/AppEntry';
 import {dateToString} from '../../../../../utils/dateToString';
@@ -19,6 +18,7 @@ import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {weightAtom} from './utils/weightAtom';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 
 
 export const WeightUpdateScreen: FC = () => {
@@ -88,7 +88,7 @@ export const WeightUpdateScreen: FC = () => {
   };
 
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ThemedScrollView className="h-full p-m" nestedScrollEnabled={false}>
           <ThemedView>
@@ -127,6 +127,6 @@ export const WeightUpdateScreen: FC = () => {
           </AppModal>
         </ThemedScrollView>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

@@ -3,7 +3,7 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {FC} from 'react';
 import {Exercise} from '../../../../../openapi-client';
 import {AppWorkoutExerciseSet} from '../../../../../types/models/AppWorkoutExerciseSet';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {ExerciseInfo} from './components/ExerciseInfo';
 
 type ViewExercisePresenterProps = {
@@ -36,7 +36,7 @@ export const ViewExercisePresenter: FC<ViewExercisePresenterProps> = (props) => 
 
 
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <SectionList
         contentContainerClassName="p-m min-h-full"
         ListHeaderComponent={<View className="mb-m"><ExerciseInfo exercise={exercise} /></View>}
@@ -54,6 +54,6 @@ export const ViewExercisePresenter: FC<ViewExercisePresenterProps> = (props) => 
           </View>
           )}
         />
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

@@ -1,4 +1,4 @@
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
 import {Stack, useRouter} from 'expo-router';
 import {useState} from 'react';
@@ -52,9 +52,9 @@ export const FoodCreateScreen = () => {
     }
   };
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Food', headerShown: true, headerLeft, headerRight}} />
       <FoodUpdateForm food={food} onChange={onChange} />
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

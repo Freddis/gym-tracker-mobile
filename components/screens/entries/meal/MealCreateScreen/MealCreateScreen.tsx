@@ -5,7 +5,7 @@ import {useState} from 'react';
 import {MealAppEntry} from '../../../../../types/models/AppEntry';
 import {EntryType, EntryVisibility, MealType} from '../../../../../openapi-client';
 import uuid from 'react-native-uuid';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 import {useAuth} from '../../../../providers/AuthProvider/useAuth';
@@ -66,9 +66,9 @@ export const MealCreateScreen = () => {
     setImage(image ?? null);
   };
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Create Meal', headerShown: true, headerLeft, headerRight}} />
       <MealUpdateForm entry={entry} onChange={onChange} />
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

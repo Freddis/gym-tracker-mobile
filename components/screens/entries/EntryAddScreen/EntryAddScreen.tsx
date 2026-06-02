@@ -7,7 +7,7 @@ import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useSetAtom} from 'jotai';
 import {workoutAtom} from '../workouts/WorkoutScreen/utils/workoutAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {entryLens} from '../EntryListScreen/components/EntryBlock/EntryBlock';
 import {weightAtom} from '../weight/WeightUpdateScreen/utils/weightAtom';
 
@@ -52,14 +52,14 @@ export const EntryAddScreen = () => {
     ['Walk', addWalk],
   ];
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Add Entry', headerShown: true}} />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ThemedScrollView className="h-full p-m">
           <ThemedButtonList items={items} replace={true} />
         </ThemedScrollView>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };
 

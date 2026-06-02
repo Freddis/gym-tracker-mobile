@@ -6,7 +6,7 @@ import {useDrizzle} from '@/utils/drizzle';
 import {FC, useEffect, useRef, useState} from 'react';
 import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
-import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '@/components/blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 import {EntryType} from '../../../../openapi-client';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
@@ -83,7 +83,7 @@ export const EntryListScreen: FC = () => {
     }
   };
   return (
-    <ScreenContainer safeTop={true}>
+    <AppScreenContainer safeTop={true}>
       <Stack.Screen options={{headerShown: false}} />
       <FlatList
         ref={listRef}
@@ -153,7 +153,7 @@ export const EntryListScreen: FC = () => {
         visible={showFilterModal}
         onClose={() => setShowFilterModal(false)}
       />
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };
 

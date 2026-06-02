@@ -8,7 +8,7 @@ import {FoodBlock} from './components/FoodBlock';
 import {ThemedView} from '../../../blocks/ThemedView/ThemedView';
 import {useAppTheme} from '../../../../hooks/useAppTheme';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 import {atom, useAtomValue, useSetAtom} from 'jotai';
@@ -60,7 +60,7 @@ export const FoodListScreen = () => {
   const headerLeft = () => <BackHeaderButton />;
   const headerRight = () => <ThemedLink onPress={() => router.navigate('/app/entries/food/foodAdd')}>Add</ThemedLink>;
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Food List', headerShown: true, headerLeft, headerRight}} />
       <ThemedView className="h-full">
         <ThemedScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -77,7 +77,7 @@ export const FoodListScreen = () => {
           </ThemedView>
         </ThemedScrollView>
       </ThemedView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };
 

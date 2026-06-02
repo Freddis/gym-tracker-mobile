@@ -1,5 +1,5 @@
 import {FC, useState} from 'react';
-import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {Stack} from 'expo-router';
 import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderButton';
 import {useAtom} from 'jotai';
@@ -34,7 +34,7 @@ export const OutdoorWalkUpdateScreen: FC = () => {
 
   const path = usePathDataProcessing(outdoorWalk.geoData ?? [], outdoorWalk.start, [outdoorWalk.geoData]);
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Entry', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       <ThemedScrollView className="h-full" nestedScrollEnabled={false}>
         <View className="p-m">
@@ -68,6 +68,6 @@ export const OutdoorWalkUpdateScreen: FC = () => {
           </EntryEditingBlock>
         </View>
       </ThemedScrollView>
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

@@ -14,7 +14,7 @@ import {useDrizzle} from '@/utils/drizzle';
 import {useColorScheme, View} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import {ThemedText} from '../components/blocks/ThemedText/ThemedText';
-import {ScreenContainer} from '../components/blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../components/blocks/AppScreenContainer/AppScreenContainer';
 import {ServiceProvider} from '../components/providers/ServiceProvider/ServiceProvider';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import '../utils/global.css';
@@ -47,11 +47,11 @@ export default function RootLayout() {
   const {success, error} = useMigrations(db, migrations);
   if (error) {
     return (
-      <ScreenContainer>
+      <AppScreenContainer>
         <View>
           <ThemedText>Migration error: {error.message}</ThemedText>
         </View>
-      </ScreenContainer>
+      </AppScreenContainer>
     );
   }
   // if (!success) {

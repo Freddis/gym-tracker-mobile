@@ -9,7 +9,7 @@ import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {DishUpdateForm} from '../DishUpdateForm/DishUpdateForm';
 import uuid from 'react-native-uuid';
 import {Stack, useRouter} from 'expo-router';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {Alert} from 'react-native';
 
 export const DishCreateScreen = () => {
@@ -57,9 +57,9 @@ export const DishCreateScreen = () => {
     }
   };
   return (
-    <ScreenContainer>
+    <AppScreenContainer>
       <Stack.Screen options={{title: 'Dish', headerShown: true, headerLeft, headerRight}} />
       <DishUpdateForm food={food} onChange={onChange} />
-    </ScreenContainer>
+    </AppScreenContainer>
   );
 };

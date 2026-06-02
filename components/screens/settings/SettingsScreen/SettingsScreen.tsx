@@ -6,7 +6,7 @@ import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {useDrizzle} from '@/utils/drizzle';
 import {Progress} from '@/utils/SyncService/types/Progress';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
-import {ScreenContainer} from '@/components/blocks/ScreenContainer/ScreenContainer';
+import {AppScreenContainer} from '@/components/blocks/AppScreenContainer/AppScreenContainer';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Separator} from '@/components/blocks/Separator/Separator';
@@ -159,7 +159,7 @@ export const SettingsScreen: FC = () => {
   };
 
   return (
-      <ScreenContainer safeTop={true}>
+      <AppScreenContainer safeTop={true}>
         <ThemedScrollView className="h-screen p-m">
         <ThemedBlock>
           <View style={styles.row}>
@@ -218,6 +218,6 @@ export const SettingsScreen: FC = () => {
           </View>
         </Modal>
         </ThemedScrollView>
-      </ScreenContainer>
+      </AppScreenContainer>
   );
 };
