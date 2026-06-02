@@ -89,21 +89,21 @@ export const DateTimeUpdateModal: FC<DateTimeUpdateModalProps> = (props) => {
   return (
     <AppWheelPickerModal visible={props.visible} onClose={props.onClose} customHeader={header}>
       <View className="flex-row gap-s">
-        <View className="w-2/4">
+        <View className="flex-2">
           <AppWheelPicker
             data={days}
             value={selectedDay}
             onValueChanged={(item) => setDay(item.item.value)}
           />
         </View>
-        <View className="w-1/4">
+        <View className="flex-1">
           <AppWheelPicker
             data={hours}
             value={selectedHour}
             onValueChanged={(item) => setHour(item.item.value)}
           />
         </View>
-        <View className="w-1/4">
+        <View className="flex-1">
           <AppWheelPicker
             data={minutes}
             value={selectedMinute}
