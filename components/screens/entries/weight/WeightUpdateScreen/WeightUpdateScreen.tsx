@@ -119,8 +119,12 @@ export const WeightUpdateScreen: FC = () => {
             <View className="w-full">
               <View className="pb-20 bg-surface w-full">
                 <View className="px-m flex-row overflow-hidden justify-evenly gap-l">
+                  <View className="w-1/2">
                   <AppWheelPicker data={kilograms} value={initialKilos ?? '50'} onValueChanged={(item) => setKilos(item.item.value)} />
-                  <AppWheelPicker data={grams} value={initalGrams} onValueChanged={(item) => setGrams(item.item.value)}/>
+                  </View>
+                  <View className="w-1/2">
+                    <AppWheelPicker data={grams} value={initalGrams} onValueChanged={(item) => setGrams(item.item.value)}/>
+                  </View>
                 </View>
               </View>
             </View>
