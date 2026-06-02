@@ -1,9 +1,9 @@
 import {atom, PrimitiveAtom} from 'jotai';
-import {PostAppEntry} from '../../../../../types/models/AppEntry';
-import {EntryType, EntryVisibility} from '../../../../../openapi-client';
+import {WorkoutAppEntry} from '../../../../../../types/models/AppEntry';
+import {EntryType, EntryVisibility} from '../../../../../../openapi-client';
 import uuid from 'react-native-uuid';
 
-const initialEntry: PostAppEntry = {
+const initialEntry: WorkoutAppEntry = {
   id: uuid.v4(),
   userId: 0,
   externalId: null,
@@ -29,11 +29,26 @@ const initialEntry: PostAppEntry = {
   externalSource: null,
   outdoorRunId: null,
   outdoorWalkId: null,
-  type: EntryType.POST,
+  type: EntryType.WORKOUT,
   time: new Date(),
+  workout: {
+    id: 0,
+    updatedAt: null,
+    userId: 0,
+    externalId: null,
+    createdAt: new Date(),
+    deletedAt: null,
+    lastPulledAt: null,
+    lastPushedAt: null,
+    typeId: null,
+    calories: 0,
+    start: new Date(),
+    end: null,
+    exercises: [],
+  },
   mealId: null,
   calorieGoalId: null,
 };
 
 
-export const postAtom = atom<PrimitiveAtom<PostAppEntry>>(atom(initialEntry));
+export const workoutAtom = atom<PrimitiveAtom<WorkoutAppEntry>>(atom(initialEntry));

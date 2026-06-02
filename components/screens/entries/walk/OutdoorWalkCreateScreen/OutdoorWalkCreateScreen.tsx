@@ -1,14 +1,14 @@
 import {Stack} from 'expo-router';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
+import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
 import {Alert, ScrollView, View} from 'react-native';
-import {ThemedView} from '../../../blocks/ThemedView/ThemedView';
-import {ThemedText} from '../../../blocks/ThemedText/ThemedText';
-import {ThemedButton} from '../../../blocks/ThemedButton/ThemedButton';
+import {ThemedView} from '../../../../blocks/ThemedView/ThemedView';
+import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
+import {ThemedButton} from '../../../../blocks/ThemedButton/ThemedButton';
 import {useEffect, useState} from 'react';
-import {AppWorkoutMap} from '../../../blocks/AppWorkoutMap/AppWorkoutMap';
-import {usePathDataProcessing} from '../../../../utils/usePathDataProcessing';
-import {PathPoint} from '../../../../openapi-client';
-import {TimerBlock} from '../../../blocks/TimerBlock/TimerBlock';
+import {AppWorkoutMap} from '../../../../blocks/AppWorkoutMap/AppWorkoutMap';
+import {usePathDataProcessing} from '../../../../../utils/usePathDataProcessing';
+import {PathPoint} from '../../../../../openapi-client';
+import {TimerBlock} from '../../../../blocks/TimerBlock/TimerBlock';
 import {
   useLocationPermissions,
   useBackgroundLocation,
@@ -20,8 +20,8 @@ import {
 import {getItemAsync, setItemAsync} from 'expo-secure-store';
 import {coerce, object, string} from 'zod';
 import uuid from 'react-native-uuid';
-import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
-import {useUser} from '../../../providers/AuthProvider/useUser';
+import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
+import {useUser} from '../../../../providers/AuthProvider/useUser';
 
 const storageKey = 'lastTrip';
 const validator = object({
@@ -29,7 +29,7 @@ const validator = object({
   started: coerce.date(),
 });
 
-export const WalkCreateScreen = () => {
+export const OutdoorWalkCreateScreen = () => {
   const [tripId, setTripId] = useState<string>(uuid.v4());
   const [started, setStarted] = useState<Date | null>(null);
   const [finished, setFinished] = useState<Date | null>(null);

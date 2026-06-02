@@ -9,17 +9,18 @@ import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
-import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
-import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
-import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
-import {ImageUploadButton} from '../../../blocks/ImageUploadButton/ImageUploadButton';
-import {TextArea} from 'react-native-ui-lib';
 import {useAtom} from 'jotai';
+import {TextArea} from 'react-native-ui-lib';
+import {dateToString} from '../../../../../utils/dateToString';
+import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
+import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploadButton';
+import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
+import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
+import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {postAtom} from './utils/postAtom';
-import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
-import {dateToString} from '../../../../utils/dateToString';
 
-export const PostEditScreen: FC = () => {
+
+export const PostUpdateScreen: FC = () => {
   const theme = useAppTheme();
   const [entryAtom] = useAtom(postAtom);
   const [entry, setEntry] = useAtom(entryAtom);

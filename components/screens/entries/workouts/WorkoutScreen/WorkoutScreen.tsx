@@ -15,17 +15,17 @@ import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExercise
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
-import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
-import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
+import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {string} from 'zod';
 import {workoutAtom} from './utils/workoutAtom';
 import {atom, useAtom, useAtomValue} from 'jotai';
 import {splitAtom} from 'jotai/utils';
-import {EntryType} from '../../../../openapi-client';
-import {WorkoutAppEntry} from '../../../../types/models/AppEntry';
-import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
-import {dateToString} from '../../../../utils/dateToString';
+import {EntryType} from '../../../../../openapi-client';
+import {WorkoutAppEntry} from '../../../../../types/models/AppEntry';
+import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
+import {ScreenContainer} from '../../../../blocks/ScreenContainer/ScreenContainer';
+import {dateToString} from '../../../../../utils/dateToString';
 
 export const WorkoutScreen: FC = () => {
   const [dateModalVisible, setDateModalVisible] = useState(false);

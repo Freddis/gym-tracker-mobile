@@ -6,21 +6,22 @@ import React, {FC, useMemo, useState} from 'react';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
-import {EntrySyncButton} from '../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
-import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
-import {DateTimeUpdateModal} from '../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {useAtom} from 'jotai';
-import {weightAtom} from './utils/weightAtom';
-import {WeightAppEntry} from '../../../../types/models/AppEntry';
-import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
-import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
-import {dateToString} from '../../../../utils/dateToString';
+import {ScreenContainer} from 'react-native-screens';
 import {WheelPickerItemProps} from 'react-native-ui-lib';
-import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
-import {AppModal} from '../../../blocks/AppModal/AppModal';
-import {AppWheelPicker} from '../../../blocks/AppWheelPicker/AppWheelPicker';
+import {WeightAppEntry} from '../../../../../types/models/AppEntry';
+import {dateToString} from '../../../../../utils/dateToString';
+import {AppModal} from '../../../../blocks/AppModal/AppModal';
+import {AppWheelPicker} from '../../../../blocks/AppWheelPicker/AppWheelPicker';
+import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderButton';
+import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
+import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
+import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
+import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {weightAtom} from './utils/weightAtom';
 
-export const WeightEditScreen: FC = () => {
+
+export const WeightUpdateScreen: FC = () => {
   const [entryAtom] = useAtom(weightAtom);
   const [entry, setEntry] = useAtom(entryAtom);
   const {entryService} = useServices();

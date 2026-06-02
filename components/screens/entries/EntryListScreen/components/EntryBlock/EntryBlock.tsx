@@ -9,11 +9,11 @@ import {PostBlock} from '../PostBlock/PostBlock';
 import {WeightBlock} from '../WeightBlock/WeightBlock';
 import {WorkoutBlock} from '../WorkoutBlock/WorkoutBlock';
 import {useRouter} from 'expo-router';
-import {weightAtom} from '../../../WeightUpdateScreen/utils/weightAtom';
-import {postAtom} from '../../../PostEditScreen/utils/postAtom';
-import {workoutAtom} from '../../../WorkoutScreen/utils/workoutAtom';
+import {weightAtom} from '../../../weight/WeightUpdateScreen/utils/weightAtom';
+import {workoutAtom} from '../../../workouts/WorkoutScreen/utils/workoutAtom';
 import {MealBlock} from '../MealBlock/MealBlock';
 import {defaultEntryAtom} from '../../../DefaultEntryUpdateScreen/utils/defaultEntryAtom';
+import {postAtom} from '../../../post/PostUpdateScreen/utils/postAtom';
 
 /**
  * Creates an specific entry atom that updates the original entry atom when mutated.
@@ -53,14 +53,14 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
   const openDefaultEntry = () => {
     setDefaultEntry(props.entry);
     router.navigate({
-      pathname: '/app/entries/updateEntry',
+      pathname: '/app/entries/entryUpdate',
     });
   };
   const openWorkout = (workout: WorkoutAppEntry) => {
     const entryAtom = entryLens(workout, props.entry);
     setWorkoutEntry(entryAtom);
     router.navigate({
-      pathname: '/app/entries/workout/editWorkout',
+      pathname: '/app/entries/workout/workoutUpdate',
       params: {
         workoutId: workout.id,
       },
@@ -71,7 +71,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     setWeightEntry(entryAtom);
 
     router.navigate({
-      pathname: '/app/entries/weight/editWeight',
+      pathname: '/app/entries/weight/weightUpdate',
       params: {
         entryId: entry.id,
       },
@@ -81,7 +81,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     const entryAtom = entryLens(entry, props.entry);
     setPostEntry(entryAtom);
     router.navigate({
-      pathname: '/app/entries/editPost',
+      pathname: '/app/entries/post/postUpdate',
       params: {
         entryId: entry.id,
       },

@@ -1,7 +1,7 @@
 import {atom, PrimitiveAtom} from 'jotai';
-import {WeightAppEntry} from '../../../../../types/models/AppEntry';
-import {EntryType, EntryVisibility} from '../../../../../openapi-client';
 import uuid from 'react-native-uuid';
+import {EntryVisibility, EntryType} from '../../../../../../openapi-client';
+import {WeightAppEntry} from '../../../../../../types/models/AppEntry';
 
 export const createNewWeightEntryAtom = (): PrimitiveAtom<WeightAppEntry> => {
   const initialEntry: WeightAppEntry = {

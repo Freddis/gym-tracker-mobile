@@ -5,11 +5,11 @@ import {ThemedButtonList} from '../../../blocks/ThemedButtonList/ThemedButtonLis
 import {RoutePath} from '../../../../types/RoutePath';
 import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useSetAtom} from 'jotai';
-import {weightAtom} from '../WeightUpdateScreen/utils/weightAtom';
-import {workoutAtom} from '../WorkoutScreen/utils/workoutAtom';
+import {workoutAtom} from '../workouts/WorkoutScreen/utils/workoutAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {ScreenContainer} from '../../../blocks/ScreenContainer/ScreenContainer';
 import {entryLens} from '../EntryListScreen/components/EntryBlock/EntryBlock';
+import {weightAtom} from '../weight/WeightUpdateScreen/utils/weightAtom';
 
 export const EntryAddScreen = () => {
   const setWeightEntry = useSetAtom(weightAtom);
@@ -27,7 +27,7 @@ export const EntryAddScreen = () => {
     const weightAtom = entryLens(weightEntry, entryAtom);
     setWeightEntry(weightAtom);
     router.replace({
-      pathname: '/app/entries/weight/editWeight',
+      pathname: '/app/entries/weight/weightUpdate',
     });
   };
   const addWorkout = async () => {
@@ -36,19 +36,19 @@ export const EntryAddScreen = () => {
     const workoutAtom = entryLens(workoutEntry, entryAtom);
     setWorkoutEntry(workoutAtom);
     router.replace({
-      pathname: '/app/entries/workout/editWorkout',
+      pathname: '/app/entries/workout/workoutUpdate',
     });
   };
   const addWalk = () => {
     router.replace({
-      pathname: '/app/entries/walk/createWalk',
+      pathname: '/app/entries/outdoorWalk/outdoorWalkCreate',
     });
   };
   const items: [string, RoutePath | (() => void)][] = [
     ['Workout', addWorkout],
     ['Weight', addWeight],
-    ['Post', '/app/entries/createPost'],
-    ['Meal', '/app/entries/meal/createMeal'],
+    ['Post', '/app/entries/post/postCreate'],
+    ['Meal', '/app/entries/meal/mealCreate'],
     ['Walk', addWalk],
   ];
   return (

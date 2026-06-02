@@ -30,7 +30,7 @@ export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) =
   const onPress = () => {
     setMealAtom(props.entryAtom);
     router.navigate({
-      pathname: '/app/entries/meal/editMeal',
+      pathname: '/app/entries/meal/mealUpdate',
     });
   };
   const food = entry.meal.food.map(wrap);
