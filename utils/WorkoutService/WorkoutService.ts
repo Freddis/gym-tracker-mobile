@@ -2,7 +2,7 @@ import {Entry, EntryType, PostEntryUpsertDto, Workout, WorkoutEntryUpsertDto} fr
 import {DrizzleDb} from '../drizzle';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
-import {eq} from 'drizzle-orm';
+import {desc, and, eq, isNull} from 'drizzle-orm';
 import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
@@ -22,14 +22,29 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
 
   async getExerciseHistory(exerciseId: string): Promise<ExerciseHistory> {
     const exercise = await this.exerciseService.getExercise(exerciseId);
-    const history = await this.db.query.workoutExerciseSets.findMany({
-      where: (t, op) => op.eq(t.exerciseId, exerciseId),
-      orderBy: (t, op) => [
-        op.desc(t.start),
-      ],
-      limit: 300,
-    });
-
+    const rows = await this.db.select({
+      set: schema.workoutExerciseSets,
+      date: schema.entries.time,
+    })
+    .from(schema.workoutExerciseSets)
+    .where(
+      and(
+        eq(schema.workoutExerciseSets.exerciseId, exerciseId),
+        eq(schema.workoutExerciseSets.finished, true),
+        isNull(schema.entries.deletedAt)
+      )
+    )
+    .innerJoin(schema.workouts, eq(schema.workoutExerciseSets.workoutId, schema.workouts.id))
+    .innerJoin(schema.entries, eq(schema.workouts.id, schema.entries.workoutId))
+    .orderBy(desc(schema.entries.time));
+    const map: Map<number, AppWorkoutExerciseSet[]> = rows.reduce((acc, row) => {
+      const time = row.date.getTime();
+      const sets = acc.get(time) ?? [];
+      sets.push(row.set);
+      acc.set(time, sets);
+      return acc;
+    }, new Map<number, AppWorkoutExerciseSet[]>());
+    const history = Array.from(map.entries()).map(([date, sets]) => ({date: new Date(date), sets}));
     return {exercise, history};
   }
 

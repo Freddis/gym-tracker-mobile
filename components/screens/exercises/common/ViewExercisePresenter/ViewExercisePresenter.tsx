@@ -2,39 +2,21 @@ import {SectionList, View} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {FC} from 'react';
 import {Exercise} from '../../../../../openapi-client';
-import {AppWorkoutExerciseSet} from '../../../../../types/models/AppWorkoutExerciseSet';
 import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {ExerciseInfo} from './components/ExerciseInfo';
+import {ExerciseHistoryRow} from '../../../../../utils/WorkoutService/types/ExerciseHistoryRow';
 
 type ViewExercisePresenterProps = {
   exercise: Exercise;
-  history: AppWorkoutExerciseSet[];
+  history: ExerciseHistoryRow[];
 };
 
 export const ViewExercisePresenter: FC<ViewExercisePresenterProps> = (props) => {
   const {exercise, history} = props;
-  const initialState: Record<string, {title: string, data: AppWorkoutExerciseSet[]}> = {};
-  const sectionsMap = history.reduce((acc, set) => {
-    const key = set.start!.toISOString().substring(0, 10);
-    if (!acc[key]) {
-      acc[key] = {
-        title: key,
-        data: [],
-      };
-    }
-    acc[key].data.push(set);
-    return acc;
-  }, initialState);
-  const sections = Object.values(sectionsMap);
-  for (const section of sections) {
-    section.data.sort((a, b) => {
-      const aStart = a.start ?? new Date(0);
-      const bStart = b.start ?? new Date(0);
-      return aStart.getTime() - bStart.getTime();
-    });
-  }
-
-
+  const sections = history.map((row) => ({
+    title: row.date.toISOString().substring(0, 10),
+    data: row.sets,
+  }));
   return (
     <AppScreenContainer>
       <SectionList
