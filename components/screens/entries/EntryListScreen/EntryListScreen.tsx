@@ -131,7 +131,7 @@ export const EntryListScreen: FC = () => {
                 />
               </Pressable>
 
-              <Link href={'./addEntry'} asChild>
+              <Link href={'/app/entries/entryAdd'} asChild>
                 <Pressable className="flex-row items-center gap-s">
                   <ThemedText className="text-accent">
                     Add
