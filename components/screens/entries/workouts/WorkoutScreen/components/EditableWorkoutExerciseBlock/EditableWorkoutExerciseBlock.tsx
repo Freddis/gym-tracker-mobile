@@ -1,25 +1,37 @@
 import {FC, useEffect, useMemo, useState} from 'react';
-import {View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {EditableWorkoutExerciseBlockProps} from './types/EditableWorkoutExerciseBlockProps';
 import {useDrizzle} from '@/utils/drizzle';
 import {NewModel} from '@/types/NewModel';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {EditableWorkoutExerciseSetBlock} from './components/EditableWorkoutExerciseSetBlock';
 import {eq} from 'drizzle-orm';
-import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {ThemedImage} from '@/components/blocks/ThemedImage/ThemedImage';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
-import {atom, useAtom, useAtomValue} from 'jotai';
+import {atom, useAtom, useAtomValue, useSetAtom} from 'jotai';
 import {splitAtom} from 'jotai/utils';
+import {useRouter} from 'expo-router';
+import {exerciseHistoryAtom} from '../../../ExerciseHistoryScreen/utils/exerciseHistoryAtom';
+import {useServices} from '../../../../../../providers/ServiceProvider/ServiceProvider';
 
 export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps> = (props) => {
   const [workoutExercise, setExercise] = useAtom(props.exercise);
+  const setExerciseHistoryAtom = useSetAtom(exerciseHistoryAtom);
+  const {workoutService} = useServices();
   // const workoutExercise = props.exercise;
   const exercise = workoutExercise.exercise;
   const auth = useAuth();
+  const router = useRouter();
+  const onExercisePress = async () => {
+    const history = await workoutService.getExerciseHistory(exercise.id);
+    setExerciseHistoryAtom(atom(history));
+    router.navigate({
+      pathname: '/app/entries/workout/exerciseHistory',
+    });
+  };
   const setsAtom = useMemo(() => {
     const setsAtom = atom(
         (get) => get(props.exercise).sets,
@@ -119,12 +131,16 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
   return (
      <ThemedBlock>
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-        <ThemedText>{exercise.name}</ThemedText>
+        <ThemedLink onPress={onExercisePress}>
+          {exercise.name}
+        </ThemedLink>
         <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onDelete(workoutExercise)}/>
       </View>
       <Separator/>
       <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 10}}>
-        <ThemedImage source={{uri: exercise.images[0]}}/>
+        <Pressable onPress={onExercisePress}>
+          <ThemedImage source={{uri: exercise.images[0]}}/>
+        </Pressable>
         <View style={{marginLeft: 10, flexGrow: 1}}>
           {setsAtoms.map((set, i) => (
             <EditableWorkoutExerciseSetBlock onDelete={deleteSet} key={set.toString()} set={set} index={i} />

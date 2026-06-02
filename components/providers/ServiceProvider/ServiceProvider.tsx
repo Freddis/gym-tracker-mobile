@@ -21,7 +21,8 @@ import {HealthKitService} from '../../../utils/HealthKitService/HealthKitService
 
 const apiService = new ApiService();
 const weightService = new WeightService(apiService, db);
-const workoutService = new WorkoutService(db);
+const exerciseService = new ExerciseService();
+const workoutService = new WorkoutService(db, exerciseService);
 const imageService = new ImageService(apiService, db);
 const outdoorRunService = new OutdoorRunService(apiService, db);
 const outdoorWalkService = new OutdoorWalkService(apiService, db, weightService);
@@ -43,7 +44,6 @@ const healthKitService = new HealthKitService(entryService);
 const store = getDefaultStore();
 const entryListService = new EntryListService(store);
 const entryAtomService = new EntryAtomService(entryService, entryListService, store);
-const exerciseService = new ExerciseService();
 const workoutTypeService = new WorkoutTypeService(exerciseService);
 const syncService = new SyncService(workoutService, exerciseService, workoutTypeService, weightService, entryService, foodService);
 const dashboardService = new DashboardService(calorieGoalService, entryService, db);
@@ -56,6 +56,7 @@ export const services = {
   entryService: entryService,
   syncService: syncService,
   workoutTypeService: workoutTypeService,
+  workoutService: workoutService,
   calorieGoalService: calorieGoalService,
   dashboardService: dashboardService,
   outdoorRunService: outdoorRunService,

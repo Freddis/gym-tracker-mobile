@@ -9,12 +9,28 @@ import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
 import {Logger} from '../Logger/Logger';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
-
+import {ExerciseService} from '../ExerciseService/ExerciseService';
+import {ExerciseHistory} from './types/ExerciseHistory';
 export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
   protected logger: Logger;
+  protected exerciseService: ExerciseService;
 
-  constructor(private readonly db: DrizzleDb) {
+  constructor(private readonly db: DrizzleDb, exerciseService: ExerciseService) {
     this.logger = new Logger(WorkoutService.name);
+    this.exerciseService = exerciseService;
+  }
+
+  async getExerciseHistory(exerciseId: string): Promise<ExerciseHistory> {
+    const exercise = await this.exerciseService.getExercise(exerciseId);
+    const history = await this.db.query.workoutExerciseSets.findMany({
+      where: (t, op) => op.eq(t.exerciseId, exerciseId),
+      orderBy: (t, op) => [
+        op.desc(t.start),
+      ],
+      limit: 300,
+    });
+
+    return {exercise, history};
   }
 
   async create(workout: CompleteAppWorkout, db: DrizzleDb): Promise<number> {

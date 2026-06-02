@@ -5,12 +5,13 @@ import {migrate} from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../../db/migrations/migrations';
 import {WorkoutService} from './WorkoutService';
 import {describe, test, expect} from '@jest/globals';
+import {ExerciseService} from '../ExerciseService/ExerciseService';
 
 describe(WorkoutService.name, () => {
   test('Wipes workout data', async () => {
     // prepare
     const [db, schema] = useDrizzle();
-    const service = new WorkoutService(db);
+    const service = new WorkoutService(db, new ExerciseService());
     await migrate(db, migrations);
     await db.delete(schema.workouts);
     const testWorkout: NewModel<AppWorkout> = {
@@ -43,7 +44,7 @@ describe(WorkoutService.name, () => {
     test('Converts comma correctly', async () => {
       // prepare
       const [db] = useDrizzle();
-      const service = new WorkoutService(db);
+      const service = new WorkoutService(db, new ExerciseService());
       // check
       expect(service.transformSetWeight('12.2')).toBe(12.2);
       expect(service.transformSetWeight('12,2')).toBe(12.2);
@@ -52,7 +53,7 @@ describe(WorkoutService.name, () => {
     test('Returns 0 on invalid input', async () => {
       // prepare
       const [db] = useDrizzle();
-      const service = new WorkoutService(db);
+      const service = new WorkoutService(db, new ExerciseService());
       // check
       expect(service.transformSetWeight('')).toBe(0);
     });

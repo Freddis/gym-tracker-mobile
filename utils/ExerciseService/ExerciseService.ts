@@ -25,7 +25,6 @@ export class ExerciseService implements ISyncedEntityService {
       where: (t, op) => op.eq(t.exerciseId, exerciseId),
       orderBy: (t, op) => op.asc(t.id),
     });
-    console.log(muscleRows);
     const result: Exercise = {
       ...row,
       isArchived: false,
