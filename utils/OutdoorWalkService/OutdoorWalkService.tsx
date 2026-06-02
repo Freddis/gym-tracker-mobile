@@ -73,7 +73,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
       const smoothed = await this.normalizePath(path);
       const duration = Math.round((end.getTime() - start.getTime()) / 1000);
       const distance = this.pathUtility.totalDistance(smoothed);
-      const pace = distance / duration;
+      const pace = duration * 1000 / distance;
       const weightKg = await this.getWeightKg(user.id, start);
       const calories = this.calculateCalories(distance, duration, weightKg);
       const outdoorWalk: OutdoorWalk = {
