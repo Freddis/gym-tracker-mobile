@@ -289,7 +289,7 @@ export type Image = {
     /**
      * Id of the image
      */
-    id: number;
+    id: string;
     /**
      * URL of the image
      */
@@ -634,7 +634,7 @@ export type WorkoutUpdateDto = {
     /**
      * Id of the workout type. Users can create their own workout types as templates for workouts.
      */
-    typeId: number | null;
+    typeId: string | null;
     /**
      * Calories burned during workout
      */
@@ -692,7 +692,7 @@ export type Workout = {
     /**
      * Id of the workout type. Users can create their own workout types as templates for workouts.
      */
-    typeId: number | null;
+    typeId: string | null;
     /**
      * Id of the user that created this workout
      */
@@ -774,7 +774,7 @@ export type WorkoutUpsertDto = {
     /**
      * Id of the workout type. Users can create their own workout types as templates for workouts.
      */
-    typeId: number | null;
+    typeId: string | null;
     /**
      * Calories burned during workout
      */
@@ -858,7 +858,7 @@ export type WorkoutPlan = {
     /**
      * Id
      */
-    id: number;
+    id: string;
     /**
      * Name of the workout plan
      */
@@ -917,7 +917,7 @@ export type WorkoutType = {
     /**
      * Id
      */
-    id: number;
+    id: string;
     /**
      * Id of the user
      */
@@ -929,7 +929,7 @@ export type WorkoutType = {
     /**
      * Position inside Workout Plan
      */
-    planId: number | null;
+    planId: string | null;
     /**
      * Name of the workout type
      */
@@ -2874,7 +2874,7 @@ export type ManagedImage = {
     /**
      * Id of the image
      */
-    id: number;
+    id: string;
     /**
      * URL of the image
      */
@@ -5210,7 +5210,7 @@ export type DeleteWorkoutPlansByIdData = {
         /**
          * Id of the workout plan
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/workout-plans/{id}';
@@ -5320,7 +5320,7 @@ export type GetWorkoutPlansByIdData = {
         /**
          * Id of the workout plan
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/workout-plans/{id}';
@@ -5440,7 +5440,7 @@ export type PatchWorkoutPlansByIdData = {
         /**
          * Id of the workout plan
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/workout-plans/{id}';
@@ -5688,7 +5688,7 @@ export type PostWorkoutTypesData = {
         /**
          * Position inside Workout Plan
          */
-        planId: number | null;
+        planId: string | null;
         /**
          * Name of the workout type
          */
@@ -5809,7 +5809,7 @@ export type DeleteWorkoutTypesByIdData = {
         /**
          * Id of the workout type
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/workout-types/{id}';
@@ -5919,7 +5919,7 @@ export type GetWorkoutTypesByIdData = {
         /**
          * Id of the workout type
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/workout-types/{id}';
@@ -6033,7 +6033,7 @@ export type PatchWorkoutTypesByIdData = {
         /**
          * Position inside Workout Plan
          */
-        planId: number | null;
+        planId: string | null;
         /**
          * Name of the workout type
          */
@@ -6051,7 +6051,7 @@ export type PatchWorkoutTypesByIdData = {
         /**
          * Id of the workout type
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/workout-types/{id}';
@@ -10179,7 +10179,7 @@ export type DeleteCrmImagesByIdData = {
         /**
          * Id of the image
          */
-        id: number;
+        id: string;
     };
     query?: never;
     url: '/crm/images/{id}';

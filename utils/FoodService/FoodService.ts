@@ -152,6 +152,7 @@ export class FoodService implements ISyncedEntityService {
     let page = 1;
     let processedItems = 0;
 
+    const collectedItems: Food[] = [];
     while (true) {
       const response = await this.api.client().getFoodList({
         query: {
@@ -166,11 +167,13 @@ export class FoodService implements ISyncedEntityService {
       }
       progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
       processedItems += response.data.items.length;
-      await this.processedPulledItems(trx, userId, response.data.items);
+      collectedItems.push(...response.data.items);
       if (response.data.items.length < response.data.info.pageSize) {
-        return true;
+        break;
       }
     }
+    await this.processedPulledItems(trx, userId, collectedItems);
+    return true;
   }
 
   async processedPulledItems(trx: DrizzleDb, userId: number, items: Food[]) {
@@ -183,6 +186,7 @@ export class FoodService implements ISyncedEntityService {
       return image;
     }).filter((x) => x !== null);
     const imageMap = await this.imageService.processPulledItems(userId, trx, images, ImageType.FOOD);
+
 
     const foodToAppFood = (food: Food): AppFood => {
       return {

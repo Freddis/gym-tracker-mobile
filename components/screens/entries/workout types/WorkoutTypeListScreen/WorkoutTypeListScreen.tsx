@@ -22,7 +22,7 @@ export const WorkoutTypeListScreen: FC = () => {
       {!query.data && <LoadingBlock />}
       {!!workouts && <FlatList data={workouts} style={styles.list} renderItem={(x) => (
         <View>
-          <Text>{x.item.externalId} - {x.item.name} - {x.item.deletedAt?.toString()}</Text>
+          <Text>{x.item.id} - {x.item.name} - {x.item.deletedAt?.toString()}</Text>
         </View>
         )} />}
     </ThemedView>

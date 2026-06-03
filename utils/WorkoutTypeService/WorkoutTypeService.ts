@@ -37,8 +37,8 @@ export class WorkoutTypeService implements ISyncedEntityService {
   protected async processedPulledItem(db: DrizzleDb, items: WorkoutType[]): Promise<void> {
     const sets: NewModel<WorkoutTypeExerciseSetRow>[] = [];
     for (const remoteWorkoutType of items) {
-      const newWorkoutRow: NewModel<WorkoutTypeRow> = {
-        externalId: remoteWorkoutType.id,
+      const newWorkoutRow: WorkoutTypeRow = {
+        id: remoteWorkoutType.id,
         userId: remoteWorkoutType.userId,
         createdAt: remoteWorkoutType.createdAt,
         updatedAt: remoteWorkoutType.updatedAt,
@@ -46,8 +46,8 @@ export class WorkoutTypeService implements ISyncedEntityService {
         lastPushedAt: new Date(),
         deletedAt: remoteWorkoutType.deletedAt,
         name: remoteWorkoutType.name,
-        planIndex: remoteWorkoutType.planId,
-        planId: remoteWorkoutType.planIndex,
+        planIndex: remoteWorkoutType.planIndex,
+        planId: remoteWorkoutType.planId,
         description: remoteWorkoutType.description,
       };
 

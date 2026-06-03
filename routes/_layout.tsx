@@ -48,7 +48,7 @@ export default function RootLayout() {
   if (error) {
     return (
       <AppScreenContainer>
-        <View>
+        <View className="h-full p-m pt-100">
           <ThemedText>Migration error: {error.message}</ThemedText>
         </View>
       </AppScreenContainer>
