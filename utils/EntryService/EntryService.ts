@@ -393,6 +393,7 @@ export class EntryService implements ISyncedEntityService {
     db: DrizzleDb,
     params?: {
       externalIds?: string[],
+      healthkitIds?: string[],
       ids?: string[],
       limit?: number,
       updatedAt?: Date,
@@ -409,6 +410,7 @@ export class EntryService implements ISyncedEntityService {
       where: (t, op) => op.and(
         params?.ids ? op.inArray(t.id, params.ids) : undefined,
         params?.externalIds ? op.inArray(t.externalId, params.externalIds) : undefined,
+        params?.healthkitIds ? op.inArray(t.healthkitId, params.healthkitIds) : undefined,
         params?.includeDeleted ? undefined : op.isNull(t.deletedAt),
         params?.types ? op.inArray(t.type, params.types) : undefined,
         params?.date ? op.gte(t.time, params.date) : undefined,
@@ -495,30 +497,44 @@ export class EntryService implements ISyncedEntityService {
     const entries = await this.getEntries(this.db, {externalIds: [externalId]});
     return entries[0] ?? null;
   }
+  async getEntryByHealthkitId(healthkitId: string): Promise<AppEntry | null> {
+    const entries = await this.getEntries(this.db, {healthkitIds: [healthkitId]});
+    return entries[0] ?? null;
+  }
 
-  async pushToServer(userId: number, db: DrizzleDb): Promise<boolean> {
+  async pushToServer(userId: number, db: DrizzleDb, progress: StageProgressCallback): Promise<boolean> {
     this.logger.info('Pushing entries to server', {userId});
     const lastPullSyncDate = await this.getLatestPushSyncDate(db);
     this.logger.info('Last pull sync date', {lastPullSyncDate});
+    const limit = 20;
     const idRows = await db.query.entries.findMany({
       columns: {
         id: true,
       },
       where: (t, op) => op.and(
-        eq(t.userId, userId),
-        lastPullSyncDate ? op.or(
-          op.gt(t.updatedAt, lastPullSyncDate),
-          op.gt(t.createdAt, lastPullSyncDate),
-          op.gt(t.deletedAt, lastPullSyncDate),
-          op.isNull(t.lastPushedAt),
-        ) : undefined
-      ),
+      eq(t.userId, userId),
+      lastPullSyncDate ? op.or(
+        op.gt(t.updatedAt, lastPullSyncDate),
+        op.gt(t.createdAt, lastPullSyncDate),
+        op.gt(t.deletedAt, lastPullSyncDate),
+        op.isNull(t.lastPushedAt),
+      ) : undefined
+    ),
     });
-    if (idRows.length === 0) {
-      this.logger.info('No entries to push');
-      return true;
+    const ids: string[] = idRows.map((x) => x.id);
+    const itemsNumber = ids.length;
+    progress({itemsDone: 0, itemsNumber});
+    while (ids.length > 0) {
+      const result = await this.pushEntries(db, ids.slice(0, limit));
+      if (!result) {
+        return false;
+      }
+      ids.splice(0, limit);
+      const itemsDone = itemsNumber - ids.length;
+      progress({itemsDone, itemsNumber});
     }
-    return await this.pushEntries(db, idRows.map((x) => x.id));
+    return true;
+
   }
 
   protected async pushEntries(db: DrizzleDb, ids: string[]): Promise<boolean> {
@@ -592,7 +608,7 @@ export class EntryService implements ISyncedEntityService {
     workout: WorkoutProxyTyped,
     hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[]
   ): Promise<void> {
-    const existing: AppEntry | null = await this.getEntryByExternalId(workout.uuid);
+    const existing: AppEntry | null = await this.getEntryByHealthkitId(workout.uuid);
     const skipOnexisting = true;
     if (existing && skipOnexisting) {
       return;

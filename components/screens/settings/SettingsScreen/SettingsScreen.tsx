@@ -15,6 +15,7 @@ import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollVie
 import {queryQuantitySamples, queryWorkoutSamples, requestAuthorization, WorkoutActivityType} from '@kingstinct/react-native-healthkit';
 import {ThemedButton} from '../../../blocks/ThemedButton/ThemedButton';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {activateKeepAwakeAsync, deactivateKeepAwake} from 'expo-keep-awake';
 
 const styles = StyleSheet.create({
   progressContainer: {
@@ -71,6 +72,7 @@ export const SettingsScreen: FC = () => {
   };
   const syncWithServerButtonPress = async () => {
     setShowSyncModal(true);
+    await activateKeepAwakeAsync();
     const result = await syncService.syncWithServer(db, userId, (data) =>
       setProgressState({...data}),
     );
@@ -78,10 +80,12 @@ export const SettingsScreen: FC = () => {
     console.log('invalidating entries');
     queryClient.invalidateQueries();
     setShowSyncModal(false);
+    activateKeepAwakeAsync();
     setTimeout(() => {
       Alert.alert(title, result.message);
     }, 500);
   };
+
   const wipeLocalData = async () => {
     const result = await syncService.wipeLocalData(db, userId, (data) =>
       setProgressState({...data}),
@@ -97,9 +101,9 @@ export const SettingsScreen: FC = () => {
     ]);
   };
 
-
   const onHealthClick = async () => {
     setShowImportModal(true);
+    await activateKeepAwakeAsync();
     try {
       const authorized = await requestAuthorization({
         toRead: [
@@ -115,7 +119,7 @@ export const SettingsScreen: FC = () => {
         return;
       }
       const workouts = await queryWorkoutSamples({
-        limit: 10,
+        limit: 0,
         filter: {
           OR: [
             {
@@ -150,11 +154,13 @@ export const SettingsScreen: FC = () => {
       setShowImportModal(false);
       Alert.alert('Success', 'Data imported successfully');
       queryClient.invalidateQueries();
+      deactivateKeepAwake();
     } catch (error) {
       Alert.alert('Error', 'Error importing data from Health Kit');
       console.error(error);
       setShowImportModal(false);
       queryClient.invalidateQueries();
+      deactivateKeepAwake();
     }
   };
 

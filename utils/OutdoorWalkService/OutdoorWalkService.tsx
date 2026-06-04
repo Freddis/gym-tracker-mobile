@@ -45,10 +45,21 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
         heartRateData: true,
       },
     });
-    return new Map(outdoorWalks.map((x) => [x.id, x]));
+    // hack for inifinities
+    return new Map(outdoorWalks.map((x) => [x.id, {
+      ...x,
+      pace: Number.isFinite(x.pace) ? x.pace : 0,
+      maxPace: Number.isFinite(x.maxPace) ? x.maxPace : 0,
+      cadence: Number.isFinite(x.cadence) ? x.cadence : 0,
+      maxCadence: Number.isFinite(x.maxCadence) ? x.maxCadence : 0,
+      elevationGain: Number.isFinite(x.elevationGain) ? x.elevationGain : 0,
+      heartRate: Number.isFinite(x.heartRate) ? x.heartRate : 0,
+      maxHeartRate: Number.isFinite(x.maxHeartRate) ? x.maxHeartRate : 0,
+      calories: Number.isFinite(x.calories) ? x.calories : 0,
+    }]));
   }
 
-  construct(row: BaseEntry, value: AppOutdoorWalk): OutdoorWalkAppEntry & {type: EntryType.OUTDOOR_WALK;} {
+  construct(row: BaseEntry, value: AppOutdoorWalk): OutdoorWalkAppEntry {
     return {
       ...row,
       type: EntryType.OUTDOOR_WALK,
