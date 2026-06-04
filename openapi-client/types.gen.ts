@@ -1112,6 +1112,34 @@ export type Entry = {
      * External source of the entry. Another app.
      */
     externalSource: ExternalSource | null;
+    /**
+     * Healthkit id of the entry
+     */
+    healthkitId: string | null;
+    /**
+     * Healthkit anchor of the entry
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Healthkit anchors_3_0 of the entry
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Healthkit source of the entry
+     */
+    healthkitSource: string | null;
+    /**
+     * Healthkit source name of the entry
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Healthkit device of the entry
+     */
+    healthkitDevice: string | null;
+    /**
+     * Healthkit device name of the entry
+     */
+    healthkitDeviceName: string | null;
     type: EntryType;
     /**
      * Weight. Only for weight entries
@@ -1589,6 +1617,34 @@ export type WorkoutEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'Workout';
@@ -1620,34 +1676,6 @@ export type WorkoutEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 /**
@@ -1696,6 +1724,34 @@ export type WeightEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'Weight';
@@ -1727,34 +1783,6 @@ export type WeightEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 /**
@@ -1826,6 +1854,34 @@ export type PostEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'Post';
@@ -1857,34 +1913,6 @@ export type PostEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 export type OutdoorRunEntryUpsertDto = {
@@ -1926,6 +1954,34 @@ export type OutdoorRunEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'OutdoorRun';
@@ -1957,34 +2013,6 @@ export type OutdoorRunEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 /**
@@ -2092,6 +2120,34 @@ export type OutdoorWalkEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'OutdoorWalk';
@@ -2123,34 +2179,6 @@ export type OutdoorWalkEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 /**
@@ -2197,6 +2225,34 @@ export type MealEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'Meal';
@@ -2228,34 +2284,6 @@ export type MealEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 /**
@@ -2331,6 +2359,34 @@ export type CalorieGoalEntryUpsertDto = {
      */
     externalSource: ExternalSource | null;
     /**
+     * Id of the healthkit entry
+     */
+    healthkitId: string | null;
+    /**
+     * Last sync date
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Last sync anchor
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Id of the app that added healthkit record
+     */
+    healthkitSource: string | null;
+    /**
+     * Name of the app that added healthkit record
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Id of the device that added healthkit record
+     */
+    healthkitDevice: string | null;
+    /**
+     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+     */
+    healthkitDeviceName: string | null;
+    /**
      * Type of the entry
      */
     type: 'CalorieGoal';
@@ -2362,34 +2418,6 @@ export type CalorieGoalEntryUpsertDto = {
      * Image
      */
     image?: ImageUpsertDto | null;
-    /**
-     * Id of the healthkit entry
-     */
-    healthkitId: string | null;
-    /**
-     * Last sync date
-     */
-    healthkitAnchor: number | null;
-    /**
-     * Last sync anchor
-     */
-    healthkitAnchors_3_0: string | null;
-    /**
-     * Id of the app that added healthkit record
-     */
-    healthkitSource: string | null;
-    /**
-     * Name of the app that added healthkit record
-     */
-    healthkitSourceName: string | null;
-    /**
-     * Id of the device that added healthkit record
-     */
-    healthkitDevice: string | null;
-    /**
-     * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
-     */
-    healthkitDeviceName: string | null;
 };
 
 /**
@@ -2474,6 +2502,34 @@ export type PostEntry = {
      * External source of the entry. Another app.
      */
     externalSource: ExternalSource | null;
+    /**
+     * Healthkit id of the entry
+     */
+    healthkitId: string | null;
+    /**
+     * Healthkit anchor of the entry
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Healthkit anchors_3_0 of the entry
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Healthkit source of the entry
+     */
+    healthkitSource: string | null;
+    /**
+     * Healthkit source name of the entry
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Healthkit device of the entry
+     */
+    healthkitDevice: string | null;
+    /**
+     * Healthkit device name of the entry
+     */
+    healthkitDeviceName: string | null;
     /**
      * Type
      */

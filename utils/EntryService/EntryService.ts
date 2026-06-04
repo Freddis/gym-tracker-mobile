@@ -215,6 +215,14 @@ export class EntryService implements ISyncedEntityService {
         createdAt: x.createdAt,
         deletedAt: x.deletedAt,
         updatedAt: x.updatedAt,
+        healthkitId: x.healthkitId,
+        healthkitAnchor: x.healthkitAnchor,
+        healthkitAnchors_3_0: x.healthkitAnchors_3_0,
+        healthkitSource: x.healthkitSource,
+        healthkitSourceName: x.healthkitSourceName,
+        healthkitDevice: x.healthkitDevice,
+        healthkitDeviceName: x.healthkitDeviceName,
+        externalSource: x.externalSource,
       };
       if (x.type !== EntryType.POST) {
         const objectMap = objectMapMap[x.type];
@@ -591,16 +599,7 @@ export class EntryService implements ISyncedEntityService {
   }
 
   protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
-    const row = await db.query.entries.findFirst({
-      columns: {
-        lastPulledAt: true,
-      },
-      orderBy: (t, op) => [op.desc(t.lastPulledAt)],
-    });
-    if (!row) {
-      return null;
-    }
-    return row.lastPulledAt;
+    return await this.getLatestPushSyncDate(db);
   }
 
   async importFromHealthKit(

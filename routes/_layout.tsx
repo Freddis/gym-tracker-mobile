@@ -21,7 +21,10 @@ import '../utils/global.css';
 import {LanguageProvider} from '../components/providers/LanguageProvider/LanguageProvider';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-// console.log = () => null // uncomment for prod / preview
+// uncomment for prod / preview
+// console.log = () => null;
+// console.warn = () => null;
+// console.info = () => null;
 export const queryClient = new QueryClient();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
