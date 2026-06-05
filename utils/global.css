@@ -18,6 +18,8 @@
   --spacing-s: 10;
   --spacing-m: 15;
   --spacing-l: 20;
+  --spacing-xl: 40;
+  --spacing-xxl: 60;
   --color-accent: var(--color-accent);
   --color-main: var(--color-main);
   --color-on-main: var(--color-on-main);

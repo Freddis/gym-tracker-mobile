@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import FastImage from '@d11/react-native-fast-image';
 import {cn} from '../../../cn';
-import {NwFastImage, NwFastImageProps} from '../NwFastImage/NwFastImage';
+import {NwFastImage, NwFastImageProps} from '../../nativewind/NwFastImage/NwFastImage';
 
 
 export const ThemedImage: FC<NwFastImageProps> = (props) => {
