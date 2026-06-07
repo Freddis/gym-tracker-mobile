@@ -16,7 +16,7 @@ import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderBu
 import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
-import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../../EntryListScreen/components/SyncIcon/SyncIcon';
 import {weightAtom} from './utils/weightAtom';
 import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 
@@ -106,7 +106,7 @@ export const WeightUpdateScreen: FC = () => {
               <Separator/>
               <View className="flex-row items-center">
                 <ThemedText style={{flexGrow: 1}}>Synced</ThemedText>
-                <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
+                <SyncIcon object={entry} />
               </View>
               <Separator />
                 <View className="flex-row justify-center gap-40">

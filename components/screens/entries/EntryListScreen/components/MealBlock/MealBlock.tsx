@@ -4,7 +4,7 @@ import {MealAppEntry} from '../../../../../../types/models/AppEntry';
 import {Pressable, View} from 'react-native';
 import {ThemedBlock} from '../../../../../blocks/ThemedBlock/ThemedBlock';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
-import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../SyncIcon/SyncIcon';
 import {MealEntryBlockFoodComponent} from './components/MealEntryBlockFoodComponent';
 import {FoodUtility} from '../../../../../../utils/FoodUtility/FoodUtility';
 import {AppSeparator} from '../../../../../blocks/AppSeparator/AppSeparator';
@@ -14,7 +14,7 @@ import {wrap} from '../../../meal/MealUpdateScreen/wrap';
 import {PostContent} from '../PostContent/PostContent';
 
 export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) => {
-  const [entry, setEntry] = useAtom(props.entryAtom);
+  const [entry] = useAtom(props.entryAtom);
   const setMealAtom = useSetAtom(mealAtom);
   const router = useRouter();
   const foodUtility = new FoodUtility();
@@ -51,7 +51,7 @@ export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) =
           <ThemedText>
           {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
           </ThemedText>
-          <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} readonly/>
+          <SyncIcon object={entry} />
         </View>
       </View>
       <View>

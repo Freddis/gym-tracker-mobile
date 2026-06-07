@@ -3,12 +3,12 @@ import {View, Pressable} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {PostAppEntry} from '../../../../../../types/models/AppEntry';
-import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../SyncIcon/SyncIcon';
 import {PrimitiveAtom, useAtom} from 'jotai';
 import {PostContent} from '../PostContent/PostContent';
 
 export const PostBlock: FC<{entryAtom: PrimitiveAtom<PostAppEntry>, onPress?: (x: PostAppEntry)=> void}> = (props) => {
-  const [entry, setEntry] = useAtom(props.entryAtom);
+  const [entry] = useAtom(props.entryAtom);
   const onPress = () => {
     if (props.onPress) {
       props.onPress(entry);
@@ -32,7 +32,7 @@ export const PostBlock: FC<{entryAtom: PrimitiveAtom<PostAppEntry>, onPress?: (x
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={entry} readonly onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})}/>
+            <SyncIcon object={entry} />
           </View>
         </View>
         <View className="flex-col items-start justify-start">

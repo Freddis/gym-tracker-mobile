@@ -3,11 +3,11 @@ import {View, Pressable} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {WeightAppEntry} from '../../../../../../types/models/AppEntry';
-import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../SyncIcon/SyncIcon';
 import {PrimitiveAtom, useAtom} from 'jotai';
 
 export const WeightBlock: FC<{entryAtom: PrimitiveAtom<WeightAppEntry>, onPress?: (x: WeightAppEntry)=> void}> = (props) => {
-  const [entry, setEntry] = useAtom(props.entryAtom);
+  const [entry] = useAtom(props.entryAtom);
   const weight = entry.weight;
   const onPress = () => {
     if (props.onPress) {
@@ -32,7 +32,7 @@ export const WeightBlock: FC<{entryAtom: PrimitiveAtom<WeightAppEntry>, onPress?
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} readonly/>
+            <SyncIcon object={entry} />
           </View>
         </View>
         <View className="flex-row items-center justify-center">

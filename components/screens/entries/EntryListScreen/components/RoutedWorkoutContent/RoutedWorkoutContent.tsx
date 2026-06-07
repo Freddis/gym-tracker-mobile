@@ -5,7 +5,7 @@ import {durationToTimeString} from '../../../../../../utils/durationToTimeString
 import {paceToString} from '../../../../../../utils/paceToString';
 import {AppWorkoutMap} from '../../../../../blocks/AppWorkoutMap/AppWorkoutMap';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
-import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../SyncIcon/SyncIcon';
 import {FC} from 'react';
 import {getTimeString} from '../../../../../../utils/getTimeString';
 import {usePathDataProcessing} from '../../../../../../utils/usePathDataProcessing';
@@ -33,7 +33,7 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
         {props.entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(props.entry.time)}
         </ThemedText>
         <ThemedText>Pace: {paceToString(props.workout.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
-        <EntrySyncButton entry={props.entry} readonly onUpdate={props.onUpdate}/>
+        <SyncIcon object={props.entry} />
       </View>
     </View>
     <View className="flex-col items-start justify-start">

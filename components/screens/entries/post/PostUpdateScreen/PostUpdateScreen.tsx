@@ -12,7 +12,7 @@ import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTi
 import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploadButton';
 import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
-import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../../EntryListScreen/components/SyncIcon/SyncIcon';
 import {postAtom} from './utils/postAtom';
 import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedTextInput} from '../../../../blocks/ThemedInput/ThemedInput';
@@ -75,7 +75,7 @@ export const PostUpdateScreen: FC = () => {
               <Separator/>
               <View className="flex-row items-center">
                 <ThemedText className="grow">Synced</ThemedText>
-                <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
+                <SyncIcon object={entry} />
               </View>
               <Separator />
               <View className="gap-s">

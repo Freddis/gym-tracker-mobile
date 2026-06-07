@@ -17,7 +17,7 @@ import {getTimeString} from '../../../../../utils/getTimeString';
 import {paceToString} from '../../../../../utils/paceToString';
 import {speedToPace} from '../../../../../utils/speedToPace';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
-import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../../EntryListScreen/components/SyncIcon/SyncIcon';
 import {AppOutdoorWalk} from '../../../../../types/models/AppOutdoorWalk';
 
 export const OutdoorWalkUpdateScreen: FC = () => {
@@ -51,7 +51,7 @@ export const OutdoorWalkUpdateScreen: FC = () => {
                 {entry.time.toLocaleString('en-GB', {weekday: 'long'})}, {getTimeString(entry.time)}
                 </ThemedText>
                 <ThemedText>Pace: {paceToString(outdoorWalk.pace)} (best: {paceToString(speedToPace(path.maxSpeed))})</ThemedText>
-                <EntrySyncButton entry={entry} readonly onUpdate={() => {}}/>
+                <SyncIcon object={entry} />
               </View>
             </View>
             {outdoorWalk.geoData && outdoorWalk.geoData.length > 0 && (

@@ -7,11 +7,11 @@ import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {ThemedImage} from '@/components/blocks/ThemedImage/ThemedImage';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {WorkoutAppEntry} from '../../../../../../types/models/AppEntry';
-import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../SyncIcon/SyncIcon';
 import {PrimitiveAtom, useAtom} from 'jotai';
 
 export const WorkoutBlock: FC<{entryAtom: PrimitiveAtom<WorkoutAppEntry>, onPress?: (x: WorkoutAppEntry)=> void}> = (props) => {
-  const [entry, setEntry] = useAtom(props.entryAtom);
+  const [entry] = useAtom(props.entryAtom);
   const workout = entry.workout;
   const exercises = workout.exercises;
   const onPress = () => {
@@ -45,7 +45,7 @@ export const WorkoutBlock: FC<{entryAtom: PrimitiveAtom<WorkoutAppEntry>, onPres
               <ThemedText>
               {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
               </ThemedText>
-              <EntrySyncButton entry={entry} readonly onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
+              <SyncIcon object={entry} />
             </View>
           </View>
         </View>

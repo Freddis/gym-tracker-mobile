@@ -15,7 +15,6 @@ import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExercise
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
-import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {DateTimeUpdateModal} from '../../../../blocks/DateTimeUpdateModal/DateTimeUpdateModal';
 import {string} from 'zod';
 import {workoutAtom} from './utils/workoutAtom';
@@ -26,6 +25,7 @@ import {WorkoutAppEntry} from '../../../../../types/models/AppEntry';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
 import {dateToString} from '../../../../../utils/dateToString';
+import {SyncIcon} from '../../EntryListScreen/components/SyncIcon/SyncIcon';
 
 export const WorkoutScreen: FC = () => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -179,7 +179,7 @@ export const WorkoutScreen: FC = () => {
               <Separator />
               <View className="flex-row">
                 <ThemedText className="grow">Synced:</ThemedText>
-                <EntrySyncButton entry={entry} onUpdate={(e) => setEntry({...entry, updatedAt: e.updatedAt})} />
+                <SyncIcon object={entry} />
               </View>
               {!!workoutFinished && (
                 <>

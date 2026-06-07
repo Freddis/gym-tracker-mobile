@@ -3,7 +3,7 @@ import {View, Pressable} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedBlock} from '@/components/blocks/ThemedBlock/ThemedBlock';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
-import {EntrySyncButton} from '../EntrySyncButton/EntrySyncButton';
+import {SyncIcon} from '../SyncIcon/SyncIcon';
 import {PrimitiveAtom, useAtom} from 'jotai';
 
 export const UknownEntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
@@ -26,7 +26,7 @@ export const UknownEntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) =>
             <ThemedText>
             {date.toLocaleString('en-GB', {weekday: 'long'})}, {getTime(date)}
             </ThemedText>
-            <EntrySyncButton entry={entry} readonly onUpdate={() => {}}/>
+            <SyncIcon object={entry} />
           </View>
         </View>
         <View className="flex-row items-center justify-center">

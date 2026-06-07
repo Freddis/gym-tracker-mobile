@@ -4,7 +4,7 @@ import {FC, useState, useEffect} from 'react';
 import {KeyboardAvoidingView, Platform, View, Pressable} from 'react-native';
 import {useAppTheme} from '../../../../../hooks/useAppTheme';
 import {FoodAmountUnit, MealType} from '../../../../../openapi-client';
-import {MealAppEntry, AppEntry} from '../../../../../types/models/AppEntry';
+import {MealAppEntry} from '../../../../../types/models/AppEntry';
 import {dateToString} from '../../../../../utils/dateToString';
 import {FoodUtility} from '../../../../../utils/FoodUtility/FoodUtility';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
@@ -17,7 +17,6 @@ import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {ThemedScrollView} from '../../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {selectedFoodAtom} from '../../../food/FoodSelectScreen/selectedFoodAtom';
-import {EntrySyncButton} from '../../EntryListScreen/components/EntrySyncButton/EntrySyncButton';
 import {FoodComponentBlock} from './components/FoodComponentBlock';
 import {wrap, Wrapped} from '../MealUpdateScreen/wrap';
 import {WheelPickerItemProps} from 'react-native-ui-lib';
@@ -25,6 +24,7 @@ import {ImageUploadButton} from '../../../../blocks/ImageUploadButton/ImageUploa
 import {AppFoodComponent} from '../../../../../utils/FoodService/types/AppFoodComponent';
 import {AppWheelPicker} from '../../../../blocks/AppWheelPicker/AppWheelPicker';
 import {AppWheelPickerModal} from '../../../../blocks/AppWheelPickerModal/AppWheelPickerModal';
+import {SyncIcon} from '../../EntryListScreen/components/SyncIcon/SyncIcon';
 
 interface MealUpdateFormProps {
   entry: MealAppEntry;
@@ -127,14 +127,6 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
     // const result = await entryService.saveEntry(updatedEntry);
     // setEntry(result);
   };
-  const onSync = (e: AppEntry) => {
-    const updatedEntry: MealAppEntry = {
-      ...entry,
-      updatedAt: e.updatedAt,
-    };
-    setEntry(updatedEntry);
-    props.onChange(updatedEntry);
-  };
   const onAddFoodPress = () => {
     router.navigate('/app/entries/food/foodSelect');
   };
@@ -162,7 +154,7 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
             <AppSeparator />
             <View className="flex-row items-center justify-between">
               <ThemedText>Synced</ThemedText>
-              <EntrySyncButton entry={entry} onUpdate={onSync} />
+              <SyncIcon object={entry} />
             </View>
             {(props.onDelete || props.onCopy) && (
               <>
