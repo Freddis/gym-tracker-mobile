@@ -7,8 +7,14 @@ import {NumericEntryKeys} from '../EntryService/types/NumericEntryKeys';
 import uuid from 'react-native-uuid';
 import {EntryCreateParams} from './types/EntryCreateParams';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
-
+import {eq} from 'drizzle-orm';
+import {ImageService} from '../ImageService/ImageService';
+import {AppImage} from '../../types/models/AppImage';
 export class EntryRepositoryService {
+  protected imageService: ImageService;
+  constructor(imageService: ImageService) {
+    this.imageService = imageService;
+  }
   async findOne(db: DrizzleDb, filter: {userId: number; before: Date; type: EntryType;}): Promise<BaseEntry| null> {
     const entry = await db.query.entries.findFirst({
       where: (t, op) => op.and(
@@ -22,9 +28,30 @@ export class EntryRepositoryService {
     }
     const baseEntry: BaseEntry = {
       ...entry,
-      image: null,
+      image: await this.loadImage(db, entry.imageId),
     };
     return baseEntry;
+  }
+
+  async load(db: DrizzleDb, id: string): Promise<BaseEntry> {
+    const entry = await db.query.entries.findFirst({
+      where: (t, op) => op.eq(t.id, id),
+    });
+    if (!entry) {
+      throw new Error(`Entry not found ${id}`);
+    }
+    const baseEntry: BaseEntry = {
+      ...entry,
+      image: await this.loadImage(db, entry.imageId),
+    };
+    return baseEntry;
+  }
+
+  async touch(db: DrizzleDb, id: string): Promise<BaseEntry> {
+    await db.update(schema.entries).set({
+      updatedAt: new Date(),
+    }).where(eq(schema.entries.id, id));
+    return await this.load(db, id);
   }
 
   async create(
@@ -58,5 +85,14 @@ export class EntryRepositoryService {
       image: null,
     };
     return baseEntry;
+  }
+
+  protected async loadImage(trx: DrizzleDb, imageId: number | null): Promise<AppImage | null> {
+    if (!imageId) {
+      return null;
+    }
+    const imageMap = await this.imageService.loadMap([imageId], trx);
+    const image = imageMap.get(imageId);
+    return image ?? null;
   }
 }

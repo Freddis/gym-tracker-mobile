@@ -1,5 +1,5 @@
 import {Entry, EntryType, PostEntryUpsertDto, Workout, WorkoutEntryUpsertDto} from '@/openapi-client';
-import {DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
 import {desc, and, eq, isNull} from 'drizzle-orm';
@@ -11,13 +11,18 @@ import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, WorkoutAppEntry} from '../../types/models/AppEntry';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {ExerciseHistory} from './types/ExerciseHistory';
+import {transactionAsync} from '../runTransaction';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
+import {avoidLet} from '../avoidLet';
 export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
   protected logger: Logger;
   protected exerciseService: ExerciseService;
+  protected entryRepositoryService: EntryRepositoryService;
 
-  constructor(private readonly db: DrizzleDb, exerciseService: ExerciseService) {
+  constructor(private readonly db: DrizzleDb, entryRepositoryService: EntryRepositoryService, exerciseService: ExerciseService) {
     this.logger = new Logger(WorkoutService.name);
     this.exerciseService = exerciseService;
+    this.entryRepositoryService = entryRepositoryService;
   }
 
   async getExerciseHistory(exerciseId: string): Promise<ExerciseHistory> {
@@ -269,8 +274,9 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
     return insertedId;
   }
 
-  async loadMap(ids: number[]): Promise<Map<number, CompleteAppWorkout>> {
-    const workouts: CompleteAppWorkout[] = await this.db.query.workouts.findMany({
+  async loadMap(ids: number[], trx?: DrizzleDb): Promise<Map<number, CompleteAppWorkout>> {
+    trx = trx ?? this.db;
+    const workouts: CompleteAppWorkout[] = await trx.query.workouts.findMany({
       where: (t, op) => op.inArray(t.id, ids),
       with: {
         exercises: {
@@ -297,5 +303,45 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
       type: EntryType.WORKOUT,
       workout: value,
     };
+  }
+
+  async addExerciseToWorkout(entry: WorkoutAppEntry, exerciseId: string): Promise<WorkoutAppEntry> {
+    const newDb = await asyncDrizzle();
+    const result = await transactionAsync(newDb, async (trx) => {
+      const selectedExercise = await this.exerciseService.getExercise(exerciseId);
+      const exercise = await avoidLet(async () => {
+        if (selectedExercise.userId === entry.userId) {
+          return selectedExercise;
+        }
+        return this.exerciseService.copyExercise(entry.userId, exerciseId, trx);
+      });
+      const workoutExercise: NewModel<AppWorkoutExercise> = {
+        workoutId: entry.workout.id,
+      // externalId: null,
+        userId: entry.userId,
+        createdAt: new Date(),
+        updatedAt: null,
+        exerciseId: exercise.id,
+      };
+      await trx.insert(schema.workoutExercises).values(workoutExercise);
+      await trx.update(schema.workouts).set({
+        updatedAt: new Date(),
+      }).where(eq(schema.workouts.id, entry.workout.id));
+      const base = await this.entryRepositoryService.touch(trx, entry.id);
+      const workout: CompleteAppWorkout = await this.load(entry.workout.id, trx);
+      const updated = this.construct(base, workout);
+      return updated;
+    });
+
+    return result;
+  }
+
+  protected async load(id: number, trx: DrizzleDb): Promise<CompleteAppWorkout> {
+    const map = await this.loadMap([id], trx);
+    const workout = map.get(id);
+    if (!workout) {
+      throw new Error(`Workout not found ${id}`);
+    }
+    return workout;
   }
 }

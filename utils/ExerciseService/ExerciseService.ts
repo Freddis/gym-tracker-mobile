@@ -1,4 +1,4 @@
-import {AppExercise} from '@/types/models/AppExercise';
+import {ExerciseRow} from '@/types/models/ExerciseRow';
 import {NestedAppExercise} from './types/NestedAppExercise';
 import {Exercise, ExerciseUpsertDto, getExercises, Muscle, putExercises} from '@/openapi-client';
 import {openApiRequest} from '../openApiRequest';
@@ -11,8 +11,41 @@ import {AppExerciseMuscle} from '../../types/models/AppExerciseMuscle';
 import {eq} from 'drizzle-orm';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
+import uuid from 'react-native-uuid';
 
 export class ExerciseService implements ISyncedEntityService {
+  protected logger: Logger = new Logger(ExerciseService.name);
+  protected db: DrizzleDb;
+
+
+  constructor(db: DrizzleDb) {
+    this.db = db;
+  }
+
+  async copyExercise(userId: number, exerciseId: string, trx: DrizzleDb): Promise<Exercise> {
+    const exercise = await this.getExercise(exerciseId);
+    if (!exercise) {
+      throw new Error(`Exercise not found ${exerciseId}`);
+    }
+    const newExercise: Exercise = {
+      ...exercise,
+      id: uuid.v4(),
+      userId: userId,
+      copiedFromId: exerciseId,
+      parentExerciseId: null,
+      isArchived: false,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    };
+    return await this.createExercise(newExercise, trx);
+  }
+
+  async createExercise(exercise: Exercise, trx?: DrizzleDb) {
+    trx = trx ?? this.db;
+    const result = await this.upsertExercise(trx, exercise, null);
+    return result;
+  }
 
   async getExercise(exerciseId: string): Promise<Exercise> {
     const row = await db.query.exercises.findFirst({
@@ -37,7 +70,7 @@ export class ExerciseService implements ISyncedEntityService {
     return result;
   }
 
-  async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<Exercise[]> {
+  async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<NestedAppExercise[]> {
     const items = await db.query.exercises.findMany({
       where: (t, op) => op.and(
         params.presonal ? op.not(op.isNull(t.userId)) : op.isNull(t.userId),
@@ -50,12 +83,12 @@ export class ExerciseService implements ISyncedEntityService {
         op.isNull(t.deletedAt)
       ),
     });
-    let result: NestedAppExercise[] = items;
+    let result: (ExerciseRow & {variations?: ExerciseRow[]})[] = items;
     if (!params.presonal) {
       result = [];
       const map = items.reduce(
         (acc, item) => item.id ? acc.set(item.id, item) : acc,
-        new Map<string, NestedAppExercise>()
+        new Map<string, ExerciseRow & {variations?: ExerciseRow[]}>()
       );
 
       for (const item of items) {
@@ -94,9 +127,9 @@ export class ExerciseService implements ISyncedEntityService {
       secondaryMuscles.set(muscleRow.exerciseId, arr);
     }
 
-    const nested: Exercise[] = [];
+    const nested: NestedAppExercise[] = [];
     for (const row of result) {
-      const exercise: Exercise = {
+      const exercise: NestedAppExercise = {
         ...row,
         isArchived: false,
         muscles: {
@@ -115,65 +148,6 @@ export class ExerciseService implements ISyncedEntityService {
       nested.push(exercise);
     }
     return nested;
-  }
-
-  // async findByExternalId(id: number): Promise<AppExercise> {
-  //   const res = await db.query.exercises.findFirst({
-  //     where: (t, op) => op.eq(t.externalId, id),
-  //   });
-  //   if (!res) {
-  //     throw new Error('Exercise not found');
-  //   }
-  //   return res;
-  // }
-  protected logger: Logger = new Logger(ExerciseService.name);
-
-  processExerciseList(
-    exercises: AppExercise[],
-    opts?: {
-      nameFilter?: string
-    }
-  ): {builtIn: NestedAppExercise[], personal: AppExercise[]} {
-    const map = new Map<string, AppExercise[]>();
-    const primaryExercises: AppExercise[] = [];
-    const personalExercises: AppExercise[] = [];
-    const search = opts?.nameFilter ?? null;
-    for (const exercise of exercises) {
-      if (exercise.name.trim() === '') {
-        continue;
-      }
-      if (search !== null && !exercise.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-        continue;
-      }
-      if (exercise.userId !== null) {
-        personalExercises.push(exercise);
-        continue;
-      }
-
-      if (exercise.parentExerciseId === null) {
-        if (search !== null && !exercise.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-          continue;
-        }
-        primaryExercises.push(exercise);
-        continue;
-      }
-
-      const existing = map.get(exercise.parentExerciseId) ?? [];
-      existing.push(exercise);
-      map.set(exercise.parentExerciseId, existing);
-    }
-    const nestedExercises = primaryExercises.map((item) => {
-      let variations = map.get(item.id);
-      if (variations && variations.length === 1) {
-        variations = undefined;
-      }
-      return {
-        ...item,
-        variations,
-      };
-    }
-    );
-    return {builtIn: nestedExercises, personal: personalExercises};
   }
 
   createSectionListData(exercises: NestedAppExercise[]): {title: string, data: NestedAppExercise[]}[] {
@@ -273,52 +247,7 @@ export class ExerciseService implements ISyncedEntityService {
         progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
         processedItems += response.data.items.length;
         for (const exercise of response.data.items) {
-          const row: AppExercise = {
-            id: exercise.id,
-            params: exercise.params,
-            name: exercise.name,
-            description: exercise.description,
-            difficulty: exercise.difficulty,
-            equipment: exercise.equipment,
-            images: exercise.images,
-            userId: exercise.userId,
-            copiedFromId: exercise.copiedFromId,
-            parentExerciseId: exercise.parentExerciseId,
-            createdAt: exercise.createdAt,
-            updatedAt: exercise.updatedAt,
-            deletedAt: exercise.deletedAt,
-            lastPulledAt: new Date(),
-            lastPushedAt: new Date(),
-          };
-          const inserted = await db.insert(schema.exercises).values(row).onConflictDoUpdate({
-            target: schema.exercises.id,
-            set: conflictUpdateSetAllColumns(schema.exercises),
-          }).returning();
-          if (!inserted[0]) {
-            throw new Error("Couldn't get inserted data");
-          }
-          await db.delete(schema.exerciseMuscle).where(
-            eq(schema.exerciseMuscle.exerciseId, inserted[0].id)
-          );
-          const muscleRows: NewModel<AppExerciseMuscle>[] = [];
-          for (const muscle of exercise.muscles.primary) {
-            muscleRows.push({
-              exerciseId: inserted[0].id,
-              isPrimary: true,
-              muscle: muscle,
-            });
-          }
-          for (const muscle of exercise.muscles.secondary) {
-            muscleRows.push({
-              exerciseId: inserted[0].id,
-              isPrimary: false,
-              muscle: muscle,
-            });
-          }
-          if (muscleRows.length === 0) {
-            continue;
-          }
-          await db.insert(schema.exerciseMuscle).values(muscleRows);
+          await this.upsertExercise(trx, exercise, new Date());
         }
 
         if (response.data.items.length === 0 && response.data.items.length < response.data.info.pageSize) {
@@ -329,6 +258,57 @@ export class ExerciseService implements ISyncedEntityService {
     });
     return res;
   }
+
+  protected async upsertExercise(db: DrizzleDb, exercise: Exercise, lastSync: Date | null): Promise<Exercise> {
+    const row: ExerciseRow = {
+      id: exercise.id,
+      params: exercise.params,
+      name: exercise.name,
+      description: exercise.description,
+      difficulty: exercise.difficulty,
+      equipment: exercise.equipment,
+      images: exercise.images,
+      userId: exercise.userId,
+      copiedFromId: exercise.copiedFromId,
+      parentExerciseId: exercise.parentExerciseId,
+      createdAt: exercise.createdAt,
+      updatedAt: exercise.updatedAt,
+      deletedAt: exercise.deletedAt,
+      lastPulledAt: lastSync,
+      lastPushedAt: lastSync,
+    };
+    const inserted = await db.insert(schema.exercises).values(row).onConflictDoUpdate({
+      target: schema.exercises.id,
+      set: conflictUpdateSetAllColumns(schema.exercises),
+    }).returning();
+    if (!inserted[0]) {
+      throw new Error("Couldn't get inserted data");
+    }
+    await db.delete(schema.exerciseMuscle).where(
+      eq(schema.exerciseMuscle.exerciseId, inserted[0].id)
+    );
+    const muscleRows: NewModel<AppExerciseMuscle>[] = [];
+    for (const muscle of exercise.muscles.primary) {
+      muscleRows.push({
+        exerciseId: inserted[0].id,
+        isPrimary: true,
+        muscle: muscle,
+      });
+    }
+    for (const muscle of exercise.muscles.secondary) {
+      muscleRows.push({
+        exerciseId: inserted[0].id,
+        isPrimary: false,
+        muscle: muscle,
+      });
+    }
+    if (muscleRows.length === 0) {
+      return exercise;
+    }
+    await db.insert(schema.exerciseMuscle).values(muscleRows);
+    return exercise;
+  }
+
   protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
     const row = await db.query.exercises.findFirst({
       columns: {

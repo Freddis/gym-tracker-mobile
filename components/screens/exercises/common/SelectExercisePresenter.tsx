@@ -6,11 +6,11 @@ import {SegmentedControlItem, ThemedSegmentedControl} from '../../../blocks/Them
 import {FC, useMemo, useState} from 'react';
 import {ThemedSearchInput} from '../../../blocks/ThemedSearchInput/ThemedSearchInput';
 import {useQuery} from '@tanstack/react-query';
-import {Exercise} from '../../../../openapi-client';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
+import {NestedAppExercise} from '../../../../utils/ExerciseService/types/NestedAppExercise';
 
 interface SelectExercisePresenterProps {
-  onPress?: (item: Exercise) => void
+  onPress?: (item: NestedAppExercise) => void
 }
 
 export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props) => {

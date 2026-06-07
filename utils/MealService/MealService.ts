@@ -16,12 +16,13 @@ export class MealService implements IEntryService<EntryType.MEAL> {
   protected logger: Logger;
   protected readonly foodService: FoodService;
   protected readonly db: DrizzleDb;
-  protected readonly entryRepositoryService = new EntryRepositoryService();
+  protected readonly entryRepositoryService: EntryRepositoryService;
 
-  constructor(db: DrizzleDb, foodService: FoodService) {
+  constructor(db: DrizzleDb, foodService: FoodService, entryRepositoryService: EntryRepositoryService) {
     this.db = db;
     this.foodService = foodService;
     this.logger = new Logger(MealService.name);
+    this.entryRepositoryService = entryRepositoryService;
   }
 
   async create(meal: AppMeal, db: DrizzleDb): Promise<number> {

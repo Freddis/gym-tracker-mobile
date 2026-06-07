@@ -3,7 +3,7 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useNavigation, useRouter} from 'expo-router';
 import {FC, useContext, useEffect, useState} from 'react';
-import {AppExercise} from '@/types/models/AppExercise';
+import {ExerciseRow} from '@/types/models/ExerciseRow';
 import {useDrizzle} from '@/utils/drizzle';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
@@ -19,7 +19,7 @@ export const EditExerciseScreen: FC = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const placeHolderImage = require('@/assets/images/icon.png');
-  const [baseExercise, setBaseExercise] = useState<AppExercise| null>(null);
+  const [baseExercise, setBaseExercise] = useState<ExerciseRow| null>(null);
   const router = useRouter();
   const [name, setName] = useState('');
   const exerciseId = params.exerciseId as string;
@@ -51,7 +51,7 @@ export const EditExerciseScreen: FC = () => {
       alert('Invalid name');
       return;
     }
-    const newValue: AppExercise = {
+    const newValue: ExerciseRow = {
       id: uuid.v4(),
       name: name,
       description: description,

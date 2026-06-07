@@ -1,7 +1,6 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
-import {ApiService} from '../ApiService/ApiService';
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {QuantitySampleTyped, WorkoutActivityType, WorkoutProxyTyped, WorkoutRouteLocation} from '@kingstinct/react-native-healthkit';
@@ -22,11 +21,13 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
   protected entryRepositoryService: EntryRepositoryService;
   protected weightService: WeightService;
   protected pathUtility = new PathUtility();
+  protected db: DrizzleDb;
 
-  constructor(private readonly api: ApiService, private readonly db: DrizzleDb, weightService: WeightService) {
+  constructor(db: DrizzleDb, weightService: WeightService, entryRepositoryService: EntryRepositoryService) {
     this.logger = new Logger(OutdoorWalkService.name);
-    this.entryRepositoryService = new EntryRepositoryService();
+    this.entryRepositoryService = entryRepositoryService;
     this.weightService = weightService;
+    this.db = db;
   }
   async create(outdoorWalk: AppOutdoorWalk, db: DrizzleDb): Promise<number> {
     throw new Error('Not implemented');

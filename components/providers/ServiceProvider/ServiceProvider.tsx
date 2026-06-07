@@ -18,16 +18,18 @@ import {CalorieGoalService} from '../../../utils/CalorieGoalService/CalorieGoalS
 import {MealService} from '../../../utils/MealService/MealService';
 import {DashboardService} from '../../../utils/DashboardService/DashboardService';
 import {HealthKitService} from '../../../utils/HealthKitService/HealthKitService';
+import {EntryRepositoryService} from '../../../utils/EntryRepositoryService/EntryRepositoryService';
 
 const apiService = new ApiService();
-const weightService = new WeightService(apiService, db);
-const exerciseService = new ExerciseService();
-const workoutService = new WorkoutService(db, exerciseService);
 const imageService = new ImageService(apiService, db);
+const entryRepositoryService = new EntryRepositoryService(imageService);
+const weightService = new WeightService(db, entryRepositoryService);
+const exerciseService = new ExerciseService(db);
+const workoutService = new WorkoutService(db, entryRepositoryService, exerciseService);
 const outdoorRunService = new OutdoorRunService(apiService, db);
-const outdoorWalkService = new OutdoorWalkService(apiService, db, weightService);
+const outdoorWalkService = new OutdoorWalkService(db, weightService, entryRepositoryService);
 const foodService = new FoodService(apiService, db, imageService);
-const mealService = new MealService(db, foodService);
+const mealService = new MealService(db, foodService, entryRepositoryService);
 const calorieGoalService = new CalorieGoalService(db);
 const entryService = new EntryService(
   apiService,

@@ -7,7 +7,7 @@ import {ThemedBlock} from '../ThemedBlock/ThemedBlock';
 import {ThemedImage} from '../ThemedImage/ThemedImage';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {Separator} from '../Separator/Separator';
-
+import {SyncIcon} from '../../screens/entries/EntryListScreen/components/SyncIcon/SyncIcon';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const [opened, setOpened] = useState(false);
@@ -31,8 +31,9 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
     <ThemedBlock style={style}>
       <Pressable onPress={onPress}>
         <View style={{flexDirection: 'column'}}>
-          <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10}}>
             <ThemedText style={{color: theme.accent}} numberOfLines={1}>{item.name}</ThemedText>
+            <SyncIcon object={item} />
           </View>
           <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: theme.marginM}}>
             <ThemedImage source={{uri: item.images[0]}} />

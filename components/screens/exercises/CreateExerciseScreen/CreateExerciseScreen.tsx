@@ -8,7 +8,7 @@ import {
   useRouter,
 } from 'expo-router';
 import {FC, useContext, useEffect, useState} from 'react';
-import {AppExercise} from '@/types/models/AppExercise';
+import {ExerciseRow} from '@/types/models/ExerciseRow';
 import {useDrizzle} from '@/utils/drizzle';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
@@ -70,7 +70,7 @@ export const CreateExerciseScreen: FC = () => {
       alert('Invalid name');
       return;
     }
-    const newValue: AppExercise = {
+    const newValue: ExerciseRow = {
       // externalId: null,
       id: uuid.v4(),
       name: name,

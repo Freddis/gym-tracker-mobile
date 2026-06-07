@@ -512,8 +512,8 @@ export class EntryService implements ISyncedEntityService {
 
   async pushToServer(userId: number, db: DrizzleDb, progress: StageProgressCallback): Promise<boolean> {
     this.logger.info('Pushing entries to server', {userId});
-    const lastPullSyncDate = await this.getLatestPushSyncDate(db);
-    this.logger.info('Last pull sync date', {lastPullSyncDate});
+    const syncDate = await this.getLatestPushSyncDate(db);
+    this.logger.info('Last sync date', {syncDate});
     const limit = 20;
     const idRows = await db.query.entries.findMany({
       columns: {
@@ -521,10 +521,10 @@ export class EntryService implements ISyncedEntityService {
       },
       where: (t, op) => op.and(
       eq(t.userId, userId),
-      lastPullSyncDate ? op.or(
-        op.gt(t.updatedAt, lastPullSyncDate),
-        op.gt(t.createdAt, lastPullSyncDate),
-        op.gt(t.deletedAt, lastPullSyncDate),
+      syncDate ? op.or(
+        op.gt(t.updatedAt, t.lastPushedAt),
+        op.gt(t.createdAt, t.lastPushedAt),
+        op.gt(t.deletedAt, t.lastPushedAt),
         op.isNull(t.lastPushedAt),
       ) : undefined
     ),
@@ -532,6 +532,7 @@ export class EntryService implements ISyncedEntityService {
     const ids: string[] = idRows.map((x) => x.id);
     const itemsNumber = ids.length;
     progress({itemsDone: 0, itemsNumber});
+    this.logger.info(`Found ${ids.length} entries`);
     while (ids.length > 0) {
       const result = await this.pushEntries(db, ids.slice(0, limit));
       if (!result) {
@@ -541,8 +542,8 @@ export class EntryService implements ISyncedEntityService {
       const itemsDone = itemsNumber - ids.length;
       progress({itemsDone, itemsNumber});
     }
+    this.logger.info('Done');
     return true;
-
   }
 
   protected async pushEntries(db: DrizzleDb, ids: string[]): Promise<boolean> {

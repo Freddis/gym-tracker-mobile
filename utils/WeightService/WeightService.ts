@@ -3,7 +3,6 @@ import {schema} from '../../db/schema';
 import {Entry, EntryType, EntryUpsertDto, PostEntryUpsertDto, Weight, WeightEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, WeightAppEntry} from '../../types/models/AppEntry';
-import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {AppWeight} from '../../types/models/AppWeight';
@@ -11,10 +10,12 @@ import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryS
 export class WeightService implements IEntryService<EntryType.WEIGHT> {
   protected logger: Logger;
   protected entryRepositoryService: EntryRepositoryService;
+  protected db: DrizzleDb;
 
-  constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
+  constructor(db: DrizzleDb, entryRepositoryService: EntryRepositoryService) {
     this.logger = new Logger(WeightService.name);
-    this.entryRepositoryService = new EntryRepositoryService();
+    this.entryRepositoryService = entryRepositoryService;
+    this.db = db;
   }
 
   async create(weight: AppWeight, db: DrizzleDb): Promise<number> {

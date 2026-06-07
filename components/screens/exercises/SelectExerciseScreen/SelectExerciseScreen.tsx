@@ -1,24 +1,16 @@
-import {StyleSheet} from 'react-native';
-import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {FC} from 'react';
 import {Exercise} from '../../../../openapi-client';
 import {SelectExercisePresenter} from '../common/SelectExercisePresenter';
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: 0,
-    paddingHorizontal: 0,
-    flex: 1,
-  },
-});
+import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
+import {Stack} from 'expo-router';
+import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
 
 export const SelectExerciseScreen: FC<{onSelect: (item: Exercise)=>void}> = (props) => {
 
   return (
-    <ThemedView style={styles.titleContainer}>
-        <SelectExercisePresenter onPress={props.onSelect} />
-    </ThemedView>
+    <AppScreenContainer>
+       <Stack.Screen options={{title: 'Add Exercise', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
+      <SelectExercisePresenter onPress={props.onSelect} />
+    </AppScreenContainer>
   );
 };

@@ -3,14 +3,13 @@ import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {FC} from 'react';
-import {WorkoutTypeService} from '@/utils/WorkoutTypeService/WorkoutTypeService';
-import {ExerciseService} from '@/utils/ExerciseService/ExerciseService';
 import {useQuery} from '@tanstack/react-query';
+import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 
 export const WorkoutTypeListScreen: FC = () => {
-  const service = new WorkoutTypeService(new ExerciseService());
+  const {workoutTypeService} = useServices();
   const query = useQuery({
-    queryFn: () => service.getPage(),
+    queryFn: () => workoutTypeService.getPage(),
     queryKey: ['workouts'],
     retry: false,
   });

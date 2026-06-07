@@ -1,5 +1,5 @@
-import {AppExercise} from '@/types/models/AppExercise';
+import {AppExercise} from './AppExercise';
 
 export interface NestedAppExercise extends AppExercise {
-  variations?: AppExercise[]
+  variations: AppExercise[]
 }

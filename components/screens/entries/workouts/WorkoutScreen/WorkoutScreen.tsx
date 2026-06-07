@@ -4,11 +4,9 @@ import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {FC, useEffect, useMemo, useRef, useState} from 'react';
 import {useDrizzle} from '@/utils/drizzle';
-import {CompleteAppWorkout} from '@/types/models/AppWorkout';
-import {NewModel} from '@/types/NewModel';
 import {useAuth} from '@/components/providers/AuthProvider/useAuth';
 import {eq} from 'drizzle-orm';
-import {AppWorkoutExercise, CompleteAppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
+import {CompleteAppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {TimerBlock} from '@/components/blocks/TimerBlock/TimerBlock';
 import {ThemedScrollView} from '@/components/blocks/ThemedScrollView/ThemedScrollView';
 import {EditableWorkoutExerciseBlock} from './components/EditableWorkoutExerciseBlock/EditableWorkoutExerciseBlock';
@@ -20,7 +18,6 @@ import {string} from 'zod';
 import {workoutAtom} from './utils/workoutAtom';
 import {atom, useAtom, useAtomValue} from 'jotai';
 import {splitAtom} from 'jotai/utils';
-import {EntryType} from '../../../../../openapi-client';
 import {WorkoutAppEntry} from '../../../../../types/models/AppEntry';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 import {AppScreenContainer} from '../../../../blocks/AppScreenContainer/AppScreenContainer';
@@ -31,7 +28,7 @@ export const WorkoutScreen: FC = () => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [entryAtom, setEntryAtom] = useAtom(workoutAtom);
   const [entry, setEntry] = useAtom(entryAtom);
-  const {entryAtomService, entryService} = useServices();
+  const {entryAtomService, entryService, workoutService} = useServices();
   const exercisesSplitAtom = useMemo(() => {
     const exercisesAtom = atom(
       (get) => get(entryAtom).workout.exercises,
@@ -65,35 +62,18 @@ export const WorkoutScreen: FC = () => {
     if (!workout || !validatedExerciseId.success) {
       return;
     }
-    addExerciseToWorkout(workout, validatedExerciseId.data);
+    addExerciseToWorkout(validatedExerciseId.data);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.exerciseId, workout]);
+  }, [params.exerciseId]);
 
-  const addExerciseToWorkout = async (workout: CompleteAppWorkout, exerciseId: string) => {
-    const workoutExercise: NewModel<AppWorkoutExercise> = {
-      workoutId: workout.id,
-      // externalId: null,
-      userId: user.id,
-      createdAt: new Date(),
-      updatedAt: null,
-      exerciseId,
-    };
-    await db.insert(schema.workoutExercises).values(workoutExercise).then(() => {
-      router.setParams({
-        ...params,
-        exerciseId: undefined,
-      });
-    });
-    await db.update(schema.workouts).set({
-      updatedAt: new Date(),
-    }).where(eq(schema.workouts.id, workout.id));
-    const updated: WorkoutAppEntry = await entryService.getEntry(entry.id, EntryType.WORKOUT);
+  const addExerciseToWorkout = async (exerciseId: string) => {
+    const updated = await workoutService.addExerciseToWorkout(entry, exerciseId);
     setEntry(updated);
   };
 
   const addExercise = async () => {
     router.navigate({
-      pathname: './selectExercise',
+      pathname: '/app/entries/workout/selectExercise',
       params,
     });
   };
@@ -127,8 +107,8 @@ export const WorkoutScreen: FC = () => {
         exercises: entry.workout.exercises.filter((x) => x.id !== exercise.id),
       },
     };
-    setEntry(newEntry);
-    entryService.saveEntry(newEntry);
+    const saved = await entryService.saveEntry(newEntry);
+    setEntry(saved);
   };
   const finishWorkout = async () => {
     const now = new Date();

@@ -1,17 +1,17 @@
 import {AppWorkout} from '@/types/models/AppWorkout';
-import {useDrizzle} from '../drizzle';
 import {NewModel} from '@/types/NewModel';
 import {migrate} from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '../../db/migrations/migrations';
 import {WorkoutService} from './WorkoutService';
 import {describe, test, expect} from '@jest/globals';
-import {ExerciseService} from '../ExerciseService/ExerciseService';
+import {TestUtils} from '../TestUtils/TestUtils';
+import {schema} from '../../db/schema';
 
 describe(WorkoutService.name, () => {
   test('Wipes workout data', async () => {
     // prepare
-    const [db, schema] = useDrizzle();
-    const service = new WorkoutService(db, new ExerciseService());
+    const db = TestUtils.getDb();
+    const service = TestUtils.getWorkoutService();
     await migrate(db, migrations);
     await db.delete(schema.workouts);
     const testWorkout: NewModel<AppWorkout> = {
@@ -43,8 +43,7 @@ describe(WorkoutService.name, () => {
   describe('Set data operations', () => {
     test('Converts comma correctly', async () => {
       // prepare
-      const [db] = useDrizzle();
-      const service = new WorkoutService(db, new ExerciseService());
+      const service = TestUtils.getWorkoutService();
       // check
       expect(service.transformSetWeight('12.2')).toBe(12.2);
       expect(service.transformSetWeight('12,2')).toBe(12.2);
@@ -52,8 +51,7 @@ describe(WorkoutService.name, () => {
 
     test('Returns 0 on invalid input', async () => {
       // prepare
-      const [db] = useDrizzle();
-      const service = new WorkoutService(db, new ExerciseService());
+      const service = TestUtils.getWorkoutService();
       // check
       expect(service.transformSetWeight('')).toBe(0);
     });

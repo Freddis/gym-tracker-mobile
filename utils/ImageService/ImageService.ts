@@ -93,11 +93,12 @@ export class ImageService {
     return true;
   }
 
-  async loadMap(imageIds: number[]): Promise<Map<number, AppImage>> {
+  async loadMap(imageIds: number[], trx?: DrizzleDb): Promise<Map<number, AppImage>> {
     if (imageIds.length === 0) {
       return new Map();
     }
-    const images = await this.db.query.images.findMany({
+    trx = trx ?? this.db;
+    const images = await trx.query.images.findMany({
       where: (t, op) => op.inArray(t.id, imageIds),
     });
     return new Map(images.map((x) => [x.id, x]));

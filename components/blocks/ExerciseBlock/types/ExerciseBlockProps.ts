@@ -1,7 +1,7 @@
-import {Exercise} from '../../../../openapi-client';
+import {NestedAppExercise} from '../../../../utils/ExerciseService/types/NestedAppExercise';
 
 export interface ExerciseBlockProps {
   nested?: boolean,
-  onPress?: (item: Exercise) => void
-  item: Exercise
+  onPress?: (item: NestedAppExercise) => void
+  item: NestedAppExercise
 }
