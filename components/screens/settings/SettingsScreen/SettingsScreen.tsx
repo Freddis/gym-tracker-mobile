@@ -12,7 +12,6 @@ import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {Separator} from '@/components/blocks/Separator/Separator';
 import {useQueryClient} from '@tanstack/react-query';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
-import {queryQuantitySamples, queryWorkoutSamples, requestAuthorization, WorkoutActivityType} from '@kingstinct/react-native-healthkit';
 import {ThemedButton} from '../../../blocks/ThemedButton/ThemedButton';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {activateKeepAwakeAsync, deactivateKeepAwake} from 'expo-keep-awake';
@@ -53,7 +52,7 @@ export const SettingsScreen: FC = () => {
   const theme = useAppTheme();
   const router = useRouter();
   const [progresState, setProgressState] = useState<Progress | null>(null);
-  const {syncService, entryService} = useServices();
+  const {syncService, entryService, healthKitService} = useServices();
   const [db] = useDrizzle();
   const queryClient = useQueryClient();
   const [showImportModal, setShowImportModal] = useState(false);
@@ -105,51 +104,26 @@ export const SettingsScreen: FC = () => {
     setShowImportModal(true);
     await activateKeepAwakeAsync();
     try {
-      const authorized = await requestAuthorization({
-        toRead: [
-          'HKWorkoutTypeIdentifier',
-          'HKWorkoutRouteTypeIdentifier',
-          'HKQuantityTypeIdentifierHeartRate',
-        ],
-      });
-
+      const authorized = await healthKitService.requestAuthorization();
       if (!authorized) {
         setShowImportModal(false);
         Alert.alert('Error', 'Please grant permission to access health data');
         return;
       }
-      const workouts = await queryWorkoutSamples({
-        limit: 0,
-        filter: {
-          OR: [
-            {
-              workoutActivityType: WorkoutActivityType.running,
-            },
-            {
-              workoutActivityType: WorkoutActivityType.walking,
-            },
-          ],
-        },
-        ascending: false,
-      });
+      const workouts = await healthKitService.getWorkouts();
       setTotalItems(workouts.length);
       setImportedItems(0);
       console.log(`Found workouts: ${workouts.length}`);
       let i = 0;
       for (const workout of workouts) {
         setImportedItems(i++);
-        const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
-          limit: 10,
-          filter: {
-            workout: workout,
-          },
-        });
+        const hr = await healthKitService.getHeartRateForWorkout(workout);
         if (!auth.user) {
           setShowImportModal(false);
           Alert.alert('Error', 'No user found');
           return;
         }
-        await entryService.importFromHealthKit(auth.user, workout, hr);
+        await entryService.importFromHealthKit(auth.user, workout, hr, false);
       }
       setShowImportModal(false);
       Alert.alert('Success', 'Data imported successfully');

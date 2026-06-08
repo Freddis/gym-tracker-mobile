@@ -3,7 +3,9 @@ import {
   getRequestStatusForAuthorization,
   queryQuantitySamples,
   queryWorkoutSamples,
+  requestAuthorization,
   WorkoutActivityType,
+  WorkoutProxyTyped,
 } from '@kingstinct/react-native-healthkit';
 import {EntryService} from '../EntryService/EntryService';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
@@ -14,6 +16,16 @@ export class HealthKitService {
   protected entryService: EntryService;
   constructor(entryService: EntryService) {
     this.entryService = entryService;
+  }
+
+  async requestAuthorization(): Promise<boolean> {
+    return await requestAuthorization({
+      toRead: [
+        'HKWorkoutTypeIdentifier',
+        'HKWorkoutRouteTypeIdentifier',
+        'HKQuantityTypeIdentifierHeartRate',
+      ],
+    });
   }
 
   async importFromHealhkitIfPossible(user: AuthUser) {
@@ -43,7 +55,7 @@ export class HealthKitService {
       return entry;
     }
     const workouts = await queryWorkoutSamples({
-      limit: 10,
+      limit: 1,
       filter: {
         AND: [
           {
@@ -57,12 +69,7 @@ export class HealthKitService {
     if (!workout) {
       throw new Error('Workout not found');
     }
-    const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
-      limit: 10,
-      filter: {
-        workout: workout,
-      },
-    });
+    const hr = await this.getHeartRateForWorkout(workout);
     await this.entryService.importFromHealthKit(authUser, workout, hr, false);
     const updatedEntry = await this.entryService.getEntry(entry.id, entry.type);
     if (!updatedEntry) {
@@ -71,9 +78,9 @@ export class HealthKitService {
     return updatedEntry;
   }
 
-  async importFromHealthKit(user: AuthUser) {
+  async getWorkouts(limit: number = 0) {
     const workouts = await queryWorkoutSamples({
-      limit: 10,
+      limit: limit,
       filter: {
         OR: [
           {
@@ -86,13 +93,24 @@ export class HealthKitService {
       },
       ascending: false,
     });
+    return workouts;
+  }
+
+  async getHeartRateForWorkout(workout: WorkoutProxyTyped) {
+    const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
+      limit: 0,
+      filter: {
+        workout: workout,
+      },
+      ascending: true,
+    });
+    return hr;
+  }
+
+  async importFromHealthKit(user: AuthUser) {
+    const workouts = await this.getWorkouts(10);
     for (const workout of workouts) {
-      const hr = await queryQuantitySamples('HKQuantityTypeIdentifierHeartRate', {
-        limit: 10,
-        filter: {
-          workout: workout,
-        },
-      });
+      const hr = await this.getHeartRateForWorkout(workout);
       await this.entryService.importFromHealthKit(user, workout, hr);
     }
   }
