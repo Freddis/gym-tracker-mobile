@@ -606,11 +606,11 @@ export class EntryService implements ISyncedEntityService {
   async importFromHealthKit(
     user: AuthUser,
     workout: WorkoutProxyTyped,
-    hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[]
+    hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[],
+    skipExisting: boolean = true
   ): Promise<void> {
     const existing: AppEntry | null = await this.getEntryByHealthkitId(workout.uuid);
-    const skipOnexisting = true;
-    if (existing && skipOnexisting) {
+    if (existing && skipExisting) {
       return;
     }
     const db = await asyncDrizzle();
