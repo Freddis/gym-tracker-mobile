@@ -1,9 +1,9 @@
 import {useMemo} from 'react';
-import {PathPoint} from '../openapi-client';
 import {PercentileCounter} from './PercentileCounter';
+import {AppPathDataPoint} from '../types/models/AppPathDataPoint';
 
 export interface ProcessedPathData {
-  chunks: PathPoint[][];
+  chunks: AppPathDataPoint[][];
   center: {lat: number, lng: number};
   elevationGain: number;
   minSpeed: number;
@@ -11,11 +11,11 @@ export interface ProcessedPathData {
   bounds: {east: number, west: number, north: number, south: number, padding: number};
 }
 
-export const usePathDataProcessing = (geoData: PathPoint[], start: Date, deps: unknown[]): ProcessedPathData => {
+export const usePathDataProcessing = (geoData: AppPathDataPoint[], start: Date, deps: unknown[]): ProcessedPathData => {
   const result = useMemo(() => {
     const speedCounter = new PercentileCounter((speed) => speed.toFixed(1), true);
-    const chunks: PathPoint[][] = [];
-    let currentChunk: PathPoint[] = [];
+    const chunks: AppPathDataPoint[][] = [];
+    let currentChunk: AppPathDataPoint[] = [];
     const chunkSize = 1000 * 60 * 1;
     let nextChunkLimit = new Date(start.getTime() + chunkSize);
     // let minSpeed = 1000;

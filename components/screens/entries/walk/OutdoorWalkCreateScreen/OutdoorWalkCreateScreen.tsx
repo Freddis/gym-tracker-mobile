@@ -7,7 +7,6 @@ import {ThemedButton} from '../../../../blocks/ThemedButton/ThemedButton';
 import {useEffect, useState} from 'react';
 import {AppWorkoutMap} from '../../../../blocks/AppWorkoutMap/AppWorkoutMap';
 import {usePathDataProcessing} from '../../../../../utils/usePathDataProcessing';
-import {PathPoint} from '../../../../../openapi-client';
 import {TimerBlock} from '../../../../blocks/TimerBlock/TimerBlock';
 import {
   useLocationPermissions,
@@ -22,6 +21,7 @@ import {coerce, object, string} from 'zod';
 import uuid from 'react-native-uuid';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
 import {useUser} from '../../../../providers/AuthProvider/useUser';
+import {AppPathDataPoint} from '../../../../../types/models/AppPathDataPoint';
 
 const storageKey = 'lastTrip';
 const validator = object({
@@ -33,7 +33,7 @@ export const OutdoorWalkCreateScreen = () => {
   const [tripId, setTripId] = useState<string>(uuid.v4());
   const [started, setStarted] = useState<Date | null>(null);
   const [finished, setFinished] = useState<Date | null>(null);
-  const [path, setPath] = useState<PathPoint[]>([]);
+  const [path, setPath] = useState<AppPathDataPoint[]>([]);
   const {permissionStatus, requestPermissions} = useLocationPermissions();
   const bgLocation = useBackgroundLocation();
   const {locations, lastLocation} = useLocationUpdates();
@@ -94,8 +94,8 @@ export const OutdoorWalkCreateScreen = () => {
     await bgLocation.stopTracking();
     const stopDate = new Date();
     setFinished(stopDate);
-    const newPath: PathPoint[] = locations.map((location) => {
-      const point: PathPoint = {
+    const newPath: AppPathDataPoint[] = locations.map((location) => {
+      const point: AppPathDataPoint = {
         latitude: parseFloat(location.latitude),
         longitude: parseFloat(location.longitude),
         altitude: location.altitude ?? 0,

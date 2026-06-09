@@ -1,5 +1,4 @@
 import {View} from 'react-native';
-import {OutdoorRun, OutdoorWalk} from '../../../../../../openapi-client';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
 import {durationToTimeString} from '../../../../../../utils/durationToTimeString';
 import {paceToString} from '../../../../../../utils/paceToString';
@@ -11,10 +10,12 @@ import {getTimeString} from '../../../../../../utils/getTimeString';
 import {usePathDataProcessing} from '../../../../../../utils/usePathDataProcessing';
 import {speedToPace} from '../../../../../../utils/speedToPace';
 import {PostContent} from '../PostContent/PostContent';
+import {AppOutdoorRun} from '../../../../../../types/models/AppOutdoorRun';
+import {AppOutdoorWalk} from '../../../../../../types/models/AppOutdoorWalk';
 
 export interface RoutedWorkoutContentProps {
   entry: AppEntry;
-  workout: OutdoorRun | OutdoorWalk;
+  workout: AppOutdoorRun | AppOutdoorWalk;
   onUpdate: (entry: AppEntry) => void;
 }
 

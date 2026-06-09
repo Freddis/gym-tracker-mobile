@@ -1,7 +1,38 @@
 import {PathPoint} from '../../openapi-client';
+import {AppPathDataPoint} from '../../types/models/AppPathDataPoint';
 
 export class PathUtility {
-  totalDistance(points: PathPoint[]): number {
+
+  toPathPoint(point: AppPathDataPoint): PathPoint {
+    return [
+      point.latitude,
+      point.longitude,
+      point.altitude,
+      point.timestamp,
+      point.speed,
+      point.distance,
+      point.course,
+      point.horizontalAccuracy,
+      point.verticalAccuracy,
+      point.speedAccuracy,
+    ];
+  }
+
+  fromPathPoint(point: PathPoint): AppPathDataPoint {
+    return {
+      latitude: point[0],
+      longitude: point[1],
+      altitude: point[2],
+      timestamp: point[3],
+      speed: point[4],
+      distance: point[5],
+      course: point[6],
+      speedAccuracy: point[7],
+      horizontalAccuracy: point[8],
+      verticalAccuracy: point[9],
+    };
+  }
+  totalDistance(points: AppPathDataPoint[]): number {
     if (points.length < 2) {
       return 0;
     }
@@ -22,7 +53,7 @@ export class PathUtility {
     return (deg * Math.PI) / 180;
   }
 
-  haversine(a: PathPoint, b: PathPoint): number {
+  haversine(a: AppPathDataPoint, b: AppPathDataPoint): number {
     const R = 6371000; // Earth radius in meters
 
     const dLat = this.toRad(b.latitude - a.latitude);
@@ -39,8 +70,8 @@ export class PathUtility {
   }
 
   computeSpeed(
-    a: PathPoint,
-    b: PathPoint,
+    a: AppPathDataPoint,
+    b: AppPathDataPoint,
     dist: number
   ): number {
     const dt = (b.timestamp - a.timestamp) / 1000;

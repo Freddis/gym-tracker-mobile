@@ -10,8 +10,10 @@ import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 import {batch} from '../batch';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, OutdoorRunAppEntry} from '../../types/models/AppEntry';
+import {PathUtility} from '../PathUtility/PathUtility';
 export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
   protected logger: Logger;
+  protected pathUtility = new PathUtility();
 
   constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
     this.logger = new Logger(OutdoorRunService.name);
@@ -63,6 +65,8 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
       type: 'OutdoorRun',
       outdoorRun: {
         ...entry.outdoorRun,
+        geoData: entry.outdoorRun.geoData?.map(this.pathUtility.toPathPoint) ?? [],
+        heartRateData: entry.outdoorRun.heartRateData?.map((x) => [x.heartRate, x.timestamp]) ?? [],
       },
     };
     return data;
@@ -97,7 +101,8 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
       }
       map.set(id, row.id);
       const outdoorRunId = row.id;
-      const geoData = item.geoData?.map((geoData) => {
+      const geoData = item.geoData?.map((geoDataRow) => {
+        const geoData = this.pathUtility.fromPathPoint(geoDataRow);
         return {
           outdoorRunId: outdoorRunId,
           latitude: geoData.latitude,
@@ -125,8 +130,8 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
       const heartRateData: typeof schema.outdoorRunHeartrateData.$inferInsert[] = item.heartRateData?.map((heartRateData) => {
         return {
           outdoorRunId: outdoorRunId,
-          timestamp: heartRateData.timestamp,
-          heartRate: heartRateData.heartRate,
+          timestamp: heartRateData[1],
+          heartRate: heartRateData[0],
         };
       }) ?? [];
       await db.delete(schema.outdoorRunHeartrateData).where(eq(schema.outdoorRunHeartrateData.outdoorRunId, outdoorRunId));

@@ -1,6 +1,6 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {Entry, EntryType, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
+import {Entry, EntryType, HeartRatePoint, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {QuantitySampleTyped, WorkoutActivityType, WorkoutProxyTyped, WorkoutRouteLocation} from '@kingstinct/react-native-healthkit';
@@ -69,11 +69,15 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
   }
 
   getUpsertDto(entry: OutdoorWalkAppEntry, dto: PostEntryUpsertDto): OutdoorWalkEntryUpsertDto {
+    const geoData = entry.outdoorWalk.geoData?.map(this.pathUtility.toPathPoint) ?? [];
+    const heartRateData: HeartRatePoint[] = entry.outdoorWalk.heartRateData?.map((x) => [x.heartRate, x.timestamp]) ?? [];
     const data: OutdoorWalkEntryUpsertDto = {
       ...dto,
       type: 'OutdoorWalk',
       outdoorWalk: {
         ...entry.outdoorWalk,
+        geoData: geoData,
+        heartRateData: heartRateData,
       },
     };
     return data;
@@ -104,7 +108,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
         maxHeartRate: null,
         elevationGain: null,
         heartRateData: null,
-        geoData: smoothed,
+        geoData: smoothed.map(this.pathUtility.toPathPoint),
       };
       const recordMap = await this.processPulledItems(trx, [['noMatter', outdoorWalk]]);
       const map = await this.loadMap(Array.from(recordMap.values()), trx);
@@ -262,7 +266,8 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
       }
       map.set(id, row.id);
       const outdoorWalkId = row.id;
-      const geoData: typeof schema.outdoorWalkGeoData.$inferInsert[] = item.geoData?.map((geoData) => {
+      const geoData: typeof schema.outdoorWalkGeoData.$inferInsert[] = item.geoData?.map((geoDataRow) => {
+        const geoData = this.pathUtility.fromPathPoint(geoDataRow);
         return {
           outdoorWalkId: outdoorWalkId,
           latitude: geoData.latitude,
@@ -286,8 +291,8 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
       const heartRateData: typeof schema.outdoorWalkHeartrateData.$inferInsert[] = item.heartRateData?.map((heartRateData) => {
         return {
           outdoorWalkId: outdoorWalkId,
-          timestamp: heartRateData.timestamp,
-          heartRate: heartRateData.heartRate,
+          timestamp: heartRateData[1],
+          heartRate: heartRateData[0],
         };
       }) ?? [];
       await db.delete(schema.outdoorWalkHeartrateData).where(eq(schema.outdoorWalkHeartrateData.outdoorWalkId, outdoorWalkId));
