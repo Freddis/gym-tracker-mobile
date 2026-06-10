@@ -19,6 +19,8 @@ const config: ExpoConfig = {
     appleTeamId: 'SGDX27QAU8',
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      NSCameraUsageDescription: 'Discipline allows to scan barcodes and take photos of your food.',
+      NSMicrophoneUsageDescription: 'Discipline allows to record audio for video recordings.',
       NSLocalNetworkUsageDescription: 'This app needs access to devices on your local network.',
       UIBackgroundModes: ['location'],
       NSLocationWhenInUseUsageDescription: 'We need your location to track your trips.',
@@ -39,6 +41,7 @@ const config: ExpoConfig = {
       backgroundColor: '#ffffff',
     },
     package: 'com.anonymous.gymtracker',
+    permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
   },
   plugins: [
     [

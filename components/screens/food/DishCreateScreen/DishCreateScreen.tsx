@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {ServingSizeUnit} from '../../../../openapi-client';
+import {EntryVisibility, ServingSizeUnit} from '../../../../openapi-client';
 import {queryClient} from '../../../../routes/_layout';
 import {AppFood} from '../../../../utils/FoodService/types/AppFood';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
@@ -37,6 +37,9 @@ export const DishCreateScreen = () => {
     components: [],
     lastPushedAt: null,
     lastPulledAt: null,
+    visibility: EntryVisibility.PUBLIC,
+    copiedFromId: null,
+    barcode: null,
   });
   const [image, setImage] = useState<string | null>(null);
   const onSavePress = async () => {

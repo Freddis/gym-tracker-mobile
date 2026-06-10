@@ -39,7 +39,8 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
       responseType: 'json',
-      baseURL: 'http://192.168.0.16:3000/api',
+      // baseURL: 'http://192.168.0.16:3000/api',
+      baseURL: 'https://discipline.alex-sarychev.com/api',
       headers: {
         Authorization: authHeader,
       },

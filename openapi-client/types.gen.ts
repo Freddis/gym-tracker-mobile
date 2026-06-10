@@ -1367,6 +1367,18 @@ export type MealFoodComponent = {
         servingSize: number | null;
         servingSizeUnit: ServingSizeUnit;
         /**
+         * Visibility of the food
+         */
+        visibility: EntryVisibility;
+        /**
+         * Barcode of the food
+         */
+        barcode: number | null;
+        /**
+         * Id of the food that was copied from
+         */
+        copiedFromId: string | null;
+        /**
          * Date the creation
          */
         createdAt: Date;
@@ -1438,6 +1450,18 @@ export type Food = {
      */
     servingSize: number | null;
     servingSizeUnit: ServingSizeUnit;
+    /**
+     * Visibility of the food
+     */
+    visibility: EntryVisibility;
+    /**
+     * Barcode of the food
+     */
+    barcode: number | null;
+    /**
+     * Id of the food that was copied from
+     */
+    copiedFromId: string | null;
     /**
      * Date the creation
      */
@@ -1521,6 +1545,231 @@ export type CalorieGoal = {
      * End date of the calorie goal
      */
     end: Date | null;
+};
+
+/**
+ * Entry. Reduced version of entry for feed.
+ */
+export type FeedEntry = {
+    /**
+     * Id of an entry
+     */
+    id: string;
+    user: User;
+    visibility: EntryVisibility;
+    /**
+     * Time of the entry. Can be changed by user.
+     */
+    time: Date;
+    /**
+     * Date of the entry, when the entry was created by user. Immutable.
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Title of the entry
+     */
+    title: string | null;
+    /**
+     * Note of the entry
+     */
+    note: string | null;
+    /**
+     * External id of the entry
+     */
+    externalId: string | null;
+    /**
+     * External source of the entry. Another app.
+     */
+    externalSource: ExternalSource | null;
+    /**
+     * Healthkit id of the entry
+     */
+    healthkitId: string | null;
+    /**
+     * Healthkit anchor of the entry
+     */
+    healthkitAnchor: number | null;
+    /**
+     * Healthkit anchors_3_0 of the entry
+     */
+    healthkitAnchors_3_0: string | null;
+    /**
+     * Healthkit source of the entry
+     */
+    healthkitSource: string | null;
+    /**
+     * Healthkit source name of the entry
+     */
+    healthkitSourceName: string | null;
+    /**
+     * Healthkit device of the entry
+     */
+    healthkitDevice: string | null;
+    /**
+     * Healthkit device name of the entry
+     */
+    healthkitDeviceName: string | null;
+    type: EntryType;
+    /**
+     * Weight. Only for weight entries
+     */
+    weight?: Weight;
+    /**
+     * Workout. Only for workout entries.
+     */
+    workout?: Workout;
+    /**
+     * Image. Only for image entries.
+     */
+    image?: Image | null;
+    /**
+     * Outdoor run. Only for outdoor run entries.
+     */
+    outdoorRun?: ReducedOutdoorRun;
+    /**
+     * Outdoor walk. Only for outdoor walk entries.
+     */
+    outdoorWalk?: ReducedOutdoorWalk;
+    /**
+     * Meal. Only for meal entries.
+     */
+    meal?: Meal;
+    /**
+     * Calorie goal. Only for calorie goal entries.
+     */
+    calorieGoal?: CalorieGoal;
+};
+
+/**
+ * Reduced outdoor run.
+ */
+export type ReducedOutdoorRun = {
+    /**
+     * Id of the outdoor run
+     */
+    id: number;
+    /**
+     * User id of the outdoor run
+     */
+    userId: number;
+    /**
+     * Distance of the outdoor run
+     */
+    distance: number;
+    /**
+     * Duration of the outdoor run
+     */
+    duration: number;
+    /**
+     * Calories of the outdoor run
+     */
+    calories: number;
+    /**
+     * Pace of the outdoor run
+     */
+    pace: number;
+    /**
+     * Max pace of the outdoor run
+     */
+    maxPace: number;
+    /**
+     * Cadence of the outdoor run
+     */
+    cadence: number | null;
+    /**
+     * Max cadence of the outdoor run
+     */
+    maxCadence: number | null;
+    /**
+     * Heart rate of the outdoor run
+     */
+    heartRate: number | null;
+    /**
+     * Max heart rate of the outdoor run
+     */
+    maxHeartRate: number | null;
+    /**
+     * Start time of the outdoor run
+     */
+    start: Date;
+    /**
+     * End time of the outdoor run
+     */
+    end: Date;
+    /**
+     * Elevation gain of the outdoor run
+     */
+    elevationGain: number | null;
+};
+
+/**
+ * Reduced outdoor walk.
+ */
+export type ReducedOutdoorWalk = {
+    /**
+     * Id of the outdoor run
+     */
+    id: number;
+    /**
+     * User id of the outdoor run
+     */
+    userId: number;
+    /**
+     * Distance of the outdoor run
+     */
+    distance: number;
+    /**
+     * Duration of the outdoor run
+     */
+    duration: number;
+    /**
+     * Calories of the outdoor run
+     */
+    calories: number;
+    /**
+     * Pace of the outdoor run
+     */
+    pace: number;
+    /**
+     * Max pace of the outdoor run
+     */
+    maxPace: number;
+    /**
+     * Cadence of the outdoor run
+     */
+    cadence: number | null;
+    /**
+     * Max cadence of the outdoor run
+     */
+    maxCadence: number | null;
+    /**
+     * Heart rate of the outdoor run
+     */
+    heartRate: number | null;
+    /**
+     * Max heart rate of the outdoor run
+     */
+    maxHeartRate: number | null;
+    /**
+     * Start time of the outdoor run
+     */
+    start: Date;
+    /**
+     * End time of the outdoor run
+     */
+    end: Date;
+    /**
+     * Elevation gain of the outdoor run
+     */
+    elevationGain: number | null;
 };
 
 /**
@@ -2560,6 +2809,22 @@ export type FoodUpsertDto = {
      * Fat of the food
      */
     fat: number;
+    /**
+     * Visibility of the food
+     */
+    visibility: EntryVisibility;
+    /**
+     * Barcode of the food
+     */
+    barcode: number | null;
+    /**
+     * Id of the food that was copied from
+     */
+    copiedFromId: string | null;
+    /**
+     * Calories of the food
+     */
+    calories: number | null;
     /**
      * Is the food a dish
      */
@@ -7117,6 +7382,10 @@ export type GetEntriesOwnData = {
          */
         type?: 'Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal' | ('Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal')[];
         /**
+         * Only return entries for the current user.
+         */
+        own?: boolean;
+        /**
          * Only return entries from this date.
          */
         date?: Date;
@@ -7481,6 +7750,10 @@ export type GetEntriesData = {
          */
         type?: 'Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal' | ('Workout' | 'Weight' | 'Post' | 'OutdoorRun' | 'OutdoorWalk' | 'Meal' | 'CalorieGoal')[];
         /**
+         * Only return entries for the current user.
+         */
+        own?: boolean;
+        /**
          * Only return entries from this date.
          */
         date?: Date;
@@ -7577,7 +7850,7 @@ export type GetEntriesResponses = {
         /**
          * Page or items
          */
-        items: Entry[];
+        items: FeedEntry[];
         /**
          * Pagination details
          */
@@ -8641,6 +8914,114 @@ export type GetFoodResponses = {
 };
 
 export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
+
+export type ScanBarcodeData = {
+    body?: {
+        /**
+         * Barcode to scan
+         */
+        barcode: number;
+    };
+    path?: never;
+    query?: never;
+    url: '/food/barcode';
+};
+
+export type ScanBarcodeErrors = {
+    /**
+     * Validation Failed or Action Error
+     */
+    400: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'ValidationFailed';
+            fieldErrors: {
+                /**
+                 * Name of the field
+                 */
+                field: string;
+                /**
+                 * Error message
+                 */
+                message: string;
+                fieldErrors?: {
+                    /**
+                     * Name of the field
+                     */
+                    field: string;
+                    /**
+                     * Error message
+                     */
+                    message: string;
+                }[];
+            }[];
+            location: 'Query' | 'Path' | 'Body' | 'Response';
+        };
+    } | {
+        error: {
+            /**
+             * Code to handle on the frontend.
+             */
+            code: 'ActionError';
+            /**
+             * Subcategory of error.
+             */
+            actionErrorCode: 'InvalidPassword' | 'EmailAlreadyExists' | 'PasswordConfirmationMismatch' | 'WorkoutNotFound' | 'ExerciseNotFound' | 'NoOwnerShip' | 'PasswordResetTokenExpired' | 'PasswordResetTokenMailformed' | 'EmptyMeal' | 'UserNotFound';
+            /**
+             * Description of the error. Can be safely displayed.
+             */
+            humanReadable: string;
+        };
+    };
+    /**
+     * Unauthorized
+     */
+    401: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'Unauthorized';
+        };
+    };
+    /**
+     * Entity not found
+     */
+    404: {
+        /**
+         * Error response
+         */
+        error: {
+            /**
+             * Code to handle on the frontend
+             */
+            code: 'NotFound';
+        };
+    };
+    /**
+     * Unknown Error
+     */
+    500: UnknownErrorResponse;
+};
+
+export type ScanBarcodeError = ScanBarcodeErrors[keyof ScanBarcodeErrors];
+
+export type ScanBarcodeResponses = {
+    /**
+     * Good Response
+     */
+    200: Food;
+};
+
+export type ScanBarcodeResponse = ScanBarcodeResponses[keyof ScanBarcodeResponses];
 
 export type GetOwnProfileData = {
     body?: never;

@@ -204,6 +204,13 @@
       "when": 1780511161281,
       "tag": "0028_moving_workout_types_to_uuids",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "6",
+      "when": 1781068838822,
+      "tag": "0029_adding_new_rows_to_food",
+      "breakpoints": true
     }
   ]
 }

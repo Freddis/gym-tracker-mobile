@@ -1,5 +1,5 @@
 import {atom, PrimitiveAtom} from 'jotai';
-import {ServingSizeUnit} from '../../../openapi-client';
+import {EntryVisibility, ServingSizeUnit} from '../../../openapi-client';
 import uuid from 'react-native-uuid';
 import {AppFood} from '../../../utils/FoodService/types/AppFood';
 
@@ -21,5 +21,8 @@ const initialFood: AppFood = {
   components: [],
   lastPushedAt: null,
   lastPulledAt: null,
+  copiedFromId: null,
+  visibility: EntryVisibility.PUBLIC,
+  barcode: null,
 };
 export const foodAtom = atom<PrimitiveAtom<AppFood>>(atom(initialFood));

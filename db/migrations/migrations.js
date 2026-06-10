@@ -30,6 +30,7 @@ import m0025 from './0025_food_entries.sql';
 import m0026 from './0026_entry_list_indices.sql';
 import m0027 from './0027_meal_and_calorie_goal_entries.sql';
 import m0028 from './0028_moving_workout_types_to_uuids.sql';
+import m0029 from './0029_adding_new_rows_to_food.sql';
 
 export default {
   journal,
@@ -63,5 +64,6 @@ export default {
     m0026,
     m0027,
     m0028,
+    m0029,
   },
 };

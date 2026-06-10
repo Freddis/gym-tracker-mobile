@@ -80,6 +80,9 @@ export const dictionary = {
           updatedAt: 'Updated At',
           deletedAt: 'Deleted At',
           id: 'Id',
+          copiedFromId: 'Copied From',
+          visibility: 'Visibility',
+          barcode: 'Barcode',
         } satisfies Record<keyof Food, string>,
       },
       weight: {

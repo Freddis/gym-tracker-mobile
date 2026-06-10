@@ -78,7 +78,7 @@ export class FoodService implements ISyncedEntityService {
         lastPushedAt: x.lastPushedAt,
         lastPulledAt: x.lastPulledAt,
         image: image,
-        calories: x.protein * 4 + x.carbs * 4 + x.fat * 9,
+        calories: x.calories ?? (x.protein * 4 + x.carbs * 4 + x.fat * 9),
         components: x.components.map((x) => {
           const food = components.get(x.componentId);
           if (!food) {
@@ -91,6 +91,9 @@ export class FoodService implements ISyncedEntityService {
           };
           return component;
         }),
+        copiedFromId: x.copiedFromId,
+        visibility: x.visibility,
+        barcode: x.barcode,
       };
       return food;
     });
