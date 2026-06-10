@@ -27,6 +27,7 @@ export const FoodCreateScreen = () => {
       const food: AppFood = {
         ...scannedFood,
         id: uuid.v4(),
+        copiedFromId: scannedFood.id,
         lastPushedAt: null,
         lastPulledAt: null,
         image: null,
