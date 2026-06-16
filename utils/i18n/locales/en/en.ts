@@ -83,6 +83,7 @@ export const dictionary = {
           copiedFromId: 'Copied From',
           visibility: 'Visibility',
           barcode: 'Barcode',
+          brand: 'Brand',
         } satisfies Record<keyof Food, string>,
       },
       weight: {

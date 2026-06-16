@@ -24,5 +24,6 @@ const initialFood: AppFood = {
   copiedFromId: null,
   visibility: EntryVisibility.PUBLIC,
   barcode: null,
+  brand: null,
 };
 export const foodAtom = atom<PrimitiveAtom<AppFood>>(atom(initialFood));

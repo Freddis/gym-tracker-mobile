@@ -253,6 +253,7 @@ export const food = sqliteTable('food', {
   id: text().primaryKey(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   name: text().notNull(),
+  brand: text(),
   description: text(),
   imageId: integer().references(() => images.id, {onDelete: 'set null'}),
   protein: real().notNull(),

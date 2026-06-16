@@ -40,6 +40,7 @@ export const DishCreateScreen = () => {
     visibility: EntryVisibility.PUBLIC,
     copiedFromId: null,
     barcode: null,
+    brand: null,
   });
   const [image, setImage] = useState<string | null>(null);
   const onSavePress = async () => {

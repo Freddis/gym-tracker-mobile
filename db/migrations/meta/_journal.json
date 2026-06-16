@@ -211,6 +211,13 @@
       "when": 1781068838822,
       "tag": "0029_adding_new_rows_to_food",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "6",
+      "when": 1781607181141,
+      "tag": "0030_food_brands",
+      "breakpoints": true
     }
   ]
 }

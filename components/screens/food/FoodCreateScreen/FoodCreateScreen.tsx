@@ -56,6 +56,7 @@ export const FoodCreateScreen = () => {
       copiedFromId: null,
       visibility: EntryVisibility.PUBLIC,
       barcode: null,
+      brand: null,
     };
     return food;
   });

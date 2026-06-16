@@ -94,6 +94,7 @@ export class FoodService implements ISyncedEntityService {
         copiedFromId: x.copiedFromId,
         visibility: x.visibility,
         barcode: x.barcode,
+        brand: x.brand,
       };
       return food;
     });
