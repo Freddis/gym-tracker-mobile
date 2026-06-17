@@ -875,6 +875,8 @@ export const dictionary = {
       registration: {
         heading: 'Register new account',
         toasts: {
+          registrationFailedTitle: 'Error',
+          registrationFailedMessage: 'Failed to register',
           registrationSuccess: "You've successfully registered",
         },
         form: {
@@ -906,6 +908,7 @@ export const dictionary = {
           buttons: {
             signIn: 'Sign In',
             register: 'Sign up',
+            registerInProgress: 'Signing up...',
           },
         },
       },

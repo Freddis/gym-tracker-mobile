@@ -1,7 +1,6 @@
 import {ExpoConfig} from 'expo/config';
 
 const config: ExpoConfig = {
-
   name: 'Discipline',
   slug: 'discipline',
   version: '1.0.0',
@@ -44,6 +43,7 @@ const config: ExpoConfig = {
     permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
   },
   plugins: [
+    ['expo-localization'],
     [
       'expo-build-properties', {
         ios: {

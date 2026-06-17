@@ -91,8 +91,7 @@ export const LoginScreen: FC = () => {
           </ThemedButton>
         </View>
         <View className="flex-row items-center justify-center gap-s mt-xxl">
-          <ThemedText>New to Discipline? </ThemedText>
-          <ThemedLink href={'/auth/register'}>Sign Up</ThemedLink>
+          <ThemedLink href={'/auth/register'}>New to Discipline?  Sign Up</ThemedLink>
         </View>
       </ThemedView>
       </AppScreenContainer>

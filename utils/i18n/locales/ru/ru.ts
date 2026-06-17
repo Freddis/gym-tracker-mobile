@@ -858,9 +858,12 @@ export const dictionary: Translation = {
           buttons: {
             signIn: 'Войти',
             register: 'Зарегистрироваться',
+            registerInProgress: 'Регистрация...',
           },
         },
         toasts: {
+          registrationFailedTitle: 'Ошибка',
+          registrationFailedMessage: 'Неудалось зарегистрироваться',
           registrationSuccess: 'Вы успешно зарегистрировались',
         },
       },
