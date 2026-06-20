@@ -1,6 +1,5 @@
 import {Switch, View, useColorScheme, Appearance, Alert, StyleSheet, Modal, ActivityIndicator} from 'react-native';
 import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {useRouter} from 'expo-router';
 import {FC, useContext, useState} from 'react';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {useDrizzle} from '@/utils/drizzle';
@@ -50,7 +49,6 @@ export const SettingsScreen: FC = () => {
   const userId = auth.user?.id;
   const themeName = useColorScheme();
   const theme = useAppTheme();
-  const router = useRouter();
   const [progresState, setProgressState] = useState<Progress | null>(null);
   const {syncService, entryService, healthKitService} = useServices();
   const [db] = useDrizzle();
@@ -64,7 +62,6 @@ export const SettingsScreen: FC = () => {
   }
   const performSignOut = () => {
     auth.logout();
-    router.navigate('/');
   };
   const toggleTheme = () => {
     Appearance.setColorScheme(themeName === 'dark' ? 'light' : 'dark');

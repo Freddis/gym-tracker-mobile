@@ -46,7 +46,7 @@ export const RegistrationScreen: FC = () => {
   const [genderModalVisible, setGenderModalVisible] = useState(false);
   const [countryModalVisible, setCountryModalVisible] = useState(false);
 
-  const {errors, setErrors, hasSmartError} = useResponseErrors<RegisterData['body']>();
+  const {setErrors, hasSmartError} = useResponseErrors<RegisterData['body']>();
 
   const genderOptions: AppPickerItem<Gender>[] = Object.values(Gender).map((value) => ({
     label: t.f((x) => x.utils.objects.genders[value]),
