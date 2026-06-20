@@ -183,6 +183,8 @@ export class ExerciseService implements ISyncedEntityService {
         lastUpdate ? op.or(
           op.gt(t.updatedAt, lastUpdate),
           op.gt(t.createdAt, lastUpdate),
+          op.gt(t.deletedAt, lastUpdate),
+          op.isNull(t.lastPushedAt),
         ) : undefined
       ),
     });

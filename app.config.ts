@@ -16,6 +16,8 @@ const config: ExpoConfig = {
     supportsTablet: true,
     bundleIdentifier: 'discipline',
     appleTeamId: 'J64HMK8QS3',
+    buildNumber: '2',
+    version: '0.1.0',
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       NSCameraUsageDescription: 'Discipline allows to scan barcodes and take photos of your food.',
