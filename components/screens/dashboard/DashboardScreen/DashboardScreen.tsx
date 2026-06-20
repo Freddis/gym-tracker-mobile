@@ -12,17 +12,21 @@ import {WeightGoalBlock} from './components/WeightGoalBlock';
 import {WeightHistoryPeriod} from '../../../../utils/DashboardService/types/WeightHistoryPeriod';
 import {AppWeightGoalStats} from '../../../../utils/DashboardService/types/AppWeightGoalStats';
 import {AppCalorieGoalStats} from '../../../../utils/DashboardService/types/AppCalorieGoalStats';
+import {useUser} from '../../../providers/AuthProvider/useUser';
+import {ThemedText} from '../../../blocks/ThemedText/ThemedText';
+import {ThemedBlock} from '../../../blocks/ThemedBlock/ThemedBlock';
 
 export const DashboardScreen: FC = () => {
   const {dashboardService} = useServices();
+  const user = useUser();
   const [period, setPeriod] = useState<WeightHistoryPeriod>(WeightHistoryPeriod.month);
   const response = useQuery({
     queryKey: ['dashboard'],
     queryFn: async (): Promise<{calorieGoal: AppCalorieGoalStats | null; weightGoals: Record<WeightHistoryPeriod, AppWeightGoalStats| null>;}> => {
-      const calorieGoalPromise = dashboardService.getCalorieGoal();
-      const weightGoalMonthPromise = dashboardService.getWeightGoal(WeightHistoryPeriod.month);
-      const weightGoalHalfYearPromise = dashboardService.getWeightGoal(WeightHistoryPeriod.halfYear);
-      const weightGoalYearPromise = dashboardService.getWeightGoal(WeightHistoryPeriod.year);
+      const calorieGoalPromise = dashboardService.getCalorieGoal(user);
+      const weightGoalMonthPromise = dashboardService.getWeightGoal(user, WeightHistoryPeriod.month);
+      const weightGoalHalfYearPromise = dashboardService.getWeightGoal(user, WeightHistoryPeriod.halfYear);
+      const weightGoalYearPromise = dashboardService.getWeightGoal(user, WeightHistoryPeriod.year);
       const results = await Promise.all([
         calorieGoalPromise, weightGoalMonthPromise, weightGoalHalfYearPromise, weightGoalYearPromise]);
       return {
@@ -50,6 +54,7 @@ export const DashboardScreen: FC = () => {
   }
   const calorieGoal = response.data.calorieGoal;
   const weightGoals = response.data.weightGoals;
+  const hasNoGoals = Object.values(weightGoals).every((goal) => !goal) && !calorieGoal;
   return (
     <AppScreenContainer safeTop={true}>
       <Stack.Screen options={{title: 'Dashboard', headerShown: false}} />
@@ -57,6 +62,11 @@ export const DashboardScreen: FC = () => {
         <View className="h-full p-s gap-m">
         {calorieGoal && <CalorieGoalBlock goal={calorieGoal} />}
         {weightGoals[period] && <WeightGoalBlock goal={weightGoals[period]} onChangePeriod={setPeriod} />}
+        {hasNoGoals && (
+          <ThemedBlock>
+            <ThemedText>No goals added. Add goals and entries to see your progress</ThemedText>
+          </ThemedBlock>
+        )}
         </View>
       </ScrollView>
     </AppScreenContainer>

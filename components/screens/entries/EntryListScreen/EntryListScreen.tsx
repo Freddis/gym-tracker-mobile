@@ -12,11 +12,11 @@ import {EntryType} from '../../../../openapi-client';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useAtomValue} from 'jotai';
 import {MemoEntryBlock} from './components/EntryBlock/MemoEntryBlock';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {safeListRefresh} from '../../../../utils/safeListRefresh';
+import {useUser} from '../../../providers/AuthProvider/useUser';
 
 export const EntryListScreen: FC = () => {
   const theme = useAppTheme();
@@ -24,7 +24,7 @@ export const EntryListScreen: FC = () => {
   const lastAddedEntryAtom = useAtomValue(entryListService.getLastAddedEntryAtom());
   const entryAtoms = useAtomValue(entryListService.getEntryAtoms());
   const listRef = useRef<FlatList>(null);
-  const {user} = useAuth();
+  const user = useUser();
   const {syncService, entryService} = useServices();
   const [refreshing, setRefreshing] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -35,7 +35,7 @@ export const EntryListScreen: FC = () => {
     queryKey: ['entries', types, date],
     retry: false,
     queryFn: ({pageParam}) => {
-      return entryService.getEntries(db, {
+      return entryService.getEntries(db, user.id, {
         types: types ?? undefined,
         date: date ?? undefined,
         includeDeleted: false,

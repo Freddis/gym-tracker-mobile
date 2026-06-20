@@ -22,6 +22,7 @@ export class EntryRepositoryService {
         op.eq(t.type, filter.type),
         filter.before ? op.lt(t.time, filter.before) : undefined,
       ),
+      orderBy: (t, op) => op.desc(t.time),
     });
     if (!entry) {
       return null;

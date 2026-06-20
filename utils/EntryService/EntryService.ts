@@ -277,7 +277,8 @@ export class EntryService implements ISyncedEntityService {
   }
 
   async pushEntry(entry: AppEntry): Promise<boolean> {
-    return await this.pushEntries(this.db, [entry.id]);
+    // return await this.pushEntries(this.db, [entry.id]);
+    return false;
   }
 
   protected createUpsertDto(entry: AppEntry): EntryUpsertDto {
@@ -399,6 +400,7 @@ export class EntryService implements ISyncedEntityService {
 
   async getEntries<T extends EntryType>(
     db: DrizzleDb,
+    userId: number,
     params?: {
       externalIds?: string[],
       healthkitIds?: string[],
@@ -422,6 +424,7 @@ export class EntryService implements ISyncedEntityService {
         params?.includeDeleted ? undefined : op.isNull(t.deletedAt),
         params?.types ? op.inArray(t.type, params.types) : undefined,
         params?.date ? op.gte(t.time, params.date) : undefined,
+        op.eq(t.userId, userId),
       ),
       orderBy: (t, op) => op.desc(t.time),
       limit: params?.limit,
@@ -493,20 +496,20 @@ export class EntryService implements ISyncedEntityService {
     return result as (AppEntry & {type: T})[];
   }
 
-  async getEntry<T extends EntryType>(id: string, type?: EntryType): Promise<AppEntry & {type: T}> {
-    const entries = await this.getEntries(this.db, {ids: [id], types: type ? [type] : undefined});
+  async getEntry<T extends EntryType>(id: string, userId: number, type?: EntryType): Promise<AppEntry & {type: T}> {
+    const entries = await this.getEntries(this.db, userId, {ids: [id], types: type ? [type] : undefined});
     if (!entries[0]) {
       throw new Error('Entry not found');
     }
     return entries[0] as AppEntry & {type: T};
   }
 
-  async getEntryByExternalId(externalId: string): Promise<AppEntry | null> {
-    const entries = await this.getEntries(this.db, {externalIds: [externalId]});
+  async getEntryByExternalId(userId: number, externalId: string): Promise<AppEntry | null> {
+    const entries = await this.getEntries(this.db, userId, {externalIds: [externalId]});
     return entries[0] ?? null;
   }
-  async getEntryByHealthkitId(healthkitId: string): Promise<AppEntry | null> {
-    const entries = await this.getEntries(this.db, {healthkitIds: [healthkitId]});
+  async getEntryByHealthkitId(userId: number, healthkitId: string): Promise<AppEntry | null> {
+    const entries = await this.getEntries(this.db, userId, {healthkitIds: [healthkitId]});
     return entries[0] ?? null;
   }
 
@@ -534,7 +537,7 @@ export class EntryService implements ISyncedEntityService {
     progress({itemsDone: 0, itemsNumber});
     this.logger.info(`Found ${ids.length} entries`);
     while (ids.length > 0) {
-      const result = await this.pushEntries(db, ids.slice(0, limit));
+      const result = await this.pushEntries(db, userId, ids.slice(0, limit));
       if (!result) {
         return false;
       }
@@ -546,9 +549,9 @@ export class EntryService implements ISyncedEntityService {
     return true;
   }
 
-  protected async pushEntries(db: DrizzleDb, ids: string[]): Promise<boolean> {
+  protected async pushEntries(db: DrizzleDb, userId: number, ids: string[]): Promise<boolean> {
     this.logger.info('Getting entries to upsert', {ids: ids});
-    const entriesToUpsert: AppEntry[] = await this.getEntries(db, {
+    const entriesToUpsert: AppEntry[] = await this.getEntries(db, userId, {
       ids: ids,
       includeDeleted: true,
     });
@@ -609,7 +612,7 @@ export class EntryService implements ISyncedEntityService {
     hr: readonly QuantitySampleTyped<'HKQuantityTypeIdentifierHeartRate'>[],
     skipExisting: boolean = true
   ): Promise<void> {
-    const existing: AppEntry | null = await this.getEntryByHealthkitId(workout.uuid);
+    const existing: AppEntry | null = await this.getEntryByHealthkitId(user.id, workout.uuid);
     if (existing && skipExisting) {
       return;
     }

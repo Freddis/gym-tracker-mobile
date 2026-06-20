@@ -30,7 +30,7 @@ const outdoorRunService = new OutdoorRunService(apiService, db);
 const outdoorWalkService = new OutdoorWalkService(db, weightService, entryRepositoryService);
 const foodService = new FoodService(apiService, db, imageService);
 const mealService = new MealService(db, foodService, entryRepositoryService);
-const calorieGoalService = new CalorieGoalService(db);
+const calorieGoalService = new CalorieGoalService(db, entryRepositoryService);
 const entryService = new EntryService(
   apiService,
   weightService,

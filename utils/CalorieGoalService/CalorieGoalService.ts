@@ -4,19 +4,36 @@ import {Logger} from '../Logger/Logger';
 import {CalorieGoal, Entry, EntryType, EntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {BaseEntry, CalorieGoalAppEntry} from '../../types/models/AppEntry';
 import {schema} from '../../db/schema';
-import {eq} from 'drizzle-orm';
+import {desc, eq} from 'drizzle-orm';
 import {AppCalorieGoal} from './types/AppCalorieGoal';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
+import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
 
 export class CalorieGoalService implements IEntryService<EntryType.CALORIE_GOAL> {
   protected logger: Logger;
-  constructor(private readonly db: DrizzleDb) {
+  protected entryRepository: EntryRepositoryService;
+
+  constructor(private readonly db: DrizzleDb, entryRepository: EntryRepositoryService) {
+    this.entryRepository = entryRepository;
     this.logger = new Logger(CalorieGoalService.name);
   }
 
-  async getCalorieGoal(): Promise<CalorieGoal | null> {
-    const row = await this.db.query.calorieGoals.findFirst({
-      orderBy: (t, op) => op.desc(t.start),
-    });
+  async getCalorieGoal(user: AuthUser): Promise<CalorieGoal | null> {
+    // const row = await this.db.query.calorieGoals.findFirst({
+    //   orderBy: (t, op) => op.desc(t.start),
+    // });
+    const rows = await this.db.select({
+      calorieGoal: schema.calorieGoals,
+    })
+    .from(schema.calorieGoals)
+    .leftJoin(schema.entries, eq(schema.calorieGoals.id, schema.entries.calorieGoalId))
+    .where(
+      eq(schema.entries.userId, user.id)
+    )
+    .orderBy(
+      desc(schema.calorieGoals.start)
+    );
+    const row = rows[0]?.calorieGoal;
     if (!row) {
       return null;
     }

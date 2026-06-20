@@ -71,7 +71,7 @@ export class HealthKitService {
     }
     const hr = await this.getHeartRateForWorkout(workout);
     await this.entryService.importFromHealthKit(authUser, workout, hr, false);
-    const updatedEntry = await this.entryService.getEntry(entry.id, entry.type);
+    const updatedEntry = await this.entryService.getEntry(entry.id, authUser.id, entry.type);
     if (!updatedEntry) {
       throw new Error('Entry not found');
     }
