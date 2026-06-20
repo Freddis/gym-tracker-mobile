@@ -3,7 +3,7 @@ import {ExpoConfig} from 'expo/config';
 const config: ExpoConfig = {
   name: 'Discipline',
   slug: 'discipline',
-  version: '1.0.0',
+  version: '0.1.0',
   orientation: 'portrait',
   icon: './assets/images/icon-light.png',
   scheme: 'myapp',
@@ -14,8 +14,8 @@ const config: ExpoConfig = {
       light: './assets/images/icon-light.png',
     },
     supportsTablet: true,
-    bundleIdentifier: 'com.anonymous.gymtracker2',
-    appleTeamId: 'SGDX27QAU8',
+    bundleIdentifier: 'discipline',
+    appleTeamId: 'J64HMK8QS3',
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       NSCameraUsageDescription: 'Discipline allows to scan barcodes and take photos of your food.',
