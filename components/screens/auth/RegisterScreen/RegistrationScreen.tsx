@@ -1,4 +1,4 @@
-import {Alert, View, ScrollView} from 'react-native';
+import {Alert, View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import {Stack, useRouter} from 'expo-router';
 import {FC, useState} from 'react';
 import {AppLogo} from '@/components/blocks/AppLogo/AppLogo';
@@ -73,7 +73,7 @@ export const RegistrationScreen: FC = () => {
       setInProgress(false);
       return;
     }
-    Alert.alert(t.p((x) => x.toasts.registrationSuccess));
+    // Alert.alert(t.p((x) => x.toasts.registrationSuccess));
     await auth.login(response.data);
     router.navigate('/');
   };
@@ -87,77 +87,79 @@ export const RegistrationScreen: FC = () => {
           headerLeft: () => <BackHeaderButton />,
         }}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="px-xxl pt-xl gap-xl">
-          <View className="items-center">
-            <AppLogo horizontal />
+      <KeyboardAvoidingView keyboardVerticalOffset={120} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View className="px-xxl pt-xl gap-xl">
+            <View className="items-center">
+              <AppLogo horizontal />
+            </View>
+            <ThemedView className="gap-l">
+              <View>
+                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.name)}</ThemedText>
+                <ThemedTextInput hasError={hasSmartError((x) => x?.name)} value={name} onChangeText={setName} placeholder="" />
+              </View>
+              <View>
+                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.email)}</ThemedText>
+                <ThemedTextInput hasError={hasSmartError((x) => x?.email)} value={email} onChangeText={setEmail} placeholder="" />
+              </View>
+              <View className="flex-row gap-m">
+                <View className="flex-1">
+                  <ThemedText className="mb-xs">{t.p((x) => x.form.labels.birthDate)}</ThemedText>
+                  <ThemedDropDown
+                    hasError={hasSmartError((x) => x?.birthDate)}
+                    value={birthDate.toLocaleDateString()}
+                    onPress={() => setBirthDateModalVisible(true)}
+                  />
+                </View>
+                <View className="flex-1">
+                  <ThemedText className="mb-xs">{t.p((x) => x.form.labels.gender)}</ThemedText>
+                  <ThemedDropDown
+                    hasError={hasSmartError((x) => x?.gender)}
+                    value={t.f((x) => x.utils.objects.genders[gender])}
+                    onPress={() => setGenderModalVisible(true)}
+                  />
+                </View>
+              </View>
+              <View>
+                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.country)}</ThemedText>
+                <ThemedDropDown
+                  hasError={hasSmartError((x) => x?.country)}
+                  value={t.f((x) => x.utils.objects.countries[country])}
+                  onPress={() => setCountryModalVisible(true)}
+                />
+              </View>
+            </ThemedView>
+            <Separator />
+            <ThemedView className="gap-l">
+              <View>
+                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.password)}</ThemedText>
+                <ThemedTextInput
+                  hasError={hasSmartError((x) => x?.password)}
+                  value={password}
+                  onChangeText={setPassword}
+                  textContentType="password"
+                  secureTextEntry
+                  placeholder="••••••••"
+                />
+              </View>
+              <View>
+                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.passwordConfirmation)}</ThemedText>
+                <ThemedTextInput
+                  hasError={hasSmartError((x) => x?.passwordConfirmation)}
+                  value={passwordConfirmation}
+                  onChangeText={setPasswordConfirmation}
+                  textContentType="password"
+                  secureTextEntry
+                  placeholder="••••••••"
+                />
+              </View>
+            </ThemedView>
+            <ThemedButton className="h-14" onPress={performRegistration} disabled={inProgress}>
+              {inProgress ? t.p((x) => x.form.buttons.registerInProgress) : t.p((x) => x.form.buttons.register)}
+            </ThemedButton>
           </View>
-          <ThemedView className="gap-l">
-            <View>
-              <ThemedText className="mb-xs">{t.p((x) => x.form.labels.name)}</ThemedText>
-              <ThemedTextInput hasError={hasSmartError((x) => x?.name)} value={name} onChangeText={setName} placeholder="" />
-            </View>
-            <View>
-              <ThemedText className="mb-xs">{t.p((x) => x.form.labels.email)}</ThemedText>
-              <ThemedTextInput hasError={hasSmartError((x) => x?.email)} value={email} onChangeText={setEmail} placeholder="" />
-            </View>
-            <View className="flex-row gap-m">
-              <View className="flex-1">
-                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.birthDate)}</ThemedText>
-                <ThemedDropDown
-                  hasError={hasSmartError((x) => x?.birthDate)}
-                  value={birthDate.toLocaleDateString()}
-                  onPress={() => setBirthDateModalVisible(true)}
-                />
-              </View>
-              <View className="flex-1">
-                <ThemedText className="mb-xs">{t.p((x) => x.form.labels.gender)}</ThemedText>
-                <ThemedDropDown
-                  hasError={hasSmartError((x) => x?.gender)}
-                  value={t.f((x) => x.utils.objects.genders[gender])}
-                  onPress={() => setGenderModalVisible(true)}
-                />
-              </View>
-            </View>
-            <View>
-              <ThemedText className="mb-xs">{t.p((x) => x.form.labels.country)}</ThemedText>
-              <ThemedDropDown
-                hasError={hasSmartError((x) => x?.country)}
-                value={t.f((x) => x.utils.objects.countries[country])}
-                onPress={() => setCountryModalVisible(true)}
-              />
-            </View>
-          </ThemedView>
-          <Separator />
-          <ThemedView className="gap-l">
-            <View>
-              <ThemedText className="mb-xs">{t.p((x) => x.form.labels.password)}</ThemedText>
-              <ThemedTextInput
-                hasError={hasSmartError((x) => x?.password)}
-                value={password}
-                onChangeText={setPassword}
-                textContentType="password"
-                secureTextEntry
-                placeholder="••••••••"
-              />
-            </View>
-            <View>
-              <ThemedText className="mb-xs">{t.p((x) => x.form.labels.passwordConfirmation)}</ThemedText>
-              <ThemedTextInput
-                hasError={hasSmartError((x) => x?.passwordConfirmation)}
-                value={passwordConfirmation}
-                onChangeText={setPasswordConfirmation}
-                textContentType="password"
-                secureTextEntry
-                placeholder="••••••••"
-              />
-            </View>
-          </ThemedView>
-          <ThemedButton className="h-14" onPress={performRegistration} disabled={errors.length > 0}>
-            {inProgress ? t.p((x) => x.form.buttons.registerInProgress) : t.p((x) => x.form.buttons.register)}
-          </ThemedButton>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <DateUpdateModal
         visible={birthDateModalVisible}
         onClose={() => setBirthDateModalVisible(false)}
