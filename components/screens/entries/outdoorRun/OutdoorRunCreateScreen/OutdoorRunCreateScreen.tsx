@@ -9,19 +9,19 @@ import {useUser} from '../../../../providers/AuthProvider/useUser';
 import {AppPathDataPoint} from '../../../../../types/models/AppPathDataPoint';
 import {RouteTrackingScreen} from '../../../common/RouteTrackingScreen/RouteTrackingScreen';
 
-export const OutdoorWalkCreateScreen = () => {
-  const {outdoorWalkService, entryListService} = useServices();
+export const OutdoorRunCreateScreen = () => {
+  const {outdoorRunService, entryListService} = useServices();
   const user = useUser();
 
   const stopWalk = async (start: Date, stop: Date, locations: Coords[]): Promise<AppPathDataPoint[]> => {
-    const outdoorWalk = await outdoorWalkService.createEntry(user, start, stop, locations);
-    entryListService.addEntry(outdoorWalk);
-    return outdoorWalk.outdoorWalk.geoData ?? [];
+    const entry = await outdoorRunService.createEntry(user, start, stop, locations);
+    entryListService.addEntry(entry);
+    return entry.outdoorRun.geoData ?? [];
   };
 
   return (
     <AppScreenContainer>
-      <Stack.Screen options={{title: 'Walk'}} />
+      <Stack.Screen options={{title: 'Outdoor Run'}} />
       <ScrollView className="h-full">
         <RouteTrackingScreen onStop={stopWalk} />
       </ScrollView>

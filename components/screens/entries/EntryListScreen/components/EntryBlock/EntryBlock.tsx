@@ -12,7 +12,6 @@ import {useRouter} from 'expo-router';
 import {weightAtom} from '../../../weight/WeightUpdateScreen/utils/weightAtom';
 import {workoutAtom} from '../../../workouts/WorkoutScreen/utils/workoutAtom';
 import {MealBlock} from '../MealBlock/MealBlock';
-import {defaultEntryAtom} from '../../../DefaultEntryUpdateScreen/utils/defaultEntryAtom';
 import {postAtom} from '../../../post/PostUpdateScreen/utils/postAtom';
 
 /**
@@ -48,14 +47,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
   const setWeightEntry = useSetAtom(weightAtom);
   const setPostEntry = useSetAtom(postAtom);
   const setWorkoutEntry = useSetAtom(workoutAtom);
-  const setDefaultEntry = useSetAtom(defaultEntryAtom);
 
-  const openDefaultEntry = () => {
-    setDefaultEntry(props.entry);
-    router.navigate({
-      pathname: '/app/entries/entryUpdate',
-    });
-  };
   const openWorkout = (workout: WorkoutAppEntry) => {
     const entryAtom = entryLens(workout, props.entry);
     setWorkoutEntry(entryAtom);
@@ -95,7 +87,7 @@ export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
     case EntryType.POST:
       return <PostBlock onPress={openPost} entryAtom={entryLens(entry, props.entry)} />;
     case EntryType.OUTDOOR_RUN:
-      return <OutdoorRunBlock onPress={openDefaultEntry} entryAtom={entryLens(entry, props.entry)} />;
+      return <OutdoorRunBlock entryAtom={entryLens(entry, props.entry)} />;
     case EntryType.OUTDOOR_WALK:
       return <OutdoorWalkBlock entryAtom={entryLens(entry, props.entry)} />;
     case EntryType.MEAL:

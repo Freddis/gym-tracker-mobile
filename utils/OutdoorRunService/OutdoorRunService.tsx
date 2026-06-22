@@ -1,8 +1,7 @@
 import {eq} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, OutdoorRun, OutdoorRunEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
-import {ApiService} from '../ApiService/ApiService';
-import {DrizzleDb} from '../drizzle';
+import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {WorkoutProxyTyped, QuantitySampleTyped, WorkoutActivityType, WorkoutRouteLocation} from '@kingstinct/react-native-healthkit';
 import {AppOutdoorRun} from '../../types/models/AppOutdoorRun';
@@ -11,12 +10,27 @@ import {batch} from '../batch';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, OutdoorRunAppEntry} from '../../types/models/AppEntry';
 import {PathUtility} from '../PathUtility/PathUtility';
+import {WeightService} from '../WeightService/WeightService';
+import {Coords} from '@gabriel-sisjr/react-native-background-location';
+import {EntryCreateParams} from '../EntryRepositoryService/types/EntryCreateParams';
+import {transactionAsync} from '../runTransaction';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
+import {WorkoutCalorieUtility} from '../WorkoutCalorieUtility/WorkoutCalorieUtility';
+import {ActivityType} from '../WorkoutCalorieUtility/types/ActivityType';
 export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
   protected logger: Logger;
   protected pathUtility = new PathUtility();
+  protected weightService: WeightService;
+  protected db: DrizzleDb;
+  protected entryRepositoryService: EntryRepositoryService;
+  protected workoutCalorieUtility: WorkoutCalorieUtility;
 
-  constructor(private readonly api: ApiService, private readonly db: DrizzleDb) {
+  constructor(db: DrizzleDb, entryRepositoryService: EntryRepositoryService, weightService: WeightService) {
     this.logger = new Logger(OutdoorRunService.name);
+    this.weightService = weightService;
+    this.entryRepositoryService = entryRepositoryService;
+    this.db = db;
+    this.workoutCalorieUtility = new WorkoutCalorieUtility(weightService);
   }
   async create(outdoorRun: AppOutdoorRun, db: DrizzleDb): Promise<number> {
     throw new Error('Not implemented');
@@ -26,8 +40,9 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
     // nothing for now
   }
 
-  async loadMap(ids: number[]): Promise<Map<number, AppOutdoorRun>> {
-    const outdoorRuns: AppOutdoorRun[] = await this.db.query.outdoorRuns.findMany({
+  async loadMap(ids: number[], trx?: DrizzleDb): Promise<Map<number, AppOutdoorRun>> {
+    const db = trx ?? this.db;
+    const outdoorRuns: AppOutdoorRun[] = await db.query.outdoorRuns.findMany({
       where: (t, op) => op.inArray(t.id, ids),
       with: {
         geoData: true,
@@ -255,4 +270,85 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
     await db.delete(schema.outdoorRuns);
     return true;
   }
+
+  async createEntry(user: AuthUser, start: Date, end: Date, path: Coords[], entryParams?: EntryCreateParams): Promise<OutdoorRunAppEntry> {
+    const db = await asyncDrizzle();
+    return await transactionAsync(db, async (trx) => {
+      const pathPoints = this.pathUtility.coordsToPathPoints(path, start);
+      const smoothed = this.pathUtility.normalizePath(pathPoints);
+      const duration = Math.round((end.getTime() - start.getTime()) / 1000);
+      const distance = this.pathUtility.totalDistance(smoothed);
+      const pace = duration * 1000 / distance;
+      const calories = await this.workoutCalorieUtility.calculateCaloriesWithUser(
+        ActivityType.Running,
+        start,
+        duration,
+        user.id,
+        distance
+      );
+      const outdoorRun: OutdoorRun = {
+        duration: duration,
+        distance: distance,
+        pace: pace,
+        maxPace: 0,
+        calories,
+        start: start,
+        end: end,
+        id: 0,
+        userId: user.id,
+        cadence: null,
+        maxCadence: null,
+        heartRate: null,
+        maxHeartRate: null,
+        elevationGain: null,
+        heartRateData: null,
+        geoData: smoothed.map(this.pathUtility.toPathPoint),
+      };
+      const recordMap = await this.processPulledItems(trx, [['noMatter', outdoorRun]]);
+      const map = await this.loadMap(Array.from(recordMap.values()), trx);
+      const values = Array.from(map.values());
+      const run = values[0];
+      if (!run) {
+        throw new Error('Outdoor run not found');
+      }
+      const entry = await this.entryRepositoryService.create(trx, user, EntryType.OUTDOOR_RUN, 'outdoorRunId', run.id, {
+        ...entryParams,
+        time: start,
+      });
+      const result = this.construct(entry, run);
+      return result;
+    });
+  }
+
+  async normalizeEntry(outdoorWalk: AppOutdoorRun): Promise<AppOutdoorRun> {
+    const smoothed = this.pathUtility.normalizePath(outdoorWalk.geoData ?? []);
+    const duration = Math.round((outdoorWalk.end.getTime() - outdoorWalk.start.getTime()) / 1000);
+    const distance = this.pathUtility.totalDistance(smoothed);
+    const pace = duration * 1000 / distance;
+    const calories = await this.workoutCalorieUtility.calculateCaloriesWithUser(
+      ActivityType.Running,
+      outdoorWalk.start,
+      duration,
+      outdoorWalk.userId,
+      distance
+    );
+    const result: AppOutdoorRun = {
+      ...outdoorWalk,
+      duration: duration,
+      distance: distance,
+      pace: pace,
+      maxPace: 0,
+      calories,
+      cadence: null,
+      maxCadence: null,
+      heartRate: null,
+      maxHeartRate: null,
+      elevationGain: null,
+      heartRateData: null,
+      geoData: smoothed,
+    };
+    return result;
+  }
+
+
 }

@@ -9,26 +9,30 @@ import {AppOutdoorWalk} from '../../types/models/AppOutdoorWalk';
 import {batch} from '../batch';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, OutdoorWalkAppEntry} from '../../types/models/AppEntry';
-import {AppPathDataPoint} from '../../types/models/AppPathDataPoint';
 import {transactionAsync} from '../runTransaction';
 import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
 import {EntryCreateParams} from '../EntryRepositoryService/types/EntryCreateParams';
 import {PathUtility} from '../PathUtility/PathUtility';
 import {WeightService} from '../WeightService/WeightService';
-
+import {Coords} from '@gabriel-sisjr/react-native-background-location';
+import {WorkoutCalorieUtility} from '../WorkoutCalorieUtility/WorkoutCalorieUtility';
+import {ActivityType} from '../WorkoutCalorieUtility/types/ActivityType';
 export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK> {
   protected logger: Logger;
   protected entryRepositoryService: EntryRepositoryService;
   protected weightService: WeightService;
   protected pathUtility = new PathUtility();
   protected db: DrizzleDb;
+  protected workoutCalorieUtility: WorkoutCalorieUtility;
 
   constructor(db: DrizzleDb, weightService: WeightService, entryRepositoryService: EntryRepositoryService) {
     this.logger = new Logger(OutdoorWalkService.name);
     this.entryRepositoryService = entryRepositoryService;
     this.weightService = weightService;
     this.db = db;
+    this.workoutCalorieUtility = new WorkoutCalorieUtility(weightService);
   }
+
   async create(outdoorWalk: AppOutdoorWalk, db: DrizzleDb): Promise<number> {
     throw new Error('Not implemented');
   }
@@ -83,15 +87,21 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     return data;
   }
 
-  async createEntry(user: AuthUser, start: Date, end: Date, path: AppPathDataPoint[], entryParams?: EntryCreateParams): Promise<OutdoorWalkAppEntry> {
+  async createEntry(user: AuthUser, start: Date, end: Date, path: Coords[], entryParams?: EntryCreateParams): Promise<OutdoorWalkAppEntry> {
     const db = await asyncDrizzle();
     return await transactionAsync(db, async (trx) => {
-      const smoothed = await this.normalizePath(path);
+      const pathPoints = this.pathUtility.coordsToPathPoints(path, start);
+      const smoothed = this.pathUtility.normalizePath(pathPoints);
       const duration = Math.round((end.getTime() - start.getTime()) / 1000);
       const distance = this.pathUtility.totalDistance(smoothed);
       const pace = duration * 1000 / distance;
-      const weightKg = await this.getWeightKg(user.id, start);
-      const calories = this.calculateCalories(distance, duration, weightKg);
+      const calories = await this.workoutCalorieUtility.calculateCaloriesWithUser(
+        ActivityType.Walking,
+        start,
+        duration,
+        user.id,
+        distance
+      );
       const outdoorWalk: OutdoorWalk = {
         duration: duration,
         distance: distance,
@@ -313,12 +323,17 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
   }
 
   async normalizeEntry(outdoorWalk: AppOutdoorWalk): Promise<AppOutdoorWalk> {
-    const smoothed = await this.normalizePath(outdoorWalk.geoData ?? []);
+    const smoothed = this.pathUtility.normalizePath(outdoorWalk.geoData ?? []);
     const duration = Math.round((outdoorWalk.end.getTime() - outdoorWalk.start.getTime()) / 1000);
     const distance = this.pathUtility.totalDistance(smoothed);
     const pace = duration * 1000 / distance;
-    const weightKg = await this.getWeightKg(outdoorWalk.userId, outdoorWalk.start);
-    const calories = this.calculateCalories(distance, duration, weightKg);
+    const calories = await this.workoutCalorieUtility.calculateCaloriesWithUser(
+      ActivityType.Walking,
+      outdoorWalk.start,
+      duration,
+      outdoorWalk.userId,
+      distance
+    );
     const result: AppOutdoorWalk = {
       ...outdoorWalk,
       duration: duration,
@@ -336,126 +351,5 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     };
     return result;
   }
-  async getWeightKg(userId: number, date: Date): Promise<number> {
-    const weight = await this.weightService.getLastWeight(userId, date);
-    return weight?.weight?.weight ?? 70;
-  }
 
-  calculateCalories(distanceMeters: number, durationSec: number, weightKg: number): number {
-    const speedMPerMin = distanceMeters / (durationSec / 60);
-    const met = 1 + speedMPerMin / 35;
-    const hours = durationSec / 3600;
-    const calories = met * weightKg * hours;
-    return calories;
-  }
-
-  async normalizePath(geoData: AppPathDataPoint[]): Promise<AppPathDataPoint[]> {
-    if (geoData.length === 0) {
-      return [];
-    }
-
-    const MAX_ACCURACY = 25; // meters (tune: 25–50)
-    const MAX_SPEED = 10; // m/s (~36 km/h walking buffer)
-    const OUTLIER_FACTOR = 3;
-
-    // 1. sort by time
-    const points = [...geoData].sort(
-      (a, b) => a.timestamp - b.timestamp
-    );
-
-    // 2. filter bad accuracy points early
-    const filtered: AppPathDataPoint[] = [];
-    for (const p of points) {
-      if (
-        p.horizontalAccuracy != null &&
-        p.horizontalAccuracy > MAX_ACCURACY
-      ) {
-        continue;
-      }
-      filtered.push(p);
-    }
-
-    if (!filtered[0]) {
-      return [];
-    }
-
-    const cleaned: AppPathDataPoint[] = [filtered[0]];
-    // 3. outlier + speed filtering
-    for (let i = 1; i < filtered.length; i++) {
-      const prev = cleaned[cleaned.length - 1];
-      if (!prev) {
-        continue;
-      }
-      const curr = filtered[i];
-      if (!curr) {
-        continue;
-      }
-      const dist = this.pathUtility.haversine(prev, curr);
-      const speed = this.pathUtility.computeSpeed(prev, curr, dist);
-
-      // speed spike filter (stairs / jumps / GPS glitches)
-      if (speed > MAX_SPEED) {
-        continue;
-      }
-
-      // geometric outlier check (optional but very effective)
-      if (cleaned.length >= 2) {
-        const prevPrev = cleaned[cleaned.length - 2];
-        if (!prevPrev) {
-          continue;
-        }
-        const ab = this.pathUtility.haversine(prevPrev, curr);
-        const ax = this.pathUtility.haversine(prevPrev, prev);
-        const xb = dist;
-
-        if (ax + xb > ab * OUTLIER_FACTOR) {
-          // prev is likely a spike → remove it instead of adding curr
-          cleaned.pop();
-          continue;
-        }
-      }
-
-      cleaned.push(curr);
-    }
-
-    if (cleaned.length < 2) {
-      return [];
-    }
-
-    // 4. smoothing (EMA on lat/lon only)
-    const alpha = 0.25;
-
-    const smoothed: AppPathDataPoint[] = [];
-    let prev = cleaned[0];
-    if (!prev) {
-      return [];
-    }
-    smoothed.push({...prev, distance: 0});
-
-    let totalDistance = 0;
-
-    for (let i = 1; i < cleaned.length; i++) {
-      const curr = cleaned[i];
-      if (!curr) {
-        continue;
-      }
-
-      const smoothPoint: AppPathDataPoint = {
-        ...curr,
-        latitude: alpha * curr.latitude + (1 - alpha) * prev.latitude,
-        longitude: alpha * curr.longitude + (1 - alpha) * prev.longitude,
-      };
-
-      const dist = this.pathUtility.haversine(prev, smoothPoint);
-      totalDistance += dist;
-
-      smoothed.push({
-        ...smoothPoint,
-        distance: totalDistance,
-      });
-
-      prev = smoothPoint;
-    }
-    return smoothed;
-  }
 }

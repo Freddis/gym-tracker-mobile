@@ -1,0 +1,57 @@
+import {atom, PrimitiveAtom} from 'jotai';
+
+import uuid from 'react-native-uuid';
+import {OutdoorRunAppEntry} from '../../../../../../types/models/AppEntry';
+import {EntryType, EntryVisibility} from '../../../../../../openapi-client';
+
+const initialEntry: OutdoorRunAppEntry = {
+  id: uuid.v4(),
+  userId: 0,
+  type: EntryType.OUTDOOR_RUN,
+  createdAt: new Date(),
+  updatedAt: null,
+  deletedAt: null,
+  lastPulledAt: null,
+  lastPushedAt: null,
+  workoutId: null,
+  weightId: null,
+  imageId: null,
+  image: null,
+  title: null,
+  note: null,
+  externalId: null,
+  externalSource: null,
+  visibility: EntryVisibility.PUBLIC,
+  outdoorWalkId: null,
+  outdoorRun: {
+    id: 0,
+    distance: 0,
+    pace: 0,
+    maxPace: 0,
+    cadence: 0,
+    maxCadence: 0,
+    elevationGain: 0,
+    heartRate: 0,
+    maxHeartRate: 0,
+    duration: 0,
+    calories: 0,
+    geoData: [],
+    heartRateData: [],
+    userId: 0,
+    externalId: null,
+    start: new Date(),
+    end: new Date(),
+  },
+  outdoorRunId: null,
+  mealId: null,
+  calorieGoalId: null,
+  time: new Date(),
+  healthkitId: null,
+  healthkitAnchor: null,
+  healthkitAnchors_3_0: null,
+  healthkitSource: null,
+  healthkitSourceName: null,
+  healthkitDevice: null,
+  healthkitDeviceName: null,
+};
+export const outdoorRunAtom = atom<PrimitiveAtom<OutdoorRunAppEntry>>(atom(initialEntry));
