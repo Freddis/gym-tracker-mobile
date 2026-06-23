@@ -14,8 +14,8 @@ import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {ThemedInputError} from '@/components/blocks/ThemedInputError/ThemedInputError';
 import {api} from '../../../../utils/api';
 import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
+import {AsyncStorageKeys} from '../../../../types/AsyncStorageKeys';
 
-const ASYNC_STORAGE_KEY = 'auth_login';
 export const LoginScreen: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +25,7 @@ export const LoginScreen: FC = () => {
   const {getError, setErrors} = useResponseErrors();
 
   useEffect(() => {
-    AsyncStorage.getItem(ASYNC_STORAGE_KEY).then((result) => {
+    AsyncStorage.getItem(AsyncStorageKeys.LastLoginEmail).then((result) => {
       if (result) {
         setEmail(result);
       }
@@ -52,7 +52,7 @@ export const LoginScreen: FC = () => {
       }
       return;
     }
-    AsyncStorage.setItem(ASYNC_STORAGE_KEY, email);
+    AsyncStorage.setItem(AsyncStorageKeys.LastLoginEmail, email);
     await auth.login(result.data);
     router.navigate('/');
   };

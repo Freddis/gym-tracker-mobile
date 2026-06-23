@@ -21,6 +21,8 @@ import {Separator} from '../../../blocks/Separator/Separator';
 import {ThemedDropDown} from '../../../blocks/ThemedDropDown/ThemedDropDown';
 import {useLocales} from 'expo-localization';
 import {nativeEnum} from 'zod';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AsyncStorageKeys} from '../../../../types/AsyncStorageKeys';
 
 export const RegistrationScreen: FC = () => {
   const locales = useLocales();
@@ -74,6 +76,7 @@ export const RegistrationScreen: FC = () => {
       return;
     }
     // Alert.alert(t.p((x) => x.toasts.registrationSuccess));
+    AsyncStorage.setItem(AsyncStorageKeys.LastLoginEmail, email);
     await auth.login(response.data);
     router.navigate('/');
   };
