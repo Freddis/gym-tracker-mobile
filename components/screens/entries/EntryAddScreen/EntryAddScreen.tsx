@@ -3,24 +3,21 @@ import {Stack, useRouter} from 'expo-router';
 import {ThemedScrollView} from '../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedButtonList} from '../../../blocks/ThemedButtonList/ThemedButtonList';
 import {RoutePath} from '../../../../types/RoutePath';
-import {useAuth} from '../../../providers/AuthProvider/useAuth';
 import {useSetAtom} from 'jotai';
 import {workoutAtom} from '../workouts/WorkoutScreen/utils/workoutAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {entryLens} from '../EntryListScreen/components/EntryBlock/EntryBlock';
 import {weightAtom} from '../weight/WeightUpdateScreen/utils/weightAtom';
+import {useUser} from '../../../providers/AuthProvider/useUser';
 
 export const EntryAddScreen = () => {
   const setWeightEntry = useSetAtom(weightAtom);
   const setWorkoutEntry = useSetAtom(workoutAtom);
   const router = useRouter();
   const {entryService, entryListService} = useServices();
-  const auth = useAuth();
-  const user = auth.user;
-  if (!user) {
-    throw new Error('No user');
-  }
+  const user = useUser();
+
   const addWeight = async () => {
     const weightEntry = await entryService.addWeightEntry(user.id);
     const entryAtom = entryListService.addEntry(weightEntry);
@@ -30,6 +27,7 @@ export const EntryAddScreen = () => {
       pathname: '/app/entries/weight/weightUpdate',
     });
   };
+
   const addWorkout = async () => {
     const workoutEntry = await entryService.addWorkoutEntry(user.id);
     const entryAtom = entryListService.addEntry(workoutEntry);
@@ -39,23 +37,14 @@ export const EntryAddScreen = () => {
       pathname: '/app/entries/workout/workoutUpdate',
     });
   };
-  const addWalk = () => {
-    router.replace({
-      pathname: '/app/entries/outdoorWalk/outdoorWalkCreate',
-    });
-  };
-  const addRun = () => {
-    router.replace({
-      pathname: '/app/entries/outdoorRun/outdoorRunCreate',
-    });
-  };
+
   const items: [string, RoutePath | (() => void)][] = [
     ['Workout', addWorkout],
     ['Weight', addWeight],
     ['Post', '/app/entries/post/postCreate'],
     ['Meal', '/app/entries/meal/mealCreate'],
-    ['Walk', addWalk],
-    ['Run', addRun],
+    ['Walk', '/app/entries/outdoorWalk/outdoorWalkCreate'],
+    ['Run', '/app/entries/outdoorRun/outdoorRunCreate'],
   ];
   return (
     <AppScreenContainer>
