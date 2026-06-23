@@ -7,7 +7,6 @@ import {useSetAtom} from 'jotai';
 import {workoutAtom} from '../workouts/WorkoutScreen/utils/workoutAtom';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
-import {entryLens} from '../EntryListScreen/components/EntryBlock/EntryBlock';
 import {weightAtom} from '../weight/WeightUpdateScreen/utils/weightAtom';
 import {useUser} from '../../../providers/AuthProvider/useUser';
 
@@ -15,14 +14,13 @@ export const EntryAddScreen = () => {
   const setWeightEntry = useSetAtom(weightAtom);
   const setWorkoutEntry = useSetAtom(workoutAtom);
   const router = useRouter();
-  const {entryService, entryListService} = useServices();
+  const {entryService, entryAtomService} = useServices();
   const user = useUser();
 
   const addWeight = async () => {
     const weightEntry = await entryService.addWeightEntry(user.id);
-    const entryAtom = entryListService.addEntry(weightEntry);
-    const weightAtom = entryLens(weightEntry, entryAtom);
-    setWeightEntry(weightAtom);
+    const entryAtom = entryAtomService.addEntry(weightEntry);
+    setWeightEntry(entryAtom);
     router.replace({
       pathname: '/app/entries/weight/weightUpdate',
     });
@@ -30,9 +28,8 @@ export const EntryAddScreen = () => {
 
   const addWorkout = async () => {
     const workoutEntry = await entryService.addWorkoutEntry(user.id);
-    const entryAtom = entryListService.addEntry(workoutEntry);
-    const workoutAtom = entryLens(workoutEntry, entryAtom);
-    setWorkoutEntry(workoutAtom);
+    const entryAtom = entryAtomService.addEntry(workoutEntry);
+    setWorkoutEntry(entryAtom);
     router.replace({
       pathname: '/app/entries/workout/workoutUpdate',
     });

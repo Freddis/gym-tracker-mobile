@@ -29,7 +29,6 @@ export const WeightUpdateScreen: FC = () => {
   const [weightModalVisible, setWeightModalVisible] = useState(false);
   const {entryAtomService} = useServices();
   const [weightValue, setWeight] = useState(entry.weight.weight);
-  const [dateValue, setDate] = useState(entry.time);
   const router = useRouter();
   const kilograms = useMemo(() => {
     const kilograms: WheelPickerItemProps<string>[] = [];
@@ -60,7 +59,6 @@ export const WeightUpdateScreen: FC = () => {
     updateWeight(Number(newValue));
   };
   const updateDate = async (date: Date) => {
-    setDate(date);
     await entryAtomService.updateTime(entry, date);
   };
   const updateWeight = async (weight: number) => {
@@ -101,7 +99,7 @@ export const WeightUpdateScreen: FC = () => {
               <Separator/>
               <View className="flex-row items-center">
                 <ThemedText style={{flexGrow: 1}}>Date</ThemedText>
-                <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(dateValue)}</ThemedText>
+                <ThemedText onPress={() => setDateModalVisible(true)}>{dateToString(entry.time)}</ThemedText>
               </View>
               <Separator/>
               <View className="flex-row items-center">
@@ -114,7 +112,7 @@ export const WeightUpdateScreen: FC = () => {
                 </View>
             </ThemedBlock>
           </ThemedView>
-          <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={dateValue} visible={dateModalVisible} onUpdate={updateDate} />
+          <DateTimeUpdateModal onClose={() => setDateModalVisible(false)} date={entry.time} visible={dateModalVisible} onUpdate={updateDate} />
           <AppModal visible={weightModalVisible} onClose={() => setWeightModalVisible(false)}>
             <View className="w-full">
               <View className="pb-20 bg-surface w-full">

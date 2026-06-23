@@ -51,7 +51,8 @@ export const EntryListScreen: FC = () => {
   });
   useEffect(() => {
     entryListService.setEntries(query.data?.pages.flat() ?? []);
-  }, [entryListService, query.data, query.data?.pages]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query.data?.pages]);
   useEffect(() => {
     if (lastAddedEntryAtom) {
       listRef.current?.scrollToOffset({

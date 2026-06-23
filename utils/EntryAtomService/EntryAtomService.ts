@@ -2,9 +2,9 @@ import {AppEntry} from '../../types/models/AppEntry';
 import {EntryService} from '../EntryService/EntryService';
 import {EntryListService} from '../EntryListService/EntryListService';
 import {queryClient} from '../../routes/_layout';
-import {entryLens} from '../../components/screens/entries/EntryListScreen/components/EntryBlock/EntryBlock';
 import {PrimitiveAtom} from 'jotai';
 import {Store} from 'jotai/vanilla/store';
+import {entryLens} from '../entryLens';
 
 export class EntryAtomService {
   protected entryService: EntryService;
@@ -46,8 +46,8 @@ export class EntryAtomService {
 
   addEntry<T extends AppEntry>(entry: T): PrimitiveAtom<T> {
     const atom = this.entryListService.addEntry(entry);
-    const entryAtom = entryLens(entry, atom);
-    return entryAtom;
+    const lens = entryLens(entry, atom);
+    return lens;
   }
 
   async updateTime<T extends AppEntry>(entry: T, time: Date): Promise<T> {

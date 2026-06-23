@@ -1,4 +1,4 @@
-import {atom, PrimitiveAtom, SetStateAction, useAtomValue, useSetAtom} from 'jotai';
+import {PrimitiveAtom, useAtomValue, useSetAtom} from 'jotai';
 import {FC} from 'react';
 import {AppEntry, PostAppEntry, WeightAppEntry, WorkoutAppEntry} from '../../../../../../types/models/AppEntry';
 import {EntryType} from '../../../../../../openapi-client';
@@ -13,33 +13,8 @@ import {weightAtom} from '../../../weight/WeightUpdateScreen/utils/weightAtom';
 import {workoutAtom} from '../../../workouts/WorkoutScreen/utils/workoutAtom';
 import {MealBlock} from '../MealBlock/MealBlock';
 import {postAtom} from '../../../post/PostUpdateScreen/utils/postAtom';
+import {entryLens} from '../../../../../../utils/entryLens';
 
-/**
- * Creates an specific entry atom that updates the original entry atom when mutated.
- * @param value Any specific type of entry
- * @param entryAtom Entry atom
- * @returns
- */
-export const entryLens = <T extends AppEntry>(
-  value: T,
-  entryAtom: PrimitiveAtom<AppEntry>
-): PrimitiveAtom<T> => {
-  // console.log('render entry'); //debug
-  const valueAtom = atom(value);
-  const lens = atom<T, [SetStateAction<T>], void>(
-    (get): T => {
-      return get(valueAtom);
-    },
-    (_, set, update) => {
-      set(valueAtom, update);
-      set(entryAtom, (prev) => ({
-        ...prev,
-        ...update,
-      }));
-    }
-  );
-  return lens;
-};
 
 export const EntryBlock: FC<{entry: PrimitiveAtom<AppEntry>}> = (props) => {
   const entry = useAtomValue(props.entry);
