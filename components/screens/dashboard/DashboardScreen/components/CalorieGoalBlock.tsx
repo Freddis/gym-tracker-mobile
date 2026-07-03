@@ -25,7 +25,7 @@ const roundUpToStep = (value: number, step: number): number => {
 };
 
 export const CalorieGoalBlock:FC<CalorieGoalProps> = (props) => {
-  const {consumedCalories, goal, history, size} = props.goal;
+  const {consumedCalories, goal, history, size, averageCalories} = props.goal;
   const theme = useAppTheme();
   const mode = useColorScheme();
   const [radius, setRadius] = useState(25);
@@ -127,9 +127,7 @@ export const CalorieGoalBlock:FC<CalorieGoalProps> = (props) => {
     );
   };
 
-  const deviation = historyWithoutToday.reduce(
-    (acc, curr) => acc + (curr.value.calories - goal.calories
-  ), 0) / historyWithoutToday.length;
+  const deviation = goal.calories - averageCalories;
   const deviationPercentage = (deviation / goal.calories * 100).toFixed(1);
   const stackData = buildChart(historyWithoutToday, size, new Date(new Date().getTime() - 1000 * 60 * 60 * 24));
   const keyIndexes = getFirstLastAndMiddleIndexes(stackData.length, 3);

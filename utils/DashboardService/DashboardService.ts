@@ -25,7 +25,8 @@ export class DashboardService {
       return null;
     }
     const historySize = 30;
-    const from = new Date(Date.now() - historySize * 24 * 60 * 60 * 1000);
+    const historyFrom = new Date(Date.now() - historySize * 24 * 60 * 60 * 1000);
+    const from = new Date(calorieGoal.start);
     from.setHours(0, 0, 0, 0);
     const meals = await this.entryService.getEntries(this.db, user.id, {types: [EntryType.MEAL], date: from, limit: 10000});
     const todayText = new Date().toDateString();
@@ -38,12 +39,17 @@ export class DashboardService {
       rows.push(meal);
       map.set(date, rows);
     }
-    const history = Array.from(map.entries()).map(([date, meals]) => ({
+    const historyAll = Array.from(map.entries()).map(([date, meals]) => ({
       date: new Date(date),
       value: this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.meal.food)),
     }));
+    const averageCalories = Math.round(historyAll.reduce((acc, x) => acc + x.value.calories, 0) / historyAll.length);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const history = historyAll.filter((x) => x.date >= historyFrom && x.date <= today);
     const result: AppCalorieGoalStats = {
       consumedCalories,
+      averageCalories,
       goal: calorieGoal,
       history: history,
       size: historySize,
