@@ -43,10 +43,10 @@ export class DashboardService {
       date: new Date(date),
       value: this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.meal.food)),
     }));
-    const averageCalories = Math.round(historyAll.reduce((acc, x) => acc + x.value.calories, 0) / historyAll.length);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const history = historyAll.filter((x) => x.date >= historyFrom && x.date <= today);
+    const history = historyAll.filter((x) => x.date >= historyFrom && x.date < today);
+    const averageCalories = Math.round(history.reduce((acc, x) => acc + x.value.calories, 0) / history.length);
     const result: AppCalorieGoalStats = {
       consumedCalories,
       averageCalories,
