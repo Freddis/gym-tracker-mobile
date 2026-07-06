@@ -127,7 +127,7 @@ export const CalorieGoalBlock:FC<CalorieGoalProps> = (props) => {
     );
   };
 
-  const deviation = goal.calories - averageCalories;
+  const deviation = averageCalories - goal.calories;
   const deviationPercentage = (deviation / goal.calories * 100).toFixed(1);
   const stackData = buildChart(historyWithoutToday, size, new Date(new Date().getTime() - 1000 * 60 * 60 * 24));
   const keyIndexes = getFirstLastAndMiddleIndexes(stackData.length, 3);
