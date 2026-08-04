@@ -37,8 +37,23 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     throw new Error('Not implemented');
   }
 
-  async update(entry: OutdoorWalkAppEntry, trx: DrizzleDb): Promise<void> {
-
+  async update(entry: OutdoorWalkAppEntry, db: DrizzleDb): Promise<void> {
+    this.logger.info(`Updating outdoor walk ${entry.id}`);
+    await db.update(schema.outdoorWalks).set({
+      duration: entry.outdoorWalk.duration,
+      distance: entry.outdoorWalk.distance,
+      pace: entry.outdoorWalk.pace,
+      maxPace: entry.outdoorWalk.maxPace,
+      calories: entry.outdoorWalk.calories,
+    }).where(
+      eq(schema.outdoorWalks.id, entry.outdoorWalk.id)
+    );
+    if (!entry.outdoorWalk.geoData) {
+      await db.delete(schema.outdoorWalkGeoData).where(eq(schema.outdoorWalkGeoData.outdoorWalkId, entry.outdoorWalk.id));
+    }
+    if (!entry.outdoorWalk.heartRateData) {
+      await db.delete(schema.outdoorWalkHeartrateData).where(eq(schema.outdoorWalkHeartrateData.outdoorWalkId, entry.outdoorWalk.id));
+    }
   }
 
   async loadMap(ids: number[], db?: DrizzleDb): Promise<Map<number, AppOutdoorWalk>> {
@@ -322,10 +337,10 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
     return true;
   }
 
-  async normalizeEntry(outdoorWalk: AppOutdoorWalk): Promise<AppOutdoorWalk> {
+  async normalizeEntry(outdoorWalk: AppOutdoorWalk, usePath: boolean = true): Promise<AppOutdoorWalk> {
     const smoothed = this.pathUtility.normalizePath(outdoorWalk.geoData ?? []);
     const duration = Math.round((outdoorWalk.end.getTime() - outdoorWalk.start.getTime()) / 1000);
-    const distance = this.pathUtility.totalDistance(smoothed);
+    const distance = usePath ? this.pathUtility.totalDistance(smoothed) : outdoorWalk.distance;
     const pace = duration * 1000 / distance;
     const calories = await this.workoutCalorieUtility.calculateCaloriesWithUser(
       ActivityType.Walking,

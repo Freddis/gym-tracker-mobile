@@ -19,6 +19,7 @@ import {MealService} from '../../../utils/MealService/MealService';
 import {DashboardService} from '../../../utils/DashboardService/DashboardService';
 import {HealthKitService} from '../../../utils/HealthKitService/HealthKitService';
 import {EntryRepositoryService} from '../../../utils/EntryRepositoryService/EntryRepositoryService';
+import {RoutedWorkoutService} from '../../../utils/RoutedWorkoutService/RoutedWorkoutService';
 
 const apiService = new ApiService();
 const imageService = new ImageService(apiService, db);
@@ -49,6 +50,8 @@ const entryAtomService = new EntryAtomService(entryService, entryListService, st
 const workoutTypeService = new WorkoutTypeService(exerciseService);
 const syncService = new SyncService(workoutService, exerciseService, workoutTypeService, weightService, entryService, foodService);
 const dashboardService = new DashboardService(calorieGoalService, entryService, db);
+const routedWorkoutService = new RoutedWorkoutService(outdoorRunService, outdoorWalkService);
+
 export const services = {
   entryAtomService: entryAtomService,
   exerciseService: exerciseService,
@@ -65,6 +68,7 @@ export const services = {
   outdoorWalkService: outdoorWalkService,
   mealService: mealService,
   healthKitService: healthKitService,
+  routedWorkoutService: routedWorkoutService,
 };
 export const ServiceContext = createContext(services);
 

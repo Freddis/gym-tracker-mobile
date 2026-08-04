@@ -5,11 +5,13 @@ import {queryClient} from '../../routes/_layout';
 import {PrimitiveAtom} from 'jotai';
 import {Store} from 'jotai/vanilla/store';
 import {entryLens} from '../entryLens';
+import {Logger} from '../Logger/Logger';
 
 export class EntryAtomService {
   protected entryService: EntryService;
   protected entryListService: EntryListService;
   protected store: Store;
+  protected logger: Logger = new Logger(EntryAtomService.name);
 
   constructor(entryService: EntryService, entryListService: EntryListService, store: Store) {
     this.entryService = entryService;
@@ -42,6 +44,12 @@ export class EntryAtomService {
     };
     const newEntry = await this.entryService.saveEntry(updatedEntry);
     this.entryListService.update(newEntry);
+  }
+
+  async update(entry: AppEntry): Promise<AppEntry> {
+    const newEntry = await this.entryService.saveEntry(entry);
+    this.entryListService.update(newEntry);
+    return newEntry;
   }
 
   addEntry<T extends AppEntry>(entry: T): PrimitiveAtom<T> {
