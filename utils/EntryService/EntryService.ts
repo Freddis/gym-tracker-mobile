@@ -204,7 +204,7 @@ export class EntryService implements ISyncedEntityService {
         id: x.id,
         userId: x.user.id,
         type: x.type,
-        imageId: imageId,
+        imageId: imageId ?? null, // imageId can be null if image is deleted
         title: x.title,
         note: x.note,
         visibility: x.visibility,
