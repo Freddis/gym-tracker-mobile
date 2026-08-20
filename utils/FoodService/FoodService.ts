@@ -314,10 +314,11 @@ export class FoodService implements ISyncedEntityService {
   }
   protected async pushFood(db: DrizzleDb, ids: string[]): Promise<boolean> {
     this.logger.info('Getting entries to upsert', {ids: ids});
-    const entriesToUpsert: AppFood[] = await this.getFood({
-      ids: ids,
-      includeDeleted: true,
-    });
+    const entries = await this.loadFood(new Set(ids));
+    //todo:  that's not actually enough, it's possible that earlier food still references later foods as components
+    // we need to traverse the components and make sure they're present first if they're new
+    const entriesToUpsert = Array.from(entries.values()).sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
     const data: FoodUpsertDto[] = entriesToUpsert.map((x) => this.createUpsertDto(x));
     console.log('Sending entries to server', data);
     const response = await this.api.client().upsertFoods({
