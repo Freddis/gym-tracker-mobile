@@ -28,6 +28,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
   async create(meal: AppMeal, db: DrizzleDb): Promise<number> {
     const newMealRow: typeof schema.meals.$inferInsert = {
       type: meal.type,
+      favorite: meal.favorite,
     };
     const rows = await db.insert(schema.meals).values(newMealRow).returning({
       id: schema.meals.id,
@@ -52,6 +53,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
   async update(entry: MealAppEntry, db: DrizzleDb): Promise<void> {
     await db.update(schema.meals).set({
       type: entry.meal.type,
+      favorite: entry.meal.favorite,
     })
     .where(
       eq(schema.meals.id, entry.meal.id)
@@ -118,6 +120,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     for (const [id, item] of items) {
       const newMealRow: typeof schema.meals.$inferInsert = {
         type: item.type,
+        favorite: item.favorite ?? false,
       };
       const rows = await db.insert(schema.meals).values(newMealRow).returning({
         id: schema.meals.id,
@@ -155,6 +158,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
       const meal: AppMeal = {
         id: x.id,
         type: x.type,
+        favorite: x.favorite,
         food: x.food.map((y) => {
           const food = foodMap.get(y.foodId);
           if (!food) {

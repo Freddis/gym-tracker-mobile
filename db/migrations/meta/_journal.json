@@ -218,6 +218,13 @@
       "when": 1781607181141,
       "tag": "0030_food_brands",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "6",
+      "when": 1788604175065,
+      "tag": "0031_favorite_meals",
+      "breakpoints": true
     }
   ]
 }

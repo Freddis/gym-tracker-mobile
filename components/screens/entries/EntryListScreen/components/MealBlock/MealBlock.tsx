@@ -12,6 +12,7 @@ import {useRouter} from 'expo-router';
 import {mealAtom} from '../../../meal/MealUpdateScreen/mealAtom';
 import {wrap} from '../../../meal/MealUpdateScreen/wrap';
 import {PostContent} from '../PostContent/PostContent';
+import {IconSymbol} from '../../../../../blocks/IconSymbol/IconSymbol';
 
 export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) => {
   const [entry] = useAtom(props.entryAtom);
@@ -38,7 +39,12 @@ export const MealBlock: FC<{entryAtom: PrimitiveAtom<MealAppEntry>}> = (props) =
     <Pressable onPress={onPress}>
     <ThemedBlock>
       <View className="flex-row items-center justify-between">
-        <ThemedText className="font-bold text-lg">Meal</ThemedText>
+        <View className="flex-row items-center gap-s">
+          <ThemedText className="font-bold text-lg">Meal</ThemedText>
+          {entry.meal.favorite && (
+            <IconSymbol name="star.fill" size={16} color="#f5c518" />
+          )}
+        </View>
         <ThemedText>
           {date.toLocaleDateString()}
         </ThemedText>

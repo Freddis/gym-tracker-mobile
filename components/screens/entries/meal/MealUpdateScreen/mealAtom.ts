@@ -34,6 +34,7 @@ const initialEntry: MealAppEntry = {
   meal: {
     id: 0,
     type: MealType.BREAKFAST,
+    favorite: false,
     food: [],
   },
   calorieGoalId: null,

@@ -1305,6 +1305,10 @@ export type OutdoorWalk = OutdoorRun;
 export type Meal = {
     type: MealType;
     /**
+     * Whether the meal is marked as a favorite
+     */
+    favorite: boolean;
+    /**
      * Food components of the meal
      */
     food: MealFoodComponent[];
@@ -2512,6 +2516,10 @@ export type MealEntryUpsertDto = {
  */
 export type MealUpsertDto = {
     type: MealType;
+    /**
+     * Whether the meal is marked as a favorite
+     */
+    favorite: boolean;
     /**
      * Components of the meal
      */

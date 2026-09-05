@@ -14,6 +14,7 @@ const MAPPING = {
   'chevron.right': 'chevron-right',
   'dumbbell.fill': 'sports-score',
   'chart.bar.xaxis.ascending': 'bar-chart',
+  'star.fill': 'star',
 } as Partial<
   Record<
   SFSymbol,

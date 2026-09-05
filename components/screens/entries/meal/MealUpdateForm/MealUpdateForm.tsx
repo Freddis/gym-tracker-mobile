@@ -1,7 +1,7 @@
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import {FC, useState, useEffect} from 'react';
-import {KeyboardAvoidingView, Platform, View, Pressable} from 'react-native';
+import {KeyboardAvoidingView, Platform, View, Pressable, Switch} from 'react-native';
 import {useAppTheme} from '../../../../../hooks/useAppTheme';
 import {FoodAmountUnit, MealType} from '../../../../../openapi-client';
 import {MealAppEntry} from '../../../../../types/models/AppEntry';
@@ -84,6 +84,15 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
     setEntry(updatedEntry);
     props.onChange(updatedEntry);
   };
+  const updateFavorite = (favorite: boolean) => {
+    const updatedEntry: MealAppEntry = {
+      ...entry,
+      updatedAt: new Date(),
+      meal: {...entry.meal, favorite},
+    };
+    setEntry(updatedEntry);
+    props.onChange(updatedEntry);
+  };
   const updateDate = async (date: Date) => {
     setDate(date);
     // await entryAtomService.updateTime(entry, date);
@@ -145,6 +154,15 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
             <View className="flex-row items-center justify-between">
               <ThemedText>Type</ThemedText>
               <ThemedText onPress={() => setTypeModalVisible(true)}>{mealType}</ThemedText>
+            </View>
+            <AppSeparator />
+            <View className="flex-row items-center justify-between">
+              <ThemedText>Favorite</ThemedText>
+              <Switch
+                trackColor={{true: theme.accent}}
+                value={entry.meal.favorite}
+                onValueChange={updateFavorite}
+              />
             </View>
             <AppSeparator />
             <View className="flex-row items-center justify-between">
