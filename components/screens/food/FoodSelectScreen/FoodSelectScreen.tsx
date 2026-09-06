@@ -12,10 +12,12 @@ import {useSetAtom} from 'jotai';
 import {selectedFoodAtom} from './selectedFoodAtom';
 import {FoodListItem} from './components/FoodListItem';
 import {AppFood} from '../../../../utils/FoodService/types/AppFood';
+import {useUser} from '../../../providers/AuthProvider/useUser';
 
 export const FoodSelectScreen: FC = () => {
   const [searchName, setSearchName] = useState<string|null>(null);
   const setSelectedFoodAtom = useSetAtom(selectedFoodAtom);
+  const user = useUser();
   const [library, setLibrary] = useState<'personal' | 'built-in'>('personal');
   const {foodService} = useServices();
   const router = useRouter();
@@ -36,8 +38,9 @@ export const FoodSelectScreen: FC = () => {
     setLibrary(item.value === 'personal' ? 'personal' : 'built-in');
   };
 
-  const onPress = (item: AppFood) => {
-    setSelectedFoodAtom(item);
+  const onPress = async (item: AppFood) => {
+    const finalItem = library === 'built-in' ? await foodService.createFood(user.id, item, item.image?.url ?? null) : item;
+    setSelectedFoodAtom(finalItem);
     router.back();
   };
 

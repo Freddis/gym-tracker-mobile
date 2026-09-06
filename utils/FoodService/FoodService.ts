@@ -127,7 +127,7 @@ export class FoodService implements ISyncedEntityService {
 
   async getFood(query?: FoodFilter): Promise<AppFood[]> {
     if (query?.personalLibrary === false) {
-      return [];
+      return this.searchFoodWithApi(query);
     }
     const orderedByLastUse = await this.db.select({
       id: schema.food.id,
@@ -165,6 +165,37 @@ export class FoodService implements ISyncedEntityService {
     }
     return reordered;
 
+  }
+
+
+  protected async searchFoodWithApi(query: FoodFilter): Promise<AppFood[]> {
+    const response = await this.api.client().findFood({
+      query: {
+        query: query.search,
+      },
+    });
+    if (!response.data) {
+      return [];
+    }
+    const result: AppFood[] = response.data.items.map((x) => {
+      const image: AppImage | null = x.image ? {
+        id: 0,
+        url: x.image.url,
+        userId: 0,
+        image: null,
+        type: ImageType.FOOD,
+      } : null;
+
+      const food: AppFood = {
+        ...x,
+        lastPushedAt: null,
+        lastPulledAt: null,
+        image,
+        components: [],
+      };
+      return food;
+    });
+    return result;
   }
 
   async pullFromServer(userId: number, trx: DrizzleDb = this.db, progress: StageProgressCallback = () => {}): Promise<boolean> {
