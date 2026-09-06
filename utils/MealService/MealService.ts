@@ -158,7 +158,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
       },
     });
     const foodIds = rows.flatMap((x) => x.food.map((x) => x.foodId));
-    const foodMap = await this.foodService.loadFood(new Set(foodIds));
+    const foodMap = await this.foodService.loadFood(foodIds);
     const result: AppMeal[] = rows.map((x) => {
       const meal: AppMeal = {
         id: x.id,

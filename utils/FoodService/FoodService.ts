@@ -1,4 +1,4 @@
-import {eq} from 'drizzle-orm';
+import {and, desc, eq, inArray, isNull, like, max} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Food, FoodUpsertDto, Image, ImageType} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
@@ -32,19 +32,19 @@ export class FoodService implements ISyncedEntityService {
     this.imageService = imageService;
   }
 
-  async loadFood(ids: Set<string>): Promise<Map<string, AppFood>> {
-    if (ids.size === 0) {
+  async loadFood(ids: string[]): Promise<Map<string, AppFood>> {
+    if (ids.length === 0) {
       return new Map();
     }
     const foodRows = await this.db.query.food.findMany({
-      where: (t, op) => op.inArray(t.id, Array.from(ids)),
+      where: (t, op) => op.inArray(t.id, ids),
       with: {
         image: true,
         components: true,
       },
     });
     const componentIds: Set<string> = foodRows.flatMap((x) => x.components).reduce((acc, x) => acc.add(x.componentId), new Set<string>());
-    const components = await this.loadFood(componentIds);
+    const components = await this.loadFood(Array.from(componentIds));
     const foodArray = foodRows.map((x) => {
       const image: AppImage | null = avoidLet(() => {
         if (!x.image) {
@@ -129,18 +129,34 @@ export class FoodService implements ISyncedEntityService {
     if (query?.personalLibrary === false) {
       return [];
     }
-    const foodRows = await this.db.query.food.findMany({
-      where: (t, op) => op.and(
-        query?.search ? op.like(t.name, `%${query.search}%`) : undefined,
-        query?.includeDeleted ? undefined : op.isNull(t.deletedAt),
-        query?.ids ? op.inArray(t.id, query.ids) : undefined,
-      ),
-      orderBy: (t, op) => [op.desc(t.createdAt)],
-    });
+    const orderedByLastUse = await this.db.select({
+      id: schema.food.id,
+    })
+    .from(schema.food)
+    .leftJoin(schema.mealFoodComponents, eq(schema.mealFoodComponents.foodId, schema.food.id))
+    .leftJoin(schema.entries, and(
+      eq(schema.entries.mealId, schema.mealFoodComponents.mealId),
+      isNull(schema.entries.deletedAt),
+    ))
+    .where(
+      and(
+        query?.search ? like(schema.food.name, `%${query.search}%`) : undefined,
+        query?.includeDeleted ? undefined : isNull(schema.food.deletedAt),
+        query?.ids ? inArray(schema.food.id, query.ids) : undefined,
+      )
+    )
+    .groupBy(schema.food.id)
+    // nulls sort last on desc in sqlite, so each key only breaks ties for rows missing the previous one
+    .orderBy(
+      desc(max(schema.entries.time)),
+      desc(schema.food.updatedAt),
+      desc(schema.food.deletedAt),
+      desc(schema.food.createdAt),
+    );
 
-    const foodMap = await this.loadFood(new Set(foodRows.map((x) => x.id)));
+    const foodMap = await this.loadFood(orderedByLastUse.map((x) => x.id));
     const reordered:AppFood[] = [];
-    for (const x of foodRows) {
+    for (const x of orderedByLastUse) {
       const food = foodMap.get(x.id);
       if (!food) {
         throw new Error(`Food ${x.id} not found`);
@@ -314,7 +330,7 @@ export class FoodService implements ISyncedEntityService {
   }
   protected async pushFood(db: DrizzleDb, ids: string[]): Promise<boolean> {
     this.logger.info('Getting entries to upsert', {ids: ids});
-    const entries = await this.loadFood(new Set(ids));
+    const entries = await this.loadFood(ids);
     //todo:  that's not actually enough, it's possible that earlier food still references later foods as components
     // we need to traverse the components and make sure they're present first if they're new
     const entriesToUpsert = Array.from(entries.values()).sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
