@@ -1,6 +1,6 @@
-import {eq} from 'drizzle-orm';
+import {and, eq, inArray, like} from 'drizzle-orm';
 import {schema} from '../../db/schema';
-import {Entry, EntryType, Meal, MealEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
+import {Entry, EntryType, Meal, MealEntryUpsertDto, MealType, PostEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
 import {BaseEntry, MealAppEntry} from '../../types/models/AppEntry';
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
@@ -191,10 +191,21 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     };
   }
 
-  async getFavoriteMeals(userId: number): Promise<MealAppEntry[]> {
-    const favoriteMeals = await this.db.query.meals.findMany({
-      where: (t, op) => op.eq(t.favorite, true),
-    });
+  async getFavoriteMeals(userId: number, search?: string, types?: MealType[]): Promise<MealAppEntry[]> {
+    const favoriteMeals = await this.db.select({
+      id: schema.meals.id,
+    })
+      .from(schema.meals)
+      .leftJoin(schema.mealFoodComponents, eq(schema.mealFoodComponents.mealId, schema.meals.id))
+      .leftJoin(schema.food, eq(schema.food.id, schema.mealFoodComponents.foodId))
+      .where(
+        and(
+          eq(schema.meals.favorite, true),
+          search ? like(schema.food.name, `%${search}%`) : undefined,
+          types && types.length > 0 ? inArray(schema.meals.type, types) : undefined,
+        )
+      )
+      .groupBy(schema.meals.id);
     if (favoriteMeals.length === 0) {
       return [];
     }
