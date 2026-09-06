@@ -285,6 +285,7 @@ export const meals = sqliteTable('meals', {
   id: integer().primaryKey({autoIncrement: true}).notNull(),
   type: text().notNull().$type<MealType>(),
   favorite: integer({mode: 'boolean'}).notNull().default(false),
+  copiedFromId: text(),
 });
 
 export const mealFoodComponents = sqliteTable('meal_food', {

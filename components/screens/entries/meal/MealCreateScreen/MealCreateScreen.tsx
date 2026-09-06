@@ -49,6 +49,7 @@ export const MealCreateScreen = () => {
       id: 0,
       type: MealType.BREAKFAST,
       favorite: false,
+      copiedFromId: null,
       food: [],
     },
     calorieGoalId: null,

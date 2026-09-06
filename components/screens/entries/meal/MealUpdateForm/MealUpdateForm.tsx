@@ -1,4 +1,4 @@
-import {useRouter} from 'expo-router';
+import {Href, useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import {FC, useState, useEffect} from 'react';
 import {KeyboardAvoidingView, Platform, View, Pressable, Switch} from 'react-native';
@@ -17,6 +17,7 @@ import {ThemedLink} from '../../../../blocks/ThemedLink/ThemedLink';
 import {ThemedScrollView} from '../../../../blocks/ThemedScrollView/ThemedScrollView';
 import {ThemedText} from '../../../../blocks/ThemedText/ThemedText';
 import {selectedFoodAtom} from '../../../food/FoodSelectScreen/selectedFoodAtom';
+import {selectedFavoriteMealAtom} from '../FavoriteMealSelectScreen/selectedFavoriteMealAtom';
 import {FoodComponentBlock} from './components/FoodComponentBlock';
 import {wrap, Wrapped} from '../MealUpdateScreen/wrap';
 import {WheelPickerItemProps} from 'react-native-ui-lib';
@@ -41,6 +42,7 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
   let imageSrc = props.entry.image?.image ? `data:image/jpeg;base64,${props.entry.image.image}` : null;
   const [image, setImage] = useState<string | null>(imageSrc ?? props.entry.image?.url ?? null);
   const [selectedFood, setSelectedFood] = useAtom(selectedFoodAtom);
+  const [selectedFavoriteMeal, setSelectedFavoriteMeal] = useAtom(selectedFavoriteMealAtom);
   const [entry, setEntry] = useState(props.entry);
   const ingredients = entry.meal.food.map(wrap);
   const router = useRouter();
@@ -73,6 +75,27 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFood]);
+
+  useEffect(() => {
+    if (!selectedFavoriteMeal) {
+      return;
+    }
+    const updatedEntry: MealAppEntry = {
+      ...entry,
+      updatedAt: new Date(),
+      meal: {
+        ...entry.meal,
+        type: selectedFavoriteMeal.meal.type,
+        food: selectedFavoriteMeal.meal.food.map((food) => ({...food})),
+        copiedFromId: selectedFavoriteMeal.id,
+      },
+    };
+    setMealType(selectedFavoriteMeal.meal.type);
+    setSelectedFavoriteMeal(null);
+    setEntry(updatedEntry);
+    props.onChange(updatedEntry);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFavoriteMeal]);
 
   const updateMealType = (type: MealType) => {
     setMealType(type);
@@ -139,6 +162,9 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
   const onAddFoodPress = () => {
     router.navigate('/app/entries/food/foodSelect');
   };
+  const onCopyFavoritePress = () => {
+    router.navigate('/app/entries/meal/favoriteMealSelect' as Href);
+  };
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -163,6 +189,11 @@ export const MealUpdateForm: FC<MealUpdateFormProps> = (props) => {
                 value={entry.meal.favorite}
                 onValueChange={updateFavorite}
               />
+            </View>
+            <AppSeparator />
+            <View className="flex-row items-center justify-between">
+              <ThemedText>Copy favorite</ThemedText>
+              <ThemedLink onPress={onCopyFavoritePress}>Select</ThemedLink>
             </View>
             <AppSeparator />
             <View className="flex-row items-center justify-between">

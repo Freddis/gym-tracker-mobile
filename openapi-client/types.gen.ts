@@ -1309,6 +1309,10 @@ export type Meal = {
      */
     favorite: boolean;
     /**
+     * Id of the entry this meal was copied from
+     */
+    copiedFromId: string | null;
+    /**
      * Food components of the meal
      */
     food: MealFoodComponent[];
@@ -2520,6 +2524,10 @@ export type MealUpsertDto = {
      * Whether the meal is marked as a favorite
      */
     favorite: boolean;
+    /**
+     * Id of the entry this meal was copied from
+     */
+    copiedFromId: string | null;
     /**
      * Components of the meal
      */

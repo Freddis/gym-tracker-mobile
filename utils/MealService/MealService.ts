@@ -29,6 +29,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     const newMealRow: typeof schema.meals.$inferInsert = {
       type: meal.type,
       favorite: meal.favorite,
+      copiedFromId: meal.copiedFromId,
     };
     const rows = await db.insert(schema.meals).values(newMealRow).returning({
       id: schema.meals.id,
@@ -54,6 +55,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     await db.update(schema.meals).set({
       type: entry.meal.type,
       favorite: entry.meal.favorite,
+      copiedFromId: entry.meal.copiedFromId,
     })
     .where(
       eq(schema.meals.id, entry.meal.id)
@@ -77,6 +79,8 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     const copy = await transactionAsync(db, async (trx) => {
       const newMeal: AppMeal = {
         ...entry.meal,
+        favorite: false,
+        copiedFromId: entry.id,
       };
       const mealId = await this.create(newMeal, trx);
       const newEntry = await this.entryRepositoryService.create(trx, user, EntryType.MEAL, 'mealId', mealId, {
@@ -121,6 +125,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
       const newMealRow: typeof schema.meals.$inferInsert = {
         type: item.type,
         favorite: item.favorite ?? false,
+        copiedFromId: item.copiedFromId ?? null,
       };
       const rows = await db.insert(schema.meals).values(newMealRow).returning({
         id: schema.meals.id,
@@ -159,6 +164,7 @@ export class MealService implements IEntryService<EntryType.MEAL> {
         id: x.id,
         type: x.type,
         favorite: x.favorite,
+        copiedFromId: x.copiedFromId,
         food: x.food.map((y) => {
           const food = foodMap.get(y.foodId);
           if (!food) {
@@ -183,6 +189,39 @@ export class MealService implements IEntryService<EntryType.MEAL> {
       type: EntryType.MEAL,
       meal: value,
     };
+  }
+
+  async getFavoriteMeals(userId: number): Promise<MealAppEntry[]> {
+    const favoriteMeals = await this.db.query.meals.findMany({
+      where: (t, op) => op.eq(t.favorite, true),
+    });
+    if (favoriteMeals.length === 0) {
+      return [];
+    }
+    const mealIds = favoriteMeals.map((x) => x.id);
+    const entries = await this.db.query.entries.findMany({
+      where: (t, op) => op.and(
+        op.eq(t.userId, userId),
+        op.eq(t.type, EntryType.MEAL),
+        op.isNull(t.deletedAt),
+        op.inArray(t.mealId, mealIds),
+      ),
+      orderBy: (t, op) => op.desc(t.time),
+    });
+    const mealMap = await this.loadMap(mealIds);
+    const result: MealAppEntry[] = [];
+    for (const entry of entries) {
+      if (entry.mealId === null) {
+        continue;
+      }
+      const meal = mealMap.get(entry.mealId);
+      if (!meal) {
+        continue;
+      }
+      const baseEntry = await this.entryRepositoryService.load(this.db, entry.id);
+      result.push(this.construct(baseEntry, meal));
+    }
+    return result;
   }
 
 }
