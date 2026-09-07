@@ -4,7 +4,7 @@ import {Logger} from '../Logger/Logger';
 import {CalorieGoal, Entry, EntryType, EntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {BaseEntry, CalorieGoalAppEntry} from '../../types/models/AppEntry';
 import {schema} from '../../db/schema';
-import {desc, eq} from 'drizzle-orm';
+import {desc, eq, SQL} from 'drizzle-orm';
 import {AppCalorieGoal} from './types/AppCalorieGoal';
 import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
 import {AuthUser} from '../../components/providers/AuthProvider/types/AuthUser';
@@ -57,6 +57,10 @@ export class CalorieGoalService implements IEntryService<EntryType.CALORIE_GOAL>
 
   getObject(entry: Entry): CalorieGoal | null {
     return entry.calorieGoal ?? null;
+  }
+
+  getSearchFilter(query: string): SQL | null {
+    return null;
   }
 
   getUpsertDto(entry: CalorieGoalAppEntry, dto: PostEntryUpsertDto): EntryUpsertDto {

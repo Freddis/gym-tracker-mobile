@@ -2,7 +2,7 @@ import {Entry, EntryType, PostEntryUpsertDto, Workout, WorkoutEntryUpsertDto} fr
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
-import {desc, and, eq, isNull} from 'drizzle-orm';
+import {desc, and, eq, inArray, isNull, like, or, SQL} from 'drizzle-orm';
 import {AppWorkout, CompleteAppWorkout} from '@/types/models/AppWorkout';
 import {AppWorkoutExercise} from '@/types/models/AppWorkoutExercise';
 import {AppWorkoutExerciseSet} from '@/types/models/AppWorkoutExerciseSet';
@@ -158,6 +158,21 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
 
   getObject(entry: Entry): Workout | null {
     return entry.workout ?? null;
+  }
+
+  getSearchFilter(query: string): SQL | null {
+    const byExercise = this.db.select({id: schema.workoutExercises.workoutId})
+      .from(schema.workoutExercises)
+      .innerJoin(schema.exercises, eq(schema.exercises.id, schema.workoutExercises.exerciseId))
+      .where(like(schema.exercises.name, `%${query}%`));
+    const byType = this.db.select({id: schema.workouts.id})
+      .from(schema.workouts)
+      .innerJoin(schema.workoutTypes, eq(schema.workoutTypes.id, schema.workouts.typeId))
+      .where(like(schema.workoutTypes.name, `%${query}%`));
+    return or(
+      inArray(schema.entries.workoutId, byExercise),
+      inArray(schema.entries.workoutId, byType),
+    ) ?? null;
   }
 
   async processPulledItems(db: DrizzleDb, items: [string, Workout][]): Promise<Map<string, number>> {

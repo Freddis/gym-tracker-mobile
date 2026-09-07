@@ -1,3 +1,4 @@
+import {SQL} from 'drizzle-orm';
 import {CalorieGoal, Entry, EntryType, EntryUpsertDto, Meal, OutdoorRun, OutdoorWalk, PostEntryUpsertDto, Weight, Workout} from '../openapi-client';
 import {AppCalorieGoal} from '../utils/CalorieGoalService/types/AppCalorieGoal';
 import {DrizzleDb} from '../utils/drizzle';
@@ -29,6 +30,10 @@ export type EntryAppObjectMap = Record<EntryType, unknown> & {
 
 export interface IEntryService<TType extends EntryType> {
   getObject(entry: Entry): EntryObjectMap[TType] | null
+  /**
+   * Condition on the entries table matching the search query, or null when the type is not searchable.
+   */
+  getSearchFilter(query: string): SQL | null
   getUpsertDto(entry: AppEntry & {type: TType}, dto: PostEntryUpsertDto): EntryUpsertDto
   wipeLocalData(db: DrizzleDb): Promise<boolean>
   deleteById(id: number, db: DrizzleDb): Promise<void>

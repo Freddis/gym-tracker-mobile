@@ -1,4 +1,4 @@
-import {and, eq, inArray, like} from 'drizzle-orm';
+import {and, eq, inArray, like, SQL} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, Meal, MealEntryUpsertDto, MealType, PostEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
@@ -96,6 +96,14 @@ export class MealService implements IEntryService<EntryType.MEAL> {
 
   getObject(entry: Entry): Meal | null {
     return entry.meal ?? null;
+  }
+
+  getSearchFilter(query: string): SQL | null {
+    const mealIds = this.db.select({id: schema.mealFoodComponents.mealId})
+      .from(schema.mealFoodComponents)
+      .innerJoin(schema.food, eq(schema.food.id, schema.mealFoodComponents.foodId))
+      .where(like(schema.food.name, `%${query}%`));
+    return inArray(schema.entries.mealId, mealIds);
   }
 
   getUpsertDto(entry: MealAppEntry, dto: PostEntryUpsertDto): MealEntryUpsertDto {

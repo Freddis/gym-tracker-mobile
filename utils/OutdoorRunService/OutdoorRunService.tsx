@@ -1,4 +1,4 @@
-import {eq} from 'drizzle-orm';
+import {eq, SQL} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, OutdoorRun, OutdoorRunEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
@@ -87,6 +87,10 @@ export class OutdoorRunService implements IEntryService<EntryType.OUTDOOR_RUN> {
 
   getObject(entry: Entry): OutdoorRun | null {
     return entry.outdoorRun ?? null;
+  }
+
+  getSearchFilter(query: string): SQL | null {
+    return null;
   }
 
   getUpsertDto(entry: OutdoorRunAppEntry, dto: PostEntryUpsertDto): OutdoorRunEntryUpsertDto {

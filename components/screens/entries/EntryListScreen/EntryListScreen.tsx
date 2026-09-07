@@ -8,6 +8,7 @@ import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {AppScreenContainer} from '@/components/blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
+import {ThemedSearchInput} from '@/components/blocks/ThemedSearchInput/ThemedSearchInput';
 import {EntryType} from '../../../../openapi-client';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
@@ -31,13 +32,15 @@ export const EntryListScreen: FC = () => {
   const [db] = useDrizzle();
   const [types, setTypes] = useState<EntryType[]| null>(null);
   const [date, setDate] = useState<Date | null>(null);
+  const [search, setSearch] = useState<string | null>(null);
   const query = useInfiniteQuery({
-    queryKey: ['entries', types, date],
+    queryKey: ['entries', types, date, search],
     retry: false,
     queryFn: ({pageParam}) => {
       return entryService.getEntries(db, user.id, {
         types: types ?? undefined,
         date: date ?? undefined,
+        search: search ?? undefined,
         includeDeleted: false,
         limit: 30,
         page: pageParam,
@@ -113,6 +116,15 @@ export const EntryListScreen: FC = () => {
                 ['Food', '/app/entries/food/foodList'],
               ]}
             />
+
+            <View className="mt-5">
+              <ThemedSearchInput
+                returnKeyType="done"
+                onSearch={setSearch}
+                className="bg-surface"
+                placeholder="Search"
+              />
+            </View>
 
             <View
              className="flex-row items-center mt-5"

@@ -1,4 +1,4 @@
-import {eq} from 'drizzle-orm';
+import {eq, SQL} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, HeartRatePoint, OutdoorWalk, OutdoorWalkEntryUpsertDto, PostEntryUpsertDto} from '../../openapi-client';
 import {asyncDrizzle, DrizzleDb} from '../drizzle';
@@ -159,6 +159,10 @@ export class OutdoorWalkService implements IEntryService<EntryType.OUTDOOR_WALK>
 
   getObject(entry: Entry): OutdoorWalk | null {
     return entry.outdoorWalk ?? null;
+  }
+
+  getSearchFilter(query: string): SQL | null {
+    return null;
   }
 
   async import(

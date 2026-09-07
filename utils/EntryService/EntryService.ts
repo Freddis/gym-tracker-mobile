@@ -18,7 +18,7 @@ import {asyncDrizzle, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {WeightService} from '../WeightService/WeightService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
-import {eq} from 'drizzle-orm';
+import {eq, like, or, SQL} from 'drizzle-orm';
 import {ImageService} from '../ImageService/ImageService';
 import {OutdoorRunService} from '../OutdoorRunService/OutdoorRunService';
 import {OutdoorWalkService} from '../OutdoorWalkService/OutdoorWalkService';
@@ -398,6 +398,17 @@ export class EntryService implements ISyncedEntityService {
     };
   }
 
+  protected getSearchFilter(query: string): SQL | undefined {
+    const typeFilters = Object.values(this.entryServices)
+      .map((x) => x.service.getSearchFilter(query))
+      .filter((x) => x !== null);
+    return or(
+      like(schema.entries.title, `%${query}%`),
+      like(schema.entries.note, `%${query}%`),
+      ...typeFilters,
+    );
+  }
+
   async getEntries<T extends EntryType>(
     db: DrizzleDb,
     userId: number,
@@ -411,11 +422,13 @@ export class EntryService implements ISyncedEntityService {
       types?: T[],
       date?: Date,
       page?: number,
+      search?: string,
     }
   ): Promise<(AppEntry & {type: T})[]> {
     const page = params?.page ?? 1;
     const limit = params?.limit ?? 10;
     const offset = (page - 1) * limit;
+    const search = params?.search ? this.getSearchFilter(params.search) : undefined;
     const sqlQuery = db.query.entries.findMany({
       where: (t, op) => op.and(
         params?.ids ? op.inArray(t.id, params.ids) : undefined,
@@ -424,6 +437,7 @@ export class EntryService implements ISyncedEntityService {
         params?.includeDeleted ? undefined : op.isNull(t.deletedAt),
         params?.types ? op.inArray(t.type, params.types) : undefined,
         params?.date ? op.gte(t.time, params.date) : undefined,
+        search,
         op.eq(t.userId, userId),
       ),
       orderBy: (t, op) => op.desc(t.time),

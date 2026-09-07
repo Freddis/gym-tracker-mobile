@@ -1,4 +1,4 @@
-import {eq} from 'drizzle-orm';
+import {eq, SQL} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Entry, EntryType, EntryUpsertDto, PostEntryUpsertDto, Weight, WeightEntryUpsertDto} from '../../openapi-client';
 import {IEntryService} from '../../types/IEntryService';
@@ -62,6 +62,10 @@ export class WeightService implements IEntryService<EntryType.WEIGHT> {
 
   getObject(entry: Entry): Weight | null {
     return entry.weight ?? null;
+  }
+
+  getSearchFilter(query: string): SQL | null {
+    return null;
   }
 
   getUpsertDto(entry: WeightAppEntry & {type: EntryType.WEIGHT;}, dto: PostEntryUpsertDto): EntryUpsertDto {
