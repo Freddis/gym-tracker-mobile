@@ -132,8 +132,8 @@ export class MealService implements IEntryService<EntryType.MEAL> {
     for (const [id, item] of items) {
       const newMealRow: typeof schema.meals.$inferInsert = {
         type: item.type,
-        favorite: item.favorite ?? false,
-        copiedFromId: item.copiedFromId ?? null,
+        favorite: false,
+        copiedFromId: null,
       };
       const rows = await db.insert(schema.meals).values(newMealRow).returning({
         id: schema.meals.id,

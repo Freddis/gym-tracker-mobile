@@ -6,6 +6,9 @@ import {client} from '@/openapi-client/client.gen';
 import {deleteItemAsync, getItemAsync, setItemAsync} from 'expo-secure-store';
 import {db, conflictUpdateSetAllColumns} from '../../../utils/drizzle';
 import {schema} from '../../../db/schema';
+import {Alert} from 'react-native';
+import {AxiosError} from 'axios';
+import * as Device from 'expo-device';
 
 export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
   const userKey = 'user';
@@ -37,16 +40,28 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   }
   const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
-    return {
+    const isSimulator = !Device.isDevice;
+    const baseUrl = isSimulator ? 'http://192.168.0.16:3333/api' : 'https://discipline.alex-sarychev.com/api';
+    const options: Config<ClientOptions> = {
       responseType: 'json',
-      // baseURL: 'http://192.168.0.16:3000/api',
-      baseURL: 'https://discipline.alex-sarychev.com/api',
+      baseURL: baseUrl,
       headers: {
         Authorization: authHeader,
+        apiVersion: '1.0.1',
       },
     };
+    return options;
   };
   client.setConfig(getClientConfig(user));
+  client.instance.interceptors.response.use(undefined, async (error: unknown) => {
+    console.log('Error', error,);
+    if (!(error instanceof AxiosError)) {
+      return;
+    }
+    if (error.response?.data.error.code === 'ApiVersionMismatch') {
+      Alert.alert('Api Version Mismatch', 'Please update the app to the latest version');
+    }
+  });
   const logout = () => {
     setUser(null);
     deleteItemAsync(userKey);

@@ -4,7 +4,7 @@ dns.setDefaultResultOrder('ipv4first');
 
 export default defineConfig({
   input: {
-    path: 'http://localhost:3000/api-schema',
+    path: 'http://localhost:3333/api-schema',
   },
   output: {
     format: 'prettier',
