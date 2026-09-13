@@ -13,6 +13,7 @@ import {selectedFoodAtom} from './selectedFoodAtom';
 import {FoodListItem} from './components/FoodListItem';
 import {AppFood} from '../../../../utils/FoodService/types/AppFood';
 import {useUser} from '../../../providers/AuthProvider/useUser';
+import uuid from 'react-native-uuid';
 
 export const FoodSelectScreen: FC = () => {
   const [searchName, setSearchName] = useState<string|null>(null);
@@ -39,7 +40,10 @@ export const FoodSelectScreen: FC = () => {
   };
 
   const onPress = async (item: AppFood) => {
-    const finalItem = library === 'built-in' ? await foodService.createFood(user.id, item, item.image?.url ?? null) : item;
+    const finalItem = library === 'built-in' ? await foodService.createFood(user.id, {
+      ...item,
+      id: uuid.v4(),
+    }, item.image?.url ?? null) : item;
     setSelectedFoodAtom(finalItem);
     router.back();
   };
