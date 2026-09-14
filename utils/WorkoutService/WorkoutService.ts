@@ -135,25 +135,7 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
     return result;
   }
   async getWorkout(db: DrizzleDb, id: number): Promise<CompleteAppWorkout| null> {
-    const workout = await db.query.workouts.findFirst({
-      where: (t, op) => op.eq(t.id, id),
-      with: {
-        exercises: {
-          with: {
-            exercise: true,
-            sets: {
-              orderBy: (t, op) => [
-                op.asc(t.createdAt),
-              ],
-            },
-          },
-          orderBy: (t, op) => [
-            op.asc(t.createdAt),
-          ],
-        },
-      },
-    },);
-    return workout ?? null;
+    return (await this.loadMap([id], db)).get(id) ?? null;
   }
 
   getObject(entry: Entry): Workout | null {
@@ -291,7 +273,7 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
 
   async loadMap(ids: number[], trx?: DrizzleDb): Promise<Map<number, CompleteAppWorkout>> {
     trx = trx ?? this.db;
-    const workouts: CompleteAppWorkout[] = await trx.query.workouts.findMany({
+    const rows = await trx.query.workouts.findMany({
       where: (t, op) => op.inArray(t.id, ids),
       with: {
         exercises: {
@@ -309,6 +291,13 @@ export class WorkoutService implements IEntryService<EntryType.WORKOUT> {
         },
       },
     });
+    const workouts: CompleteAppWorkout[] = await Promise.all(rows.map(async (workout) => ({
+      ...workout,
+      exercises: await Promise.all(workout.exercises.map(async (workoutExercise) => ({
+        ...workoutExercise,
+        exercise: await this.exerciseService.getExercise(workoutExercise.exerciseId, trx),
+      }))),
+    })));
     return new Map(workouts.map((x) => [x.id, x]));
   }
 

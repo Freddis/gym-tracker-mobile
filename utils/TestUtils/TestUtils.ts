@@ -12,9 +12,10 @@ export class TestUtils {
   }
 
   static getWorkoutService(): WorkoutService {
+    const imageService = new ImageService(new ApiService(), this.getDb());
     return new WorkoutService(
       this.getDb(),
-      new EntryRepositoryService(new ImageService(new ApiService(), this.getDb())),
-      new ExerciseService(this.getDb()));
+      new EntryRepositoryService(imageService),
+      new ExerciseService(this.getDb(), imageService));
   }
 }

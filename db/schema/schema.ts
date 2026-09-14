@@ -132,7 +132,7 @@ export const entries = sqliteTable('entries', {
   note: text(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),
-  imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
+  imageId: text().references(() => images.id, {onDelete: 'set null', onUpdate: 'cascade'}),
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
   outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
   outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
@@ -160,13 +160,11 @@ export const entries = sqliteTable('entries', {
 ]);
 
 export const images = sqliteTable('images', {
-  id: integer().primaryKey({autoIncrement: true}).notNull(),
+  id: text().primaryKey().notNull(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   url: text(),
   image: text(),
   type: text().notNull().$type<ImageType>(),
-  // lastPulledAt: integer({mode: 'timestamp'}),
-  // lastPushedAt: integer({mode: 'timestamp'}),
 });
 
 export const outdoorRuns = sqliteTable('outdoor_runs', {
@@ -255,7 +253,7 @@ export const food = sqliteTable('food', {
   name: text().notNull(),
   brand: text(),
   description: text(),
-  imageId: integer().references(() => images.id, {onDelete: 'set null'}),
+  imageId: text().references(() => images.id, {onDelete: 'set null', onUpdate: 'cascade'}),
   protein: real().notNull(),
   carbs: real().notNull(),
   fat: real().notNull(),

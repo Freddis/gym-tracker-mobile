@@ -57,9 +57,9 @@ export class FoodService implements ISyncedEntityService {
         return {
           id: x.image.id,
           url: url,
-          userId: x.userId,
+          userId: x.image.userId,
           image: x.image.image,
-          type: ImageType.FOOD,
+          type: x.image.type,
         };
       });
       const food: AppFood = {
@@ -115,7 +115,10 @@ export class FoodService implements ISyncedEntityService {
     const db = await asyncDrizzle();
     const result = await transactionAsync(db, async (trx) => {
       const appImage = image ? await this.imageService.createImage(userId, image, ImageType.FOOD, trx) : null;
-      const imageMap: Map<string, number> = appImage ? new Map([[food.id, appImage.id]]) : new Map();
+      const imageMap = new Map<string, string | null>();
+      if (image !== undefined) {
+        imageMap.set(food.id, appImage?.id ?? null);
+      }
       await this.upsertFood(trx, userId, [food], imageMap);
       return {
         ...food,
@@ -179,7 +182,7 @@ export class FoodService implements ISyncedEntityService {
     }
     const result: AppFood[] = response.data.items.map((x) => {
       const image: AppImage | null = x.image ? {
-        id: 0,
+        id: x.image.id,
         url: x.image.url,
         userId: 0,
         image: null,
@@ -236,7 +239,12 @@ export class FoodService implements ISyncedEntityService {
       const image: [string, Image] = [x.id, x.image];
       return image;
     }).filter((x) => x !== null);
-    const imageMap = await this.imageService.processPulledItems(userId, trx, images, ImageType.FOOD);
+    const imageMap: Map<string, string | null> = await this.imageService.processPulledItems(userId, trx, images, ImageType.FOOD);
+    for (const item of items) {
+      if (!item.image) {
+        imageMap.set(item.id, null);
+      }
+    }
 
 
     const foodToAppFood = (food: Food): AppFood => {
@@ -257,7 +265,7 @@ export class FoodService implements ISyncedEntityService {
   }
 
   //todo: refactor this: remove imageMap and simply use AppFood[]
-  async upsertFood(trx: DrizzleDb, userId: number, items: AppFood[], imageMap: Map<string, number>) {
+  async upsertFood(trx: DrizzleDb, userId: number, items: AppFood[], imageMap: Map<string, string | null>) {
     for (const item of items) {
       const imageId = imageMap.get(item.id);
       const row: typeof schema.food.$inferInsert = {
@@ -388,6 +396,7 @@ export class FoodService implements ISyncedEntityService {
       // update image url if it was changed
       if (entriesToUpsert[i].image && entry.image) {
         await db.update(schema.images).set({
+          id: entry.image.id,
           url: entry.image.url,
           image: null,
         }).where(

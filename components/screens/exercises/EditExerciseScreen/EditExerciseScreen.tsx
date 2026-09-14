@@ -3,23 +3,23 @@ import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
 import {ThemedView} from '@/components/blocks/ThemedView/ThemedView';
 import {Stack, useLocalSearchParams, useNavigation, useRouter} from 'expo-router';
 import {FC, useContext, useEffect, useState} from 'react';
-import {ExerciseRow} from '@/types/models/ExerciseRow';
-import {useDrizzle} from '@/utils/drizzle';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {string} from 'zod';
 import uuid from 'react-native-uuid';
 import {ThemedImage} from '../../../blocks/ThemedImage/ThemedImage';
+import {Exercise} from '../../../../openapi-client';
+import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 
 export const EditExerciseScreen: FC = () => {
   const navigation = useNavigation();
   const auth = useContext(AuthContext);
   const params = useLocalSearchParams();
-  const [db, schema] = useDrizzle();
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const placeHolderImage = require('@/assets/images/icon.png');
-  const [baseExercise, setBaseExercise] = useState<ExerciseRow| null>(null);
+  const [baseExercise, setBaseExercise] = useState<Exercise | null>(null);
+  const {exerciseService} = useServices();
   const router = useRouter();
   const [name, setName] = useState('');
   const exerciseId = params.exerciseId as string;
@@ -28,15 +28,13 @@ export const EditExerciseScreen: FC = () => {
     if (!validated.success) {
       return;
     }
-    db.query.exercises.findFirst({
-      where: (t, op) => op.eq(t.id, validated.data),
-    }).then((item) => {
+    exerciseService.getExercise(validated.data).then((item) => {
       if (!item) {
         return;
       }
       setBaseExercise(item);
       setName(item.name);
-      setImage(item.images[0] ?? null);
+      setImage(item.images[0]?.url ?? null);
       setDescription(item.description ?? description);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,7 +49,7 @@ export const EditExerciseScreen: FC = () => {
       alert('Invalid name');
       return;
     }
-    const newValue: ExerciseRow = {
+    const newValue: Exercise = {
       id: uuid.v4(),
       name: name,
       description: description,
@@ -64,11 +62,15 @@ export const EditExerciseScreen: FC = () => {
       parentExerciseId: null,
       createdAt: new Date(),
       updatedAt: null,
-      lastPulledAt: null,
-      lastPushedAt: null,
       deletedAt: null,
+      isArchived: false,
+      variations: [],
+      muscles: baseExercise?.muscles ?? {
+        primary: [],
+        secondary: [],
+      },
     };
-    await db.insert(schema.exercises).values(newValue);
+    await exerciseService.createExercise(newValue);
     navigation.goBack();
   };
 

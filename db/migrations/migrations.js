@@ -34,6 +34,7 @@ import m0029 from './0029_adding_new_rows_to_food.sql';
 import m0030 from './0030_food_brands.sql';
 import m0031 from './0031_favorite_meals.sql';
 import m0032 from './0032_meal_copied_from.sql';
+import m0033 from './0033_moving_images_to_uuids.sql';
 
 export default {
   journal,
@@ -71,5 +72,6 @@ export default {
     m0030,
     m0031,
     m0032,
+    m0033,
   },
 };

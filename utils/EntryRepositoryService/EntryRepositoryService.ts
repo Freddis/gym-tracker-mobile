@@ -88,7 +88,7 @@ export class EntryRepositoryService {
     return baseEntry;
   }
 
-  protected async loadImage(trx: DrizzleDb, imageId: number | null): Promise<AppImage | null> {
+  protected async loadImage(trx: DrizzleDb, imageId: string | null): Promise<AppImage | null> {
     if (!imageId) {
       return null;
     }

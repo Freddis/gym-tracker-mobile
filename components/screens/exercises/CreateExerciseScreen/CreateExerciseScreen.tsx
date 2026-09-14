@@ -8,8 +8,6 @@ import {
   useRouter,
 } from 'expo-router';
 import {FC, useContext, useEffect, useState} from 'react';
-import {ExerciseRow} from '@/types/models/ExerciseRow';
-import {useDrizzle} from '@/utils/drizzle';
 import {AuthContext} from '@/components/providers/AuthProvider/AuthContext';
 import {ThemedTextInput} from '@/components/blocks/ThemedInput/ThemedInput';
 import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
@@ -30,9 +28,9 @@ export const CreateExerciseScreen: FC = () => {
   const navigation = useNavigation();
   const auth = useContext(AuthContext);
   const params = useLocalSearchParams();
-  const [db, schema] = useDrizzle();
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<string | null>(null);
+  const [pickedImage, setPickedImage] = useState<string | null>(null);
   const [baseExercise, setBaseExercise] = useState<Exercise | null>(null);
   const router = useRouter();
   const [name, setName] = useState('');
@@ -52,7 +50,7 @@ export const CreateExerciseScreen: FC = () => {
     exerciseService.getExercise(validated.data).then((item) => {
       setBaseExercise(item);
       setName(item.name);
-      setImage(item.images[0] ?? null);
+      setImage(item.images[0]?.url ?? null);
       setDescription(item.description ?? '');
       setEquipment(item.equipment ?? Equipment.BODYWEIGHT);
       setPrimaryMuscles(item.muscles.primary);
@@ -70,13 +68,12 @@ export const CreateExerciseScreen: FC = () => {
       alert('Invalid name');
       return;
     }
-    const newValue: ExerciseRow = {
-      // externalId: null,
+    const newValue: Exercise = {
       id: uuid.v4(),
       name: name,
       description: description,
-      difficulty: baseExercise?.difficulty ?? null,
-      equipment: null,
+      difficulty,
+      equipment,
       images: baseExercise?.images ?? [],
       params: baseExercise?.params ?? [],
       userId: user.id,
@@ -84,11 +81,15 @@ export const CreateExerciseScreen: FC = () => {
       parentExerciseId: null,
       createdAt: new Date(),
       updatedAt: null,
-      lastPulledAt: null,
-      lastPushedAt: null,
       deletedAt: null,
+      isArchived: false,
+      variations: [],
+      muscles: {
+        primary: primaryMuscles,
+        secondary: secondaryMuscles,
+      },
     };
-    await db.insert(schema.exercises).values(newValue);
+    await exerciseService.createExercise(newValue, pickedImage);
     navigation.goBack();
   };
 
@@ -149,6 +150,7 @@ export const CreateExerciseScreen: FC = () => {
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <ImageUploadButton
             value={image ?? null}
+            onChange={setPickedImage}
             style={{
               borderRadius: 20,
               height: 200,

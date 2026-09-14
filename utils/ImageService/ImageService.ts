@@ -4,6 +4,7 @@ import {AppImage} from '../../types/models/AppImage';
 import {ApiService} from '../ApiService/ApiService';
 import {conflictUpdateSetAllColumns, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
+import uuid from 'react-native-uuid';
 
 export class ImageService {
   protected logger: Logger = new Logger(ImageService.name);
@@ -22,6 +23,15 @@ export class ImageService {
     return image.url;
   }
 
+  toImageUpsertDto(image: AppImage): ImageUpsertDto {
+    const dto: ImageUpsertDto = {
+      id: image.id,
+      data: image.image ?? undefined,
+    };
+    return dto;
+
+  }
+
   createImageUpsertDto(image: AppImage | null): ImageUpsertDto | undefined | null {
     if (!image) {
       return null;
@@ -29,14 +39,12 @@ export class ImageService {
     if (!image.image) {
       return undefined;
     }
-    const dto: ImageUpsertDto = {
-      data: image.image,
-    };
-    return dto;
+    return this.toImageUpsertDto(image);
   }
 
   async createImage(userId: number, image: string, type: ImageType, trx: DrizzleDb): Promise<AppImage> {
     const newImage: typeof schema.images.$inferInsert = {
+      id: uuid.v4(),
       userId: userId,
       image: image,
       type: type,
@@ -55,37 +63,34 @@ export class ImageService {
     };
     return result;
   }
-  async processPulledItems(userId: number, db: DrizzleDb, images: [string, Image][], type: ImageType): Promise<Map<string, number>> {
-    const map = new Map<string, number>();
+  async processPulledItems(userId: number, db: DrizzleDb, images: [string, Image][], type: ImageType): Promise<Map<string, string>> {
+    const map = new Map(images.map(([entityId, image]) => [entityId, image.id]));
     if (images.length === 0) {
       return map;
     }
-    const items = images.map(([, image]) => {
+    await this.upsertImages(userId, db, images.map(([, image]) => image), type);
+    return map;
+  }
+
+  async upsertImages(userId: number, db: DrizzleDb, images: Image[], type: ImageType): Promise<void> {
+    const uniqueImages = Array.from(new Map(images.map((image) => [image.id, image])).values());
+    if (uniqueImages.length === 0) {
+      return;
+    }
+    const items = uniqueImages.map((image) => {
       const row: typeof schema.images.$inferInsert = {
-        // externalId: image.id,
+        id: image.id,
         userId: userId,
         url: image.url,
         image: null,
         type: type,
-        // lastPulledAt: new Date(),
-        // lastPushedAt: new Date(),
       };
       return row;
     });
-    const rows = await db.insert(schema.images).values(items).onConflictDoUpdate({
+    await db.insert(schema.images).values(items).onConflictDoUpdate({
       target: schema.images.id,
       set: conflictUpdateSetAllColumns(schema.images),
-    }).returning();
-
-    for (const [index, row] of rows.entries()) {
-      const input = images[index];
-      if (!input) {
-        throw new Error('Entry id was lost. This should never happen');
-      }
-      const entryId = input[0];
-      map.set(entryId, row.id);
-    }
-    return map;
+    });
   }
 
   async wipeLocalData(db: DrizzleDb): Promise<boolean> {
@@ -93,7 +98,7 @@ export class ImageService {
     return true;
   }
 
-  async loadMap(imageIds: number[], trx?: DrizzleDb): Promise<Map<number, AppImage>> {
+  async loadMap(imageIds: string[], trx?: DrizzleDb): Promise<Map<string, AppImage>> {
     if (imageIds.length === 0) {
       return new Map();
     }

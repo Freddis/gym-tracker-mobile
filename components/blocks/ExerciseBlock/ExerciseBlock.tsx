@@ -36,7 +36,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
             <SyncIcon object={item} />
           </View>
           <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: theme.marginM}}>
-            <ThemedImage source={{uri: item.images[0]}} />
+            <ThemedImage source={{uri: item.images[0]?.url}} />
             <View>
               <ThemedText style={{fontWeight: 'bold', flexDirection: 'row', gap: 5}}>
                 <ThemedText>Equipment: </ThemedText>

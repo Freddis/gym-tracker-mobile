@@ -290,6 +290,7 @@ export class EntryService implements ISyncedEntityService {
         return undefined;
       }
       return {
+        id: entry.image.id,
         data: entry.image.image,
       };
     });
@@ -352,16 +353,15 @@ export class EntryService implements ISyncedEntityService {
 
   protected async updateEntryImage(db: DrizzleDb, entry: AppEntry, image: string | null) {
     if (entry.image && image === null) {
-      await db.update(schema.entries).set({
-        imageId: null,
-      }).where(
-        eq(schema.entries.id, entry.id)
-      );
       await db.delete(schema.images).where(
         eq(schema.images.id, entry.image.id)
       );
       entry.image = null;
       entry.imageId = null;
+      return;
+    }
+
+    if (image === null) {
       return;
     }
 
@@ -375,27 +375,9 @@ export class EntryService implements ISyncedEntityService {
       return;
     }
 
-    const newImage: typeof schema.images.$inferInsert = {
-      userId: entry.userId,
-      image: image,
-      type: ImageType.ENTRY,
-    };
-    const imageRows = await db.insert(schema.images).values(newImage).returning();
-    const imageRow = imageRows[0];
-    if (!imageRow) {
-      throw new Error('Failed to insert image');
-    }
-    entry.imageId = imageRow.id;
-    entry.image = {
-      id: imageRow.id,
-      type: ImageType.ENTRY,
-      image: image,
-      userId: entry.userId,
-      // externalId: null,
-      // lastPulledAt: null,
-      // lastPushedAt: null,
-      url: null,
-    };
+    const appImage = await this.imageService.createImage(entry.userId, image, ImageType.ENTRY, db);
+    entry.imageId = appImage.id;
+    entry.image = appImage;
   }
 
   protected getSearchFilter(query: string): SQL | undefined {
@@ -477,7 +459,7 @@ export class EntryService implements ISyncedEntityService {
       [EntryType.MEAL]: await createMap(EntryType.MEAL, entries),
       [EntryType.CALORIE_GOAL]: await createMap(EntryType.CALORIE_GOAL, entries),
     };
-    const imageIds: number[] = entries.map((x) => x.imageId).filter((x) => x !== null);
+    const imageIds: string[] = entries.map((x) => x.imageId).filter((x) => x !== null);
     const imageMap = imageIds.length > 0 ? await this.imageService.loadMap(imageIds) : new Map();
     // const result: AppEntry[] = [];
     const result: AppEntry[] = entries.map((item) => {
@@ -593,6 +575,7 @@ export class EntryService implements ISyncedEntityService {
       // update image url if it was changed
       if (entriesToUpsert[i].imageId && entry.image) {
         await db.update(schema.images).set({
+          id: entry.image.id,
           url: entry.image.url,
           image: null,
         }).where(
@@ -724,17 +707,7 @@ export class EntryService implements ISyncedEntityService {
       };
 
       if (image) {
-        const newImage: typeof schema.images.$inferInsert = {
-          userId: userId,
-          image: image,
-          type: ImageType.ENTRY,
-        };
-        const imageRows = await trx.insert(schema.images).values(newImage).returning();
-        let imageRow = imageRows[0];
-        if (!imageRow) {
-          throw new Error('Failed to insert image');
-        }
-        entry.imageId = imageRow.id;
+        entry.imageId = (await this.imageService.createImage(userId, image, ImageType.ENTRY, trx)).id;
       }
 
       const key = this.entryServices.Meal.key;
@@ -756,19 +729,10 @@ export class EntryService implements ISyncedEntityService {
         note: note,
       };
 
-      const appImage: AppImage | null = null;
+      let appImage: AppImage | null = null;
       if (image) {
-        const newImage: typeof schema.images.$inferInsert = {
-          userId: userId,
-          image: image,
-          type: ImageType.ENTRY,
-        };
-        const imageRows = await db.insert(schema.images).values(newImage).returning();
-        let imageRow = imageRows[0];
-        if (!imageRow) {
-          throw new Error('Failed to insert image');
-        }
-        newPost.imageId = imageRow.id;
+        appImage = await this.imageService.createImage(userId, image, ImageType.ENTRY, db);
+        newPost.imageId = appImage.id;
       }
 
       const entryResult = await db.insert(schema.entries).values(newPost).returning();

@@ -9,7 +9,7 @@ export const ExerciseInfo: FC<{exercise: Exercise}> = (props) => {
   const descriptionParts = (exercise.description ?? '').split(/<\d+>/g).filter((x) => x.trim() !== '');
   return (
     <>
-      <AutoAspectImage source={{uri: exercise.images[0]}} className="w-full rounded-md"/>
+      <AutoAspectImage source={{uri: exercise.images[0]?.url}} className="w-full rounded-md"/>
       <ThemedText className="font-bold text-xl mt-m mb-m">{exercise.name}</ThemedText>
       <View className="mb-m">
         <ThemedText className="flex-row gap-s">

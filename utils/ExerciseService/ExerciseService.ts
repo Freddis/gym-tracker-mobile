@@ -1,6 +1,6 @@
 import {ExerciseRow} from '@/types/models/ExerciseRow';
 import {NestedAppExercise} from './types/NestedAppExercise';
-import {Exercise, ExerciseUpsertDto, getExercises, Muscle, putExercises} from '@/openapi-client';
+import {Exercise, ExerciseUpsertDto, getExercises, Image, ImageType, ImageUpsertDto, Muscle, putExercises} from '@/openapi-client';
 import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
@@ -8,17 +8,18 @@ import {AsyncDrizzleDb, conflictUpdateSetAllColumns, db, DrizzleDb} from '../dri
 import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
 import {AppExerciseMuscle} from '../../types/models/AppExerciseMuscle';
-import {eq} from 'drizzle-orm';
+import {eq, inArray} from 'drizzle-orm';
 import {StageProgressCallback} from '../SyncService/types/StageProgressCallback';
 import {ISyncedEntityService} from '../SyncService/types/ISyncedEntityService';
 import uuid from 'react-native-uuid';
+import {ImageService} from '../ImageService/ImageService';
 
 export class ExerciseService implements ISyncedEntityService {
   protected logger: Logger = new Logger(ExerciseService.name);
   protected db: DrizzleDb;
 
 
-  constructor(db: DrizzleDb) {
+  constructor(db: DrizzleDb, private readonly imageService: ImageService) {
     this.db = db;
   }
 
@@ -38,16 +39,27 @@ export class ExerciseService implements ISyncedEntityService {
       updatedAt: null,
       deletedAt: null,
     };
-    return await this.createExercise(newExercise, trx);
+    return await this.createExercise(newExercise, null, trx);
   }
 
-  async createExercise(exercise: Exercise, trx?: DrizzleDb) {
+  async createExercise(exercise: Exercise, image?: string | null, trx?: DrizzleDb) {
     trx = trx ?? this.db;
-    const result = await this.upsertExercise(trx, exercise, null);
+    const userId = exercise.userId;
+    if (userId === null) {
+      throw new Error('Local user id is required to store exercise images');
+    }
+    if (image) {
+      const appImage = await this.imageService.createImage(userId, image, ImageType.EXERCISE, trx);
+      exercise = {
+        ...exercise,
+        images: [{id: appImage.id, url: appImage.url ?? ''}],
+      };
+    }
+    const result = await this.upsertExercise(trx, exercise, null, userId);
     return result;
   }
 
-  async getExercise(exerciseId: string): Promise<Exercise> {
+  async getExercise(exerciseId: string, db: DrizzleDb = this.db): Promise<Exercise> {
     const row = await db.query.exercises.findFirst({
       where: (t, op) => op.eq(t.id, exerciseId),
     });
@@ -58,8 +70,10 @@ export class ExerciseService implements ISyncedEntityService {
       where: (t, op) => op.eq(t.exerciseId, exerciseId),
       orderBy: (t, op) => op.asc(t.id),
     });
+    const imageMap = await this.loadImageMap([row], db);
     const result: Exercise = {
       ...row,
+      images: imageMap.get(exerciseId) ?? [],
       isArchived: false,
       muscles: {
         primary: muscleRows.filter((x) => x.isPrimary).map((x) => x.muscle),
@@ -107,13 +121,14 @@ export class ExerciseService implements ISyncedEntityService {
         value.variations = variations;
       }
     }
-    const exIds = result.flatMap((x) => [x.id, ...(x.variations?.map((x) => x.id) ?? [])]);
+    const flatExercises = result.flatMap((x) => [x, ...(x.variations ?? [])]);
     const muscles = await db.query.exerciseMuscle.findMany({
-      where: (t, op) => op.inArray(t.exerciseId, exIds),
+      where: (t, op) => op.inArray(t.exerciseId, flatExercises.map((x) => x.id)),
     });
 
     const primaryMuscles = new Map<string, Muscle[]>();
     const secondaryMuscles = new Map<string, Muscle[]>();
+    const imageMap = await this.loadImageMap(flatExercises);
     for (const muscleRow of muscles) {
 
       if (muscleRow.isPrimary) {
@@ -131,6 +146,7 @@ export class ExerciseService implements ISyncedEntityService {
     for (const row of result) {
       const exercise: NestedAppExercise = {
         ...row,
+        images: imageMap.get(row.id) ?? [],
         isArchived: false,
         muscles: {
           primary: primaryMuscles.get(row.id) ?? [],
@@ -138,6 +154,7 @@ export class ExerciseService implements ISyncedEntityService {
         },
         variations: (row.variations ?? []).map((x) => ({
           ...x,
+          images: imageMap.get(x.id) ?? [],
           isArchived: false,
           muscles: {
             primary: primaryMuscles.get(x.id) ?? [],
@@ -191,8 +208,18 @@ export class ExerciseService implements ISyncedEntityService {
     if (exercises.length === 0) {
       return true;
     }
+    const imageIds = Array.from(new Set(exercises.flatMap((x) => x.images)));
+    const imageMap = await this.imageService.loadMap(imageIds, db);
     const rows: ExerciseUpsertDto[] = exercises.map((exercise) => ({
       ...exercise,
+      images: exercise.images.map((imageId) => {
+        const image = imageMap.get(imageId);
+        if (!image) {
+          return null;
+        }
+        const dto: ImageUpsertDto = this.imageService.toImageUpsertDto(image);
+        return dto;
+      }).filter((x) => x !== null),
       isArchived: false,
       muscles: {
         primary: [],
@@ -210,11 +237,18 @@ export class ExerciseService implements ISyncedEntityService {
     }
     const upsertedEntities = response.data.items;
     for (const [i, exercise] of exercises.entries()) {
-      if (!upsertedEntities[i]) {
+      const upserted = upsertedEntities[i];
+      if (!upserted) {
         throw new Error('Matching upserted entity not found');
       }
       // exercise.externalId = upsertedEntities[i].id;
       exercise.lastPushedAt = new Date();
+      await this.imageService.upsertImages(userId, db, upserted.images, ImageType.EXERCISE);
+      const staleImageIds = exercise.images.filter((id) => !upserted.images.some((x) => x.id === id));
+      exercise.images = upserted.images.map((x) => x.id);
+      if (staleImageIds.length > 0) {
+        await db.delete(schema.images).where(inArray(schema.images.id, staleImageIds));
+      }
     }
     await db.insert(schema.exercises).values(exercises).onConflictDoUpdate(
       {
@@ -225,7 +259,7 @@ export class ExerciseService implements ISyncedEntityService {
     return true;
   }
 
-  async pullFromServer(_userId: number, db: AsyncDrizzleDb, progress: StageProgressCallback): Promise<boolean> {
+  async pullFromServer(userId: number, db: AsyncDrizzleDb, progress: StageProgressCallback): Promise<boolean> {
     console.log('Pull');
     const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
 
@@ -249,7 +283,7 @@ export class ExerciseService implements ISyncedEntityService {
         progress({itemsDone: processedItems, itemsNumber: response.data.info.count});
         processedItems += response.data.items.length;
         for (const exercise of response.data.items) {
-          await this.upsertExercise(trx, exercise, new Date());
+          await this.upsertExercise(trx, exercise, new Date(), userId);
         }
 
         if (response.data.items.length === 0 && response.data.items.length < response.data.info.pageSize) {
@@ -261,7 +295,7 @@ export class ExerciseService implements ISyncedEntityService {
     return res;
   }
 
-  protected async upsertExercise(db: DrizzleDb, exercise: Exercise, lastSync: Date | null): Promise<Exercise> {
+  protected async upsertExercise(db: DrizzleDb, exercise: Exercise, lastSync: Date | null, userId: number): Promise<Exercise> {
     const row: ExerciseRow = {
       id: exercise.id,
       params: exercise.params,
@@ -269,7 +303,7 @@ export class ExerciseService implements ISyncedEntityService {
       description: exercise.description,
       difficulty: exercise.difficulty,
       equipment: exercise.equipment,
-      images: exercise.images,
+      images: exercise.images.map((image) => image.id),
       userId: exercise.userId,
       copiedFromId: exercise.copiedFromId,
       parentExerciseId: exercise.parentExerciseId,
@@ -283,23 +317,26 @@ export class ExerciseService implements ISyncedEntityService {
       target: schema.exercises.id,
       set: conflictUpdateSetAllColumns(schema.exercises),
     }).returning();
-    if (!inserted[0]) {
+    const insertedRow = inserted[0];
+    if (!insertedRow) {
       throw new Error("Couldn't get inserted data");
     }
+    // images without a url are local rows holding base64 data, upserting them would wipe it
+    await this.imageService.upsertImages(userId, db, exercise.images.filter((x) => x.url), ImageType.EXERCISE);
     await db.delete(schema.exerciseMuscle).where(
-      eq(schema.exerciseMuscle.exerciseId, inserted[0].id)
+      eq(schema.exerciseMuscle.exerciseId, insertedRow.id)
     );
     const muscleRows: NewModel<AppExerciseMuscle>[] = [];
     for (const muscle of exercise.muscles.primary) {
       muscleRows.push({
-        exerciseId: inserted[0].id,
+        exerciseId: insertedRow.id,
         isPrimary: true,
         muscle: muscle,
       });
     }
     for (const muscle of exercise.muscles.secondary) {
       muscleRows.push({
-        exerciseId: inserted[0].id,
+        exerciseId: insertedRow.id,
         isPrimary: false,
         muscle: muscle,
       });
@@ -309,6 +346,29 @@ export class ExerciseService implements ISyncedEntityService {
     }
     await db.insert(schema.exerciseMuscle).values(muscleRows);
     return exercise;
+  }
+
+  private async loadImageMap(exercises: ExerciseRow[], db: DrizzleDb = this.db): Promise<Map<string, Image[]>> {
+    const result = new Map<string, Image[]>();
+    const imageIds = Array.from(new Set(exercises.flatMap((x) => x.images)));
+    if (imageIds.length === 0) {
+      return result;
+    }
+    const imageMap = await this.imageService.loadMap(imageIds, db);
+    for (const exercise of exercises) {
+      const images = exercise.images.map((imageId) => {
+        const image = imageMap.get(imageId);
+        if (!image) {
+          return null;
+        }
+        return {
+          id: image.id,
+          url: this.imageService.getImageUrl(image) ?? '',
+        };
+      }).filter((x) => x !== null);
+      result.set(exercise.id, images);
+    }
+    return result;
   }
 
   protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {

@@ -47,7 +47,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
       baseURL: baseUrl,
       headers: {
         Authorization: authHeader,
-        apiVersion: '1.0.1',
+        apiVersion: '1.0.2',
       },
     };
     return options;
