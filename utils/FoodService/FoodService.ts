@@ -1,4 +1,4 @@
-import {and, desc, eq, inArray, isNull, like, max} from 'drizzle-orm';
+import {and, desc, eq, inArray, isNull, like, max, sql} from 'drizzle-orm';
 import {schema} from '../../db/schema';
 import {Food, FoodUpsertDto, Image, ImageType} from '../../openapi-client';
 import {ApiService} from '../ApiService/ApiService';
@@ -149,12 +149,9 @@ export class FoodService implements ISyncedEntityService {
       )
     )
     .groupBy(schema.food.id)
-    // nulls sort last on desc in sqlite, so each key only breaks ties for rows missing the previous one
+    // separate keys would rank any used food above a brand new one, so recency is a single value
     .orderBy(
-      desc(max(schema.entries.time)),
-      desc(schema.food.updatedAt),
-      desc(schema.food.deletedAt),
-      desc(schema.food.createdAt),
+      desc(max(sql`coalesce(${schema.entries.time}, ${schema.food.updatedAt}, ${schema.food.createdAt})`)),
     );
 
     const foodMap = await this.loadFood(orderedByLastUse.map((x) => x.id));

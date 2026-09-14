@@ -40,9 +40,14 @@ export const FoodSelectScreen: FC = () => {
   };
 
   const onPress = async (item: AppFood) => {
+    //todo: introduce copyFood method
     const finalItem = library === 'built-in' ? await foodService.createFood(user.id, {
       ...item,
       id: uuid.v4(),
+      copiedFromId: item.id,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
     }, item.image?.url ?? null) : item;
     setSelectedFoodAtom(finalItem);
     router.back();

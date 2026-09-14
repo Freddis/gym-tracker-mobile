@@ -28,6 +28,8 @@ export const FoodCreateScreen = () => {
         ...scannedFood,
         id: uuid.v4(),
         copiedFromId: scannedFood.id,
+        createdAt: new Date(),
+        updatedAt: null,
         lastPushedAt: null,
         lastPulledAt: null,
         image: null,
