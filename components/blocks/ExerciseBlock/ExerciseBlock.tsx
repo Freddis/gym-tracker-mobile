@@ -32,7 +32,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
       <Pressable onPress={onPress}>
         <View style={{flexDirection: 'column'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10}}>
-            <ThemedText style={{color: theme.accent}} numberOfLines={1}>{item.name}</ThemedText>
+            <ThemedText numberOfLines={1} className="font-bold">{item.name}</ThemedText>
             <SyncIcon object={item} />
           </View>
           <View style={{flexDirection: 'row', alignItems: 'flex-start', gap: theme.marginM}}>

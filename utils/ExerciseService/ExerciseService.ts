@@ -4,7 +4,7 @@ import {Exercise, ExerciseUpsertDto, getExercises, Image, ImageType, ImageUpsert
 import {openApiRequest} from '../openApiRequest';
 import {schema} from '@/db/schema';
 import {NewModel} from '@/types/NewModel';
-import {AsyncDrizzleDb, conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
+import {asyncDrizzle, AsyncDrizzleDb, conflictUpdateSetAllColumns, db, DrizzleDb} from '../drizzle';
 import {Logger} from '../Logger/Logger';
 import {transactionAsync} from '../runTransaction';
 import {AppExerciseMuscle} from '../../types/models/AppExerciseMuscle';
@@ -39,10 +39,14 @@ export class ExerciseService implements ISyncedEntityService {
       updatedAt: null,
       deletedAt: null,
     };
-    return await this.createExercise(newExercise, null, trx);
+    return await this.createExercise(newExercise, undefined, trx);
   }
 
   async createExercise(exercise: Exercise, image?: string | null, trx?: DrizzleDb) {
+    return this.updateExercise(exercise, image, trx);
+  }
+
+  async updateExercise(exercise: Exercise, image?: string | null, trx?: DrizzleDb) {
     trx = trx ?? this.db;
     const userId = exercise.userId;
     if (userId === null) {
@@ -54,9 +58,21 @@ export class ExerciseService implements ISyncedEntityService {
         ...exercise,
         images: [{id: appImage.id, url: appImage.url ?? ''}],
       };
+    } else if (image === null) {
+      exercise = {
+        ...exercise,
+        images: [],
+      };
     }
     const result = await this.upsertExercise(trx, exercise, null, userId);
     return result;
+  }
+
+  async deleteExercise(id: string) {
+    await this.db.update(schema.exercises).set({
+      deletedAt: new Date(),
+      updatedAt: new Date(),
+    }).where(eq(schema.exercises.id, id));
   }
 
   async getExercise(exerciseId: string, db: DrizzleDb = this.db): Promise<Exercise> {
@@ -192,15 +208,20 @@ export class ExerciseService implements ISyncedEntityService {
     }
     return true;
   }
-  async pushToServer(userId: number, db: DrizzleDb): Promise<boolean> {
+  async pushToServer(userId: number, db: DrizzleDb = this.db): Promise<boolean> {
+    this.logger.info('Pushing exercises to server', {userId});
     const lastUpdate = await this.getLatestPushSyncDate(db);
+    this.logger.info('Last sync date', {lastUpdate});
     const exercises = await db.query.exercises.findMany({
+      with: {
+        muscles: true,
+      },
       where: (t, op) => op.and(
         op.eq(t.userId, userId),
         lastUpdate ? op.or(
-          op.gt(t.updatedAt, lastUpdate),
-          op.gt(t.createdAt, lastUpdate),
-          op.gt(t.deletedAt, lastUpdate),
+          op.gt(t.updatedAt, t.lastPushedAt),
+          op.gt(t.createdAt, t.lastPushedAt),
+          op.gt(t.deletedAt, t.lastPushedAt),
           op.isNull(t.lastPushedAt),
         ) : undefined
       ),
@@ -222,8 +243,8 @@ export class ExerciseService implements ISyncedEntityService {
       }).filter((x) => x !== null),
       isArchived: false,
       muscles: {
-        primary: [],
-        secondary: [],
+        primary: exercise.muscles.filter((x) => x.isPrimary).map((x) => x.muscle),
+        secondary: exercise.muscles.filter((x) => !x.isPrimary).map((x) => x.muscle),
       },
     }));
     const response = await openApiRequest(putExercises, {
@@ -259,13 +280,13 @@ export class ExerciseService implements ISyncedEntityService {
     return true;
   }
 
-  async pullFromServer(userId: number, db: AsyncDrizzleDb, progress: StageProgressCallback): Promise<boolean> {
-    console.log('Pull');
-    const lastUpdateFromServer = await this.getLatestPullSyncDate(db);
+  async pullFromServer(userId: number, db?: AsyncDrizzleDb, progress: StageProgressCallback = () => {}): Promise<boolean> {
+    const database = db ?? await asyncDrizzle();
+    const lastUpdateFromServer = await this.getLatestPullSyncDate(database);
 
     let page = 1;
     let processedItems = 0;
-    const res = await transactionAsync(db, async (trx) => {
+    const res = await transactionAsync(database, async (trx) => {
 
       while (true) {
         const response = await getExercises({
@@ -286,7 +307,7 @@ export class ExerciseService implements ISyncedEntityService {
           await this.upsertExercise(trx, exercise, new Date(), userId);
         }
 
-        if (response.data.items.length === 0 && response.data.items.length < response.data.info.pageSize) {
+        if (response.data.items.length < response.data.info.pageSize) {
           break;
         }
       }
@@ -296,6 +317,14 @@ export class ExerciseService implements ISyncedEntityService {
   }
 
   protected async upsertExercise(db: DrizzleDb, exercise: Exercise, lastSync: Date | null, userId: number): Promise<Exercise> {
+    // local writes have to keep the sync stamps, clearing them drags the pull window back to the oldest row in the table
+    const existing = lastSync ? null : await db.query.exercises.findFirst({
+      columns: {
+        lastPulledAt: true,
+        lastPushedAt: true,
+      },
+      where: (t, op) => op.eq(t.id, exercise.id),
+    });
     const row: ExerciseRow = {
       id: exercise.id,
       params: exercise.params,
@@ -310,8 +339,8 @@ export class ExerciseService implements ISyncedEntityService {
       createdAt: exercise.createdAt,
       updatedAt: exercise.updatedAt,
       deletedAt: exercise.deletedAt,
-      lastPulledAt: lastSync,
-      lastPushedAt: lastSync,
+      lastPulledAt: lastSync ?? existing?.lastPulledAt ?? null,
+      lastPushedAt: lastSync ?? existing?.lastPushedAt ?? null,
     };
     const inserted = await db.insert(schema.exercises).values(row).onConflictDoUpdate({
       target: schema.exercises.id,
@@ -372,16 +401,7 @@ export class ExerciseService implements ISyncedEntityService {
   }
 
   protected async getLatestPullSyncDate(db: DrizzleDb): Promise<Date | null> {
-    const row = await db.query.exercises.findFirst({
-      columns: {
-        lastPulledAt: true,
-      },
-      orderBy: (t, op) => [op.desc(t.lastPulledAt)],
-    });
-    if (!row) {
-      return null;
-    }
-    return row.lastPulledAt;
+    return await this.getLatestPushSyncDate(db);
   }
 
   protected async getLatestPushSyncDate(db: DrizzleDb): Promise<Date | null> {

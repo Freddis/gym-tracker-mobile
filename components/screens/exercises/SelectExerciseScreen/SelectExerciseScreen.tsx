@@ -8,8 +8,8 @@ import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButto
 export const SelectExerciseScreen: FC<{onSelect: (item: Exercise)=>void}> = (props) => {
 
   return (
-    <AppScreenContainer>
-       <Stack.Screen options={{title: 'Add Exercise', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
+    <AppScreenContainer className="h-full">
+      <Stack.Screen options={{title: 'Add Exercise', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       <SelectExercisePresenter onPress={props.onSelect} />
     </AppScreenContainer>
   );

@@ -141,9 +141,9 @@ export const WorkoutScreen: FC = () => {
   };
   const workoutFinished = workout.end !== null;
   return (
-    <AppScreenContainer>
+    <AppScreenContainer className="h-full">
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ThemedScrollView ref={scrollViewRef}>
+        <ThemedScrollView ref={scrollViewRef} className="h-full">
           <ThemedView className="h-full gap-m p-m">
             <Stack.Screen options={{title: 'Workout', headerShown: true}} />
             <ThemedBlock>

@@ -116,7 +116,7 @@ export const EditableWorkoutExerciseSetBlock: FC<EditableWorkoutExerciseSetBlock
         <ThemedIcon color={iconColor} size={40} name={checkMarkIcon} />
       </Pressable>
       <View style={{flexGrow: 1, flexDirection: 'row-reverse'}}>
-        <ThemedLink iconName="xmark" iconSize={14} onPress={deleteSet}/>
+        <ThemedLink iconName="xmark" iconSize={14} accented onPress={deleteSet}/>
       </View>
     </View>
   );

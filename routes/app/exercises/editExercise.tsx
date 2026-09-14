@@ -1,3 +1,3 @@
-import {EditExerciseScreen} from '../../../components/screens/exercises/EditExerciseScreen/EditExerciseScreen';
+import {ExerciseUpdateScreen} from '../../../components/screens/exercises/ExerciseUpdateScreen/ExerciseUpdateScreen';
 
-export default EditExerciseScreen;
+export default ExerciseUpdateScreen;

@@ -48,7 +48,7 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
           className={props.className}
         >
           <ThemedText style={{color: props.accented ? theme.accent : theme.text, ...props.style}}>{children}</ThemedText>
-          {iconName && <IconSymbol name={iconName} color={theme.accent} size={iconSize} />}
+          {iconName && <IconSymbol name={iconName} color={props.accented ? theme.accent : theme.text} size={iconSize} />}
         </Pressable>
   );
 };

@@ -134,7 +134,7 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
         <ThemedLink onPress={onExercisePress}>
           {exercise.name}
         </ThemedLink>
-        <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onDelete(workoutExercise)}/>
+        <ThemedLink accented iconName="xmark" iconSize={18} onPress={() => props.onDelete(workoutExercise)}/>
       </View>
       <Separator/>
       <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 10}}>
@@ -149,7 +149,7 @@ export const EditableWorkoutExerciseBlock: FC<EditableWorkoutExerciseBlockProps>
       </View>
       <Separator/>
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-        <ThemedLink iconName="plus" onPress={addSet}>Add</ThemedLink>
+        <ThemedLink iconName="plus" accented onPress={addSet}>Add</ThemedLink>
       </View>
     </ThemedBlock>
   );

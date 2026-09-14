@@ -1,17 +1,16 @@
 import React from 'react';
 import {Stack, useRouter} from 'expo-router';
+import {useSetAtom} from 'jotai';
 import {SelectExerciseScreen} from '@/components/screens/exercises/SelectExerciseScreen/SelectExerciseScreen';
 import {Exercise} from '../../../openapi-client';
+import {copiedExerciseAtom} from '../../../components/screens/exercises/copiedExerciseAtom';
 
 export default () => {
   const router = useRouter();
+  const setCopiedExercise = useSetAtom(copiedExerciseAtom);
   const select = (exercise: Exercise) => {
-    router.dismissTo({
-      pathname: '/app/exercises/addExercise',
-      params: {
-        exerciseId: exercise.id,
-      },
-    });
+    setCopiedExercise(exercise);
+    router.back();
   };
 
   return [
