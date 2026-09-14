@@ -684,6 +684,7 @@ export class EntryService implements ISyncedEntityService {
 
   async createMealEntry(
     userId: number,
+    time: Date,
     title: string | null,
     note: string | null,
     image: string | null,
@@ -698,7 +699,7 @@ export class EntryService implements ISyncedEntityService {
         id: id,
         userId: userId,
         type: type,
-        time: new Date(),
+        time: time,
         createdAt: new Date(),
         visibility: EntryVisibility.PUBLIC,
         imageId: null,

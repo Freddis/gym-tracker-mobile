@@ -57,7 +57,7 @@ export const MealCreateScreen = () => {
   });
   const [image, setImage] = useState<string | null>(null);
   const onSavePress = async () => {
-    await entryService.createMealEntry(user.id, entry.title, entry.note, image, entry.meal);
+    await entryService.createMealEntry(user.id, entry.time, entry.title, entry.note, image, entry.meal);
     entryAtomService.reset();
     router.back();
   };
