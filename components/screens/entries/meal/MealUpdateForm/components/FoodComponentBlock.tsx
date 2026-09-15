@@ -111,8 +111,8 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
       <ThemedImage source={{uri: imageService.getImageUrl(item.item.food.image) ?? placeholder}} className="w-full h-full  object-cover rounded-md" />
     </View>
     <View className="basis-0 grow gap-s overflow-hidde">
-      <View className="flex flex-row gap-S items-center justify-between">
-        <View className="grow">
+      <View className="flex flex-row gap-s items-center justify-between">
+        <View className="grow shrink min-w-0">
           <ThemedLink
             accented={false}
             href={'/app/entries/food/foodList'}
@@ -121,7 +121,9 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
             {item.item.food.name}
           </ThemedLink>
         </View>
-        <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onRemove(item)}/>
+        <View className="shrink-0">
+          <ThemedLink iconName="xmark" iconSize={18} onPress={() => props.onRemove(item)}/>
+        </View>
       </View>
       <View className="flex-row gap-1 items-center flex-1 min-w-0 overflow-hidden justify-between">
         <View className="overflow-hidden">
