@@ -41,7 +41,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     const isSimulator = !Device.isDevice;
-    const baseUrl = isSimulator ? 'http://192.168.0.16:3333/api' : 'https://discipline.alex-sarychev.com/api';
+    const baseUrl = isSimulator ? 'http://192.168.0.16:3333/api' : 'https://gym.alex-sarychev.com/api';
     const options: Config<ClientOptions> = {
       responseType: 'json',
       baseURL: baseUrl,
