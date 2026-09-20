@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef, useState} from 'react';
+import {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 
 import {ZodTypeAny} from 'zod';
 import {ThemedTextInput, ThemedTextInputProps} from '../ThemedInput/ThemedInput';
@@ -9,26 +9,45 @@ interface ThemedSearchInputProps extends ThemedTextInputProps {
   minLength?: number
   validator?: ZodTypeAny
 }
-export const ThemedSearchInput: FC<ThemedSearchInputProps> = (props) => {
-  const {minLength = 3, debounce = 1000, validator, onSearch, ...rest} = props;
-  // Keeps the typed value on its own unless the parent passes one, so the search can be cleared from the outside.
-  const [ownValue, setOwnValue] = useState(props.value ?? '');
-  const value = props.value ?? ownValue;
-  const trimmed = value.trim();
-  const search = trimmed.length < minLength ? null : trimmed;
-  const hasError = validator && value !== '' && !validator.safeParse(value).success;
-  const onSearchRef = useRef(onSearch);
-  useEffect(() => {
-    onSearchRef.current = onSearch;
-  }, [onSearch]);
-  useEffect(() => {
-    const timeout = setTimeout(() => onSearchRef.current(search), debounce);
-    return () => clearTimeout(timeout);
-  }, [search, debounce]);
-  const onChangeText: ThemedSearchInputProps['onChangeText'] = (e) => {
-    setOwnValue(e);
-    props.onChangeText?.(e);
-  };
 
-  return <ThemedTextInput {...rest} type={hasError ? 'dangerText' : undefined} onChangeText={onChangeText} value={value} />;
-};
+export interface ThemedSearchInputHandle {
+  clear: () => void
+}
+
+export const ThemedSearchInput = forwardRef<ThemedSearchInputHandle, ThemedSearchInputProps>((props, ref) => {
+  const {minLength = 3, debounce = 1000, validator, onSearch, ...rest} = props;
+  const [searchValue, setSearchValue] = useState(props.value ?? '');
+  const hasError = validator && searchValue !== '' && !validator.safeParse(searchValue).success;
+  // A ref, not a state, so that a pending search is cancelled even by a change within the same render.
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const onChange: ThemedSearchInputProps['onChangeText'] = (e) => {
+    const trimmed = e.trim();
+    clearTimeout(timeoutRef.current);
+    setSearchValue(e);
+    // Emptying the input, the clear button in particular, should not wait for the debounce.
+    if (trimmed === '') {
+      onSearch(null);
+      return;
+    }
+    timeoutRef.current = setTimeout(() => {
+      onSearch(trimmed.length < minLength ? null : trimmed);
+    }, debounce);
+  };
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      clearTimeout(timeoutRef.current);
+      setSearchValue('');
+    },
+  }));
+
+  return (
+    <ThemedTextInput
+      clearButtonMode="always"
+      {...rest}
+      type={hasError ? 'dangerText' : undefined}
+      onChangeText={onChange}
+      value={searchValue}
+    />
+  );
+});
+ThemedSearchInput.displayName = 'ThemedSearchInput';

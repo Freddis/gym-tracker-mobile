@@ -8,7 +8,7 @@ import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
 import {useAppTheme} from '@/hooks/useAppTheme';
 import {AppScreenContainer} from '@/components/blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
-import {ThemedSearchInput} from '@/components/blocks/ThemedSearchInput/ThemedSearchInput';
+import {ThemedSearchInput, ThemedSearchInputHandle} from '@/components/blocks/ThemedSearchInput/ThemedSearchInput';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {useAtom, useAtomValue} from 'jotai';
@@ -29,15 +29,15 @@ export const EntryListScreen: FC = () => {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [db] = useDrizzle();
   const [filter, setFilter] = useAtom(entryListService.getFilterAtom());
-  const [search, setSearch] = useState<string | null>(null);
+  const searchRef = useRef<ThemedSearchInputHandle>(null);
   const query = useInfiniteQuery({
-    queryKey: ['entries', filter.types, filter.date, search],
+    queryKey: ['entries', filter.types, filter.date, filter.search],
     retry: false,
     queryFn: ({pageParam}) => {
       return entryService.getEntries(db, user.id, {
         types: filter.types,
         date: filter.date,
-        search: search ?? undefined,
+        search: filter.search,
         includeDeleted: false,
         limit: 30,
         page: pageParam,
@@ -57,6 +57,9 @@ export const EntryListScreen: FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.data?.pages]);
   useEffect(() => {
+    return entryListService.onFilterReset(() => searchRef.current?.clear());
+  }, [entryListService]);
+  useEffect(() => {
     if (lastAddedEntryAtom) {
       listRef.current?.scrollToOffset({
         offset: 0,
@@ -65,8 +68,8 @@ export const EntryListScreen: FC = () => {
     }
   }, [lastAddedEntryAtom]);
 
-  const onSearchChange = (search: string) => {
-    setFilter((prev) => ({...prev, search}));
+  const onSearch = (search: string | null) => {
+    setFilter((prev) => ({...prev, search: search ?? undefined}));
   };
   const onRefresh = async () => {
     if (!user) {
@@ -118,10 +121,9 @@ export const EntryListScreen: FC = () => {
 
             <View className="mt-5">
               <ThemedSearchInput
+                ref={searchRef}
                 returnKeyType="done"
-                value={filter.search ?? ''}
-                onChangeText={onSearchChange}
-                onSearch={setSearch}
+                onSearch={onSearch}
                 className="bg-surface"
                 placeholder="Search"
               />

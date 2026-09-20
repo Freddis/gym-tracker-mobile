@@ -9,6 +9,7 @@ export class EntryListService {
   private entryListSplit: Atom<PrimitiveAtom<AppEntry>[]>;
   private lastAddedEntryAtom: PrimitiveAtom<PrimitiveAtom<AppEntry>| null>;
   private filterAtom: PrimitiveAtom<EntryListFilter>;
+  private filterResetListeners = new Set<() => void>();
   private store: Store;
   private logger: Logger;
 
@@ -38,13 +39,20 @@ export class EntryListService {
     return this.filterAtom;
   }
 
+  /**
+   * Notifies on every filter reset, so that filter inputs can clear the text they keep internally.
+   */
+  onFilterReset(listener: () => void): () => void {
+    this.filterResetListeners.add(listener);
+    return () => {
+      this.filterResetListeners.delete(listener);
+    };
+  }
+
   resetFilter(): void {
-    const {types, date, search} = this.store.get(this.filterAtom);
-    if (!types && !date && !search) {
-      return;
-    }
     this.logger.info('Resetting entry list filter');
     this.store.set(this.filterAtom, {});
+    this.filterResetListeners.forEach((listener) => listener());
   }
 
   addEntry(entry: AppEntry): PrimitiveAtom<AppEntry> {
