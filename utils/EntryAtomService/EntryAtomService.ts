@@ -74,6 +74,7 @@ export class EntryAtomService {
   }
 
   reset() {
+    this.entryListService.resetFilter();
     queryClient.invalidateQueries({queryKey: ['entries']});
   }
 }

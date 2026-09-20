@@ -3,10 +3,12 @@ import {splitAtom} from 'jotai/utils';
 import {Store} from 'jotai/vanilla/store';
 import {AppEntry} from '../../types/models/AppEntry';
 import {Logger} from '../Logger/Logger';
+import {EntryListFilter} from './types/EntryListFilter';
 export class EntryListService {
   private entryListAtom: PrimitiveAtom<AppEntry[]>;
   private entryListSplit: Atom<PrimitiveAtom<AppEntry>[]>;
   private lastAddedEntryAtom: PrimitiveAtom<PrimitiveAtom<AppEntry>| null>;
+  private filterAtom: PrimitiveAtom<EntryListFilter>;
   private store: Store;
   private logger: Logger;
 
@@ -14,6 +16,7 @@ export class EntryListService {
     this.entryListAtom = atom<AppEntry[]>([]);
     this.entryListSplit = splitAtom(this.entryListAtom, (x) => x.id);
     this.lastAddedEntryAtom = atom<PrimitiveAtom<AppEntry>| null>(null);
+    this.filterAtom = atom<EntryListFilter>({});
     this.store = store;
     this.logger = new Logger(EntryListService.name);
     this.logger.info('EntryListService initialized');
@@ -31,8 +34,22 @@ export class EntryListService {
     return this.lastAddedEntryAtom;
   }
 
+  getFilterAtom(): PrimitiveAtom<EntryListFilter> {
+    return this.filterAtom;
+  }
+
+  resetFilter(): void {
+    const {types, date, search} = this.store.get(this.filterAtom);
+    if (!types && !date && !search) {
+      return;
+    }
+    this.logger.info('Resetting entry list filter');
+    this.store.set(this.filterAtom, {});
+  }
+
   addEntry(entry: AppEntry): PrimitiveAtom<AppEntry> {
     this.logger.info(`Adding entry ${entry.id}`);
+    this.resetFilter();
     const entries = this.store.get(this.entryListAtom);
     this.store.set(this.entryListAtom, this.reorderEntries([entry, ...entries]));
     const split = this.store.get(this.entryListSplit);

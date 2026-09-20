@@ -9,11 +9,9 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {AppScreenContainer} from '@/components/blocks/AppScreenContainer/AppScreenContainer';
 import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 import {ThemedSearchInput} from '@/components/blocks/ThemedSearchInput/ThemedSearchInput';
-import {EntryType} from '../../../../openapi-client';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
-import {EntryFilterModalProps} from './components/EntryFilterModal/types/EntryFilterModalProps';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {useAtomValue} from 'jotai';
+import {useAtom, useAtomValue} from 'jotai';
 import {MemoEntryBlock} from './components/EntryBlock/MemoEntryBlock';
 import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {safeListRefresh} from '../../../../utils/safeListRefresh';
@@ -30,16 +28,15 @@ export const EntryListScreen: FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [db] = useDrizzle();
-  const [types, setTypes] = useState<EntryType[]| null>(null);
-  const [date, setDate] = useState<Date | null>(null);
+  const [filter, setFilter] = useAtom(entryListService.getFilterAtom());
   const [search, setSearch] = useState<string | null>(null);
   const query = useInfiniteQuery({
-    queryKey: ['entries', types, date, search],
+    queryKey: ['entries', filter.types, filter.date, search],
     retry: false,
     queryFn: ({pageParam}) => {
       return entryService.getEntries(db, user.id, {
-        types: types ?? undefined,
-        date: date ?? undefined,
+        types: filter.types,
+        date: filter.date,
         search: search ?? undefined,
         includeDeleted: false,
         limit: 30,
@@ -53,7 +50,10 @@ export const EntryListScreen: FC = () => {
     initialPageParam: 1,
   });
   useEffect(() => {
-    entryListService.setEntries(query.data?.pages.flat() ?? []);
+    if (!query.data) {
+      return;
+    }
+    entryListService.setEntries(query.data.pages.flat());
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.data?.pages]);
   useEffect(() => {
@@ -65,9 +65,8 @@ export const EntryListScreen: FC = () => {
     }
   }, [lastAddedEntryAtom]);
 
-  const onFilterChange: EntryFilterModalProps['onChange'] = (e) => {
-    setTypes(e.types);
-    setDate(e.date);
+  const onSearchChange = (search: string) => {
+    setFilter((prev) => ({...prev, search}));
   };
   const onRefresh = async () => {
     if (!user) {
@@ -120,6 +119,8 @@ export const EntryListScreen: FC = () => {
             <View className="mt-5">
               <ThemedSearchInput
                 returnKeyType="done"
+                value={filter.search ?? ''}
+                onChangeText={onSearchChange}
                 onSearch={setSearch}
                 className="bg-surface"
                 placeholder="Search"
@@ -162,7 +163,8 @@ export const EntryListScreen: FC = () => {
         }
       />
       <EntryFilterModal
-        onChange={onFilterChange}
+        filter={filter}
+        onChange={setFilter}
         visible={showFilterModal}
         onClose={() => setShowFilterModal(false)}
       />
