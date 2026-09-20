@@ -4,7 +4,7 @@ import {useAppTheme} from '@/hooks/useAppTheme';
 import {Theme} from '@/types/Colors';
 import {ThemedImage} from '../ThemedImage/ThemedImage';
 
-const styled = (theme: Theme, image?: string, imageHeight?: number) => StyleSheet.create({
+const styled = (theme: Theme, image?: string) => StyleSheet.create({
   container: {
     backgroundColor: theme.surface,
     padding: image ? 0 : theme.paddingM,
@@ -13,20 +13,19 @@ const styled = (theme: Theme, image?: string, imageHeight?: number) => StyleShee
   },
   image: {
     width: '100%',
-    borderTopLeftRadius: theme.borderRadiusM,
-    borderTopRightRadius: theme.borderRadiusM,
-    height: imageHeight,
-    // backgroundColor: 'red',
+    aspectRatio: 4 / 3,
   },
 });
 
-export const ThemedBlock: FC<ViewProps & {image?: string, imageHeight?: number}> = (props) => {
+export const ThemedBlock: FC<ViewProps & {image?: string}> = (props) => {
   const {style, children, ...rest} = props;
   const theme = useAppTheme();
-  const styles = styled(theme, props.image, props.imageHeight);
+  const styles = styled(theme, props.image);
   return <View style={[styles.container, style]} {...rest}>
     {props.image && (
-      <ThemedImage source={{uri: props.image}} className={'w-full'} style={{height: props.imageHeight}} />
+      <View style={styles.image}>
+        <ThemedImage source={{uri: props.image}} className="w-full h-full" />
+      </View>
     )}
     <View style={{padding: props.image ? theme.paddingM : 0}}>
     {children}

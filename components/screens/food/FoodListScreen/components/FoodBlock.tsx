@@ -34,7 +34,7 @@ export const FoodBlock: FC<{foodAtom: PrimitiveAtom<AppFood>}> = (props) => {
   const imageUrl = imageService.getImageUrl(food.image);
   return (
   <Pressable onPress={onPress}>
-    <ThemedBlock image={imageUrl ?? placeholder} imageHeight={150}>
+    <ThemedBlock image={imageUrl ?? placeholder}>
         <View className="" >
           <View className="flex-row items-center">
             <ThemedText className="font-bold grow">
@@ -58,7 +58,7 @@ export const FoodBlock: FC<{foodAtom: PrimitiveAtom<AppFood>}> = (props) => {
               </View>
             )}
             {food.components.length > 0 && (
-              <View className="flex flex-row items-start justify-start mt-2 overflow-hidden text-sm text-ellipsis">
+              <View className="flex flex-row items-start justify-start overflow-hidden text-sm text-ellipsis">
                 <ThemedText>{food.components.map((x) => x.food.name).join(', ')}</ThemedText>
               </View>
             )}

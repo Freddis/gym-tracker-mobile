@@ -49,6 +49,7 @@ export const ThemedLink: FC<ThemedLnkProps> = (props) => {
         >
           <ThemedText
             style={{color: props.accented ? theme.accent : theme.text, ...props.style}}
+            className={props.className}
           >
             {children}
           </ThemedText>

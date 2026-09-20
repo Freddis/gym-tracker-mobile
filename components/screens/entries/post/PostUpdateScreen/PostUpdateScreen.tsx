@@ -93,7 +93,7 @@ export const PostUpdateScreen: FC = () => {
               <Separator/>
               <View className="gap-s">
                 <ThemedText>Image</ThemedText>
-                <ImageUploadButton onChange={updateImage} onRemove={() => updateImage(null)} value={image} className="w-full h-80"/>
+                <ImageUploadButton onChange={updateImage} onRemove={() => updateImage(null)} value={image} className="w-full" style={{aspectRatio: 4 / 3}}/>
               </View>
               <Separator />
               <View className="flex-row justify-center gap-40">

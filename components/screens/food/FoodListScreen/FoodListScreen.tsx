@@ -11,6 +11,7 @@ import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
 import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
+import {ThemedSearchInput} from '../../../blocks/ThemedSearchInput/ThemedSearchInput';
 import {atom, useAtomValue, useSetAtom} from 'jotai';
 import {splitAtom} from 'jotai/utils';
 import {AppFood} from '../../../../utils/FoodService/types/AppFood';
@@ -23,6 +24,7 @@ const foodSplitAtom = splitAtom(foodListAtom, (x) => x.id);
 export const FoodListScreen = () => {
   const setFoodList = useSetAtom(foodListAtom);
   const foodAtoms = useAtomValue(foodSplitAtom);
+  const [searchName, setSearchName] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const {foodService} = useServices();
   const {user} = useAuth();
@@ -38,16 +40,16 @@ export const FoodListScreen = () => {
       if (!await foodService.pushToServer(user.id)) {
         throw new Error('Failed to push food');
       }
-      const food = await foodService.getFood();
+      const food = await foodService.getFood({search: searchName ?? undefined});
       setFoodList(food);
     });
   };
 
   const query = useQuery({
-    queryKey: ['food'],
+    queryKey: ['food', searchName],
     retry: false,
     queryFn: () => {
-      return foodService.getFood();
+      return foodService.getFood({search: searchName ?? undefined});
     },
   });
 
@@ -65,14 +67,20 @@ export const FoodListScreen = () => {
       <ThemedView className="h-full">
         <ThemedScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
           <ThemedView className="p-m h-full">
-            {query.isLoading && <ActivityIndicator size="large" color={theme.accent} />}
+            <ThemedSearchInput
+              returnKeyType="done"
+              onSearch={setSearchName}
+              className="bg-surface"
+              placeholder="Search"
+            />
+            {query.isLoading && <ActivityIndicator size="large" color={theme.accent} className="mt-m" />}
             {!query.isLoading && (
-              <ThemedView className="gap-m">
+              <ThemedView className="gap-m mt-m">
                 {foodAtoms.map((x) => <FoodBlock key={x.toString()} foodAtom={x} />)}
               </ThemedView>
             )}
             {!query.isLoading && query.data?.length === 0 && (
-              <ThemedText>No food found</ThemedText>
+              <ThemedText className="mt-m">No food found</ThemedText>
             )}
           </ThemedView>
         </ThemedScrollView>

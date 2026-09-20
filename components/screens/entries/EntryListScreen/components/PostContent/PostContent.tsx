@@ -1,4 +1,5 @@
 import {FC} from 'react';
+import {View} from 'react-native';
 import {ThemedImage} from '../../../../../blocks/ThemedImage/ThemedImage';
 import {ThemedText} from '../../../../../blocks/ThemedText/ThemedText';
 import {AppEntry} from '../../../../../../types/models/AppEntry';
@@ -16,7 +17,9 @@ export const PostContent: FC<{entry: AppEntry}> = (props) => {
       )}
       {props.entry.note && <ThemedText>{props.entry.note}</ThemedText>}
       {image && (
-        <ThemedImage source={{uri: image}} className="w-full h-80 mt-s"/>
+        <View className="w-full mt-s" style={{aspectRatio: 4 / 3}}>
+          <ThemedImage source={{uri: image}} className="w-full h-full"/>
+        </View>
       )}
     </>
   );

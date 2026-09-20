@@ -74,7 +74,7 @@ export const PostCreateScreen: FC = () => {
               <Separator/>
               <View className="gap-s">
                 <ThemedText>Image</ThemedText>
-                <ImageUploadButton onChange={updateImage} onRemove={() => setImage(null)} value={null} className="w-full h-80"/>
+                <ImageUploadButton onChange={updateImage} onRemove={() => setImage(null)} value={null} className="w-full" style={{aspectRatio: 4 / 3}}/>
               </View>
             </ThemedBlock>
           </ThemedView>
