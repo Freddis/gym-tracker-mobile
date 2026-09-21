@@ -57,14 +57,13 @@ export const FoodAddScreen = () => {
     console.log('Food found', response.data);
     const food: Food = response.data;
     setScannedFood(food);
-    router.dismissTo({
-      pathname: '/app/entries/food/foodCreate',
-    });
+    router.dismissTo('./foodCreate');
   };
 
+  // the food screens are mounted in both the entries and the dashboard tab, navigate within the current one
   const items: [string, RoutePath | (() => void)][] = [
-    ['Add Food', '/app/entries/food/foodCreate'],
-    ['Add A Dish', '/app/entries/food/dishCreate'],
+    ['Add Food', () => router.replace('./foodCreate')],
+    ['Add A Dish', () => router.replace('./dishCreate')],
     ['Scan Barcode', scanBarcode],
   ];
   return (

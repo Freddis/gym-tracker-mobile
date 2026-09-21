@@ -15,6 +15,7 @@ import {AppCalorieGoalStats} from '../../../../utils/DashboardService/types/AppC
 import {useUser} from '../../../providers/AuthProvider/useUser';
 import {ThemedText} from '../../../blocks/ThemedText/ThemedText';
 import {ThemedBlock} from '../../../blocks/ThemedBlock/ThemedBlock';
+import {ThemedButtonList} from '../../../blocks/ThemedButtonList/ThemedButtonList';
 
 export const DashboardScreen: FC = () => {
   const {dashboardService} = useServices();
@@ -45,23 +46,23 @@ export const DashboardScreen: FC = () => {
     queryClient.invalidateQueries({queryKey: ['dashboard']});
   });
 
-  if (!response.data || response.isLoading) {
-    return (
-    <AppScreenContainer safeTop={true}>
-      <LoadingBlock />
-    </AppScreenContainer>
-    );
-  }
-  const calorieGoal = response.data.calorieGoal;
-  const weightGoals = response.data.weightGoals;
-  const hasNoGoals = Object.values(weightGoals).every((goal) => !goal) && !calorieGoal;
+  const calorieGoal = response.data?.calorieGoal;
+  const weightGoals = response.data?.weightGoals;
+  const hasNoGoals = weightGoals && Object.values(weightGoals).every((goal) => !goal) && !calorieGoal;
   return (
     <AppScreenContainer safeTop={true}>
       <Stack.Screen options={{title: 'Dashboard', headerShown: false}} />
       <ScrollView className="h-full">
         <View className="h-full p-s gap-m">
+        <ThemedButtonList
+          items={[
+            ['Workout Types', '/app/dashboard/workoutTypeList'],
+            ['Food', '/app/dashboard/food/foodList'],
+          ]}
+        />
+        {(!response.data || response.isLoading) && <LoadingBlock />}
         {calorieGoal && <CalorieGoalBlock goal={calorieGoal} />}
-        {weightGoals[period] && <WeightGoalBlock goal={weightGoals[period]} onChangePeriod={setPeriod} />}
+        {weightGoals?.[period] && <WeightGoalBlock goal={weightGoals[period]} onChangePeriod={setPeriod} />}
         {hasNoGoals && (
           <ThemedBlock>
             <ThemedText>No goals added. Add goals and entries to see your progress</ThemedText>

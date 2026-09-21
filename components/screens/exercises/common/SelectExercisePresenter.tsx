@@ -13,6 +13,8 @@ import {atom, PrimitiveAtom, useAtomValue, useSetAtom} from 'jotai';
 import {splitAtom} from 'jotai/utils';
 import {ExerciseAtomBlock} from './components/ExerciseAtomBlock';
 import {queryClient} from '../../../../routes/_layout';
+import {Muscle} from '../../../../openapi-client';
+import {ExerciseFilterModal} from './components/ExerciseFilterModal/ExerciseFilterModal';
 
 interface SelectExercisePresenterProps {
   onPress?: (item: NestedAppExercise, itemAtom: PrimitiveAtom<NestedAppExercise>) => void
@@ -21,6 +23,8 @@ interface SelectExercisePresenterProps {
 export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props) => {
   const [searchName, setSearchName] = useState<string|null>(null);
   const [library, setLibrary] = useState<'personal' | 'built-in'>('personal');
+  const [muscles, setMuscles] = useState<Muscle[] | undefined>(undefined);
+  const [showFilterModal, setShowFilterModal] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   // the picker can be mounted on top of the library, each of them needs a list of its own
   const [exerciseListAtom] = useState(() => atom<NestedAppExercise[]>([]));
@@ -34,8 +38,9 @@ export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props)
     queryFn: () => exerciseService.getPersonalLibrary({
       presonal: library === 'personal',
       search: searchName ?? undefined,
+      muscles,
     }),
-    queryKey: ['exercises', library, searchName],
+    queryKey: ['exercises', library, searchName, muscles],
     placeholderData: undefined,
   });
 
@@ -66,6 +71,7 @@ export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props)
   }, [exerciseService, user]);
 
   return (
+    <>
     <FlatList
       className="h-full"
       initialNumToRender={30}
@@ -79,20 +85,30 @@ export const SelectExercisePresenter: FC<SelectExercisePresenterProps> = (props)
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       ListHeaderComponent={
         <>
+         <View className="flex-row grow">
           <ThemedSearchInput
-            onSearch={setSearchName}
-            className="bg-surface"
-            placeholder="Search"
-          />
+              onSearch={setSearchName}
+              className="bg-surface grow"
+              placeholder="Search"
+            />
+            <ThemedLink
+              iconName="line.3.horizontal.decrease"
+              onPress={() => setShowFilterModal(true)}
+            />
+          </View>
           <View className="flex-row items-center mt-s">
-            <View className="flex-row grow">
-              <ThemedSegmentedControl values={segments} onChange={onLibraryChange}/>
-            </View>
-            <ThemedLink href="/app/exercises/addExercise" iconName="plus" accented>Add</ThemedLink>
+            <ThemedSegmentedControl values={segments} onChange={onLibraryChange}/>
           </View>
           {response.isLoading && <LoadingBlock/>}
         </>
       }
     />
+    <ExerciseFilterModal
+      muscles={muscles}
+      onChange={setMuscles}
+      visible={showFilterModal}
+      onClose={() => setShowFilterModal(false)}
+    />
+    </>
   );
 };

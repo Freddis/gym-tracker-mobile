@@ -25,16 +25,23 @@ const styled = (theme: Theme) =>
     container: {
       backgroundColor: theme.backgroundDeepest,
       padding: 2,
+      paddingVertical: 5,
       flexDirection: 'row',
+      flexGrow: 1,
       flexShrink: 1,
+      alignSelf: 'stretch',
       borderRadius: theme.borderRadiusS,
       overflow: 'hidden',
+    },
+    itemWrapper: {
+      flex: 1,
     },
     item: {
       paddingHorizontal: theme.paddingM,
       borderRadius: theme.borderRadiusS - 1,
       fontSize: 15,
       opacity: 0.7,
+      textAlign: 'center',
     },
     itemSelected: {
       opacity: 1,
@@ -99,6 +106,7 @@ export const ThemedSegmentedControl: FC<ThemedSegmentedControlProps> = (
       {props.values.map((item, index) => (
         <Pressable
           key={item.value}
+          style={styles.itemWrapper}
           onPress={() => onItemPress(item, index)}
         >
           <ThemedText

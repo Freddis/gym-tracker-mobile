@@ -96,7 +96,7 @@ export const DishUpdateForm: FC<FoodUpdateFormProps> = (props) => {
     props.onChange(updatedFood);
   };
   const onAddFoodPress = () => {
-    router.navigate('/app/entries/food/foodSelect');
+    router.navigate('./foodSelect');
   };
 
   const nutritionFacts = foodUtility.getNutritionFacts(food);

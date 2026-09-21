@@ -60,7 +60,8 @@ export const FoodListScreen = () => {
 
 
   const headerLeft = () => <BackHeaderButton />;
-  const headerRight = () => <ThemedLink onPress={() => router.navigate('/app/entries/food/foodAdd')}>Add</ThemedLink>;
+  // the food screens are mounted in both the entries and the dashboard tab, navigate within the current one
+  const headerRight = () => <ThemedLink onPress={() => router.navigate('./foodAdd')}>Add</ThemedLink>;
   return (
     <AppScreenContainer>
       <Stack.Screen options={{title: 'Food List', headerShown: true, headerLeft, headerRight}} />

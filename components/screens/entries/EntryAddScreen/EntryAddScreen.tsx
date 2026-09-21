@@ -9,6 +9,7 @@ import {useServices} from '../../../providers/ServiceProvider/ServiceProvider';
 import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {weightAtom} from '../weight/WeightUpdateScreen/utils/weightAtom';
 import {useUser} from '../../../providers/AuthProvider/useUser';
+import {BackHeaderButton} from '../../../blocks/BackHeaderButton/BackHeaderButton';
 
 export const EntryAddScreen = () => {
   const setWeightEntry = useSetAtom(weightAtom);
@@ -45,7 +46,7 @@ export const EntryAddScreen = () => {
   ];
   return (
     <AppScreenContainer>
-      <Stack.Screen options={{title: 'Add Entry', headerShown: true}} />
+      <Stack.Screen options={{title: 'Add Entry', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ThemedScrollView className="h-full p-m">
           <ThemedButtonList items={items} replace={true} />

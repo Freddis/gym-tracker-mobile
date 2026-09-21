@@ -15,7 +15,8 @@ export type ThemedTextInputProps = TextInputProps & {
 const getStyles = (theme: Theme, variant?: 'on-surface', hasError?: boolean) => StyleSheet.create({
   default: {
     borderRadius: theme.borderRadiusS,
-    padding: theme.paddingS,
+    paddingHorizontal: theme.paddingS,
+    paddingVertical: theme.paddingS,
     // height: 40,
     backgroundColor: variant === 'on-surface' ? theme.background : theme.cavity,
     borderColor: hasError ? theme.dangerText : theme.cavity,

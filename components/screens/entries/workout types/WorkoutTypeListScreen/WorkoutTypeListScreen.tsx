@@ -5,6 +5,7 @@ import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {FC} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {useServices} from '../../../../providers/ServiceProvider/ServiceProvider';
+import {BackHeaderButton} from '../../../../blocks/BackHeaderButton/BackHeaderButton';
 
 export const WorkoutTypeListScreen: FC = () => {
   const {workoutTypeService} = useServices();
@@ -17,7 +18,7 @@ export const WorkoutTypeListScreen: FC = () => {
   const workouts = query.data;
   return (
     <ThemedView style={styles.container}>
-      <Stack.Screen options={{title: 'Workout Types', headerShown: true}} />
+      <Stack.Screen options={{title: 'Workout Types', headerShown: true, headerLeft: () => <BackHeaderButton />}} />
       {!query.data && <LoadingBlock />}
       {!!workouts && <FlatList data={workouts} style={styles.list} renderItem={(x) => (
         <View>

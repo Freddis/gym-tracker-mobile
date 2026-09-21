@@ -19,7 +19,7 @@ interface SharedThemeConfig {
   borderRadiusM: number;
   marginM: number;
   marginL: number;
-
+  inputVerticalPadding: number;
 }
 
 export interface Theme extends SharedThemeConfig {
@@ -46,9 +46,10 @@ const shared: SharedThemeConfig = {
   marginM: 15,
   paddingM: 15,
   marginS: 5,
-  paddingS: 5,
+  paddingS: 8,
   borderRadiusS: 5,
   marginL: 20,
+  inputVerticalPadding: 10,
 };
 
 export const Colors: Record<'light' | 'dark', Theme> = {

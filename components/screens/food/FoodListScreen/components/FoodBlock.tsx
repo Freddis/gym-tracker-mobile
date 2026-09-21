@@ -27,9 +27,7 @@ export const FoodBlock: FC<{foodAtom: PrimitiveAtom<AppFood>}> = (props) => {
   const router = useRouter();
   const onPress = () => {
     setFoodAtom(props.foodAtom);
-    router.navigate({
-      pathname: '/app/entries/food/foodUpdate',
-    });
+    router.navigate('./foodUpdate');
   };
   const imageUrl = imageService.getImageUrl(food.image);
   return (

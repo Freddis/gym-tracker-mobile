@@ -5,6 +5,7 @@ import {SelectExercisePresenter} from '../common/SelectExercisePresenter';
 import {AppScreenContainer} from '../../../blocks/AppScreenContainer/AppScreenContainer';
 import {NestedAppExercise} from '../../../../utils/ExerciseService/types/NestedAppExercise';
 import {exerciseAtom} from '../exerciseAtom';
+import {ThemedLink} from '../../../blocks/ThemedLink/ThemedLink';
 
 export const ExerciseListScreen: FC = () => {
   const router = useRouter();
@@ -19,9 +20,10 @@ export const ExerciseListScreen: FC = () => {
       },
     });
   };
+  const headerRight = () => <ThemedLink href="/app/exercises/addExercise">Add</ThemedLink>;
   return (
-  <AppScreenContainer safeTop={true} className="h-full">
-    <Stack.Screen options={{title: 'Exercise Library', headerShown: false}} />
+  <AppScreenContainer className="h-full">
+    <Stack.Screen options={{title: 'Exercise Library', headerShown: true, headerRight}} />
     <SelectExercisePresenter onPress={onExercisePress}/>
   </AppScreenContainer>
   );

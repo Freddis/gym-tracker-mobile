@@ -100,7 +100,7 @@ export class ExerciseService implements ISyncedEntityService {
     return result;
   }
 
-  async getPersonalLibrary(params: {presonal?: boolean, search?: string;}): Promise<NestedAppExercise[]> {
+  async getPersonalLibrary(params: {presonal?: boolean, search?: string, muscles?: Muscle[];}): Promise<NestedAppExercise[]> {
     const items = await db.query.exercises.findMany({
       where: (t, op) => op.and(
         params.presonal ? op.not(op.isNull(t.userId)) : op.isNull(t.userId),
@@ -180,7 +180,29 @@ export class ExerciseService implements ISyncedEntityService {
       };
       nested.push(exercise);
     }
-    return nested;
+    return this.filterByMuscles(nested, params.muscles);
+  }
+
+  private matchesMuscleFilter(exercise: {muscles: {primary: Muscle[]; secondary: Muscle[]}}, muscles: Muscle[]): boolean {
+    const involved = new Set([...exercise.muscles.primary, ...exercise.muscles.secondary]);
+    return muscles.every((muscle) => involved.has(muscle));
+  }
+
+  private filterByMuscles(exercises: NestedAppExercise[], muscles?: Muscle[]): NestedAppExercise[] {
+    if (!muscles || muscles.length === 0) {
+      return exercises;
+    }
+    return exercises
+      .map((exercise) => {
+        if (this.matchesMuscleFilter(exercise, muscles)) {
+          return exercise;
+        }
+        return {
+          ...exercise,
+          variations: exercise.variations.filter((variation) => this.matchesMuscleFilter(variation, muscles)),
+        };
+      })
+      .filter((exercise) => this.matchesMuscleFilter(exercise, muscles) || exercise.variations.length > 0);
   }
 
   createSectionListData(exercises: NestedAppExercise[]): {title: string, data: NestedAppExercise[]}[] {

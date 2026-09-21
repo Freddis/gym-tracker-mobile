@@ -1,14 +1,11 @@
-import {View, Pressable, RefreshControl, FlatList} from 'react-native';
-import {ThemedText} from '@/components/blocks/ThemedText/ThemedText';
-import {Link, Stack} from 'expo-router';
+import {View, RefreshControl, FlatList} from 'react-native';
+import {Stack} from 'expo-router';
 import {LoadingBlock} from '@/components/blocks/LoadingBlock/LoadingBlock';
 import {useDrizzle} from '@/utils/drizzle';
 import {FC, useEffect, useRef, useState} from 'react';
-import {IconSymbol} from '@/components/blocks/IconSymbol/IconSymbol';
-import {useAppTheme} from '@/hooks/useAppTheme';
 import {AppScreenContainer} from '@/components/blocks/AppScreenContainer/AppScreenContainer';
-import {ThemedButtonList} from '@/components/blocks/ThemedButtonList/ThemedButtonList';
 import {ThemedSearchInput, ThemedSearchInputHandle} from '@/components/blocks/ThemedSearchInput/ThemedSearchInput';
+import {ThemedLink} from '@/components/blocks/ThemedLink/ThemedLink';
 import {EntryFilterModal} from './components/EntryFilterModal/EntryFilterModal';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {useAtom, useAtomValue} from 'jotai';
@@ -18,7 +15,6 @@ import {safeListRefresh} from '../../../../utils/safeListRefresh';
 import {useUser} from '../../../providers/AuthProvider/useUser';
 
 export const EntryListScreen: FC = () => {
-  const theme = useAppTheme();
   const {entryListService, healthKitService} = useServices();
   const lastAddedEntryAtom = useAtomValue(entryListService.getLastAddedEntryAtom());
   const entryAtoms = useAtomValue(entryListService.getEntryAtoms());
@@ -88,9 +84,10 @@ export const EntryListScreen: FC = () => {
       query.fetchNextPage();
     }
   };
+  const headerRight = () => <ThemedLink href="/app/entries/entryAdd">Add</ThemedLink>;
   return (
-    <AppScreenContainer safeTop={true}>
-      <Stack.Screen options={{headerShown: false}} />
+    <AppScreenContainer>
+      <Stack.Screen options={{title: 'Entries', headerShown: true, headerRight}} />
       <FlatList
         ref={listRef}
         removeClippedSubviews
@@ -109,56 +106,22 @@ export const EntryListScreen: FC = () => {
             onRefresh={onRefresh}
           />
         }
-        contentContainerClassName="px-m pt-l gap-m min-h-full"
+        contentContainerClassName="px-m pt-m gap-m min-h-full"
         ListHeaderComponent={
           <>
-            <ThemedButtonList
-              items={[
-                ['Workout Types', '/app/entries/workoutTypeList'],
-                ['Food', '/app/entries/food/foodList'],
-              ]}
-            />
-
-            <View className="mt-5">
+            <View className="flex-row items-center gap-xs">
               <ThemedSearchInput
-                ref={searchRef}
-                returnKeyType="done"
-                onSearch={onSearch}
-                className="bg-surface"
-                placeholder="Search"
-              />
-            </View>
-
-            <View
-             className="flex-row items-center mt-5"
-            >
-              <Pressable
+              ref={searchRef}
+              returnKeyType="done"
+              onSearch={onSearch}
+              className="bg-surface grow"
+              placeholder="Search"
+            />
+              <ThemedLink
+                iconName="line.3.horizontal.decrease"
                 onPress={() => setShowFilterModal(true)}
-                className="grow flex-row items-center gap-s"
               >
-                <ThemedText className="text-accent">
-                  Entries
-                </ThemedText>
-
-                <IconSymbol
-                  name={'line.3.horizontal.decrease'}
-                  color={theme.accent}
-                  size={20}
-                />
-              </Pressable>
-
-              <Link href={'/app/entries/entryAdd'} asChild>
-                <Pressable className="flex-row items-center gap-s">
-                  <ThemedText className="text-accent">
-                    Add
-                  </ThemedText>
-                  <IconSymbol
-                    name={'plus'}
-                    color={theme.accent}
-                    size={20}
-                  />
-                </Pressable>
-              </Link>
+              </ThemedLink>
             </View>
             {query.isFetching && !query.data && <LoadingBlock />}
           </>
