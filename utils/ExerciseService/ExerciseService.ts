@@ -240,6 +240,8 @@ export class ExerciseService implements ISyncedEntityService {
       },
       where: (t, op) => op.and(
         op.eq(t.userId, userId),
+        // the server has never seen this row, so a local delete has nothing to tombstone
+        op.or(op.isNull(t.deletedAt), op.isNotNull(t.lastPushedAt)),
         lastUpdate ? op.or(
           op.gt(t.updatedAt, t.lastPushedAt),
           op.gt(t.createdAt, t.lastPushedAt),

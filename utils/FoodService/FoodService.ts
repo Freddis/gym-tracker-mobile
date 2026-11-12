@@ -350,6 +350,8 @@ export class FoodService implements ISyncedEntityService {
       },
       where: (t, op) => op.and(
         eq(t.userId, userId),
+        // the server has never seen this row, so a local delete has nothing to tombstone
+        op.or(op.isNull(t.deletedAt), op.isNotNull(t.lastPushedAt)),
         lastPullSyncDate ? op.or(
           op.gt(t.updatedAt, lastPullSyncDate),
           op.gt(t.createdAt, lastPullSyncDate),

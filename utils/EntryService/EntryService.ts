@@ -519,14 +519,16 @@ export class EntryService implements ISyncedEntityService {
         id: true,
       },
       where: (t, op) => op.and(
-      eq(t.userId, userId),
-      syncDate ? op.or(
-        op.gt(t.updatedAt, t.lastPushedAt),
-        op.gt(t.createdAt, t.lastPushedAt),
-        op.gt(t.deletedAt, t.lastPushedAt),
-        op.isNull(t.lastPushedAt),
-      ) : undefined
-    ),
+        eq(t.userId, userId),
+        // the server has never seen this row, so a local delete has nothing to tombstone
+        op.or(op.isNull(t.deletedAt), op.isNotNull(t.lastPushedAt)),
+        syncDate ? op.or(
+          op.gt(t.updatedAt, t.lastPushedAt),
+          op.gt(t.createdAt, t.lastPushedAt),
+          op.gt(t.deletedAt, t.lastPushedAt),
+          op.isNull(t.lastPushedAt),
+        ) : undefined
+      ),
     });
     const ids: string[] = idRows.map((x) => x.id);
     const itemsNumber = ids.length;
